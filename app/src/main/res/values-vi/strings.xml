@@ -5,4 +5,10 @@
     <string name="loginText">Đăng nhập</string>
     <string name="signUpText">Đăng ký</string>
     <string name="continueAsGuest">Tiếp tục với tư cách khách</string>
+    <string name="welcomeText">Chào mừng,</string>
+    <string name="greetingText">Chúc bạn ngày mới tốt lành</string>
+    <string name="rememberMe">Nhớ tên đăng nhập</string>
+    <string name="forgotPassword">Quên mật khẩu</string>
+    <string name="loginWith">Hoặc đăng nhập với</string>
+    <string name="signUpGreeting">Chưa có tài khoản? <b>Đăng ký ngay</b></string>
 </resources>

@@ -1,7 +1,13 @@
-    <resources>
+<resources>
     <string name="app_name">Booklette</string>
     <string name="welcome_text">Read more and stress less with our online old book shopping app. Shop from anywhere you are and discover titles that you love. Happy reading!</string>
-        <string name="loginText">Log in</string>
-        <string name="signUpText">Sign up</string>
-        <string name="continueAsGuest">Continue as guest</string>
-    </resources>
+    <string name="loginText">Log in</string>
+    <string name="signUpText">Sign up</string>
+    <string name="continueAsGuest">Continue as guest</string>
+    <string name="welcomeText">Welcome,</string>
+    <string name="greetingText">Glad to see you</string>
+    <string name="rememberMe">Remember me</string>
+    <string name="forgotPassword">Forgot password?</string>
+    <string name="loginWith">Or log in with</string>
+    <string name="signUpGreeting">Don\'t have an account yet? <b>Sign up</b></string>
+</resources>
