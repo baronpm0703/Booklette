@@ -24,4 +24,7 @@
     <string name="dontWorryDescription">Please enter the 6 digit code sent to your email</string>
     <string name="resendOTP">Resend code</string>
     <string name="verifyStr">Verify</string>
+    <string name="createNewPassword">Create New Password</string>
+    <string name="newPassDescription">Please enter your new password and let\'s secure your journey ahead!</string>
+    <string name="resetPassSubmit">Reset password</string>
 </resources>

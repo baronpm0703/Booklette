@@ -25,4 +25,7 @@
     <string name="dontWorryDescription">Hãy nhập 6 chữ số đã được gửi đến Email của bạn</string>
     <string name="resendOTP">Gửi lại OTP</string>
     <string name="verifyStr">Xác minh</string>
+    <string name="createNewPassword">Tạo mật khẩu</string>
+    <string name="newPassDescription">Hãy nhập mật khẩu mới!</string>
+    <string name="resetPassSubmit">Đặt lại mật khẩu</string>
 </resources>
