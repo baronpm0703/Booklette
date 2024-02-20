@@ -13,5 +13,15 @@
     <string name="createAccount">Create Account,</string>
     <string name="createAccountGreeting">To get started now</string>
     <string name="signUpWith">Or sign up with</string>
-    <string name="alreadyHaveAccount">Already have an account? <b>Log in</b></string>
+    <string name="alreadyHaveAccount"><u>Already have an account? <b>Log in</b></u></string>
+    <string name="forgotPasswordStr">Forgot Password</string>
+    <string name="forgotYourPassword">Forgot your password?</string>
+    <string name="forgotPassDescription">Enter the email address associated with your account and we’ll send you a OTP to reset your password.</string>
+    <string name="forgotPassSubmit">Send code</string>
+    <string name="backToLogin"><u>Back to <b>Log In</b></u></string>
+    <string name="verifyEmail">Verify Your Email</string>
+    <string name="dontWorry">Don\'t Worry!</string>
+    <string name="dontWorryDescription">Please enter the 6 digit code sent to your email</string>
+    <string name="resendOTP">Resend code</string>
+    <string name="verifyStr">Verify</string>
 </resources>

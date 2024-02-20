@@ -76,4 +76,7 @@ dependencies {
 
     //circular image view
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+    //otp view
+    implementation ("com.github.appsfeature:otp-view:1.0")
 }

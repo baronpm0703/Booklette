@@ -14,5 +14,15 @@
     <string name="createAccount">Đăng ký tài khoản</string>
     <string name="createAccountGreeting">Hãy điền các thông tin bên dưới</string>
     <string name="signUpWith">Hoặc đăng ký với</string>
-    <string name="alreadyHaveAccount">Đã có tài khoản? <b>Đăng nhập</b></string>
+    <string name="alreadyHaveAccount"><u>Đã có tài khoản? <b>Đăng nhập</b></u></string>
+    <string name="forgotPasswordStr">Quên mật khẩu</string>
+    <string name="forgotYourPassword">Bạn đã quên mật khẩu?</string>
+    <string name="forgotPassDescription">Nhập vào thông tin Email bạn dùng để đăng ký và chúng tôi sẽ gửi bạn mã OTP để tạo lại mật khẩu.</string>
+    <string name="forgotPassSubmit">Gửi mã OTP</string>
+    <string name="backToLogin"><u>Trở về <b>Đăng nhập</b></u></string>
+    <string name="verifyEmail">Xác thực email</string>
+    <string name="dontWorry">Đừng lo lắng!</string>
+    <string name="dontWorryDescription">Hãy nhập 6 chữ số đã được gửi đến Email của bạn</string>
+    <string name="resendOTP">Gửi lại OTP</string>
+    <string name="verifyStr">Xác minh</string>
 </resources>
