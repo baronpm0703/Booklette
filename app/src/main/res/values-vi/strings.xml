@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Booklette</string>
+    <string name="welcome_text">Đọc nhiều hơn và bớt căng thẳng hơn với ứng dụng mua sách cũ trực tuyến của chúng tôi. Mua sắm từ mọi nơi và khám phá những tựa game mà bạn yêu thích. Chúc bạn đọc vui vẻ!</string>
+    <string name="loginText">Đăng nhập</string>
+    <string name="signUpText">Đăng ký</string>
+    <string name="continueAsGuest">Tiếp tục với tư cách khách</string>
+</resources>

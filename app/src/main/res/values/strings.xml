@@ -1,0 +1,7 @@
+    <resources>
+    <string name="app_name">Booklette</string>
+    <string name="welcome_text">Read more and stress less with our online old book shopping app. Shop from anywhere you are and discover titles that you love. Happy reading!</string>
+        <string name="loginText">Log in</string>
+        <string name="signUpText">Sign up</string>
+        <string name="continueAsGuest">Continue as guest</string>
+    </resources>
