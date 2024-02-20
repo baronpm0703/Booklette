@@ -10,4 +10,8 @@
     <string name="forgotPassword">Forgot password?</string>
     <string name="loginWith">Or log in with</string>
     <string name="signUpGreeting">Don\'t have an account yet? <b>Sign up</b></string>
+    <string name="createAccount">Create Account,</string>
+    <string name="createAccountGreeting">To get started now</string>
+    <string name="signUpWith">Or sign up with</string>
+    <string name="alreadyHaveAccount">Already have an account? <b>Log in</b></string>
 </resources>

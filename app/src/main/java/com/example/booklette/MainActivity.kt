@@ -27,5 +27,9 @@ class MainActivity : ComponentActivity() {
             startActivity(Intent(this@MainActivity, LoginActivity::class.java))
         })
 
+        binding.btnSignUp.setOnClickListener({
+            startActivity(Intent(this@MainActivity, SignUpActivity::class.java))
+        })
+
     }
 }

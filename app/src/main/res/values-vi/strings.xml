@@ -11,4 +11,8 @@
     <string name="forgotPassword">Quên mật khẩu</string>
     <string name="loginWith">Hoặc đăng nhập với</string>
     <string name="signUpGreeting">Chưa có tài khoản? <b>Đăng ký ngay</b></string>
+    <string name="createAccount">Đăng ký tài khoản</string>
+    <string name="createAccountGreeting">Hãy điền các thông tin bên dưới</string>
+    <string name="signUpWith">Hoặc đăng ký với</string>
+    <string name="alreadyHaveAccount">Đã có tài khoản? <b>Đăng nhập</b></string>
 </resources>
