@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -79,4 +80,15 @@ dependencies {
 
     //otp view
     implementation ("com.github.appsfeature:otp-view:1.0")
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+
+    //Motion toast
+    implementation ("com.github.Spikeysanju:MotionToast:1.4")
+
+    //Progress Button
+    implementation ("com.github.razir.progressbutton:progressbutton:2.1.0")
 }

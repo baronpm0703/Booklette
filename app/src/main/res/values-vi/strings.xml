@@ -28,4 +28,12 @@
     <string name="createNewPassword">Tạo mật khẩu</string>
     <string name="newPassDescription">Hãy nhập mật khẩu mới!</string>
     <string name="resetPassSubmit">Đặt lại mật khẩu</string>
+    <string name="signingUpText">đang đăng ký...</string>
+    <string name="emptyUsernameSignUp">Username không được bỏ trống!</string>
+    <string name="failed">Thất bại</string>
+    <string name="successfully">Thành công</string>
+    <string name="emptyEmailSignUp">Email không được bỏ trống!</string>
+    <string name="emailNotValid">Email không hợp lệ!</string>
+    <string name="passwordCheckSignUp">Độ dài mật khẩu phải từ 6 kí tự trở lên!</string>
+    <string name="confirmPasswordCheck">Mật khẩu xác nhận và mật khẩu phải trùng nhau!</string>
 </resources>

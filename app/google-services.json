@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "586101897114",
+    "project_id": "book-store-3ed32",
+    "storage_bucket": "book-store-3ed32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586101897114:android:4cb9637de4c04e7aedac23",
+        "android_client_info": {
+          "package_name": "com.example.booklette"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf7nTh2TfORZOCoJj3O_UWxvW8Atjn02w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

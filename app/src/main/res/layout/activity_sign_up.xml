@@ -63,7 +63,7 @@
         </de.hdodenhof.circleimageview.CircleImageView>
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/edtUsernameSignUp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="20dp"
@@ -81,7 +81,7 @@
         </EditText>
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/edtEmailSignUp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="20dp"
@@ -95,12 +95,12 @@
             android:textColorHint="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText3">
+            app:layout_constraintTop_toBottomOf="@+id/edtUsernameSignUp">
 
         </EditText>
 
         <EditText
-            android:id="@+id/editText5"
+            android:id="@+id/edtPasswordSignUp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="20dp"
@@ -114,12 +114,12 @@
             android:textColorHint="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText4">
+            app:layout_constraintTop_toBottomOf="@+id/edtEmailSignUp">
 
         </EditText>
 
         <EditText
-            android:id="@+id/editText6"
+            android:id="@+id/edtConfirmPasswordSignUp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="20dp"
@@ -133,16 +133,16 @@
             android:textColorHint="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText5">
+            app:layout_constraintTop_toBottomOf="@+id/edtPasswordSignUp">
 
         </EditText>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnSignUpSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="28dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/round_corner_button_solid_color"
             android:paddingTop="20dp"
@@ -150,10 +150,9 @@
             android:text="@string/signUpText"
             android:textColor="#FFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.473"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText6">
-
-        </Button>
+            app:layout_constraintTop_toBottomOf="@+id/edtConfirmPasswordSignUp" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -166,7 +165,7 @@
             android:weightSum="3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button">
+            app:layout_constraintTop_toBottomOf="@+id/btnSignUpSubmit">
 
             <View
                 android:layout_width="match_parent"
@@ -239,7 +238,8 @@
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            android:paddingBottom="20dp">
 
         </TextView>
 

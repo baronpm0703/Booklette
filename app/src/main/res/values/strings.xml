@@ -27,4 +27,12 @@
     <string name="createNewPassword">Create New Password</string>
     <string name="newPassDescription">Please enter your new password and let\'s secure your journey ahead!</string>
     <string name="resetPassSubmit">Reset password</string>
+    <string name="signingUpText">signing up...</string>
+    <string name="emptyUsernameSignUp">Username can\'t be blank!</string>
+    <string name="failed">Failed</string>
+    <string name="successfully">Sucessfully</string>
+    <string name="emptyEmailSignUp">Email can\'t be blank!</string>
+    <string name="emailNotValid">Email is not valid!</string>
+    <string name="passwordCheckSignUp">Password length must be greater than 6!</string>
+    <string name="confirmPasswordCheck">Confirm Password does not match Password!</string>
 </resources>
