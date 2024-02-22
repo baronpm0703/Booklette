@@ -35,4 +35,9 @@
     <string name="emailNotValid">Email is not valid!</string>
     <string name="passwordCheckSignUp">Password length must be greater than 6!</string>
     <string name="confirmPasswordCheck">Confirm Password does not match Password!</string>
+    <string name="emptyPasswordSignIn">Password can\'t be blank</string>
+    <string name="signUpSuccessDescription">Now you can sign in!</string>
+    <string name="signUpFailedDescription">There was something wrong!</string>
+    <string name="signInSuccessDescription">You have logged in!</string>
+    <string name="signingInText">signing in...</string>
 </resources>

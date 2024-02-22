@@ -91,4 +91,18 @@ dependencies {
 
     //Progress Button
     implementation ("com.github.razir.progressbutton:progressbutton:2.1.0")
+
+    // Preferences DataStore
+    implementation ("androidx.datastore:datastore-preferences:1.0.0-alpha01")
+
+    // Lifecycle components
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
+    implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation ("androidx.lifecycle:lifecycle-common-java8:2.2.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+
+    // Kotlin coroutines components
+    implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
+    api ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
+    api ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
 }

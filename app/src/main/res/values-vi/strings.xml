@@ -36,4 +36,9 @@
     <string name="emailNotValid">Email không hợp lệ!</string>
     <string name="passwordCheckSignUp">Độ dài mật khẩu phải từ 6 kí tự trở lên!</string>
     <string name="confirmPasswordCheck">Mật khẩu xác nhận và mật khẩu phải trùng nhau!</string>
+    <string name="emptyPasswordSignIn">Mật khẩu không được bỏ trống!</string>
+    <string name="signUpSuccessDescription">Bạn đã có thể đăng nhập!</string>
+    <string name="signUpFailedDescription">Có lỗi trong quá trình xử lí!</string>
+    <string name="signInSuccessDescription">Bạn đã đăng nhập!</string>
+    <string name="signingInText">đang xác thực...</string>
 </resources>

@@ -96,8 +96,8 @@ class SignUpActivity : AppCompatActivity() {
                             val user = auth.currentUser
 
                             MotionToast.createColorToast(this@SignUpActivity,
-                                "Successfully",
-                                "You have successfully created account!",
+                                getString(R.string.successfully),
+                                getString(R.string.signUpSuccessDescription),
                                 MotionToastStyle.SUCCESS,
                                 MotionToast.GRAVITY_BOTTOM,
                                 MotionToast.SHORT_DURATION,
@@ -106,8 +106,8 @@ class SignUpActivity : AppCompatActivity() {
                             Log.d("firebase", task.exception.toString())
 
                             MotionToast.createColorToast(this@SignUpActivity,
-                                "Failed",
-                                task.exception.toString(),
+                                getString(R.string.failed),
+                                getString(R.string.signUpFailedDescription),
                                 MotionToastStyle.ERROR,
                                 MotionToast.GRAVITY_BOTTOM,
                                 MotionToast.SHORT_DURATION,
