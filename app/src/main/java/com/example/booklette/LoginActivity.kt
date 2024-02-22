@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
             if (it) {
                 this.remember_me_manager.emailFlow.asLiveData().observe(this) {
                     binding.edtEmailSignIn.setText(it)
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -123,5 +123,6 @@ class LoginActivity : AppCompatActivity() {
         binding.ivBackLI.setOnClickListener({
             finish()
         })
+
     }
 }
