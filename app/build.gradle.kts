@@ -105,4 +105,7 @@ dependencies {
     implementation ("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10")
     api ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
     api ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
+
+    //splash screen
+    implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
 }

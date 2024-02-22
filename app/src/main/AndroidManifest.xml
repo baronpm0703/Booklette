@@ -13,9 +13,13 @@
         android:theme="@style/Theme.Booklette"
         tools:targetApi="31">
         <activity
-            android:name=".CreateNewPasswordActivity"
+            android:name=".homeActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+        <activity
+            android:name=".CreateNewPasswordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".VerifyEmailActivity"
             android:exported="false"
@@ -36,7 +40,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Booklette">
+            android:theme="@style/Theme.Booklette.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

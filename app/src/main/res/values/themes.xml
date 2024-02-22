@@ -2,4 +2,14 @@
 <resources>
 
     <style name="Theme.Booklette" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Booklette.Starting" parent="Theme.SplashScreen">
+        <!-- Set the splash screen background to black -->
+        <item name="windowSplashScreenBackground">@android:color/black</item>
+        <!-- Use windowSplashScreenAnimatedIcon to add a drawable or an animated
+             drawable. -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/booklette_logo</item>
+        <!-- Set the theme of the Activity that follows your splash screen. -->
+        <item name="postSplashScreenTheme">@style/Theme.Booklette</item>
+    </style>
 </resources>
