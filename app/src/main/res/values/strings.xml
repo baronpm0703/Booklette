@@ -40,4 +40,6 @@
     <string name="signUpFailedDescription">There was something wrong!</string>
     <string name="signInSuccessDescription">You have logged in!</string>
     <string name="signingInText">signing in...</string>
+    <string name="forgotPasswordSuccess">Email sent!</string>
+    <string name="sendingText">sending...</string>
 </resources>

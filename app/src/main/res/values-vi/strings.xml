@@ -41,4 +41,6 @@
     <string name="signUpFailedDescription">Có lỗi trong quá trình xử lí!</string>
     <string name="signInSuccessDescription">Bạn đã đăng nhập!</string>
     <string name="signingInText">đang xác thực...</string>
+    <string name="forgotPasswordSuccess">Kiểm tra email của bạn!</string>
+    <string name="sendingText">đang xử lí...</string>
 </resources>

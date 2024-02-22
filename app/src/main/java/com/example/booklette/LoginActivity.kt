@@ -114,5 +114,14 @@ class LoginActivity : AppCompatActivity() {
                     }
             }
         })
+
+        binding.txtBackToSignUpLI.setOnClickListener({
+            startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
+            finish()
+        })
+
+        binding.ivBackLI.setOnClickListener({
+            finish()
+        })
     }
 }

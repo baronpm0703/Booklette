@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
@@ -115,6 +116,15 @@ class SignUpActivity : AppCompatActivity() {
                         }
                     }
             }
+        })
+
+        binding.txtBackToLogInSU.setOnClickListener({
+            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+            finish()
+        })
+
+        binding.ivBackSU.setOnClickListener({
+            finish()
         })
     }
 
