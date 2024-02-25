@@ -1,3 +1,6 @@
+Create database booklette;
+
+Use booklette;
 CREATE TABLE Account (
 	UID char(50) PRIMARY KEY,
 	Fullname text,
@@ -96,6 +99,27 @@ CREATE TABLE Discount (
 	Percent SMALLINT,
 	StartDate Date,
 	EndDate Date,
-	PRIMARY KEY (DiscountID, DiscountName, DiscountType, DiscountTypeValue)
+	PRIMARY KEY (DiscountID, DiscountType)
 )
+
+
+Insert into booklette.Account Values
+	('t4TBmyNG4hgrUWyM2eNFEYlAuFu2', 'Võ Chánh Tín', '0948363775','vctin21@clc.fitus.edu.vn', 'Chung cư quân khu gì đó', 'Chung quân khu gì đó' ),
+    ('Wanlg9TtCkdvThrmCwheIeMlSHI3', 'Phan Thái Khang', '099471123','ptkhang21@clc.fitus.edu.vn', 'Quận 7, TP.HCM', 'Quận 5, TP.HCM' ),
+    ('NSKxVRDePid6gmNndNGeEmAjsvS2', 'Nguyễn Lâm Hải', '0948361174','npmbao21@clc.fitus.edu.vn', '22 hẻm 182 Lý Thường Kiệt', '' ),
+	('0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2', 'Nguyễn Phú Minh Bảo', '0948361174','npmbao21@clc.fitus.edu.vn', '22 hẻm 182 Lý Thường Kiệt', '' );
+    
+Insert into  booklette.Book Values
+	('01', 'Tuesday Mooney Talks to Ghosts', 'Tiểu Thuyết','Kate Racculia', '1996-12-01', ''),
+    ('02', 'The Catcher in the eyes', 'Tiểu Thuyết','J. D. Salinger', '2003-02-01', ''),
+    ('03', 'Great Expectations', 'Self-Help','Charles Dickens', '2008-11-11', ''),
+    ('04', 'Tôi Thấy Hoa Vàng Trên Cỏ Xanh', 'Tiểu thuyết','Nguyễn Nhật Ánh', '2008-06-11-', ''),
+    ('05', 'One-Punch Man', 'Truyện Tranh','Yusuke Murata, ONE', '2009-03-12', '');
+    
+    
+    
+    
+    
+	
+    
 
