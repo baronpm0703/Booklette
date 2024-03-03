@@ -126,7 +126,14 @@ Insert into booklette.review values
 	(5, "t4TBmyNG4hgrUWyM2eNFEYlAuFu2", 2, "Unfortunately, 'Spectral Echoes' fell short of expectations. The plot seemed convoluted, and the attempts at horror felt forced. The characters lacked depth, making it challenging to connect with their struggles. Overall, the execution failed to deliver the spine-chilling experience promised, resulting in a disappointing read.", ""),
     (3, "Wanlg9TtCkdvThrmCwheIeMlSHI3", 1, " 'Labyrinth of Despair' is a horror novel that misses the mark entirely. The narrative lacks coherence, and the attempt at creating fear feels more like a series of disconnected scenes rather than a cohesive story. The characters are one-dimensional, and the predictable plot twists make this a forgettable entry into the horror genre.", "");
     
-    
+Insert into booklette.wishlist values
+	("0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2", 1),
+    ("0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2", 5),
+    ("NSKxVRDePid6gmNndNGeEmAjsvS2", 3),
+    ("NSKxVRDePid6gmNndNGeEmAjsvS2", 2),
+    ("Wanlg9TtCkdvThrmCwheIeMlSHI3", 4),
+    ("Wanlg9TtCkdvThrmCwheIeMlSHI3", 8),
+    ("t4TBmyNG4hgrUWyM2eNFEYlAuFu2", 7);
     
 	
     
