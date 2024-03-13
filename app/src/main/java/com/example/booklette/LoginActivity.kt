@@ -165,7 +165,7 @@ open class LoginActivity : AppCompatActivity() {
     }
 
     private fun userIsLoggedIn(): Boolean {
-        if (auth.currentUser !=null && !AccessToken.getCurrentAccessToken().isExpired) {
+        if (auth.currentUser !=null && !AccessToken.getCurrentAccessToken()?.isExpired!!) {
             return true
         }
         return false

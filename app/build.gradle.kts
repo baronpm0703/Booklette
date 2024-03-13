@@ -85,7 +85,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
-    implementation("com.facebook.android:facebook-android-sdk:[4,5)")
+    implementation("com.facebook.android:facebook-android-sdk:[8,9)")
+    implementation("com.facebook.android:facebook-login:latest.release")
+
 
     //Motion toast
     implementation ("com.github.Spikeysanju:MotionToast:1.4")
