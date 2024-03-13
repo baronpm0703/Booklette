@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.booklette"
-        minSdk = 30
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -85,6 +85,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.facebook.android:facebook-android-sdk:[4,5)")
 
     //Motion toast
     implementation ("com.github.Spikeysanju:MotionToast:1.4")

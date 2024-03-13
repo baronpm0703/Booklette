@@ -227,6 +227,7 @@
         </ImageView>
 
         <ImageView
+            android:id="@+id/ivLogInWithFb"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="40dp"

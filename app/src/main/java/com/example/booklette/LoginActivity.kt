@@ -10,6 +10,14 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.asLiveData
 import com.example.booklette.databinding.ActivityLoginBinding
 import com.example.booklette.databinding.ActivityMainBinding
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.google.firebase.auth.FacebookAuthProvider
+import com.facebook.FacebookSdk
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
@@ -22,15 +30,19 @@ import kotlinx.coroutines.launch
 import rememberMeManager
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
+import com.facebook.appevents.AppEventsLogger;
 
-class LoginActivity : AppCompatActivity() {
+open class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
+    var callbackManager = CallbackManager.Factory.create()
     lateinit var remember_me_manager: rememberMeManager
+    var TAG = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FacebookSdk.sdkInitialize(this@LoginActivity);
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -52,6 +64,32 @@ class LoginActivity : AppCompatActivity() {
         bindProgressButton(binding.btnLogIn)
         binding.btnLogIn.attachTextChangeAnimator()
         this@LoginActivity.bindProgressButton(binding.btnLogIn)
+
+        binding.ivLogInWithFb.setOnClickListener {
+            if (userIsLoggedIn()) {
+                auth
+            } else {
+                LoginManager.getInstance()
+                    .logInWithReadPermissions(this@LoginActivity, listOf("public_profile", "email"))
+            }
+            LoginManager.getInstance().registerCallback(callbackManager, object :
+                FacebookCallback<LoginResult> {
+                override fun onSuccess(loginResult: LoginResult) {
+                    Log.d(TAG, "facebook:onSuccess:$loginResult")
+                    handleFacebookAccessToken(loginResult.accessToken)
+                }
+
+                override fun onCancel() {
+                    Log.d(TAG, "facebook:onCancel")
+                    // ...
+                }
+
+                override fun onError(error: FacebookException) {
+                    Log.d(TAG, "facebook:onError", error)
+                    // ...
+                }
+            })
+        }
 
         binding.txtForgotPassword.setOnClickListener({
             startActivity(Intent(this@LoginActivity, ForgotPassword::class.java))
@@ -124,5 +162,48 @@ class LoginActivity : AppCompatActivity() {
             finish()
         })
 
+    }
+
+    private fun userIsLoggedIn(): Boolean {
+        if (auth.currentUser !=null && !AccessToken.getCurrentAccessToken().isExpired) {
+            return true
+        }
+        return false
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+
+    }
+
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        Log.d(TAG, "handleFacebookAccessToken:$token")
+
+        val credential = FacebookAuthProvider.getCredential(token.token)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
+                    val user = auth.currentUser
+                    startActivity(Intent(this, homeActivity::class.java))
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    Toast.makeText(baseContext, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show()
+
+                }
+            }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Pass the activity result back to the Facebook SDK
+        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 }
