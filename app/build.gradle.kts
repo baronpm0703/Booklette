@@ -111,4 +111,7 @@ dependencies {
 
     //splash screen
     implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
+
+    //navigation bar
+    implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
 }

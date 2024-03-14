@@ -43,4 +43,5 @@
     <string name="signingInText">đang xác thực...</string>
     <string name="forgotPasswordSuccess">Kiểm tra email của bạn!</string>
     <string name="sendingText">đang xử lí...</string>
+    <string name="navigation_home">Trang chủ</string>
 </resources>
