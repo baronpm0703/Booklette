@@ -48,4 +48,9 @@
     <string name="navigation_cart">Giỏ hàng</string>
     <string name="navigation_favorite">Yêu thích</string>
     <string name="navigation_account">Tài khoản</string>
+    <string name="fragment_home_welcome_back">Chào mừng trở lại</string>
+    <string name="fragment_home_what_do_you_wanna_read">Bạn muốn đọc gì hôm nay?</string>
+    <string name="fragment_home_search">Tìm kiếm...</string>
+    <string name="fragment_home_search_hint">nhập tên sách...</string>
+    <string name="fragment_home_best_deal">Giảm giá</string>
 </resources>

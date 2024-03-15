@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:text="Welcome back, Chanh Tin"
+            android:text="@string/fragment_home_welcome_back"
             android:textSize="8pt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
@@ -97,7 +97,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="15dp"
             android:maxLines="2"
-            android:text="What do you want to read today?"
+            android:text="@string/fragment_home_what_do_you_wanna_read"
             android:textColor="@color/black"
             android:textSize="13pt"
             android:textStyle="bold"
@@ -119,13 +119,61 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView16"
-            app:mt_hint="Custom hint"
+            app:mt_hint="@string/fragment_home_search_hint"
             app:mt_searchBarColor="#F4F4F4"
             app:mt_maxSuggestionsCount="10"
             app:mt_searchIconDrawable="@drawable/magnifyingglass"
             app:mt_searchIconTint="@color/black"
             app:mt_searchIconUseTint="true"
             app:mt_speechMode="true"
-            app:mt_placeholder="Search..."/>
+            app:mt_placeholder="@string/fragment_home_search"/>
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/fragment_home_best_deal"
+            android:textColor="@color/black"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchBar">
+
+        </TextView>
+
+        <androidx.viewpager.widget.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/rvBestDeal"
+            android:layout_marginLeft="5dp"
+            android:paddingLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:paddingRight="10dp"
+            tools:itemCount="1"
+            tools:listitem="@layout/best_deal_recycler_view_layout"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView17">
+
+        </androidx.viewpager.widget.ViewPager>
+
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/dots_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:dotsColor="#B8B8B8"
+            app:dotsCornerRadius="8dp"
+            app:dotsSize="10dp"
+            app:dotsSpacing="4dp"
+            android:layout_marginTop="10dp"
+            app:dotsWidthFactor="2.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvBestDeal"
+            app:progressMode="true"
+            app:selectedDotColor="#D45555" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

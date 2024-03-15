@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.booklette.databinding.ActivityHomeBinding
 import com.example.booklette.databinding.FragmentHomeBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -58,6 +57,18 @@ class HomeFragment : Fragment() {
             auth.signOut()
             startActivity(Intent(activity, LoginActivity::class.java))
         })
+
+        var bestDeals = ArrayList<String>();
+        bestDeals.add("a")
+        bestDeals.add("a")
+        bestDeals.add("a")
+        bestDeals.add("a")
+        bestDeals.add("a")
+
+        val bestDealAdapter = activity?.let { HomeFragmentBestDealViewPagerAdapter(it, bestDeals) }
+        binding.rvBestDeal.adapter = bestDealAdapter
+        binding.rvBestDeal.pageMargin = 20
+        binding.dotsIndicator.attachTo(binding.rvBestDeal)
 
         return view
     }

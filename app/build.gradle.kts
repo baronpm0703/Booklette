@@ -125,4 +125,7 @@ dependencies {
 
     //floating search bar
     implementation ("com.github.mancj:MaterialSearchBar:0.8.5")
+
+    //pager dots
+    implementation("com.tbuonomo:dotsindicator:5.0")
 }

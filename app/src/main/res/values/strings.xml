@@ -53,5 +53,9 @@
     <string name="navigation_favorite">Favorite</string>
     <string name="navigation_account">Account</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fragment_home_welcome_back">Welcome back</string>
+    <string name="fragment_home_what_do_you_wanna_read">What do you want to read today?</string>
+    <string name="fragment_home_search">Search...</string>
+    <string name="fragment_home_search_hint">name your book here...</string>
+    <string name="fragment_home_best_deal">Best deal</string>
 </resources>
