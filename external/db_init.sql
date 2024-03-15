@@ -142,7 +142,11 @@ insert into purchasehistory values
 	('ORD003', 't4TBmyNG4hgrUWyM2eNFEYlAuFu2', '2024-02-05', 'Thành công', 49000, 'Momo'),
 	('ORD004', '0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2', '2023-11-14', 'Hoàn Trả Lại', 120000, 'COD'),
 	('ORD005', 'Wanlg9TtCkdvThrmCwheIeMlSHI3', '2024-03-02', 'Đang Xử Lý', 100000, 'COD');
-	
+	('ORD006', 'NSKxVRDePid6gmNndNGeEmAjsvS2', '2024-03-05', 'Hoàn Trả Thất Bại', 32000, 'COD'),
+	('ORD007', '0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2', '2024-03-05', 'Bị Hủy', 40000, 'Momo'),
+	('ORD008', '0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2', '2024-03-06', 'Hoàn Trả Thất Bại', 48000, 'Momo'),
+	('ORD009', '0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2', '2024-03-09', 'Bị Hủy', 60000, 'COD');
+
 insert into orderitem values
 	('ORD001', 'BK002', 2, 20000),
 	('ORD001', 'BK003', 1, 50000),
@@ -153,8 +157,12 @@ insert into orderitem values
 	('ORD005', 'BK005', 2, 20000),
 	('ORD005', 'BK002', 1, 20000),
 	('ORD005', 'BK004', 1, 16000),
-	('ORD005', 'BK006', 1, 24000);
-	
+	('ORD005', 'BK006', 1, 24000),
+	('ORD006', 'BK004', 2, 16000),
+	('ORD007', 'BK002', 2, 20000),
+	('ORD008', 'BK006', 2, 24000),
+	('ORD009', 'BK005', 3, 20000);
+
 insert into discount values
 	('DSC001', 'Giảm giá theo tên', 1, 'vàng', 10, '2024-01-01', '2024-05-01'),
 	('DSC002', 'Giảm giá theo tác giả', 2, 'Nguyễn Nhật Ánh', 20, '2024-02-02', '2024-06-06');
@@ -165,6 +173,16 @@ insert into personalstore values
 	('4JHgg23sf24JG34235nGnfdfn213', 'BK002', 25000, 1, 50, '', '{}'),
 	('4JHgg23sf24JG34235nGnfdfn213', 'BK005', 60000, 6, 15, '', '{"DSC001"}'),
 	('4JHgg23sf24JG34235nGnfdfn213', 'BK007', 24000, 6, 15, '', '{}'),
-	('4JHgg23sf24JG34235nGnfdfn213', 'BK004', 16000, 0, 15, '', '{}'),
-	('4JHgg23sf24JG34235nGnfdfn213', 'BK006', 24000, 5, 66, '', '{}'),
+	('4JHgg23sf24JG34235nGnfdfn213', 'BK004', 16000, 2, 15, '', '{}'),
+	('4JHgg23sf24JG34235nGnfdfn213', 'BK006', 24000, 7, 66, '', '{}'),
 	('NSKxVRDePid6gmNndNGeEmAjsvS2', 'BK005', 20000, 5, 77, '', '{}');
+
+insert into blacklist values
+	('t4TBmyNG4hgrUWyM2eNFEYlAuFu2', 'NSKxVRDePid6gmNndNGeEmAjsvS2', 'Bị Huỷ', '2023-12-25'),
+	('t4TBmyNG4hgrUWyM2eNFEYlAuFu2', '0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2', 'Bị Huỷ', '2024-03-10'),
+	('NSKxVRDePid6gmNndNGeEmAjsvS2', '0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2', 'Bị Huỷ', '2024-03-14');
+
+insert into blacklist values
+	('0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2', '4JHgg23sf24JG34235nGnfdfn213', 'BK005', '2023-11-13', 'Sách bị rách ở trang 55', 'Đã phê duyệt'),
+	('NSKxVRDePid6gmNndNGeEmAjsvS2', '4JHgg23sf24JG34235nGnfdfn213', 'BK004', '2024-03-07', 'Không có nhu cầu mua nữa', 'Không phê duyệt'),
+	('0HR9Q9Y1HJQvm59UoL4UiJQFXIJ2', '4JHgg23sf24JG34235nGnfdfn213', 'BK006', '2024-03-08', 'Sách giả', 'Không phê duyệt');
