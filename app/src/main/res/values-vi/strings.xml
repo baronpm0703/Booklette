@@ -53,4 +53,5 @@
     <string name="fragment_home_search">Tìm kiếm...</string>
     <string name="fragment_home_search_hint">nhập tên sách...</string>
     <string name="fragment_home_best_deal">Giảm giá</string>
+    <string name="fragment_home_top_book">Top sách</string>
 </resources>
