@@ -44,4 +44,8 @@
     <string name="forgotPasswordSuccess">Kiểm tra email của bạn!</string>
     <string name="sendingText">đang xử lí...</string>
     <string name="navigation_home">Trang chủ</string>
+    <string name="navigation_category">Thể loại</string>
+    <string name="navigation_cart">Giỏ hàng</string>
+    <string name="navigation_favorite">Yêu thích</string>
+    <string name="navigation_account">Tài khoản</string>
 </resources>

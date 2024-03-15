@@ -3,6 +3,8 @@ package com.example.booklette
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import com.example.booklette.databinding.ActivityHomeBinding
 import com.example.booklette.databinding.ActivityLoginBinding
 import com.google.firebase.Firebase
@@ -20,13 +22,34 @@ class homeActivity : AppCompatActivity() {
         setContentView(view)
 
         auth = Firebase.auth
-        if (auth.currentUser != null) {
-            binding.txtWelcomeBack.text = "Welcome back, " + auth.currentUser!!.email.toString()
+
+        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, HomeFragment()).commit()
+
+        binding.smoothBottomBar.setOnItemSelectedListener { item ->
+            when (item) {
+                0 -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, HomeFragment()).commit()
+                    true
+                }
+                1 -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, CategoryFragment()).commit()
+                    true
+                }
+//                2 -> {
+//                    Toast.makeText(this@homeActivity, "Cart", Toast.LENGTH_SHORT).show()
+//                    true
+//                }
+//                3 -> {
+//                    Toast.makeText(this@homeActivity, "Cart", Toast.LENGTH_SHORT).show()
+//                    true
+//                }
+//                4 -> {
+//                    Toast.makeText(this@homeActivity, "Cart", Toast.LENGTH_SHORT).show()
+//                    true
+//                }
+                else -> false
+            }
         }
 
-        binding.btnSignOut.setOnClickListener({
-            auth.signOut()
-            startActivity(Intent(this@homeActivity, LoginActivity::class.java))
-        })
     }
 }

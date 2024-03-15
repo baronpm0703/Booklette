@@ -8,22 +8,22 @@
 
     <item
         android:id="@+id/second_fragment"
-        android:title="@string/navigation_home"
+        android:title="@string/navigation_category"
         android:icon="@drawable/baseline_category_24"/>
 
     <item
         android:id="@+id/third_fragment"
-        android:title="@string/navigation_home"
+        android:title="@string/navigation_cart"
         android:icon="@drawable/baseline_add_shopping_cart_24"/>
 
     <item
         android:id="@+id/fourth_fragment"
-        android:title="@string/navigation_home"
+        android:title="@string/navigation_favorite"
         android:icon="@drawable/baseline_bookmark_24"/>
 
     <item
         android:id="@+id/fifth_fragment"
-        android:title="@string/navigation_home"
+        android:title="@string/navigation_account"
         android:icon="@drawable/baseline_account_box_24"/>
 
 </menu>

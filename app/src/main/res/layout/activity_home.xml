@@ -6,49 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".homeActivity">
 
-    <TextView
-        android:id="@+id/txtWelcomeBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome back, "
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcvNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/smoothBottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </TextView>
-
-    <Button
-        android:id="@+id/btnSignOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtWelcomeBack"
-        android:text="sign out"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtWelcomeBack">
-
-    </Button>
+    </androidx.fragment.app.FragmentContainerView>
 
     <me.ibrahimsn.lib.SmoothBottomBar
+        android:id="@+id/smoothBottomBar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        app:backgroundColor="@color/colorPrimary"
+        app:cornerRadius="16dp"
+        app:corners="top_left|top_right"
+        app:iconSize="24dp"
+        app:iconTint="#C8FFFFFF"
+        app:iconTintActive="#FFFFFF"
+        app:indicatorColor="#2DFFFFFF"
+        app:indicatorRadius="16dp"
+        app:itemPadding="10dp"
+        app:activeItem="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:backgroundColor="@color/colorPrimary"
-        app:textColor="@color/white"
-        app:textSize="14sp"
-        app:iconSize="24dp"
-        app:indicatorColor="#2DFFFFFF"
-        app:indicatorRadius="16dp"
+        app:menu="@menu/home_navigation_bar"
         app:sideMargins="10dp"
-        app:itemPadding="10dp"
-        app:iconTint="#C8FFFFFF"
-        app:iconTintActive="#FFFFFF"
-        app:cornerRadius="16dp"
-        app:corners="top_left|top_right"
-        app:menu="@menu/home_navigation_bar">
+        app:textColor="@color/white"
+        app:textSize="14sp">
 
     </me.ibrahimsn.lib.SmoothBottomBar>
 </androidx.constraintlayout.widget.ConstraintLayout>
