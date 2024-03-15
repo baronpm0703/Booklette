@@ -7,6 +7,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
 
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -83,13 +84,14 @@
     </Button>
 
     <TextView
+        android:id="@+id/textView14"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="@string/continueAsGuest"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="17dp"
-        android:layout_marginTop="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.booklette.databinding.ActivityHomeBinding
@@ -25,6 +26,7 @@ class homeActivity : AppCompatActivity() {
 
         binding.btnSignOut.setOnClickListener({
             auth.signOut()
+            startActivity(Intent(this@homeActivity, LoginActivity::class.java))
         })
     }
 }

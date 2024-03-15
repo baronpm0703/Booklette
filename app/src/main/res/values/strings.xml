@@ -46,4 +46,6 @@
     <string name="fb_login_protocol_scheme" translatable="false">fb3919866068240723</string>
     <string name="facebook_client_token" translatable="false">7645327ab016da730fe1839af7f02eaa</string>
     <string name="navigation_home">Home</string>
+    <string name="web_client_id" translatable="false">586101897114-tv8rui2j9u4v9sr16sd8ef3duroee2s1.apps.googleusercontent.com</string>
+    <string name="web_client_secret" translatable="false">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</string>
 </resources>
