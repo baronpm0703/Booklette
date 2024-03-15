@@ -37,6 +37,7 @@
         </Button>
 
         <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
@@ -58,22 +59,73 @@
                     android:id="@+id/ivHomeProfile"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/booklette_logo"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true">
+                    android:src="@drawable/booklette_logo">
 
                 </de.hdodenhof.circleimageview.CircleImageView>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/ivHomeProfile"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20dp"
+                    android:layout_toLeftOf="@+id/ivHomeProfile"
                     android:src="@drawable/subtract">
 
                 </ImageView>
 
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="Welcome back, Chanh Tin"
+            android:textSize="8pt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="15dp"
+            android:maxLines="2"
+            android:text="What do you want to read today?"
+            android:textColor="@color/black"
+            android:textSize="13pt"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15">
+
+        </TextView>
+
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/searchBar"
+            style="@style/MaterialSearchBarLight"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView16"
+            app:mt_hint="Custom hint"
+            app:mt_searchBarColor="#F4F4F4"
+            app:mt_maxSuggestionsCount="10"
+            app:mt_searchIconDrawable="@drawable/magnifyingglass"
+            app:mt_searchIconTint="@color/black"
+            app:mt_searchIconUseTint="true"
+            app:mt_speechMode="true"
+            app:mt_placeholder="Search..."/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -122,4 +122,7 @@ dependencies {
 
     //circle image view
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+    //floating search bar
+    implementation ("com.github.mancj:MaterialSearchBar:0.8.5")
 }
