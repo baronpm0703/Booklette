@@ -119,4 +119,7 @@ dependencies {
 
     //navigation bar
     implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.9")
+
+    //circle image view
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 }
