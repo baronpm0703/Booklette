@@ -248,9 +248,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
                             android:layout_marginRight="5dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
@@ -258,6 +257,91 @@
                             tools:listitem="@layout/book_item_home_fragment">
 
                         </androidx.recyclerview.widget.RecyclerView>
+
+                        <TextView
+                            android:id="@+id/textView19"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginLeft="15dp"
+                            android:singleLine="true"
+                            android:text="@string/home_fragment_today_recommendation"
+                            android:textColor="@color/black"
+                            android:textSize="10pt"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/rvTopBookHomeFragment">
+
+                        </TextView>
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvTodayRecommandationsType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView19"
+                            tools:itemCount="10"
+                            tools:listitem="@layout/today_recommandation_home_fragment_choice_list_view">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvTodayRCDHomeFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="5dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/rvTodayRecommandationsType"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/book_item_home_fragment">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@color/black"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/rvTodayRCDHomeFragment">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_marginTop="15dp"
+                                    android:text="New Arrivals"
+                                    android:textColor="@color/white"
+                                    android:textSize="13pt"
+                                    android:textStyle="bold">
+
+                                </TextView>
+
+                                <androidx.viewpager.widget.ViewPager
+                                    android:id="@+id/vpNewArrivalsHomeFragment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="200dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="15dp"
+                                    android:paddingLeft="15dp"
+                                    android:paddingRight="15dp"
+                                    tools:itemCount="1"
+                                    tools:listitem="@layout/home_fragment_new_arrival_item">
+
+                                </androidx.viewpager.widget.ViewPager>
+
+                        </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

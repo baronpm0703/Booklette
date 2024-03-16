@@ -59,4 +59,5 @@
     <string name="fragment_home_search_hint">name your book here...</string>
     <string name="fragment_home_best_deal">Best deal</string>
     <string name="fragment_home_top_book">Top books</string>
+    <string name="home_fragment_today_recommendation">Today\'s recommandations</string>
 </resources>

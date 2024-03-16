@@ -21,12 +21,12 @@
         android:id="@+id/smoothBottomBar"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        app:backgroundColor="@color/colorPrimary"
+        app:backgroundColor="@color/black"
         app:cornerRadius="16dp"
         app:corners="top_left|top_right"
         app:iconSize="24dp"
         app:iconTint="#C8FFFFFF"
-        app:iconTintActive="#FFFFFF"
+        app:iconTintActive="#D45555"
         app:indicatorColor="#2DFFFFFF"
         app:indicatorRadius="16dp"
         app:itemPadding="10dp"
@@ -37,7 +37,7 @@
         app:menu="@menu/home_navigation_bar"
         app:sideMargins="10dp"
         app:textColor="@color/white"
-        app:textSize="14sp">
+        app:textSize="0sp">
 
     </me.ibrahimsn.lib.SmoothBottomBar>
 </androidx.constraintlayout.widget.ConstraintLayout>

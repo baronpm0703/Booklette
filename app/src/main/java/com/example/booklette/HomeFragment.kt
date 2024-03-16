@@ -71,8 +71,28 @@ class HomeFragment : Fragment() {
         binding.rvBestDeal.pageMargin = 20
         binding.dotsIndicator.attachTo(binding.rvBestDeal)
 
+        val newArrivalsAdapter = activity?.let { HomeFragmentNewArrivaltemAdapter(it, bestDeals) }
+        binding.vpNewArrivalsHomeFragment.adapter = newArrivalsAdapter
+        binding.vpNewArrivalsHomeFragment.pageMargin = 20
+
         binding.rvTopBookHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvTopBookHomeFragment.adapter = TopBookHomeFragmentAdapter(bestDeals)
+
+        binding.rvTodayRCDHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvTodayRCDHomeFragment.adapter = TopBookHomeFragmentAdapter(bestDeals)
+
+        var bookCategory = ArrayList<String>();
+        bookCategory.add("Novel")
+        bookCategory.add("Self-love")
+        bookCategory.add("Science")
+        bookCategory.add("Romantic")
+        bookCategory.add("Lover")
+        bookCategory.add("1989")
+        bookCategory.add("midnights")
+
+
+        binding.rvTodayRecommandationsType.adapter = HomeFragmentTodayRCDTypeAdapter(bookCategory)
+        binding.rvTodayRecommandationsType.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
         return view
     }
