@@ -23,16 +23,19 @@ class homeActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, HomeFragment()).commit()
+        val homeFragment = HomeFragment()
+        val categoryFragment = CategoryFragment()
+
+        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, homeFragment).commit()
 
         binding.smoothBottomBar.setOnItemSelectedListener { item ->
             when (item) {
                 0 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, HomeFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, homeFragment).commit()
                     true
                 }
                 1 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, CategoryFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, categoryFragment).commit()
                     true
                 }
 //                2 -> {

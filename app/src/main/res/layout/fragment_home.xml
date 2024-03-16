@@ -6,238 +6,260 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-<!--    &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="@string/hello_blank_fragment" />-->
-
-        <TextView
-            android:id="@+id/txtWelcomeBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Welcome back, "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </TextView>
-
-        <Button
-            android:id="@+id/btnSignOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtWelcomeBack"
-            android:text="sign out"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtWelcomeBack">
-
-        </Button>
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnSignOut">
+            android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/ivHomeHamburgerView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/baseline_density_medium_24">
-
-                </ImageView>
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/ivHomeProfile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/booklette_logo">
-
-                </de.hdodenhof.circleimageview.CircleImageView>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:layout_toLeftOf="@+id/ivHomeProfile"
-                    android:src="@drawable/subtract">
-
-                </ImageView>
-
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:text="@string/fragment_home_welcome_back"
-            android:textSize="8pt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
-
-        </TextView>
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="15dp"
-            android:maxLines="2"
-            android:text="@string/fragment_home_what_do_you_wanna_read"
-            android:textColor="@color/black"
-            android:textSize="13pt"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView15">
-
-        </TextView>
-
-        <com.mancj.materialsearchbar.MaterialSearchBar
-            android:id="@+id/searchBar"
-            style="@style/MaterialSearchBarLight"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16"
-            app:mt_hint="@string/fragment_home_search_hint"
-            app:mt_searchBarColor="#F4F4F4"
-            app:mt_maxSuggestionsCount="10"
-            app:mt_searchIconDrawable="@drawable/magnifyingglass"
-            app:mt_searchIconTint="@color/black"
-            app:mt_searchIconUseTint="true"
-            app:mt_speechMode="true"
-            app:mt_placeholder="@string/fragment_home_search"/>
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/fragment_home_best_deal"
-            android:textColor="@color/black"
-            android:textSize="10pt"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchBar">
-
-        </TextView>
-
-        <androidx.viewpager.widget.ViewPager
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:id="@+id/rvBestDeal"
-            android:layout_marginLeft="5dp"
-            android:paddingLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:paddingRight="10dp"
-            tools:itemCount="1"
-            tools:listitem="@layout/best_deal_recycler_view_layout"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView17">
-
-        </androidx.viewpager.widget.ViewPager>
-
-        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-            android:id="@+id/dots_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:dotsColor="#B8B8B8"
-            app:dotsCornerRadius="8dp"
-            app:dotsSize="10dp"
-            app:dotsSpacing="4dp"
-            android:layout_marginTop="10dp"
-            app:dotsWidthFactor="2.5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvBestDeal"
-            app:progressMode="true"
-            app:selectedDotColor="#D45555" />
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/fragment_home_top_book"
-            android:textColor="@color/black"
-            android:textSize="10pt"
-            android:textStyle="bold"
-            android:singleLine="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dots_indicator">
-
-        </TextView>
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="15dp"
-            android:scrollbars="none"
-            app:layout_constraintTop_toBottomOf="@+id/textView18">
-
-                <com.google.android.material.chip.ChipGroup
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:singleSelection="true">
+                    android:layout_height="match_parent">
 
-                        <com.google.android.material.chip.Chip
-                            style="@style/Colors_Widget.MaterialComponents.Chip.Choice"
+                        <TextView
+                            android:id="@+id/txtWelcomeBack"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="This week"
-                            app:chipCornerRadius="10dp" />
+                            android:text="Welcome back, "
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <com.google.android.material.chip.Chip
-                            style="@style/Colors_Widget.MaterialComponents.Chip.Choice"
+                        </TextView>
+
+                        <Button
+                            android:id="@+id/btnSignOut"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="This Month"
-                            app:chipCornerRadius="10dp" />
+                            android:layout_below="@id/txtWelcomeBack"
+                            android:text="sign out"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/txtWelcomeBack">
 
-                        <com.google.android.material.chip.Chip
-                            style="@style/Colors_Widget.MaterialComponents.Chip.Choice"
+                        </Button>
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/btnSignOut">
+
+                                <ImageView
+                                    android:id="@+id/ivHomeHamburgerView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/baseline_density_medium_24">
+
+                                </ImageView>
+
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/ivHomeProfile"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/booklette_logo">
+
+                                </de.hdodenhof.circleimageview.CircleImageView>
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="20dp"
+                                    android:layout_toLeftOf="@+id/ivHomeProfile"
+                                    android:src="@drawable/subtract">
+
+                                </ImageView>
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/textView15"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="This year"
-                            app:chipCornerRadius="10dp" />
+                            android:layout_marginLeft="15dp"
+                            android:text="@string/fragment_home_welcome_back"
+                            android:textSize="8pt"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
-                        <com.google.android.material.chip.Chip
-                            style="@style/Colors_Widget.MaterialComponents.Chip.Choice"
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/textView16"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="This decade"
-                            app:chipCornerRadius="10dp" />
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="15dp"
+                            android:maxLines="2"
+                            android:text="@string/fragment_home_what_do_you_wanna_read"
+                            android:textColor="@color/black"
+                            android:textSize="13pt"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView15">
 
-                </com.google.android.material.chip.ChipGroup>
+                        </TextView>
 
-        </HorizontalScrollView>
+                        <com.mancj.materialsearchbar.MaterialSearchBar
+                            android:id="@+id/searchBar"
+                            style="@style/MaterialSearchBarLight"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView16"
+                            app:mt_hint="@string/fragment_home_search_hint"
+                            app:mt_searchBarColor="#F4F4F4"
+                            app:mt_maxSuggestionsCount="10"
+                            app:mt_searchIconDrawable="@drawable/magnifyingglass"
+                            app:mt_searchIconTint="@color/black"
+                            app:mt_searchIconUseTint="true"
+                            app:mt_speechMode="true"
+                            app:mt_placeholder="@string/fragment_home_search"/>
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="30dp"
+                            android:text="@string/fragment_home_best_deal"
+                            android:textColor="@color/black"
+                            android:textSize="10pt"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/searchBar">
+
+                        </TextView>
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:id="@+id/rvBestDeal"
+                            android:layout_marginLeft="5dp"
+                            android:paddingLeft="10dp"
+                            android:layout_marginRight="5dp"
+                            android:paddingRight="10dp"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/best_deal_recycler_view_layout"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView17">
+
+                        </androidx.viewpager.widget.ViewPager>
+
+                        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                            android:id="@+id/dots_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:dotsColor="#B8B8B8"
+                            app:dotsCornerRadius="8dp"
+                            app:dotsSize="10dp"
+                            app:dotsSpacing="4dp"
+                            android:layout_marginTop="10dp"
+                            app:dotsWidthFactor="2.5"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/rvBestDeal"
+                            app:progressMode="true"
+                            app:selectedDotColor="#D45555" />
+
+                        <TextView
+                            android:id="@+id/textView18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="30dp"
+                            android:text="@string/fragment_home_top_book"
+                            android:textColor="@color/black"
+                            android:textSize="10pt"
+                            android:textStyle="bold"
+                            android:singleLine="true"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/dots_indicator">
+
+                        </TextView>
+
+                        <HorizontalScrollView
+                            android:id="@+id/horizontalScrollView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="15dp"
+                            android:scrollbars="none"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView18">
+
+                                <com.google.android.material.chip.ChipGroup
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:singleSelection="true">
+
+                                        <com.google.android.material.chip.Chip
+                                            style="@style/Colors_Widget.MaterialComponents.Chip.Choice"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="This week"
+                                            app:chipCornerRadius="10dp" />
+
+                                        <com.google.android.material.chip.Chip
+                                            style="@style/Colors_Widget.MaterialComponents.Chip.Choice"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="This Month"
+                                            app:chipCornerRadius="10dp" />
+
+                                        <com.google.android.material.chip.Chip
+                                            style="@style/Colors_Widget.MaterialComponents.Chip.Choice"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="This year"
+                                            app:chipCornerRadius="10dp" />
+
+                                        <com.google.android.material.chip.Chip
+                                            style="@style/Colors_Widget.MaterialComponents.Chip.Choice"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="This decade"
+                                            app:chipCornerRadius="10dp" />
+
+                                </com.google.android.material.chip.ChipGroup>
+
+                        </HorizontalScrollView>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvTopBookHomeFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="5dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+                            tools:itemCount="1"
+                            tools:listitem="@layout/book_item_home_fragment">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

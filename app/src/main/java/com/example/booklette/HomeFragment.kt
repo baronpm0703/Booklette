@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentHomeBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -69,6 +70,9 @@ class HomeFragment : Fragment() {
         binding.rvBestDeal.adapter = bestDealAdapter
         binding.rvBestDeal.pageMargin = 20
         binding.dotsIndicator.attachTo(binding.rvBestDeal)
+
+        binding.rvTopBookHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvTopBookHomeFragment.adapter = TopBookHomeFragmentAdapter(bestDeals)
 
         return view
     }

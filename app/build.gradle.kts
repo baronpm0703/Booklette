@@ -128,4 +128,7 @@ dependencies {
 
     //pager dots
     implementation("com.tbuonomo:dotsindicator:5.0")
+
+    //Rating bar
+    implementation ("com.github.wdsqjq:AndRatingBar:1.0.6")
 }
