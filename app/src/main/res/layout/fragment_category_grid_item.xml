@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/ivCategoryItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/book_category">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/txtCategoryNameItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Non-fiction"
+        android:textColor="#E9FFFFFF"
+        android:gravity="center"
+        android:textSize="11pt"
+        android:layout_alignRight="@id/ivCategoryItem"
+        android:layout_alignLeft="@+id/ivCategoryItem"
+        android:layout_alignTop="@id/ivCategoryItem"
+        android:layout_alignBottom="@id/ivCategoryItem">
+
+    </TextView>
+
+</RelativeLayout>

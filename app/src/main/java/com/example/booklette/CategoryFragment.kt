@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import CategoryFragmentGridViewAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -40,6 +41,20 @@ class CategoryFragment : Fragment() {
     ): View? {
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        val categories = ArrayList<String>()
+        categories.add("Non-fiction")
+        categories.add("Classics")
+        categories.add("Fantasy")
+        categories.add("Young adult")
+        categories.add("Crime")
+        categories.add("Horror")
+        categories.add("Sci-fi")
+        categories.add("Drama")
+
+        binding.gvCategories.adapter =
+            activity?.let { CategoryFragmentGridViewAdapter(it, categories) }
+
 
         return view
     }
