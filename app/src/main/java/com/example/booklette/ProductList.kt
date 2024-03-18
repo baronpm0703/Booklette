@@ -42,7 +42,7 @@ class ProductList : Fragment() {
         val view = binding.root
 
         // After passing the selected genre from categories, set to this
-        binding.selectedGenre.setText(this.arguments.toString())
+        binding.selectedGenre.setText(this.arguments?.getString("Genre").toString() )
 
         val bookList = ArrayList<String>()
         bookList.add("1")

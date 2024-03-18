@@ -1,7 +1,7 @@
 package com.example.booklette
 
 import CategoryFragmentGridViewAdapter
-import android.R
+import com.example.booklette.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -64,7 +64,10 @@ class CategoryFragment : Fragment() {
             args.putString("Genre", genre)
             productList.arguments = args
 
-//            val ft = parentFragmentManager.beginTransaction().replace(R.id.fc)
+
+            val ft = activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.fcvNavigation, productList)
+                ?.commit()
 
 
 //            ft.replace(R.id.fragment_holder, MusicAlbumList(), "albumlist")

@@ -36,7 +36,7 @@ class homeActivity : AppCompatActivity() {
                     true
                 }
                 1 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, productList).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, categoryFragment).commit()
                     true
                 }
 //                2 -> {
