@@ -35,11 +35,14 @@ class ProductList : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: D, container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProductListBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        // After passing the selected genre from categories, set to this
+        binding.selectedGenre.setText(this.arguments.toString())
 
         val bookList = ArrayList<String>()
         bookList.add("1")

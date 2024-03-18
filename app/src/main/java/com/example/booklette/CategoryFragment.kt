@@ -1,13 +1,15 @@
 package com.example.booklette
 
 import CategoryFragmentGridViewAdapter
+import android.R
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.booklette.databinding.FragmentCategoryBinding
-import com.example.booklette.databinding.FragmentHomeBinding
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,9 +57,19 @@ class CategoryFragment : Fragment() {
         binding.gvCategories.adapter =
             activity?.let { CategoryFragmentGridViewAdapter(it, categories) }
 
-//        binding.gvCategories.setOnItemClickListener { parent, view, position, id ->
-//
-//        }
+        binding.gvCategories.setOnItemClickListener { parent, view, position, id ->
+            val genre = categories[position]
+            val productList = ProductList()
+            val args = Bundle()
+            args.putString("Genre", genre)
+            productList.arguments = args
+
+//            val ft = parentFragmentManager.beginTransaction().replace(R.id.fc)
+
+
+//            ft.replace(R.id.fragment_holder, MusicAlbumList(), "albumlist")
+//            ft.commit()
+        }
 
 
         return view
