@@ -128,7 +128,8 @@
                             app:mt_searchIconTint="@color/black"
                             app:mt_searchIconUseTint="true"
                             app:mt_speechMode="true"
-                            app:mt_placeholder="@string/fragment_home_search"/>
+                            app:mt_placeholder="@string/fragment_home_search"
+                            tools:ignore="MissingClass" />
 
                         <TextView
                             android:id="@+id/textView17"
@@ -176,7 +177,8 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/rvBestDeal"
                             app:progressMode="true"
-                            app:selectedDotColor="#D45555" />
+                            app:selectedDotColor="#D45555"
+                            tools:ignore="MissingClass" />
 
                         <TextView
                             android:id="@+id/textView18"

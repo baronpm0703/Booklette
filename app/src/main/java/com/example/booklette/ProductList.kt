@@ -1,13 +1,12 @@
 package com.example.booklette
 
-import CategoryFragmentGridViewAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.booklette.databinding.FragmentCategoryBinding
-import com.example.booklette.databinding.FragmentHomeBinding
+import com.example.booklette.databinding.FragmentProductListBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,15 +15,15 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [CategoryFragment.newInstance] factory method to
+ * Use the [ProductList.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CategoryFragment : Fragment() {
+class ProductList : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
-    private var _binding: FragmentCategoryBinding? = null
+    private var _binding: FragmentProductListBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,33 +35,27 @@ class CategoryFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: D, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentCategoryBinding.inflate(inflater, container, false)
+        _binding = FragmentProductListBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val categories = ArrayList<String>()
-        categories.add("Non-fiction")
-        categories.add("Classics")
-        categories.add("Fantasy")
-        categories.add("Young adult")
-        categories.add("Crime")
-        categories.add("Horror")
-        categories.add("Sci-fi")
-        categories.add("Drama")
+        val bookList = ArrayList<String>()
+        bookList.add("1")
+        bookList.add("2")
+        bookList.add("2")
+        bookList.add("2")
+        bookList.add("1")
+        bookList.add("1")
+        bookList.add("1")
+        bookList.add("1")
 
-        binding.gvCategories.adapter =
-            activity?.let { CategoryFragmentGridViewAdapter(it, categories) }
-
-//        binding.gvCategories.setOnItemClickListener { parent, view, position, id ->
-//
-//        }
-
-
+        binding.gvProductList.adapter =
+                activity?.let {ProductListFragmentGridViewAdapter(it, bookList)}
+        // Inflate the layout for this fragment
         return view
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -76,12 +69,12 @@ class CategoryFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment CategoryFragment.
+         * @return A new instance of fragment ProductList.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            CategoryFragment().apply {
+            ProductList().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

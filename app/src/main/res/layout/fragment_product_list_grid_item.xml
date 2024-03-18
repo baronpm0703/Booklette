@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/round_corner_product_list_item"
+    android:padding="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
+
+    <ImageView
+        android:id="@+id/bookCover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"
+        android:src="@drawable/image_book_2">
+    </ImageView>
+
+    <per.wsj.library.AndRatingBar
+        android:id="@+id/bookRate"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:rating="3"
+        app:bgColor="#6E6E6E"
+        app:starColor="#FFBA49"
+        app:bgDrawable="@drawable/star"
+        app:starDrawable="@drawable/star_filled"/>
+
+    <TextView
+        android:id="@+id/bookTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tuesday Mooney Talks to Ghosts"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="5pt"
+        android:lines="2">
+    </TextView>
+
+    <TextView
+        android:id="@+id/bookOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kate Racculia"
+        android:textSize="4pt"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="#000000">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/bookPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="150.000 VND"
+        android:textColor="#000000"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:textSize="5pt"
+        >
+
+    </TextView>
+
+</LinearLayout>
