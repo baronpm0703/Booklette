@@ -26,6 +26,7 @@ class homeActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         val categoryFragment = CategoryFragment()
         val productList = ProductList()
+        val cartFragment = CartFragment()
 
         supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, homeFragment).commit()
 
@@ -37,6 +38,10 @@ class homeActivity : AppCompatActivity() {
                 }
                 1 -> {
                     supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, categoryFragment).commit()
+                    true
+                }
+                2 -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, cartFragment).commit()
                     true
                 }
 //                2 -> {
