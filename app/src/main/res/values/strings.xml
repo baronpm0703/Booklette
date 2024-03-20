@@ -66,4 +66,7 @@
     <string name="cart_fragment_checkout">Check out</string>
     <string name="cart_fragment_discount_amount">Discount</string>
     <string name="cart_fragment_total_payment">Total payment</string>
+    <string name="navigation_check_out">Check Out</string>
+    <string name="shipping_method_check_out">Shipping method</string>
+    <string name="check_out_place_order_button">Place order</string>
 </resources>

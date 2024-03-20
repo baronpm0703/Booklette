@@ -2,7 +2,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +23,7 @@ class CartFragmentRecyclerViewAdapter(
         val btnCartItemMinus: AppCompatButton = itemView.findViewById(R.id.btnCartItemMinus)
         val tvCartItemCount: TextView = itemView.findViewById(R.id.tvCartItemCount)
         val btnCartItemAdd: AppCompatButton  = itemView.findViewById(R.id.btnCartItemAdd)
+        val btnSelectItem: RadioButton = itemView.findViewById(R.id.btnSelectItem)
     }
 
     interface OnQuantityChangeListener {

@@ -60,4 +60,7 @@
     <string name="cart_fragment_checkout">Thanh toán</string>
     <string name="cart_fragment_discount_amount">Số tiền được giảm</string>
     <string name="cart_fragment_total_payment">Thành tiền</string>
+    <string name="navigation_check_out">Thanh Toán</string>
+    <string name="shipping_method_check_out">Phương thức vận chuyển</string>
+    <string name="check_out_place_order_button">Đặt hàng</string>
 </resources>

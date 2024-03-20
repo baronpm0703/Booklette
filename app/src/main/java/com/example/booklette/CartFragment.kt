@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -72,6 +74,15 @@ class CartFragment : Fragment() {
                 // Implement your logic here...
             }
         }
+
+        binding.btnCheckOut.setOnClickListener {
+            val checkOutFragment = CheckoutFragment()
+
+            val ft = activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.fcvNavigation, checkOutFragment)
+                ?.commit()
+        }
+
         return view
     }
 

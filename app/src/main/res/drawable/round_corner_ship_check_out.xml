@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke
+        android:width="1dp"
+        android:color="#1BE1D0" /><!-- Adjust the radius to control the roundness -->
+    <solid android:color="#F5FFFE" /> <!-- Set the button color -->
+</shape>
