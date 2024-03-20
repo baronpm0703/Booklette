@@ -240,5 +240,5 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        tools:listitem="@layout/fragment_cart_grid_item"></androidx.recyclerview.widget.RecyclerView>
+        tools:listitem="@layout/fragment_cart_recycle_view_item"></androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>
