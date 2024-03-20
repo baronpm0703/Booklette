@@ -146,6 +146,25 @@
 
                         </TextView>
 
+                        <com.facebook.shimmer.ShimmerFrameLayout
+                            android:id="@+id/smHomeFragmentBestDeal"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginLeft="5dp"
+                            android:paddingLeft="10dp"
+                            android:layout_marginRight="5dp"
+                            android:paddingRight="10dp"
+                            android:layout_marginTop="20dp"
+                            android:visibility="gone"
+                            app:shimmer_auto_start="false"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView17">
+
+                                <include layout="@layout/best_deal_recycler_view_layout_shimmer"/>
+
+                        </com.facebook.shimmer.ShimmerFrameLayout>
+
                         <androidx.viewpager.widget.ViewPager
                             android:layout_width="match_parent"
                             android:layout_height="150dp"

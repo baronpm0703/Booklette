@@ -6,7 +6,7 @@
     android:layout_height="150dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:background="@drawable/round_corner_best_deal_item">
+    android:background="@drawable/round_corner_best_deal_item_shimmer">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_width="96dp"
             android:layout_height="140dp"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/book_cover"
+            android:background="@color/shimmerColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -41,8 +41,9 @@
                 android:id="@+id/txtBestDealRVCategoryItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/shimmerColor"
                 android:text="Novel"
-                android:textColor="#DEDEDE">
+                android:textColor="@color/shimmerColor">
 
             </TextView>
 
@@ -51,8 +52,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tuesday Mooney Talks to Ghosts"
-                android:textColor="@color/white"
+                android:textColor="@color/shimmerColor"
+                android:background="@color/shimmerColor"
                 android:textStyle="bold"
+                android:layout_marginTop="3dp"
                 android:textSize="8pt">
 
             </TextView>
@@ -65,7 +68,8 @@
                 android:text="Kate Racculia"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:textColor="@color/white">
+                android:textColor="@color/shimmerColor"
+                android:background="@color/shimmerColor">
 
             </TextView>
 
@@ -81,7 +85,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="$33.00"
-                    android:textColor="@color/white"
+                    android:textColor="@color/shimmerColor"
+                    android:background="@color/shimmerColor"
                     android:textStyle="bold"
                     android:textSize="10pt"
                     android:layout_weight="1">
@@ -96,19 +101,9 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:layout_weight="1"
-                    android:background="@drawable/round_corner_best_deal_price_off"
+                    android:background="@color/shimmerColor"
                     android:gravity="center"
                     >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="12% off"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="7pt">
-
-                    </TextView>
 
                 </RelativeLayout>
 

@@ -1,16 +1,23 @@
 package com.example.booklette
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentHomeBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.delay
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,6 +38,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +57,12 @@ class HomeFragment : Fragment() {
         val view = binding.root
 
         auth = Firebase.auth
+        db = Firebase.firestore
+
+        binding.smHomeFragmentBestDeal.visibility = View.VISIBLE
+        binding.rvBestDeal.visibility = View.INVISIBLE
+        binding.smHomeFragmentBestDeal.startShimmer()
+
 
         if (auth.currentUser != null) {
             binding.txtWelcomeBack.text = "Welcome back, " + auth.currentUser!!.email.toString()
@@ -59,27 +73,58 @@ class HomeFragment : Fragment() {
             startActivity(Intent(activity, LoginActivity::class.java))
         })
 
-        var bestDeals = ArrayList<String>();
-        bestDeals.add("a")
-        bestDeals.add("a")
-        bestDeals.add("a")
-        bestDeals.add("a")
-        bestDeals.add("a")
-
+        var bestDeals = ArrayList<BookObject>();
         val bestDealAdapter = activity?.let { HomeFragmentBestDealViewPagerAdapter(it, bestDeals) }
         binding.rvBestDeal.adapter = bestDealAdapter
         binding.rvBestDeal.pageMargin = 20
         binding.dotsIndicator.attachTo(binding.rvBestDeal)
 
-        val newArrivalsAdapter = activity?.let { HomeFragmentNewArrivaltemAdapter(it, bestDeals) }
+        db.collection("books").get().addOnSuccessListener { result ->
+            for (document in result) {
+                Log.d("firestore", "${document.id} => ${document.data.get("name")}")
+                bestDeals.add(BookObject(document.data.get("id").toString(),
+                    document.data.get("name").toString(),
+                    document.data.get("genre").toString(),
+                    document.data.get("author").toString(),
+                    document.data.get("releaseDate").toString(),
+                    document.data.get("image").toString(),
+                    document.data.get("price").toString().toFloat()))
+            }
+
+            if (bestDealAdapter != null) {
+                bestDealAdapter.notifyDataSetChanged()
+
+                val handler = Handler()
+                handler.postDelayed({
+                    // Code to be executed after the delay
+                    // For example, you can start a new activity or update UI elements
+                    binding.smHomeFragmentBestDeal.visibility = View.GONE
+                    binding.rvBestDeal.visibility = View.VISIBLE
+                    binding.smHomeFragmentBestDeal.stopShimmer()
+                }, 2000)
+            }
+        }
+
+        /*
+        ------
+         */
+
+        var temporary = ArrayList<String>()
+        temporary.add("a")
+        temporary.add("a")
+        temporary.add("a")
+        temporary.add("a")
+        temporary.add("a")
+
+        val newArrivalsAdapter = activity?.let { HomeFragmentNewArrivaltemAdapter(it, temporary) }
         binding.vpNewArrivalsHomeFragment.adapter = newArrivalsAdapter
         binding.vpNewArrivalsHomeFragment.pageMargin = 20
 
         binding.rvTopBookHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvTopBookHomeFragment.adapter = TopBookHomeFragmentAdapter(bestDeals)
+        binding.rvTopBookHomeFragment.adapter = TopBookHomeFragmentAdapter(temporary)
 
         binding.rvTodayRCDHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvTodayRCDHomeFragment.adapter = TopBookHomeFragmentAdapter(bestDeals)
+        binding.rvTodayRCDHomeFragment.adapter = TopBookHomeFragmentAdapter(temporary)
 
         var bookCategory = ArrayList<String>();
         bookCategory.add("Novel")

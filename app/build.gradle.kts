@@ -86,6 +86,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
 
     // FaceBook
     implementation("com.facebook.android:facebook-android-sdk:[8,9)")
@@ -132,4 +133,10 @@ dependencies {
 
     //Rating bar
     implementation ("com.github.wdsqjq:AndRatingBar:1.0.6")
+
+    //Picasso
+    implementation ("com.squareup.picasso:picasso:2.8")
+
+    //Shimmer
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }
