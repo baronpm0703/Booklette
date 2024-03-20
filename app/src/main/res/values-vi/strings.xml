@@ -58,4 +58,6 @@
     <string name="cart_fragment_voucher_hint">Nhập voucher của Booklette</string>
     <string name="cart_fragment_total_amount">Tổng giá trị đơn hàng</string>
     <string name="cart_fragment_checkout">Thanh toán</string>
+    <string name="cart_fragment_discount_amount">Số tiền được giảm</string>
+    <string name="cart_fragment_total_payment">Thành tiền</string>
 </resources>

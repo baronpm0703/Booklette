@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Cart"
+            android:text="@string/navigation_cart"
             android:textColor="@color/black"
             android:textSize="21dp"
             android:textStyle="bold"></TextView>
@@ -53,47 +53,177 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <EditText
+<!--        <EditText-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="@string/cart_fragment_voucher_hint"-->
+<!--            android:paddingEnd="25dp"-->
+<!--            android:paddingStart="25dp">-->
+<!--        </EditText>-->
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollViewBookletteDiscount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/cart_fragment_voucher_hint">
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="15dp"
+            android:scrollbars="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
-        </EditText>
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="true">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/discount50"
+                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sale 50%"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/discount30"
+                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sale 30%"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/discount20"
+                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sale 20%"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollViewFreeShip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="15dp"
+            android:scrollbars="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+            <com.google.android.material.chip.ChipGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="true">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/freeShip30k"
+                    style="@style/Color_Ship_Discount_Choice.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Free ship 30k"/>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/freeShip15k"
+                    style="@style/Color_Ship_Discount_Choice.MaterialComponents.Chip.Entry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Free ship 15k"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="@string/cart_fragment_total_amount"
-                android:layout_alignParentLeft="true">
-
+                android:layout_alignParentLeft="true"
+                android:paddingStart="25dp">
             </TextView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="120.000VND"
-                android:layout_alignParentRight="true">
-
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_alignParentRight="true"
+                android:paddingEnd="25dp">
             </TextView>
-
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:visibility="visible">
 
-            <Button
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/cart_fragment_discount_amount"
+                android:layout_alignParentLeft="true"
+                android:paddingStart="25dp">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="120.000VND"
+                android:layout_alignParentRight="true"
+                android:paddingEnd="25dp">
+            </TextView>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/cart_fragment_total_payment"
+                android:layout_alignParentLeft="true"
+                android:paddingStart="25dp">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="100.000VND"
+                android:layout_alignParentRight="true"
+                android:paddingEnd="25dp">
+            </TextView>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingEnd="25dp"
+            android:paddingStart="25dp"
+            android:paddingBottom="25dp">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:background="@drawable/button_go_to_check_out"
                 android:text="@string/cart_fragment_checkout">
-
             </Button>
-
         </RelativeLayout>
 
     </LinearLayout>

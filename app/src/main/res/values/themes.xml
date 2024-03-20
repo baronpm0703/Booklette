@@ -27,6 +27,22 @@
         <item name="android:textColor">@color/reverse_chip_text_color</item>
     </style>
 
+    <style name="Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="chipBackgroundColor">@color/reverse_chip_background_color_discount_booklette</item>
+        <item name="chipStrokeColor">@color/chip_stroke_color_discount_booklette</item>
+        <item name="chipStrokeWidth">2dp</item>
+        <item name="android:textColor">@color/reverse_chip_text_color_discount_booklette</item>
+
+    </style>
+
+    <style name="Color_Ship_Discount_Choice.MaterialComponents.Chip.Entry" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="chipBackgroundColor">@color/reverse_chip_background_color_discount_ship</item>
+        <item name="chipStrokeColor">@color/chip_stroke_color_discount_ship</item>
+        <item name="chipStrokeWidth">2dp</item>
+        <item name="android:textColor">@color/reverse_chip_text_color_discount_ship</item>
+    </style>
+
+
 
 
 </resources>
