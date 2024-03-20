@@ -228,12 +228,10 @@
 
     </LinearLayout>
 
-    <GridView
-        android:id="@+id/gvCart"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:gravity="center"
         android:numColumns="1"
         android:verticalSpacing="20dp"
@@ -242,5 +240,5 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        tools:listitem="@layout/fragment_cart_grid_item"></GridView>
+        tools:listitem="@layout/fragment_cart_grid_item"></androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>
