@@ -43,6 +43,11 @@
     </style>
 
 
+    <style name="Colors_Sort_Type_Widget.MaterialComponents.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/reverse_chip_background_color</item>
+        <item name="android:textColor">@color/reverse_chip_text_color</item>
+    </style>
+
 
 
 </resources>
