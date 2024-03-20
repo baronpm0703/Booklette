@@ -55,4 +55,7 @@
     <string name="fragment_home_best_deal">Giảm giá</string>
     <string name="fragment_home_top_book">Top sách</string>
     <string name="home_fragment_today_recommendation">Gợi ý cho hôm nay</string>
+    <string name="cart_fragment_voucher_hint">Nhập voucher của Booklette</string>
+    <string name="cart_fragment_total_amount">Tổng giá trị đơn hàng</string>
+    <string name="cart_fragment_checkout">Thanh toán</string>
 </resources>

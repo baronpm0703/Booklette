@@ -61,5 +61,7 @@
     <string name="fragment_home_top_book">Top books</string>
     <string name="home_fragment_today_recommendation">Today\'s recommandations</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cart_fragment_voucher_hint">Enter Booklette voucher</string>
+    <string name="cart_fragment_total_amount">Total amount</string>
+    <string name="cart_fragment_checkout">Check out</string>
 </resources>
