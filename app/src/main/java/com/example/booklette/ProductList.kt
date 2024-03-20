@@ -5,8 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.graphics.Color
+import android.widget.RadioButton
+import android.widget.Toast
+import androidx.core.view.get
 import com.example.booklette.databinding.FragmentCategoryBinding
 import com.example.booklette.databinding.FragmentProductListBinding
+import com.otpview.R
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,6 +61,45 @@ class ProductList : Fragment() {
 
         binding.gvProductList.adapter =
                 activity?.let {ProductListFragmentGridViewAdapter(it, bookList)}
+
+        // Pre-set checked item form radio group
+        binding.linearLayout.visibility = View.GONE
+        val checked = binding.sortItem.getChildAt(3) as RadioButton
+
+        checked.setBackgroundColor(Color.parseColor("#D45555"))
+        checked.setTextColor(Color.parseColor("#FFFFFF"))
+
+        // Set up a listener for the RadioGroup
+        binding.sortItem.setOnCheckedChangeListener { group, checkedId ->
+            for (i in 0 until group.childCount) {
+                val radioButton = group.getChildAt(i) as RadioButton
+                // Check if the current RadioButton is not the one that is checked
+                if (radioButton.id != checkedId) {
+                    // Reset background color and text color to default
+                    radioButton.setBackgroundColor(Color.TRANSPARENT) // Change to default background color
+                    radioButton.setTextColor(Color.BLACK) // Change to default text color
+                } else {
+                    // If the current RadioButton is the one that is checked, change its appearance
+                    radioButton.setBackgroundColor(Color.parseColor("#D45555"))
+                    radioButton.setTextColor(Color.parseColor("#FFFFFF"))
+                }
+            }
+        }
+
+        // Set up the select dialog when click the sort
+        binding.tvSort.setOnClickListener{
+            binding.linearLayout.visibility = View.VISIBLE
+        }
+
+        // Apply Sort Type
+        binding.ivApplySort.setOnClickListener{
+            binding.linearLayout.visibility = View.GONE
+        }
+
+        binding.ivBackFromSort.setOnClickListener{
+            binding.linearLayout.visibility = View.GONE
+        }
+
         // Inflate the layout for this fragment
         return view
     }
