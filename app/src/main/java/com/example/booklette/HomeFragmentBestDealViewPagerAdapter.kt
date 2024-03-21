@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import com.squareup.picasso.Picasso
 
-class HomeFragmentBestDealViewPagerAdapter(private val context: Context, private val pageTitles: ArrayList<BookObject>) : PagerAdapter() {
+class HomeFragmentBestDealViewPagerAdapter(private val context: Context, private val pageTitles: ArrayList<BookObject>,
+                                           private val price_off: ArrayList<Float>) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(context)
@@ -21,10 +22,12 @@ class HomeFragmentBestDealViewPagerAdapter(private val context: Context, private
         val ivBook = view.findViewById<ImageView>(R.id.ivBookBestDealItem)
         val txtCategory = view.findViewById<TextView>(R.id.txtBestDealRVCategoryItem)
         val txtPrice = view.findViewById<TextView>(R.id.txtBestDealRVPriceItem)
+        val txtPriceOff = view.findViewById<TextView>(R.id.txtBestDealRVPriceOffItem)
 
         txtName.text = pageTitles[position].name
         txtAuthor.text = pageTitles[position].author
         txtCategory.text = pageTitles[position].genre
+        txtPriceOff.text = (price_off[position] * 100).toString() + "%"
         txtPrice.text = pageTitles[position].price.toString()
         Picasso.get()
             .load(pageTitles[position].image)

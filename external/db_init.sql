@@ -24,7 +24,9 @@ CREATE TABLE Book (
 	Genre text,
 	Author text,
 	ReleaseDate Date,
-	Image text
+	Image text,
+	best-deal-sale,
+	top-book
 );
 
 CREATE TABLE OrderItem (

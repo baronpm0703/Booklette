@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentHomeBinding
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -63,7 +65,6 @@ class HomeFragment : Fragment() {
         binding.rvBestDeal.visibility = View.INVISIBLE
         binding.smHomeFragmentBestDeal.startShimmer()
 
-
         if (auth.currentUser != null) {
             binding.txtWelcomeBack.text = "Welcome back, " + auth.currentUser!!.email.toString()
         }
@@ -74,14 +75,15 @@ class HomeFragment : Fragment() {
         })
 
         var bestDeals = ArrayList<BookObject>();
-        val bestDealAdapter = activity?.let { HomeFragmentBestDealViewPagerAdapter(it, bestDeals) }
+        var book_deal_sale = ArrayList<Float>();
+        val bestDealAdapter = activity?.let { HomeFragmentBestDealViewPagerAdapter(it, bestDeals, book_deal_sale) }
         binding.rvBestDeal.adapter = bestDealAdapter
         binding.rvBestDeal.pageMargin = 20
         binding.dotsIndicator.attachTo(binding.rvBestDeal)
 
-        db.collection("books").get().addOnSuccessListener { result ->
+        db.collection("books").whereNotEqualTo("best-deal-sale", null).get().addOnSuccessListener { result ->
             for (document in result) {
-                Log.d("firestore", "${document.id} => ${document.data.get("name")}")
+//                Log.d("firestore", "${document.id} => ${document.data.get("name")}")
                 bestDeals.add(BookObject(document.data.get("id").toString(),
                     document.data.get("name").toString(),
                     document.data.get("genre").toString(),
@@ -89,6 +91,8 @@ class HomeFragment : Fragment() {
                     document.data.get("releaseDate").toString(),
                     document.data.get("image").toString(),
                     document.data.get("price").toString().toFloat()))
+
+                book_deal_sale.add(document.data.get("best-deal-sale").toString().toFloat())
             }
 
             if (bestDealAdapter != null) {
@@ -102,6 +106,20 @@ class HomeFragment : Fragment() {
                     binding.rvBestDeal.visibility = View.VISIBLE
                     binding.smHomeFragmentBestDeal.stopShimmer()
                 }, 2000)
+            }
+        }
+
+        db.collection("top-book").get().addOnSuccessListener { result ->
+//            Log.d("firestore", "${result.documents[0].data!!.get("time")}")
+            val times = result.documents[0].data!!.get("time") as? ArrayList<String>
+
+            for (time in times!!) {
+//                Log.d("firestore", "${time}")
+
+                val chip = inflater.inflate(R.layout.home_fragment_chip_top_book, binding.homeFragmentCGTopBook, false) as Chip
+                chip.text = time.toString()
+
+                binding.homeFragmentCGTopBook.addView(chip)
             }
         }
 
