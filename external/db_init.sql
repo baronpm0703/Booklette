@@ -26,7 +26,8 @@ CREATE TABLE Book (
 	ReleaseDate Date,
 	Image text,
 	best-deal-sale,
-	top-book
+	top-book,
+	is-new-arrival BOOL
 );
 
 CREATE TABLE OrderItem (

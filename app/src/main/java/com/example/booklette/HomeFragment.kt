@@ -40,8 +40,16 @@ class HomeFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private var topBookArrayList = ArrayList<BookObject>()
     private var topBookRating = ArrayList<Float>()
+    private var bookCategory = ArrayList<String>();
+    private var RCDBookList = ArrayList<BookObject>()
+    private var RCDBookRating = ArrayList<Float>()
+    private var BookNewArrivalList = ArrayList<BookObject>()
+    private var BookNewArrivalSaleList = ArrayList<Float>()
 
     lateinit var topBookAdapter: TopBookHomeFragmentAdapter
+    lateinit var RCDAdapter: HomeFragmentTodayRCDTypeAdapter
+    lateinit var RCDBookAdapter: TopBookHomeFragmentAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +96,18 @@ class HomeFragment : Fragment() {
         binding.smHomeFragmentTopBookRV.visibility = View.VISIBLE
         binding.rvTopBookHomeFragment.visibility = View.INVISIBLE
         binding.smHomeFragmentTopBookRV.startShimmer()
+
+        binding.smRCDHomeFragment.visibility = View.VISIBLE
+        binding.rvTodayRecommandationsType.visibility = View.INVISIBLE
+        binding.smRCDHomeFragment.startShimmer()
+
+        binding.smHomeFragmentRCDBookRV.visibility = View.VISIBLE
+        binding.rvTodayRCDHomeFragment.visibility = View.INVISIBLE
+        binding.smHomeFragmentRCDBookRV.startShimmer()
+
+        binding.smNewArrivalsHomeFragment.visibility = View.VISIBLE
+        binding.vpNewArrivalsHomeFragment.visibility = View.GONE
+        binding.smNewArrivalsHomeFragment.startShimmer()
 
         if (auth.currentUser != null) {
             binding.txtWelcomeBack.text = "Welcome back, " + auth.currentUser!!.email.toString()
@@ -152,21 +172,6 @@ class HomeFragment : Fragment() {
             }, 2000)
         }
 
-        /*
-        ------
-         */
-
-        var temporary = ArrayList<String>()
-        temporary.add("a")
-        temporary.add("a")
-        temporary.add("a")
-        temporary.add("a")
-        temporary.add("a")
-
-        val newArrivalsAdapter = activity?.let { HomeFragmentNewArrivaltemAdapter(it, temporary) }
-        binding.vpNewArrivalsHomeFragment.adapter = newArrivalsAdapter
-        binding.vpNewArrivalsHomeFragment.pageMargin = 20
-
         topBookArrayList = ArrayList<BookObject>()
         topBookRating = ArrayList<Float>()
         binding.rvTopBookHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
@@ -182,9 +187,6 @@ class HomeFragment : Fragment() {
                     document.data.get("releaseDate").toString(),
                     document.data.get("image").toString(),
                     document.data.get("price").toString().toFloat()))
-
-//                val temp = document.data.get("review")
-//                Log.d("abced", temp.toString())
 
                 var avg_rating = 0.0F;
                 var rating_num = 1;
@@ -216,23 +218,155 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.rvTodayRCDHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvTodayRCDHomeFragment.adapter = TopBookHomeFragmentAdapter(topBookArrayList, topBookRating)
-
-        var bookCategory = ArrayList<String>();
-        bookCategory.add("Novel")
-        bookCategory.add("Self-love")
-        bookCategory.add("Science")
-        bookCategory.add("Romantic")
-        bookCategory.add("Lover")
-        bookCategory.add("1989")
-        bookCategory.add("midnights")
-
-
-        binding.rvTodayRecommandationsType.adapter = HomeFragmentTodayRCDTypeAdapter(bookCategory)
+        bookCategory = ArrayList<String>();
+        RCDAdapter = HomeFragmentTodayRCDTypeAdapter(bookCategory, this)
+        binding.rvTodayRecommandationsType.adapter = RCDAdapter
         binding.rvTodayRecommandationsType.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
+        db.collection("book-category").get().addOnSuccessListener { result ->
+            val times = result.documents[0].data!!.get("categories") as? ArrayList<String>
+
+            for (time in times!!)
+                bookCategory.add(time.toString())
+
+            Handler().postDelayed({
+                RCDAdapter.notifyDataSetChanged()
+
+                binding.smRCDHomeFragment.visibility = View.INVISIBLE
+                binding.rvTodayRecommandationsType.visibility = View.VISIBLE
+                binding.smRCDHomeFragment.stopShimmer()
+            }, 2000)
+        }
+
+        RCDBookList = ArrayList<BookObject>()
+        RCDBookRating = ArrayList<Float>()
+        RCDBookAdapter = TopBookHomeFragmentAdapter(RCDBookList, RCDBookRating)
+        binding.rvTodayRCDHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvTodayRCDHomeFragment.adapter = RCDBookAdapter
+
+        db.collection("books").get().addOnSuccessListener { result ->
+            for (document in result) {
+                RCDBookList.add(BookObject(document.data.get("id").toString(),
+                    document.data.get("name").toString(),
+                    document.data.get("genre").toString(),
+                    document.data.get("author").toString(),
+                    document.data.get("releaseDate").toString(),
+                    document.data.get("image").toString(),
+                    document.data.get("price").toString().toFloat()))
+
+                var avg_rating = 0.0F;
+                var rating_num = 1;
+                if (document.data.get("review") != null) {
+                    val reviewsArray = document.data.get("review") as ArrayList<Map<String, Any>>
+                    rating_num = reviewsArray.size
+
+                    for (reviewMap in reviewsArray) {
+                        val uid = reviewMap["UID"] as String
+                        val image = reviewMap["image"] as String
+                        val score = (reviewMap["score"] as Long).toInt()
+                        val text = reviewMap["text"] as String
+
+                        avg_rating += score
+                    }
+                }
+
+                RCDBookRating.add(avg_rating / rating_num)
+            }
+
+            if (RCDBookAdapter != null) {
+                RCDBookAdapter.notifyDataSetChanged()
+
+                Handler().postDelayed({
+                    binding.smHomeFragmentRCDBookRV.visibility = View.GONE
+                    binding.rvTodayRCDHomeFragment.visibility = View.VISIBLE
+                    binding.smHomeFragmentRCDBookRV.stopShimmer()
+                }, 2000)
+            }
+        }
+
+        BookNewArrivalList = ArrayList<BookObject>()
+        BookNewArrivalSaleList = ArrayList<Float>()
+        val newArrivalsAdapter = activity?.let { HomeFragmentNewArrivaltemAdapter(it, BookNewArrivalList, BookNewArrivalSaleList) }
+        binding.vpNewArrivalsHomeFragment.adapter = newArrivalsAdapter
+        binding.vpNewArrivalsHomeFragment.pageMargin = 20
+
+        db.collection("books").whereEqualTo("is-new-arrival", true).get().addOnSuccessListener { result ->
+            for (document in result) {
+                BookNewArrivalList.add(BookObject(document.data.get("id").toString(),
+                    document.data.get("name").toString(),
+                    document.data.get("genre").toString(),
+                    document.data.get("author").toString(),
+                    document.data.get("releaseDate").toString(),
+                    document.data.get("image").toString(),
+                    document.data.get("price").toString().toFloat()))
+
+                if (document.data.get("best-deal-sale") != null)
+                    BookNewArrivalSaleList.add(document.data.get("best-deal-sale").toString().toFloat())
+                else
+                    BookNewArrivalSaleList.add(0F)
+            }
+
+            if (newArrivalsAdapter != null) {
+                newArrivalsAdapter.notifyDataSetChanged()
+
+                Handler().postDelayed({
+                    binding.smNewArrivalsHomeFragment.visibility = View.GONE
+                    binding.vpNewArrivalsHomeFragment.visibility = View.VISIBLE
+                    binding.smNewArrivalsHomeFragment.stopShimmer()
+                }, 2000)
+            }
+        }
+
         return view
+    }
+
+    fun getRCDBookCategories(kind: String) {
+        binding.smHomeFragmentRCDBookRV.visibility = View.VISIBLE
+        binding.rvTodayRCDHomeFragment.visibility = View.INVISIBLE
+        binding.smHomeFragmentRCDBookRV.startShimmer()
+
+        RCDBookList.clear()
+        RCDBookRating.clear()
+
+        db.collection("books").whereEqualTo("genre", kind).get().addOnSuccessListener { result ->
+            for (document in result) {
+                RCDBookList.add(BookObject(document.data.get("id").toString(),
+                    document.data.get("name").toString(),
+                    document.data.get("genre").toString(),
+                    document.data.get("author").toString(),
+                    document.data.get("releaseDate").toString(),
+                    document.data.get("image").toString(),
+                    document.data.get("price").toString().toFloat()))
+
+                var avg_rating = 0.0F;
+                var rating_num = 1;
+                if (document.data.get("review") != null) {
+                    val reviewsArray = document.data.get("review") as ArrayList<Map<String, Any>>
+                    rating_num = reviewsArray.size
+
+                    for (reviewMap in reviewsArray) {
+                        val uid = reviewMap["UID"] as String
+                        val image = reviewMap["image"] as String
+                        val score = (reviewMap["score"] as Long).toInt()
+                        val text = reviewMap["text"] as String
+
+                        avg_rating += score
+                    }
+                }
+
+                RCDBookRating.add(avg_rating / rating_num)
+            }
+
+            if (RCDBookAdapter != null) {
+                RCDBookAdapter.notifyDataSetChanged()
+
+                Handler().postDelayed({
+                    binding.smHomeFragmentRCDBookRV.visibility = View.GONE
+                    binding.rvTodayRCDHomeFragment.visibility = View.VISIBLE
+                    binding.smHomeFragmentRCDBookRV.stopShimmer()
+                }, 2000)
+            }
+        }
     }
 
     fun getTopBookByCategory(time: String) {
