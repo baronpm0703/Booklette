@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/round_corner_best_deal_item"
+    android:background="@drawable/round_corner_best_deal_item_shimmer"
     android:padding="10dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp">
@@ -15,16 +15,14 @@
         android:layout_width="141dp"
         android:layout_height="209dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/image_book">
+        android:src="@color/shimmerColor">
 
     </ImageView>
 
     <per.wsj.library.AndRatingBar
-        android:id="@+id/topBookRating"
         android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_height="13dp"
-        android:rating="2.5"
         android:layout_marginTop="10dp"
         app:bgColor="#6E6E6E"
         app:starColor="#FFBA49"
@@ -39,9 +37,10 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/shimmerColor"
         android:textStyle="bold"
         android:textSize="8pt"
+        android:background="@color/shimmerColor"
         android:lines="2"
         >
 
@@ -54,7 +53,8 @@
         android:text="Phan Thai Khang"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:textColor="#FFFFFF">
+        android:background="@color/shimmerColor"
+        android:textColor="@color/shimmerColor">
 
     </TextView>
 
@@ -63,7 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="120.000 VND"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/shimmerColor"
+        android:background="@color/shimmerColor"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"

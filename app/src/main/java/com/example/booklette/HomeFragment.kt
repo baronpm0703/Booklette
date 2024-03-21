@@ -1,25 +1,22 @@
 package com.example.booklette
 
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentHomeBinding
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipDrawable
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.delay
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,6 +38,10 @@ class HomeFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private var topBookArrayList = ArrayList<BookObject>()
+    private var topBookRating = ArrayList<Float>()
+
+    lateinit var topBookAdapter: TopBookHomeFragmentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,9 +62,32 @@ class HomeFragment : Fragment() {
         auth = Firebase.auth
         db = Firebase.firestore
 
+        binding.homeFragmentCGTopBook.setOnCheckedStateChangeListener { group, checkedIds ->
+            if (checkedIds.size > 0) {
+                val chip: Chip? = group.findViewById(checkedIds[0])
+                if (chip != null && chip.isChecked) {
+                    Log.d("chip", chip.text.toString())
+                    getTopBookByCategory(chip.text.toString())
+                }
+            }
+            else {
+                Log.d("unchip", "unchip")
+                getTopBookByCategory("")
+            }
+
+        }
+
         binding.smHomeFragmentBestDeal.visibility = View.VISIBLE
         binding.rvBestDeal.visibility = View.INVISIBLE
         binding.smHomeFragmentBestDeal.startShimmer()
+
+        binding.smHomeFragmentTopBook.visibility = View.VISIBLE
+        binding.horizontalScrollView.visibility = View.INVISIBLE
+        binding.smHomeFragmentTopBook.startShimmer()
+
+        binding.smHomeFragmentTopBookRV.visibility = View.VISIBLE
+        binding.rvTopBookHomeFragment.visibility = View.INVISIBLE
+        binding.smHomeFragmentTopBookRV.startShimmer()
 
         if (auth.currentUser != null) {
             binding.txtWelcomeBack.text = "Welcome back, " + auth.currentUser!!.email.toString()
@@ -98,8 +122,7 @@ class HomeFragment : Fragment() {
             if (bestDealAdapter != null) {
                 bestDealAdapter.notifyDataSetChanged()
 
-                val handler = Handler()
-                handler.postDelayed({
+                Handler().postDelayed({
                     // Code to be executed after the delay
                     // For example, you can start a new activity or update UI elements
                     binding.smHomeFragmentBestDeal.visibility = View.GONE
@@ -121,6 +144,12 @@ class HomeFragment : Fragment() {
 
                 binding.homeFragmentCGTopBook.addView(chip)
             }
+
+            Handler().postDelayed({
+                binding.smHomeFragmentTopBook.visibility = View.GONE
+                binding.horizontalScrollView.visibility = View.VISIBLE
+                binding.smHomeFragmentTopBook.stopShimmer()
+            }, 2000)
         }
 
         /*
@@ -138,11 +167,57 @@ class HomeFragment : Fragment() {
         binding.vpNewArrivalsHomeFragment.adapter = newArrivalsAdapter
         binding.vpNewArrivalsHomeFragment.pageMargin = 20
 
+        topBookArrayList = ArrayList<BookObject>()
+        topBookRating = ArrayList<Float>()
         binding.rvTopBookHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvTopBookHomeFragment.adapter = TopBookHomeFragmentAdapter(temporary)
+        topBookAdapter = TopBookHomeFragmentAdapter(topBookArrayList, topBookRating)
+        binding.rvTopBookHomeFragment.adapter = topBookAdapter
+
+        db.collection("books").get().addOnSuccessListener { result ->
+            for (document in result) {
+                topBookArrayList.add(BookObject(document.data.get("id").toString(),
+                    document.data.get("name").toString(),
+                    document.data.get("genre").toString(),
+                    document.data.get("author").toString(),
+                    document.data.get("releaseDate").toString(),
+                    document.data.get("image").toString(),
+                    document.data.get("price").toString().toFloat()))
+
+//                val temp = document.data.get("review")
+//                Log.d("abced", temp.toString())
+
+                var avg_rating = 0.0F;
+                var rating_num = 1;
+                if (document.data.get("review") != null) {
+                    val reviewsArray = document.data.get("review") as ArrayList<Map<String, Any>>
+                    rating_num = reviewsArray.size
+
+                    for (reviewMap in reviewsArray) {
+                        val uid = reviewMap["UID"] as String
+                        val image = reviewMap["image"] as String
+                        val score = (reviewMap["score"] as Long).toInt()
+                        val text = reviewMap["text"] as String
+
+                        avg_rating += score
+                    }
+                }
+
+                topBookRating.add(avg_rating / rating_num)
+            }
+
+            if (topBookAdapter != null) {
+                topBookAdapter.notifyDataSetChanged()
+
+                Handler().postDelayed({
+                    binding.smHomeFragmentTopBookRV.visibility = View.GONE
+                    binding.rvTopBookHomeFragment.visibility = View.VISIBLE
+                    binding.smHomeFragmentTopBookRV.stopShimmer()
+                }, 2000)
+            }
+        }
 
         binding.rvTodayRCDHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvTodayRCDHomeFragment.adapter = TopBookHomeFragmentAdapter(temporary)
+        binding.rvTodayRCDHomeFragment.adapter = TopBookHomeFragmentAdapter(topBookArrayList, topBookRating)
 
         var bookCategory = ArrayList<String>();
         bookCategory.add("Novel")
@@ -158,6 +233,98 @@ class HomeFragment : Fragment() {
         binding.rvTodayRecommandationsType.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
         return view
+    }
+
+    fun getTopBookByCategory(time: String) {
+        binding.smHomeFragmentTopBookRV.visibility = View.VISIBLE
+        binding.rvTopBookHomeFragment.visibility = View.INVISIBLE
+        binding.smHomeFragmentTopBookRV.startShimmer()
+
+        topBookArrayList.clear()
+        topBookRating.clear()
+
+        if (time == "") {
+            db.collection("books").get().addOnSuccessListener { result ->
+                for (document in result) {
+                    topBookArrayList.add(BookObject(document.data.get("id").toString(),
+                        document.data.get("name").toString(),
+                        document.data.get("genre").toString(),
+                        document.data.get("author").toString(),
+                        document.data.get("releaseDate").toString(),
+                        document.data.get("image").toString(),
+                        document.data.get("price").toString().toFloat()))
+
+                    var avg_rating = 0.0F;
+                    var rating_num = 1;
+                    if (document.data.get("review") != null) {
+                        val reviewsArray = document.data.get("review") as ArrayList<Map<String, Any>>
+                        rating_num = reviewsArray.size
+
+                        for (reviewMap in reviewsArray) {
+                            val uid = reviewMap["UID"] as String
+                            val image = reviewMap["image"] as String
+                            val score = (reviewMap["score"] as Long).toInt()
+                            val text = reviewMap["text"] as String
+
+                            avg_rating += score
+                        }
+                    }
+
+                    topBookRating.add(avg_rating / rating_num)
+                }
+
+                if (topBookAdapter != null) {
+                    topBookAdapter.notifyDataSetChanged()
+
+                    Handler().postDelayed({
+                        binding.smHomeFragmentTopBookRV.visibility = View.GONE
+                        binding.rvTopBookHomeFragment.visibility = View.VISIBLE
+                        binding.smHomeFragmentTopBookRV.stopShimmer()
+                    }, 2000)
+                }
+            }
+        }
+        else {
+            db.collection("books").whereEqualTo("top-book", time).get().addOnSuccessListener { result ->
+                for (document in result) {
+                    topBookArrayList.add(BookObject(document.data.get("id").toString(),
+                        document.data.get("name").toString(),
+                        document.data.get("genre").toString(),
+                        document.data.get("author").toString(),
+                        document.data.get("releaseDate").toString(),
+                        document.data.get("image").toString(),
+                        document.data.get("price").toString().toFloat()))
+
+                    var avg_rating = 0.0F;
+                    var rating_num = 1;
+                    if (document.data.get("review") != null) {
+                        val reviewsArray = document.data.get("review") as ArrayList<Map<String, Any>>
+                        rating_num = reviewsArray.size
+
+                        for (reviewMap in reviewsArray) {
+                            val uid = reviewMap["UID"] as String
+                            val image = reviewMap["image"] as String
+                            val score = (reviewMap["score"] as Long).toInt()
+                            val text = reviewMap["text"] as String
+
+                            avg_rating += score
+                        }
+                    }
+
+                    topBookRating.add(avg_rating / rating_num)
+                }
+
+                if (topBookAdapter != null) {
+                    topBookAdapter.notifyDataSetChanged()
+
+                    Handler().postDelayed({
+                        binding.smHomeFragmentTopBookRV.visibility = View.GONE
+                        binding.rvTopBookHomeFragment.visibility = View.VISIBLE
+                        binding.smHomeFragmentTopBookRV.stopShimmer()
+                    }, 2000)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
