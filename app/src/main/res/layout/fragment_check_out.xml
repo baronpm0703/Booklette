@@ -82,9 +82,9 @@
 
                         <TextView
                             android:id="@+id/bookTitle"
-                            android:layout_width="216dp"
+                            android:layout_width="278dp"
+                            android:layout_height="match_parent"
                             android:layout_marginBottom="5dp"
-                            android:layout_height="wrap_content"
                             android:text="Shipping Address"
                             android:textColor="@color/black"
                             android:textStyle="bold"></TextView>
@@ -94,10 +94,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/change_icon"
-                            android:text="Shipping Address"
                             android:textColor="@color/black"
-                            android:textStyle="bold"></ImageView>
-
+                            android:textStyle="bold"
+                            android:scaleType="centerCrop"></ImageView>
                     </LinearLayout>
 
                     <LinearLayout

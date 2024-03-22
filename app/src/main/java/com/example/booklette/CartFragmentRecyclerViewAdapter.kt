@@ -66,6 +66,18 @@ class CartFragmentRecyclerViewAdapter(
             holder.bookOwner.text = "Jake Gyllenhaal, Greta Caruso"
             holder.bookPrice.text = "250.000 VND"
         }
+        else if (bookInfo == "3") {
+            holder.bookCover.setImageResource(R.drawable.image_book_2)
+            holder.bookTitle.text = "The Secret Society of Aunts & Uncles"
+            holder.bookOwner.text = "Jake Gyllenhaal, Greta Caruso"
+            holder.bookPrice.text = "100.000 VND"
+        }
+        else if (bookInfo == "4") {
+            holder.bookCover.setImageResource(R.drawable.image_book_2)
+            holder.bookTitle.text = "TestBook"
+            holder.bookOwner.text = "Khong coa ten"
+            holder.bookPrice.text = "120.000 VND"
+        }
         holder.tvCartItemCount.text = itemQuantities[position].toString()
         holder.btnSelectItem.isChecked = itemSelections[position]
         holder.btnSelectItem.setOnClickListener {
@@ -104,6 +116,15 @@ class CartFragmentRecyclerViewAdapter(
     }
 
     fun removeItem(position: Int) {
+        // Xóa mục khỏi danh sách
+        bookInCartList.removeAt(position)
+        // Thông báo cho RecyclerView biết rằng một mục đã bị xóa ở vị trí được chỉ định
+        notifyItemRemoved(position)
+    }
 
+
+    fun getItemInfo(position: Int): String {
+        // Trả về thông tin của item tại vị trí được chỉ định
+        return bookInCartList[position]
     }
 }
