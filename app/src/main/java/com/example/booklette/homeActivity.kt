@@ -28,6 +28,7 @@ class homeActivity : AppCompatActivity() {
         val productList = ProductList()
         val cartFragment = CartFragment()
 
+
         supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, homeFragment).commit()
 
         binding.smoothBottomBar.setOnItemSelectedListener { item ->

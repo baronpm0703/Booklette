@@ -139,4 +139,8 @@ dependencies {
 
     //Shimmer
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+    // Sheet
+    implementation("com.maxkeppeler.sheets:core:2.3.1")
+    implementation("com.maxkeppeler.sheets:info:2.3.1")
+    implementation("com.maxkeppeler.sheets:option:2.3.1")
 }

@@ -1,17 +1,17 @@
 package com.example.booklette
 
+import com.otpview.R
+//import android.R
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.graphics.Color
 import android.widget.RadioButton
-import android.widget.Toast
-import androidx.core.view.get
-import com.example.booklette.databinding.FragmentCategoryBinding
+import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentProductListBinding
-import com.otpview.R
+import com.maxkeppeler.sheets.option.Option
+import com.maxkeppeler.sheets.option.OptionSheet
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -99,6 +99,21 @@ class ProductList : Fragment() {
         binding.ivBackFromSort.setOnClickListener{
             binding.linearLayout.visibility = View.GONE
         }
+
+
+//        activity?.let {
+//            OptionSheet().show(it) {
+//                title("Text message")
+//                with(
+//                    Option(, "Copy"),
+//                    Option(R.drawable.ic_cart, "Translate"),
+//                    Option(R.drawable.ic_cart, "Paste")
+//                )
+//                onPositive { index: Int, option: Option ->
+//                    // Handle selected option
+//                }
+//            }
+//        }
 
         // Inflate the layout for this fragment
         return view
