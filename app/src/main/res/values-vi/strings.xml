@@ -64,7 +64,8 @@
     <string name="shipping_method_check_out">Phương thức vận chuyển</string>
     <string name="check_out_place_order_button">Đặt hàng</string>
     <string name="myshop_search">Tìm kiếm</string>
-    <string name="myshop_manage_shop">Quản lý cửa hàng</string>
+    <string name="myshop_search_hint">nhập tên sách...</string>
+    <string name="myshop_manage_shop">Quản lý cửa hàng ></string>
     <string name="myshop_followers">Người theo dõi</string>
     <string name="myshop_following">Đang theo dõi</string>
     <string name="myshop_shop_tab">Cửa hàng</string>

@@ -71,7 +71,8 @@
     <string name="check_out_place_order_button">Place order</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="myshop_search">Search</string>
-    <string name="myshop_manage_shop">Manage shop</string>
+    <string name="myshop_search_hint">name your book here...</string>
+    <string name="myshop_manage_shop">Manage shop ></string>
     <string name="myshop_followers">Followers</string>
     <string name="myshop_following">Following</string>
     <string name="myshop_shop_tab">Shop</string>
