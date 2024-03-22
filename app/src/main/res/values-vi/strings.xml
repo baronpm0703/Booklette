@@ -63,4 +63,20 @@
     <string name="navigation_check_out">Thanh Toán</string>
     <string name="shipping_method_check_out">Phương thức vận chuyển</string>
     <string name="check_out_place_order_button">Đặt hàng</string>
+    <string name="myshop_search">Tìm kiếm</string>
+    <string name="myshop_manage_shop">Quản lý cửa hàng</string>
+    <string name="myshop_followers">Người theo dõi</string>
+    <string name="myshop_following">Đang theo dõi</string>
+    <string name="myshop_shop_tab">Cửa hàng</string>
+    <string name="myshop_books_tab">Sách</string>
+    <string name="myshop_categories_tab">Thể loại</string>
+    <string name="myshop_discount_flavor_text">Giảm giá đến</string>
+    <string name="myshop_discount_minimum">Cho đơn hàng từ</string>
+    <string name="myshop_discount_expire_flavor_text">Mã hết hạn sau:</string>
+    <string name="myshop_discount_expire_day">ngày sau</string>
+    <string name="myshop_discount_save">Lưu mã</string>
+    <string name="myshop_new_arrivals">Sách mới</string>
+    <string name="myshop_best_sellers">Sách bán chạy</string>
+    <string name="myshop_highly_recommended">Sách hay</string>
+    <string name="myshop_more">Xem thêm</string>
 </resources>

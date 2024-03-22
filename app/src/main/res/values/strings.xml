@@ -69,4 +69,21 @@
     <string name="navigation_check_out">Check Out</string>
     <string name="shipping_method_check_out">Shipping method</string>
     <string name="check_out_place_order_button">Place order</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="myshop_search">Search</string>
+    <string name="myshop_manage_shop">Manage shop</string>
+    <string name="myshop_followers">Followers</string>
+    <string name="myshop_following">Following</string>
+    <string name="myshop_shop_tab">Shop</string>
+    <string name="myshop_books_tab">Books</string>
+    <string name="myshop_discount_flavor_text">Sale off up to</string>
+    <string name="myshop_discount_minimum">Minimum order</string>
+    <string name="myshop_discount_expire_flavor_text">Expiring soon:</string>
+    <string name="myshop_discount_expire_day">day(s) left</string>
+    <string name="myshop_discount_save">Save</string>
+    <string name="myshop_categories_tab">Categories</string>
+    <string name="myshop_new_arrivals">New Arrivals</string>
+    <string name="myshop_best_sellers">Best Sellers</string>
+    <string name="myshop_highly_recommended">Highly Recommended</string>
+    <string name="myshop_more">More</string>
 </resources>
