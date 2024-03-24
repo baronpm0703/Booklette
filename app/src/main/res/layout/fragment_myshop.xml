@@ -161,7 +161,7 @@
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="4dp" app:layout_constraintTop_toBottomOf="@+id/textView22"
             android:background="@drawable/bottom_shadow"
-            app:layout_constraintHorizontal_bias="1.0" android:id="@+id/horizontalScrollView3">
+            app:layout_constraintHorizontal_bias="1.0" android:id="@+id/newArrivalsScrollView">
         <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
                       android:orientation="vertical"/>
     </HorizontalScrollView>
@@ -170,6 +170,70 @@
             android:layout_height="wrap_content" app:srcCompat="@drawable/myshop_best_seller"
             android:id="@+id/imageView2"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView3"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@+id/newArrivalsScrollView"/>
+    <TextView
+            android:text="@string/myshop_best_sellers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView24"
+            android:textStyle="bold" android:textColor="#000000"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/imageView2"/>
+    <TextView
+            android:text="@string/myshop_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/bestMoreBtn"
+            android:textColor="#9A1E1E" android:textSize="12dp"
+            android:textStyle="bold" android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/imageView2"/>
+    <HorizontalScrollView
+            android:layout_width="411dp"
+            android:layout_height="130dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="1dp"
+            android:background="@drawable/bottom_shadow"
+            app:layout_constraintTop_toBottomOf="@+id/textView24" android:id="@+id/bestSellersScrollView">
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
+                      android:orientation="vertical"/>
+    </HorizontalScrollView>
+    <RelativeLayout
+            android:layout_width="292dp"
+            android:layout_height="22dp"
+            android:layout_centerVertical="true"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/bestSellersScrollView">
+
+        <TextView
+                android:id="@+id/highlyRecommendText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="@string/myshop_highly_recommended"
+                android:textColor="#000000" android:layout_centerInParent="true" android:textStyle="bold"/>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@id/highlyRecommendText"
+                android:background="#000000"
+        />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toEndOf="@id/highlyRecommendText"
+                android:background="#000000"
+        />
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="398dp"
+            android:layout_height="422dp" tools:layout_editor_absoluteY="772dp" tools:layout_editor_absoluteX="1dp"
+            android:id="@+id/highlyRecommendedList"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
