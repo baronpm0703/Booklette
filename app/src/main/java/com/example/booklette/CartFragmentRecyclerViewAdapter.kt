@@ -2,7 +2,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
@@ -12,8 +11,12 @@ import com.example.booklette.R
 
 class CartFragmentRecyclerViewAdapter(
     private val context: Context,
-    private val bookInCartList: ArrayList<String>
+    private val bookInCartList: ArrayList<String>,
+
 ) : RecyclerView.Adapter<CartFragmentRecyclerViewAdapter.ViewHolder>() {
+    private val itemQuantities = ArrayList<Int>()
+    private val itemSelections = ArrayList<Boolean>()
+
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val bookCover: ImageView = itemView.findViewById(R.id.bookCover)
@@ -39,8 +42,18 @@ class CartFragmentRecyclerViewAdapter(
         return ViewHolder(view)
     }
 
+    init {
+        // Initialize itemQuantities with default quantities
+        for (i in bookInCartList.indices) {
+            itemQuantities.add(1) // Initialize with default quantity 1
+            itemSelections.add(false) // Initialize with not selected
+
+        }
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val bookInfo = bookInCartList[position]
+
 
         if (bookInfo == "2") {
             holder.bookCover.setImageResource(R.drawable.image_book_3)
@@ -53,31 +66,65 @@ class CartFragmentRecyclerViewAdapter(
             holder.bookOwner.text = "Jake Gyllenhaal, Greta Caruso"
             holder.bookPrice.text = "250.000 VND"
         }
-        holder.btnCartItemMinus.setOnClickListener {
-            quantityChangeListener?.onQuantityDecreased(position)
-            // Update tvCartItemCount
-            var newCount = holder.tvCartItemCount.text.toString().toInt() - 1
-            if (newCount < 0) {
-                newCount = 0
-            }
-            holder.tvCartItemCount.text= newCount.toString()
-
+        else if (bookInfo == "3") {
+            holder.bookCover.setImageResource(R.drawable.image_book_2)
+            holder.bookTitle.text = "The Secret Society of Aunts & Uncles"
+            holder.bookOwner.text = "Jake Gyllenhaal, Greta Caruso"
+            holder.bookPrice.text = "100.000 VND"
+        }
+        else if (bookInfo == "4") {
+            holder.bookCover.setImageResource(R.drawable.image_book_2)
+            holder.bookTitle.text = "TestBook"
+            holder.bookOwner.text = "Khong coa ten"
+            holder.bookPrice.text = "120.000 VND"
+        }
+        holder.tvCartItemCount.text = itemQuantities[position].toString()
+        holder.btnSelectItem.isChecked = itemSelections[position]
+        holder.btnSelectItem.setOnClickListener {
+            toggleSelection(position)
+            notifyDataSetChanged() // Notify data change to update views
         }
 
-        // Increase item quantity when add button is clicked
+        holder.btnCartItemMinus.setOnClickListener {
+            // Decrease quantity and notify data change
+            decreaseQuantity(position)
+            notifyDataSetChanged() // Notify data change to update views
+        }
+
         holder.btnCartItemAdd.setOnClickListener {
-            quantityChangeListener?.onQuantityIncreased(position)
-            // Update tvCartItemCount
-            var newCount = holder.tvCartItemCount.text.toString().toInt() + 1
-            holder.tvCartItemCount.text = newCount.toString()
+            // Increase quantity and notify data change
+            increaseQuantity(position)
+            notifyDataSetChanged() // Notify data change to update views
         }
     }
+    private fun toggleSelection(position: Int) {
+        itemSelections[position] = !itemSelections[position]
+    }
 
+    private fun increaseQuantity(position: Int) {
+        itemQuantities[position]++
+    }
+
+    // Decrease quantity for an item, ensuring it doesn't go below 0
+    private fun decreaseQuantity(position: Int) {
+        if (itemQuantities[position] > 0) {
+            itemQuantities[position]--
+        }
+    }
     override fun getItemCount(): Int {
         return bookInCartList.size
     }
 
     fun removeItem(position: Int) {
+        // Xóa mục khỏi danh sách
+        bookInCartList.removeAt(position)
+        // Thông báo cho RecyclerView biết rằng một mục đã bị xóa ở vị trí được chỉ định
+        notifyItemRemoved(position)
+    }
 
+
+    fun getItemInfo(position: Int): String {
+        // Trả về thông tin của item tại vị trí được chỉ định
+        return bookInCartList[position]
     }
 }

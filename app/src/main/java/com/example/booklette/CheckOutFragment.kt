@@ -1,12 +1,12 @@
-package com.example.booklette
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import android.widget.ListView
-
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.booklette.CheckoutItem
+import com.example.booklette.R
 
 class CheckoutFragment : Fragment() {
     override fun onCreateView(
@@ -17,18 +17,15 @@ class CheckoutFragment : Fragment() {
 
         val checkoutItems = listOf(
             CheckoutItem("Vo Chanh Tin bookstore", "Tuesday Mooney Talks to Ghosts", "Kate Racculia", "120.000", "2"),
-            // Add more items here
             CheckoutItem("Vo Chanh Tin bookstore", "Tuesday Mooney Talks to Ghosts", "Kate Racculia", "120.000", "2"),
             CheckoutItem("Vo Chanh Tin bookstore", "Tuesday Mooney Talks to Ghosts", "Kate Racculia", "120.000", "2"),
             CheckoutItem("Vo Chanh Tin bookstore", "Tuesday Mooney Talks to Ghosts", "Kate Racculia", "120.000", "2"),
+        )
 
-
-            )
-
-        val lvCheckout = view.findViewById<ListView>(R.id.lvCheckout)
-
-        val adapter = CheckOutListViewAdapter(requireContext(), checkoutItems)
-        lvCheckout.adapter = adapter
+        val rvCheckout = view.findViewById<RecyclerView>(R.id.rvCheckout)
+        rvCheckout.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = CheckOutRecyclerViewAdapter(requireContext(), checkoutItems)
+        rvCheckout.adapter = adapter
 
         return view
     }
