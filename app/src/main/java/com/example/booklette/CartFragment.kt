@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import CartFragmentRecyclerViewAdapter
 import CategoryFragmentGridViewAdapter
+import CheckoutFragment
 import android.graphics.Canvas
 import android.graphics.RectF
 import com.example.booklette.R
