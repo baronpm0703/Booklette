@@ -1,15 +1,17 @@
 package com.example.booklette
 
-import com.otpview.R
-//import android.R
+
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentProductListBinding
+import com.maxkeppeler.sheets.core.SheetStyle
+import com.maxkeppeler.sheets.option.DisplayMode
 import com.maxkeppeler.sheets.option.Option
 import com.maxkeppeler.sheets.option.OptionSheet
 
@@ -86,14 +88,41 @@ class ProductList : Fragment() {
             }
         }
 
+
         // Set up the select dialog when click the sort
         binding.tvSort.setOnClickListener{
-            binding.linearLayout.visibility = View.VISIBLE
+//            binding.linearLayout.visibility = View.VISIBLE
+            activity?.let {
+                val newTheme = R.style.BottomSheetSignNightTheme
+                requireActivity().theme.applyStyle(newTheme, true)
+
+
+                OptionSheet().show(it) {
+                    title("Sort")
+                    style(SheetStyle.BOTTOM_SHEET)
+                    displayMode(DisplayMode.LIST)
+                    titleColor(Color.parseColor("#FF0000"))
+                    with(
+                        Option(R.drawable.star,"Popular"),
+                        Option(R.drawable.resource_new, "Newest"),
+                        Option(R.drawable.favourite,"Customer Review"),
+                        Option(R.drawable.lowtohigh, "Price: Lowest to high"),
+                        Option(R.drawable.hightolow,"Price: Highest to low")
+
+                    )
+                    onPositive { index: Int, option: Option ->
+                        // Handle selected option
+                        Toast.makeText(activity, option.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
 
         // Apply Sort Type
+
         binding.ivApplySort.setOnClickListener{
             binding.linearLayout.visibility = View.GONE
+
         }
 
         binding.ivBackFromSort.setOnClickListener{
@@ -101,19 +130,9 @@ class ProductList : Fragment() {
         }
 
 
-//        activity?.let {
-//            OptionSheet().show(it) {
-//                title("Text message")
-//                with(
-//                    Option(, "Copy"),
-//                    Option(R.drawable.ic_cart, "Translate"),
-//                    Option(R.drawable.ic_cart, "Paste")
-//                )
-//                onPositive { index: Int, option: Option ->
-//                    // Handle selected option
-//                }
-//            }
-//        }
+
+
+
 
         // Inflate the layout for this fragment
         return view

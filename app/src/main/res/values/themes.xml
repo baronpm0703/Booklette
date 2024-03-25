@@ -3,6 +3,8 @@
 
     <style name="Theme.Booklette" parent="android:Theme.Material.Light.NoActionBar" />
 
+
+
     <style name="Theme.Booklette.Starting" parent="Theme.SplashScreen">
         <!-- Set the splash screen background to black -->
         <item name="windowSplashScreenBackground">@android:color/black</item>
@@ -54,6 +56,7 @@
         <item name="chipBackgroundColor">@color/reverse_chip_background_color</item>
         <item name="android:textColor">@color/reverse_chip_text_color</item>
     </style>
+
 
 
 

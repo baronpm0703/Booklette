@@ -2,4 +2,18 @@
 <resources>
     <color name="red">#FF0000</color>
     <color name="shimmerColor">#C2C2C2</color>
+
+    <color name="colorPrimary">@color/signThemeColorPrimary</color>
+    <color name="colorPrimaryDark">@color/signThemeColorPrimary</color>
+    <color name="colorAccent">@color/signThemeColorPrimary</color>
+    <color name="colorControlHighlight">@color/signThemeHighlightColor</color>
+
+    <color name="darkText">@color/signThemeColorPrimary</color>
+    <color name="lightText">#DEFFFFFF</color>
+
+
+    <!--  SIGN APP THEME  -->
+    <color name="signThemeColorPrimary">#00a095</color>
+    <color name="signThemeHighlightColor">#0F00A095</color>
+    <color name="signNightThemeBackground">#0d2621</color>
 </resources>

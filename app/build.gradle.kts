@@ -143,4 +143,7 @@ dependencies {
     implementation("com.maxkeppeler.sheets:core:2.3.1")
     implementation("com.maxkeppeler.sheets:info:2.3.1")
     implementation("com.maxkeppeler.sheets:option:2.3.1")
+
+    // Material
+    implementation("com.google.android.material:material:1.5.0")
 }

@@ -64,11 +64,9 @@ class CategoryFragment : Fragment() {
             args.putString("Genre", genre)
             productList.arguments = args
 
-
             val ft = activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.fcvNavigation, productList)
                 ?.commit()
-
 
 //            ft.replace(R.id.fragment_holder, MusicAlbumList(), "albumlist")
 //            ft.commit()
