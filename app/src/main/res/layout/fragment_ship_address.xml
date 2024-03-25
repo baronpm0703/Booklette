@@ -53,14 +53,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/roundButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/add_address_background"
+                android:src="@drawable/add_address_icon" />
+        </RelativeLayout>
+
+        <Button
                 android:id="@+id/btnCheckOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="25dp"
                 android:background="@drawable/button_go_to_check_out"
                 android:text="Save">
             </Button>
@@ -68,7 +87,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAddress"
+        android:id="@+id/rvShipAddress"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center"
@@ -80,6 +99,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
         tools:listitem="@layout/address_item"></androidx.recyclerview.widget.RecyclerView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
