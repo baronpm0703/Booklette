@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="SampleTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:statusBarColor">?colorPrimaryDark</item>
+
+        <item name="sheetsPrimaryColor">@color/sheetColorPrimary</item>
+        <item name="sheetsHighlightColor">@color/signThemeHighlightColor</item>
+
+        <!--        <item name="sheetDisplayCloseButton">false</item>-->
+        <!--        <item name="sheetDisplayHandle">true</item>-->
+        <!--        <item name="sheetDisplayToolbar">false</item>-->
+
+        <!--        <item name="sheetHandleWidth">42dp</item>-->
+        <!--        <item name="sheetHandleHeight">4dp</item>-->
+        <!--        <item name="sheetHandleFillColor">?sheetPrimaryColor</item>-->
+        <!--        <item name="sheetHandleBorderColor">?sheetPrimaryColor</item>-->
+        <!--        <item name="sheetHandleBorderWidth">1dp</item>-->
+        <!--        <item name="sheetDisplayCloseButton">false</item>-->
+        <!---->
+        <!--        <item name="sheetTextInputLayoutCornerRadius">8dp</item>-->
+        <!--        <item name="sheetTextInputLayoutTopLeftCornerRadius">0dp</item>-->
+
+        <!--        <item name="sheetButtonWidth">wrap_content</item>-->
+        <!--        <item name="sheetNegativeButtonCornerFamily">rounded</item>-->
+        <!--        <item name="sheetNegativeButtonCornerRadius">8dp</item>-->
+
+        <!--        <item name="sheetPositiveButtonCornerFamily">rounded</item>-->
+        <!--        <item name="sheetPositiveButtonCornerRadius">8dp</item>-->
+
+        <!--        <item name="sheetNegativeButtonType">text_button</item>-->
+        <!--        <item name="sheetPositiveButtonType">outlined_button</item>-->
+
+        <!--        <item name="sheetNegativeButtonBottomLeftCornerFamily">rounded</item>-->
+        <!--        <item name="sheetNegativeButtonTopLeftCornerFamily">rounded</item>-->
+        <!--        <item name="sheetNegativeButtonTopRightCornerFamily">rounded</item>-->
+        <!--        <item name="sheetNegativeButtonBottomRightCornerFamily">rounded</item>-->
+
+        <!--        <item name="sheetNegativeButtonTopLeftCornerRadius">20dp</item>-->
+        <!--        <item name="sheetNegativeButtonBottomRightCornerRadius">20dp</item>-->
+        <!--        <item name="sheetNegativeButtonTopRightCornerRadius">0dp</item>-->
+        <!--        <item name="sheetNegativeButtonBottomLeftCornerRadius">0dp</item>-->
+    </style>
+
+    <style name="BottomSheetSignNightTheme">
+        <item name="sheetsHighlightColor">#FF0000</item>
+        <item name="sheetsPrimaryColor">@color/lightText</item>-->
+        <item name="sheetsContentColor">@color/black</item>
+        <item name="sheetsIconsColor">@color/black</item>
+        <item name="sheetsBackgroundColor">@color/white</item>
+        <item name="sheetsHandleWidth">42dp</item>
+        <item name="sheetsHandleHeight">4dp</item>
+
+        <!--        <item name="sheetTitleColor">?sheetPrimaryColor</item>-->
+        <!--        <item name="sheetValueTextActiveColor">?sheetPrimaryColor</item>-->
+        <!--        <item name="sheetButtonColor">?sheetPrimaryColor</item>-->
+        <!--        <item name="sheetOptionActiveImageColor">?sheetPrimaryColor</item>-->
+        <!--        <item name="sheetOptionActiveTextColor">?sheetPrimaryColor</item>-->
+    </style>
+
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize color of navigation drawer icon and back arrow -->
+        <!--        <item name="colorControlNormal">@color/white</item>-->
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+
+    </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>
