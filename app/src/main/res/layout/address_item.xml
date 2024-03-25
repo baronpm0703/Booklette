@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingStart="10dp"
+                android:background="@color/white"
+                >
+
+                <RelativeLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/bookTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="Vo Chanh Tin"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"></TextView>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:textColor="#103667"
+                        android:textStyle="bold"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="-7dp"
+                        android:textSize="10dp"
+                        android:layout_marginEnd="16dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:background="@drawable/button_edit_address"
+                        android:drawableLeft="@drawable/edit_address_icon"
+                        android:text="Edit"></Button>
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="178dp"
+                    android:layout_height="wrap_content"
+                    android:text="09147312123"
+                    android:textColor="@color/black"
+                    android:textSize="5pt"></TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="123 Tran Hung Dao"
+                    android:textColor="@color/black"
+                    android:textSize="5pt"
+                    >
+
+                </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quan 5, Ho Chi Minh City"
+                    android:textSize="5pt"
+                    android:textColor="@color/black">
+                </TextView>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    >
+
+                    <RadioButton
+                        android:id="@+id/radioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"></RadioButton>
+
+                    <TextView
+                        android:layout_width="178dp"
+                        android:layout_height="31dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="7dp"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="164dp"
+                        android:layout_toEndOf="@+id/radioButton"
+                        android:text="Use as the shipping address"
+                        android:textColor="@color/black"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

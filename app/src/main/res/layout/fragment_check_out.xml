@@ -102,16 +102,21 @@
                             android:textColor="@color/black"
                             android:textStyle="bold"></TextView>
 
-                        <ImageView
-                            android:id="@+id/changeAddress"
+                        <Button
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/change_icon"
-                            android:textColor="@color/black"
+                            android:textColor="@color/white"
                             android:textStyle="bold"
-                            android:scaleType="centerCrop"></ImageView>
+                            android:layout_height="30dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="-7dp"
+                            android:textSize="10dp"
+                            android:layout_marginEnd="16dp"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:background="@drawable/button_change_card"
+                            android:drawableLeft="@drawable/change_card_icon"
+                            android:text="Change"></Button>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -213,20 +218,6 @@
             app:layout_constraintEnd_toEndOf="parent"></Button>
     </LinearLayout>
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/rvCheckout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:gravity="center"-->
-<!--        android:numColumns="1"-->
-<!--        android:verticalSpacing="20dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="1.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/test"-->
-<!--        tools:listitem="@layout/fragment_check_out_list_view_item"></androidx.recyclerview.widget.RecyclerView>-->
-
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -254,6 +245,7 @@
                 android:layout_height="30dp"
                 android:text="Ordered Items">
             </TextView>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCheckout"
                 android:layout_width="match_parent"
@@ -305,22 +297,44 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <RadioButton
-                            android:background="@drawable/custom_radio_selector_payment_method"
-                            android:id="@+id/option1"
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@drawable/custom_radio_text_payment_method"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:button="@color/transparent"
-                            android:layout_marginBottom="10dp"
-                            android:drawableStart="@drawable/banking_radio_button_image"
-                            android:drawablePadding="30dp"
+                            android:layout_marginBottom="10dp">
 
-                            android:textSize="15dp"
-                            android:textStyle="bold"
-                            android:text="XXXXXXXXX-973" />
+                            <RadioButton
+                                android:background="@drawable/custom_radio_selector_payment_method"
+                                android:id="@+id/option1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@drawable/custom_radio_text_payment_method"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:button="@color/transparent"
+                                android:drawableStart="@drawable/banking_radio_button_image"
+                                android:drawablePadding="30dp"
+                                android:paddingEnd="10dp"
+                                android:textSize="15dp"
+                                android:textStyle="bold"
+                                android:text="XXXXXXXXX-973" />
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="-7dp"
+                                android:layout_marginEnd="16dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
+                                android:textSize="10dp"
+                                android:background="@drawable/button_change_card"
+                                android:layout_toEndOf="@+id/option1"
+                                android:drawableLeft="@drawable/change_card_icon"
+                                android:text="Change"></Button>
+                        </RelativeLayout>
 
                         <RadioButton
                             android:background="@drawable/custom_radio_selector_payment_method"
