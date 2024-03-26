@@ -95,8 +95,6 @@ class ProductList : Fragment() {
             activity?.let {
                 val newTheme = R.style.BottomSheetSignNightTheme
                 requireActivity().theme.applyStyle(newTheme, true)
-
-
                 OptionSheet().show(it) {
                     title("Sort")
                     style(SheetStyle.BOTTOM_SHEET)
@@ -114,6 +112,19 @@ class ProductList : Fragment() {
                         // Handle selected option
                         Toast.makeText(activity, option.toString(), Toast.LENGTH_SHORT).show()
                     }
+                }
+            }
+        }
+
+        binding.tvfilter.setOnClickListener {
+            activity?.let {
+//                val newTheme = R.style.BottomSheetSignNightTheme
+//                requireActivity().theme.applyStyle(newTheme, true)
+
+                FilterDialog().show(it){
+                    style(SheetStyle.BOTTOM_SHEET)
+                    title("Filter")
+                    titleColor(Color.parseColor("#FF0000"))
                 }
             }
         }
