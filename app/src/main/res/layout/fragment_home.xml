@@ -236,7 +236,8 @@
                                 <com.google.android.material.chip.ChipGroup
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    app:singleSelection="true">
+                                    app:singleSelection="true"
+                                    >
 
                                     <com.google.android.material.chip.Chip
                                         style="@style/Colors_Widget.MaterialComponents.Chip.Choice.Shimmer"

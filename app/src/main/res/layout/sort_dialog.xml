@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/round_corner"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/ivBackFromSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/baseline_arrow_back_ios_new_24"></ImageView>
+
+            <TextView
+                android:id="@+id/tvSortTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Sort"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
+
+            <ImageView
+                android:id="@+id/ivApplySort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:paddingEnd="5dp"
+                android:src="@drawable/checked"></ImageView>
+        </RelativeLayout>
+
+        <RadioGroup
+            android:id="@+id/sortItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/popular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@android:color/transparent"
+                android:minHeight="48dp"
+                android:padding="10dp"
+                android:text="Popular"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/newest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@android:color/transparent"
+                android:minHeight="48dp"
+                android:padding="10dp"
+                android:text="Newest"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/customerreview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@android:color/transparent"
+                android:minHeight="48dp"
+                android:padding="10dp"
+                android:text="Customer Review"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <RadioButton
+                android:id="@+id/lowtohigh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@android:color/transparent"
+                android:minHeight="48dp"
+                android:padding="10dp"
+                android:text="Price: lowest to high"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/hightolow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@android:color/transparent"
+                android:minHeight="48dp"
+                android:padding="10dp"
+                android:text="Price: highest to low"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </RadioGroup>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

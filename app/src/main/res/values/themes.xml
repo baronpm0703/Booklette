@@ -57,7 +57,21 @@
         <item name="android:textColor">@color/reverse_chip_text_color</item>
     </style>
 
+    <style name="Widget.App.RangeSlider" parent="Widget.MaterialComponents.Slider">
+        <item name="trackColor">@color/black</item>
+        <item name="thumbColor">@color/black</item>
+    </style>
 
+<!--    <style name="Color_Filter_Categories">-->
+<!--        <item name="backgroundColor">@color/filter_categories_background_color</item>-->
+<!--        <item name="textColor">@color/filter_categories_text_color</item>-->
+<!--    </style>-->
 
+    <style name="Color_Filter_Categories" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/filter_categories_background_color</item>
+        <item name="chipStrokeColor">@color/chip_stroke_color</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">@color/filter_categories_text_color</item>
+    </style>
 
 </resources>
