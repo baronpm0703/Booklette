@@ -1,14 +1,16 @@
 package com.example.booklette
 
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
-import com.example.booklette.databinding.FragmentHomeBinding
-import com.google.api.Distribution.BucketOptions.Linear
+import com.taufiqrahman.reviewratings.BarLabels
+import java.util.Random
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,6 +83,24 @@ class BookDetailFragment : Fragment() {
         otherBookFromShopAdapter = TopBookHomeFragmentAdapter(books, stars)
         binding.rvOtherBookFromShopBookDetail.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvOtherBookFromShopBookDetail.adapter = otherBookFromShopAdapter
+
+        val colors = intArrayOf(
+            Color.parseColor("#0e9d58"),
+            Color.parseColor("#bfd047"),
+            Color.parseColor("#ffc105"),
+            Color.parseColor("#ef7e14"),
+            Color.parseColor("#d36259")
+        )
+
+        val raters = intArrayOf(
+            Random().nextInt(100),
+            Random().nextInt(100),
+            Random().nextInt(100),
+            Random().nextInt(100),
+            Random().nextInt(100)
+        )
+
+        binding.ratingReviews.createRatingBars(100, BarLabels.STYPE2, colors, raters)
 
         return view
     }

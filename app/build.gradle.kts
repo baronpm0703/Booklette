@@ -52,6 +52,12 @@ android {
 
 }
 
+configurations {
+    implementation {
+        exclude(group = "org.jetbrains", module = "annotations")
+    }
+}
+
 dependencies {
 
     implementation("androidx.core:core-ktx:1.10.1")
@@ -149,6 +155,6 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     implementation ("com.github.maxpilotto:credit-card-view:8.0.0")
 
-
-
+    //rating and reviews
+    implementation("com.github.Inconnu08:android-ratingreviews:1.2.0")
 }

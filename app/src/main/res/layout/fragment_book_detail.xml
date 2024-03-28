@@ -413,16 +413,69 @@
         </TextView>
 
         <TextView
+            android:id="@+id/txtBookDetailDescriptionMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtDescriptionBookDetail"
             android:text="@string/bookDetailMore"
             android:textStyle="bold"
             android:textColor="#9A0000">
         </TextView>
+
+        <TextView
+            android:id="@+id/txtReviewAndRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            android:text="@string/bookDetailRatingAndReview"
+            android:textSize="7pt"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtBookDetailDescriptionMore">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/btnWriteReviewBookDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bookDetailAddReview"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/white"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/round_corner_button_solid_color_book_detail_red"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txtReviewAndRating"
+            app:layout_constraintBottom_toBottomOf="@+id/txtReviewAndRating">
+
+        </Button>
+
+        <com.taufiqrahman.reviewratings.RatingReviews
+            xmlns:bar="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rating_reviews"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="15dp"
+            bar:layout_constraintTop_toBottomOf="@+id/btnWriteReviewBookDetail"
+            bar:layout_constraintLeft_toLeftOf="parent"
+            bar:layout_constraintRight_toRightOf="parent"
+            bar:layout_constraintBottom_toBottomOf="parent"
+            bar:style="style2"
+            bar:animation="true"
+            bar:max_value="100"
+            bar:show_label="true"
+            bar:show_raters="true"
+            bar:spaces="15dp"
+            bar:text_color="#000000"
+            bar:text_size="5pt"
+            bar:width="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
