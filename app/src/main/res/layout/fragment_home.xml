@@ -166,24 +166,25 @@
 
                         </com.facebook.shimmer.ShimmerFrameLayout>
 
-                        <androidx.viewpager.widget.ViewPager
-                            android:layout_width="match_parent"
-                            android:layout_height="150dp"
-                            android:id="@+id/rvBestDeal"
-                            android:layout_marginLeft="5dp"
-                            android:paddingLeft="10dp"
-                            android:layout_marginRight="5dp"
-                            android:paddingRight="10dp"
-                            tools:itemCount="1"
-                            tools:listitem="@layout/best_deal_recycler_view_layout"
-                            android:layout_marginTop="20dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView17">
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/rvBestDeal"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginRight="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.444"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView17"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/best_deal_recycler_view_layout">
 
-                        </androidx.viewpager.widget.ViewPager>
+                    </androidx.viewpager.widget.ViewPager>
 
-                        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
                             android:id="@+id/dots_indicator"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
