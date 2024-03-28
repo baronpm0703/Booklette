@@ -147,4 +147,8 @@ dependencies {
     // Material
     implementation("com.google.android.material:material:1.5.0")
     implementation("com.google.android.material:material:1.9.0")
+    implementation ("com.github.maxpilotto:credit-card-view:8.0.0")
+
+
+
 }

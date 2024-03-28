@@ -37,7 +37,6 @@ class ShipAddressFragmentRecycleViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val addressInfo = addressList[position]
 
-
         if (addressInfo == "2") {
             holder.buyerName.text = "Vo Chanh Tin"
             holder.phoneNum.text = "0913794478"
