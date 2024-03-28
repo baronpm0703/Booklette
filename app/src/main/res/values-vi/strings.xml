@@ -83,4 +83,9 @@
     <string name="book_detail_add_to_cart">Thêm vào giỏ hàng</string>
     <string name="book_detail_add_to_wishlist">Thêm vào wishlist</string>
     <string name="book_detail_voucher">Mã giảm giá</string>
+    <string name="bookDetailOtherProduct">Các sản phẩm khác của shop</string>
+    <string name="bookDetailSave">Lưu</string>
+    <string name="bookDetailMore">xem thêm ></string>
+    <string name="bookDetailDescription">Mô tả</string>
+    <string name="bookDetailDescriptionExample">The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by adolescents for its theme of angst, alienation and as a critique  The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by adolescents for its theme of angst, alienation and as a critique...</string>
 </resources>

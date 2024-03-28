@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:padding="10dp"
+    android:background="@drawable/round_corner_button_solid_color_book_detail_light_pink">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="Sale up to 50%"
+            android:textColor="#B50000"
+            android:textStyle="bold"
+            android:textSize="10pt">
+
+        </TextView>
+
+        <TextView
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Minimum order 100k"
+            android:textSize="5pt"
+            android:textColor="#B50000">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expiring soon: 1 day(s) left"
+            android:textSize="4pt"
+            android:textColor="#6E6E6E">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bookDetailSave"
+        android:textSize="5pt"
+        android:textColor="@color/white"
+        android:minHeight="30dp"
+        android:minWidth="50dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/round_corner_button_solid_color_book_detail_pink"
+        android:layout_gravity="center">
+
+    </Button>
+
+</LinearLayout>

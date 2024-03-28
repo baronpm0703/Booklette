@@ -5,8 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
 import com.example.booklette.databinding.FragmentHomeBinding
+import com.google.api.Distribution.BucketOptions.Linear
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +28,10 @@ class BookDetailFragment : Fragment() {
     private var _binding: FragmentBookDetailBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var voucherAdapter: bookDetailFragmentVoucherViewPagerAdapter
+    private lateinit var shopVoucherAdapter: bookDetailShopVoucherRVAdapter
+    private lateinit var otherBookFromShopAdapter: TopBookHomeFragmentAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -41,10 +47,42 @@ class BookDetailFragment : Fragment() {
         _binding = FragmentBookDetailBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        var data = ArrayList<String>()
+        data.add("A")
+        data.add("A")
+        data.add("A")
+        data.add("A")
+        data.add("A")
+
+        voucherAdapter = bookDetailFragmentVoucherViewPagerAdapter(requireContext(), data)
+        binding.vpVoucherBookDetail.adapter = voucherAdapter
+        binding.vpVoucherBookDetail.pageMargin = 20
+
+        shopVoucherAdapter = bookDetailShopVoucherRVAdapter()
+        binding.rvBookDetailShopVoucher.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvBookDetailShopVoucher.adapter = shopVoucherAdapter
+
+        var books = ArrayList<BookObject>()
+        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+
+        var stars = ArrayList<Float>()
+        stars.add(4.5F)
+        stars.add(4.5F)
+        stars.add(4.5F)
+        stars.add(4.5F)
+        stars.add(4.5F)
+        stars.add(4.5F)
+
+        otherBookFromShopAdapter = TopBookHomeFragmentAdapter(books, stars)
+        binding.rvOtherBookFromShopBookDetail.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvOtherBookFromShopBookDetail.adapter = otherBookFromShopAdapter
+
         return view
-
-
-
     }
 
     companion object {

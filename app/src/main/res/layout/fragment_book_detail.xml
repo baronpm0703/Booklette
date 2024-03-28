@@ -195,8 +195,8 @@
             android:id="@+id/txtVoucher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
             android:text="@string/book_detail_voucher"
             android:textSize="7pt"
             android:textStyle="bold"
@@ -209,14 +209,220 @@
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vpVoucherBookDetail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="71dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtVoucher"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             tools:itemCount="1"
             tools:listitem="@layout/book_detail_voucher_pager_item">
 
         </androidx.viewpager.widget.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/llBookStoreInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vpVoucherBookDetail">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/book_shop_avatar"
+
+                    />
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vo Chanh Tin bookstore"
+                        android:maxLines="1"
+                        android:textSize="8pt"
+                        android:textColor="@color/black"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Online 10 minutes last">
+
+                    </TextView>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/pin_light"
+                            android:layout_gravity="center_vertical"/>
+
+                        <TextView
+                            android:layout_marginLeft="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ho Chi Minh City">
+
+                        </TextView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View shop"
+                android:textSize="5pt"
+                android:textColor="@color/white"
+                android:minHeight="30dp"
+                android:minWidth="80dp"
+                android:background="@drawable/round_corner_button_solid_color_book_detail_pink"
+                android:layout_gravity="center">
+
+            </Button>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/otherBook_BookDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:text="@string/bookDetailOtherProduct"
+            android:textSize="7pt"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llBookStoreInfo">
+
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBookDetailShopVoucher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otherBook_BookDetail"
+            tools:itemCount="1"
+            tools:listitem="@layout/shop_voucher_book_detail_item"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/txtBookDetailOtherBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:text="@string/bookDetailOtherProduct"
+            android:textSize="7pt"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvBookDetailShopVoucher">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#9A0000"
+            android:text="@string/bookDetailMore"
+            android:textStyle="bold"
+            android:layout_marginRight="15dp"
+            app:layout_constraintTop_toTopOf="@+id/txtBookDetailOtherBook"
+            app:layout_constraintBottom_toBottomOf="@+id/txtBookDetailOtherBook"
+            app:layout_constraintRight_toRightOf="parent">
+
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvOtherBookFromShop_BookDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtBookDetailOtherBook"
+            tools:itemCount="1"
+            tools:listitem="@layout/book_item_home_fragment">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/txtBookDetailDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:text="@string/bookDetailDescription"
+            android:textSize="7pt"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvOtherBookFromShop_BookDetail">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtDescriptionBookDetail"
+            android:layout_marginTop="15dp"
+            android:maxLength="1000"
+            android:ellipsize="marquee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:textColor="#9D9D9D"
+            android:text="@string/bookDetailDescriptionExample"
+            android:layout_marginRight="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtBookDetailDescription">
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtDescriptionBookDetail"
+            android:text="@string/bookDetailMore"
+            android:textStyle="bold"
+            android:textColor="#9A0000">
+        </TextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
