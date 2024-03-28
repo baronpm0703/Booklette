@@ -320,6 +320,7 @@
                                 android:text="XXXXXXXXX-973" />
 
                             <Button
+                                android:id="@+id/changeCardBtn"
                                 android:layout_width="wrap_content"
                                 android:textColor="@color/white"
                                 android:textStyle="bold"
