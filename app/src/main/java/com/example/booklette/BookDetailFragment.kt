@@ -100,7 +100,7 @@ class BookDetailFragment : Fragment() {
             Random().nextInt(100)
         )
 
-        binding.ratingReviews.createRatingBars(100, BarLabels.STYPE2, colors, raters)
+        binding.ratingReviews.createRatingBars(100, BarLabels.STYPE5, colors, raters)
 
         return view
     }

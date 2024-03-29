@@ -97,5 +97,6 @@
     <string name="bookDetailDescriptionExample">The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by adolescents for its theme of angst, alienation and as a critique  The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by adolescents for its theme of angst, alienation and as a critique...</string>
     <string name="bookDetailRatingAndReview">Rating and Reviews</string>
     <string name="bookDetailAddReview">Write a review</string>
+    <string name="bookDetailImage">with photo</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
