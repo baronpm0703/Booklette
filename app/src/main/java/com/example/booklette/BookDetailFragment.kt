@@ -102,6 +102,10 @@ class BookDetailFragment : Fragment() {
 
         binding.ratingReviews.createRatingBars(100, BarLabels.STYPE5, colors, raters)
 
+        binding.lvUserReviewDetail.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        binding.lvUserReviewDetail.adapter = bookDetailUserReviewAdapter()
+
+
         return view
     }
 
