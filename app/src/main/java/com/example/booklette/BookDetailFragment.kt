@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
 import com.taufiqrahman.reviewratings.BarLabels
@@ -105,6 +106,8 @@ class BookDetailFragment : Fragment() {
         binding.lvUserReviewDetail.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         binding.lvUserReviewDetail.adapter = bookDetailUserReviewAdapter()
 
+        binding.rvBookDetailYouMayLove.layoutManager = GridLayoutManager(activity, 2)
+        binding.rvBookDetailYouMayLove.adapter = bookDetailYouMayLoveAdapter()
 
         return view
     }

@@ -98,5 +98,6 @@
     <string name="bookDetailRatingAndReview">Rating and Reviews</string>
     <string name="bookDetailAddReview">Write a review</string>
     <string name="bookDetailImage">with photo</string>
+    <string name="bookDetailYouMayLoveToBuy">You may love to buy</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

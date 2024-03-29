@@ -91,4 +91,5 @@
     <string name="bookDetailRatingAndReview">Xếp hạng và đánh giá</string>
     <string name="bookDetailAddReview">Viết đánh giá</string>
     <string name="bookDetailImage">hình ảnh</string>
+    <string name="bookDetailYouMayLoveToBuy">Các sản phẩm tương tự</string>
 </resources>
