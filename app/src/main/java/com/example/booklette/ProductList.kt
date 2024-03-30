@@ -64,29 +64,6 @@ class ProductList : Fragment() {
         binding.gvProductList.adapter =
                 activity?.let {ProductListFragmentGridViewAdapter(it, bookList)}
 
-        // Pre-set checked item form radio group
-        binding.linearLayout.visibility = View.GONE
-        val checked = binding.sortItem.getChildAt(3) as RadioButton
-
-        checked.setBackgroundColor(Color.parseColor("#D45555"))
-        checked.setTextColor(Color.parseColor("#FFFFFF"))
-
-        // Set up a listener for the RadioGroup
-        binding.sortItem.setOnCheckedChangeListener { group, checkedId ->
-            for (i in 0 until group.childCount) {
-                val radioButton = group.getChildAt(i) as RadioButton
-                // Check if the current RadioButton is not the one that is checked
-                if (radioButton.id != checkedId) {
-                    // Reset background color and text color to default
-                    radioButton.setBackgroundColor(Color.TRANSPARENT) // Change to default background color
-                    radioButton.setTextColor(Color.BLACK) // Change to default text color
-                } else {
-                    // If the current RadioButton is the one that is checked, change its appearance
-                    radioButton.setBackgroundColor(Color.parseColor("#D45555"))
-                    radioButton.setTextColor(Color.parseColor("#FFFFFF"))
-                }
-            }
-        }
 
 
         // Set up the select dialog when click the sort
@@ -120,29 +97,13 @@ class ProductList : Fragment() {
             activity?.let {
 //                val newTheme = R.style.BottomSheetSignNightTheme
 //                requireActivity().theme.applyStyle(newTheme, true)
-
-                FilterDialog().show(it){
+                FilterDialogProductList().show(it){
                     style(SheetStyle.BOTTOM_SHEET)
                     title("Filter")
                     titleColor(Color.parseColor("#FF0000"))
                 }
             }
         }
-
-        // Apply Sort Type
-
-        binding.ivApplySort.setOnClickListener{
-            binding.linearLayout.visibility = View.GONE
-
-        }
-
-        binding.ivBackFromSort.setOnClickListener{
-            binding.linearLayout.visibility = View.GONE
-        }
-
-
-
-
 
 
         // Inflate the layout for this fragment

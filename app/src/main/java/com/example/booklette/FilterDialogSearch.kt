@@ -3,18 +3,27 @@ package com.example.booklette
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.StringRes
-import com.example.booklette.databinding.FilterDialogBinding
+import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
 import java.text.NumberFormat
 import java.util.Currency
+import com.example.booklette.databinding.FilterDialogSearchBinding
 
-private typealias PositiveListener = () -> Unit
-class FilterDialog: Sheet() {
+class FilterDialogSearch: Sheet() {
     override val dialogTag = "FilterSheet"
-    private lateinit var binding: FilterDialogBinding
+    private lateinit var binding: FilterDialogSearchBinding
+    private var chosenType = arrayListOf<String>()
+    private val type = arrayListOf<String>("Paper Back", "Hard Cover")
+    private var chosenTypeTrueTableArray = BooleanArray(type.size)
+    private var filterTypeDialogGVAdapter: FilterTypeGVAdapter? = null
+
+    init {
+        chosenTypeTrueTableArray.fill(false)
+    }
 
     fun onPositive(positiveListener: PositiveListener) {
         this.positiveListener = positiveListener
@@ -30,7 +39,7 @@ class FilterDialog: Sheet() {
         this.positiveListener = positiveListener
     }
     override fun onCreateLayoutView(): View {
-        return FilterDialogBinding.inflate(LayoutInflater.from(activity)).also { binding = it }.root
+        return FilterDialogSearchBinding.inflate(LayoutInflater.from(activity)).also { binding = it }.root
     }
 
     @SuppressLint("SetTextI18n")
@@ -50,33 +59,32 @@ class FilterDialog: Sheet() {
             binding.moneyRange.text = "${min}-${max}$"
         }
 
-        val categories =  ArrayList<String>()
-        categories.add("All")
-        categories.add("Non-fiction")
-        categories.add("Drama")
-        categories.add("Comic")
-        categories.add("Crime")
-        categories.add("Horror")
-        categories.add("Fantasy")
-        categories.add("Young Adult")
+        // Initialize adapter only if null, otherwise, reuse existing adapter
+        if (filterTypeDialogGVAdapter == null) {
+            Log.d("New", "New")
+            filterTypeDialogGVAdapter = FilterTypeGVAdapter(requireActivity(), type)
+            filterTypeDialogGVAdapter!!.setCheckedItems(chosenTypeTrueTableArray)
+        } else {
+            // Retrieve the checked items from the adapter and update the UI
+            filterTypeDialogGVAdapter!!.setCheckedItems(chosenTypeTrueTableArray)
+        }
 
-        binding.filterCategoryDialogGV.adapter =
-            activity?.let {FilterCategoriesGVAdapter(it, categories)}
+        binding.filterTypeDialogGV.adapter = filterTypeDialogGVAdapter
 
-        val type =  ArrayList<String>()
-        type.add("Paper Back")
-        type.add("Hard Cover")
+        binding.filterTypeDialogGV.setOnItemClickListener { adapterView, view, index, l ->
+            if (!chosenType.contains(type[index])) {
+                chosenType.add(type[index])
+                chosenTypeTrueTableArray[index] = true
+                Log.d("OnItemCLick", chosenTypeTrueTableArray[index].toString())
+            } else {
+                chosenType.remove(chosenType.filter { ty -> ty == type[index] }.single())
+                chosenTypeTrueTableArray[index] = false
+            }
+            // Update the adapter with the new checked state
+            (filterTypeDialogGVAdapter)?.setCheckedItems(chosenTypeTrueTableArray)
+        }
 
-        binding.filterTypeDialogGV.adapter =
-            activity?.let {FilterTypeGVAdapter(it, type)}
 
-        val ages =  ArrayList<String>()
-        ages.add("All")
-        ages.add("Lower 13")
-        ages.add("13-18")
-        ages.add("18+")
-        binding.filterAgeDialogGV.adapter =
-            activity?.let {FilterAgeGVAdapter(it, ages)}
 
 
         this.displayButtonsView(false)
@@ -86,15 +94,16 @@ class FilterDialog: Sheet() {
          //Hide the toolbar of the sheet, the title and the icon
     }
 
-    fun build(ctx: Context, width: Int? = null, func: FilterDialog.() -> Unit): FilterDialog {
+
+    fun build(ctx: Context, width: Int? = null, func: FilterDialogSearch.() -> Unit): FilterDialogSearch {
         this.windowContext = ctx
         this.width = width
         this.func()
         return this
     }
 
-    /** Build and show [FilterDialog] directly. */
-    fun show(ctx: Context, width: Int? = null, func: FilterDialog.() -> Unit): FilterDialog {
+    /** Build and show [FilterDialogSearch] directly. */
+    fun show(ctx: Context, width: Int? = null, func: FilterDialogSearch.() -> Unit): FilterDialogSearch {
         this.windowContext = ctx
         this.width = width
         this.func()

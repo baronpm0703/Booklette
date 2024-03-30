@@ -1,14 +1,19 @@
 package com.example.booklette
 
 import CategoryFragmentGridViewAdapter
-import com.example.booklette.R
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.example.booklette.databinding.FragmentCategoryBinding
+import com.mancj.materialsearchbar.MaterialSearchBar
+import com.maxkeppeler.sheets.core.SheetStyle
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -70,6 +75,77 @@ class CategoryFragment : Fragment() {
 
 //            ft.replace(R.id.fragment_holder, MusicAlbumList(), "albumlist")
 //            ft.commit()
+        }
+
+
+        val inflater = LayoutInflater.from(activity)
+        var customSuggestionAdapter = activity?.let { CustomSuggestionAdapter(it, inflater) }
+
+
+        val suggestions = listOf("Apple", "Banana", "Orange", "Mango", "Potato", "Melon", "Dragon Fruit", "Pineapple", "Chilly")
+        if (customSuggestionAdapter != null) {
+            customSuggestionAdapter.suggestions =suggestions
+
+            binding.searchBar.setCustomSuggestionAdapter(customSuggestionAdapter)
+        } else {
+            binding.searchBar.lastSuggestions = suggestions
+        }
+        binding.searchBar.setOnSearchActionListener(object: MaterialSearchBar.OnSearchActionListener{
+            override fun onSearchStateChanged(enabled: Boolean) {
+                Log.i("State", enabled.toString())
+
+                if (enabled) {
+                    binding.relativeLayout.visibility = View.GONE
+                    binding.filterCategorySearchPage.visibility = View.GONE
+                    binding.TopSearchLayout.visibility = View.VISIBLE
+                    binding.searchBar.setPadding(0, binding.relativeLayout.height / 2, 0,  0)
+
+                } else {
+                    binding.searchBar.setPadding(0)
+                    binding.relativeLayout.visibility = View.VISIBLE
+                    binding.filterCategorySearchPage.visibility = View.VISIBLE
+                    binding.TopSearchLayout.visibility = View.GONE
+                }
+            }
+
+            override fun onSearchConfirmed(text: CharSequence?) {
+                Log.i("Confirm", "Confirm")
+            }
+
+            override fun onButtonClicked(buttonCode: Int) {
+                Log.i("Click","Search Click")
+            }
+        })
+
+        binding.searchBar.addTextChangeListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                Log.d("LOG_TAG", javaClass.simpleName + " text changed " + binding.searchBar.getText())
+                // send the entered text to our filter and let it manage everything
+                if (customSuggestionAdapter != null) {
+                    customSuggestionAdapter.getFilter().filter(binding.searchBar.getText())
+                }
+            }
+
+            override fun afterTextChanged(editable: Editable) {}
+        })
+
+        val filterDialogSearch = FilterDialogSearch()
+        binding.filterCategorySearchPage.setOnClickListener{
+            activity?.let {
+                filterDialogSearch.show(it){
+                    style(SheetStyle.BOTTOM_SHEET)
+                    title("Filter")
+                    titleColor(Color.parseColor("#FF0000"))
+                }
+            }
+        }
+
+        val topSearch = arrayListOf<String>("Hot", "Non-Fiction", "Fiction", "Horror", "LifeStyle Book", "Report Book", "Material", "Children Book", "Over 18s", "Mysterious")
+        binding.topSearchGV.adapter = FilterTypeGVAdapter(requireActivity(), topSearch)
+
+        binding.topSearchGV.setOnItemClickListener { parent, view, position, id ->
+            Log.i("Top Search", topSearch[position])
         }
 
 

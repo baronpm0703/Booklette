@@ -3,11 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".FilterDialogProductList">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <RelativeLayout
             android:id="@+id/priceFilter"
             android:layout_width="match_parent"
@@ -22,12 +27,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_margin="10dp"
+                android:fontFamily="@font/helvetica_regular"
                 android:paddingStart="10dp"
                 android:text="Price Range"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:fontFamily="@font/helvetica_regular"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/moneyRange"
@@ -35,10 +40,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="10dp"
+                android:fontFamily="@font/helvetica_regular"
                 android:paddingEnd="10dp"
                 android:text="0-80$"
                 android:textColor="@color/black"
-                android:fontFamily="@font/helvetica_regular"
                 android:textSize="20sp" />
 
             <com.google.android.material.slider.RangeSlider
@@ -47,10 +52,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/price"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:valueFrom="0.0"
                 android:valueTo="100.0"
                 app:values="@array/initial_slider_values" />
@@ -59,72 +64,85 @@
                 android:id="@+id/filterCategoryDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/rangeSlider"
                 android:layout_alignParentStart="true"
                 android:layout_margin="10dp"
+                android:fontFamily="@font/helvetica_regular"
                 android:paddingStart="10dp"
                 android:text="Categories"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:fontFamily="@font/helvetica_regular"
                 android:textSize="20sp"
-                android:layout_below="@+id/rangeSlider"/>
+                android:textStyle="bold" />
 
             <GridView
                 android:id="@+id/filterCategoryDialogGV"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:layout_below="@+id/filterCategoryDialog"
-                android:numColumns="4"
-                android:padding="15dp"
                 android:horizontalSpacing="5dp"
+                android:numColumns="4"
+                android:padding="10dp"
                 android:verticalSpacing="5dp"></GridView>
+
+            <View
+                android:layout_below="@+id/filterCategoryDialogGV"
+                android:layout_width="match_parent"
+                android:layout_height="7dp"
+                android:background="@drawable/gradient_color" />
 
             <TextView
                 android:id="@+id/filterTypeDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/filterCategoryDialogGV"
                 android:layout_alignParentStart="true"
                 android:layout_margin="10dp"
+                android:fontFamily="@font/helvetica_regular"
                 android:paddingStart="10dp"
                 android:text="Type"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:fontFamily="@font/helvetica_regular"
                 android:textSize="20sp"
-                android:layout_below="@+id/filterCategoryDialogGV"/>
+                android:textStyle="bold" />
 
             <GridView
                 android:id="@+id/filterTypeDialogGV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/filterTypeDialog"
-                android:numColumns="4"
-                android:padding="15dp"
                 android:horizontalSpacing="5dp"
-                android:verticalSpacing="5dp"></GridView>
+                android:numColumns="4"
+                android:padding="10dp"
+                android:verticalSpacing="5dp"
+                tools:ignore="NestedScrolling" />
+
+            <View
+                android:layout_below="@+id/filterTypeDialogGV"
+                android:layout_width="match_parent"
+                android:layout_height="7dp"
+                android:background="@drawable/gradient_color" />
 
             <TextView
                 android:id="@+id/filterAgeDialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/filterTypeDialogGV"
                 android:layout_alignParentStart="true"
                 android:layout_margin="10dp"
+                android:fontFamily="@font/helvetica_regular"
                 android:paddingStart="10dp"
                 android:text="Age"
-                android:textStyle="bold"
                 android:textColor="@color/black"
-                android:fontFamily="@font/helvetica_regular"
                 android:textSize="20sp"
-                android:layout_below="@+id/filterTypeDialogGV"/>
+                android:textStyle="bold" />
 
             <GridView
                 android:id="@+id/filterAgeDialogGV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/filterAgeDialog"
-                android:numColumns="4"
-                android:padding="15dp"
                 android:horizontalSpacing="5dp"
+                android:numColumns="4"
+                android:padding="10dp"
                 android:verticalSpacing="5dp"></GridView>
 
         </RelativeLayout>

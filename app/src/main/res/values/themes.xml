@@ -69,8 +69,8 @@
 
     <style name="Color_Filter_Categories" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/filter_categories_background_color</item>
-        <item name="chipStrokeColor">@color/chip_stroke_color</item>
-        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeColor">@color/chip_stroke_color_filter</item>
+        <item name="chipStrokeWidth">1.5dp</item>
         <item name="android:textColor">@color/filter_categories_text_color</item>
     </style>
 

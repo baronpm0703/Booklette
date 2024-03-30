@@ -54,7 +54,6 @@
         <item name="sheetsBackgroundColor">@color/white</item>
         <item name="sheetsHandleWidth">42dp</item>
         <item name="sheetsHandleHeight">4dp</item>
-
         <!--        <item name="sheetTitleColor">?sheetPrimaryColor</item>-->
         <!--        <item name="sheetValueTextActiveColor">?sheetPrimaryColor</item>-->
         <!--        <item name="sheetButtonColor">?sheetPrimaryColor</item>-->

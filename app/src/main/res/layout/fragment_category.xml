@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CategoryFragment">
@@ -53,36 +52,84 @@
         style="@style/MaterialSearchBarLight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/filterCategorySearchPage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
         app:mt_hint="@string/fragment_home_search_hint"
         app:mt_maxSuggestionsCount="10"
         app:mt_placeholder="@string/fragment_home_search"
         app:mt_searchBarColor="#F4F4F4"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
         app:mt_searchIconDrawable="@drawable/magnifyingglass"
         app:mt_searchIconTint="@color/black"
         app:mt_searchIconUseTint="true"
         app:mt_speechMode="true" />
+
     <RelativeLayout
-        android:id="@+id/imageView3"
+        android:id="@+id/TopSearchLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar">
+
+        <View
+            android:id="@+id/gradientLine"
+            android:layout_width="match_parent"
+            android:layout_height="7dp"
+            android:background="@drawable/gradient_color" />
+
+        <TextView
+            android:id="@+id/TopSearchTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="30dp"
+            android:text="Top Search"
+            android:textColor="@color/black"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/gradientLine" />
+
+        <GridView
+            android:id="@+id/topSearchGV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TopSearchTitle"
+            android:horizontalSpacing="5dp"
+            android:numColumns="4"
+            android:padding="15dp"
+            android:verticalSpacing="5dp" />
+
+        <View
+            android:id="@+id/gradientLine2"
+            android:layout_width="match_parent"
+            android:layout_height="7dp"
+            android:layout_below="@+id/topSearchGV"
+            android:background="@drawable/gradient_color" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/filterCategorySearchPage"
         android:layout_width="50dp"
         android:layout_height="0dp"
         android:layout_marginRight="15dp"
         android:background="#F4F4F4"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@+id/searchBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/searchBar"
-        android:gravity="center">
+        app:layout_constraintTop_toTopOf="@+id/searchBar">
 
         <ImageView
+            android:id="@+id/filterIcon"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/filter_alt">
-
-        </ImageView>
+            android:src="@drawable/filter_alt"></ImageView>
 
     </RelativeLayout>
 
@@ -97,7 +144,7 @@
         android:textSize="10pt"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBar">
+        app:layout_constraintTop_toBottomOf="@+id/TopSearchLayout">
 
     </TextView>
 
@@ -105,17 +152,17 @@
         android:id="@+id/gvCategories"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:numColumns="2"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="5dp"
+        android:gravity="center"
+        android:numColumns="2"
         android:verticalSpacing="20dp"
-        tools:listitem="@layout/fragment_category_grid_item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17">
-    </GridView>
+        app:layout_constraintTop_toBottomOf="@+id/textView17"
+        tools:listitem="@layout/fragment_category_grid_item"></GridView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
