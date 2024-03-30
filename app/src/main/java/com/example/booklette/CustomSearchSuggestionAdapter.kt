@@ -1,26 +1,31 @@
-package com.example.booklette
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.mancj.materialsearchbar.MaterialSearchBar
+import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
 
 class CustomSuggestionAdapter(
     context: Context, inflater: LayoutInflater?,
-) : SuggestionsAdapter<String, CustomSuggestionAdapter.SuggestionViewHolder>(inflater) {
+    searchBar: MaterialSearchBar
+) : SuggestionsAdapter<String, CustomSuggestionAdapter.SuggestionViewHolder>(inflater),
+    Filterable {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var originalSuggestions = mutableListOf<String>()
     private var filteredSuggestions = mutableListOf<String>()
-    private val maxSuggestionsToShow = 3// Maximum number of suggestions to show
+    private val maxSuggestionsToShow = 3 // Maximum number of suggestions to show
+    private val searchbar = searchBar
 
-    @SuppressLint("NotifyDataSetChanged")
+    init {
+        searchbar.lastSuggestions = originalSuggestions
+    }
+
     override fun setSuggestions(newSuggestions: List<String>) {
         originalSuggestions.clear()
         originalSuggestions.addAll(newSuggestions)
@@ -36,7 +41,7 @@ class CustomSuggestionAdapter(
 
     override fun onBindViewHolder(holder: SuggestionViewHolder, position: Int) {
         val suggestion = filteredSuggestions[position]
-        holder.bind(suggestion)
+        holder.bind(suggestion, position)
     }
 
     override fun getItemCount(): Int {
@@ -52,20 +57,19 @@ class CustomSuggestionAdapter(
         holder: SuggestionViewHolder?,
         position: Int
     ) {
-        holder?.bind(suggestion!!)
-    }
-
-    fun getView(context: Context?, position: Int, convertView: View?, parent: ViewGroup?): View {
-        return convertView ?: inflater.inflate(android.R.layout.simple_list_item_1, parent, false)
+        holder?.bind(suggestion!!, position)
     }
 
     inner class SuggestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textView: TextView = itemView.findViewById(android.R.id.text1)
 
-        fun bind(suggestion: String) {
+        fun bind(suggestion: String, position: Int) {
             textView.text = suggestion
             itemView.setOnClickListener {
                 Log.i("Item Click", suggestion)
+                // Handle click event here, for example:
+                searchbar.hideSuggestionsList()
+                searchbar.setText(suggestion)
             }
         }
     }
@@ -89,13 +93,10 @@ class CustomSuggestionAdapter(
                 return filterResults
             }
 
-            @SuppressLint("NotifyDataSetChanged")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 filteredSuggestions.clear()
                 val resultsList = results?.values as List<String>
-                maxSuggestionsCount = resultsList.size
                 filteredSuggestions.addAll(resultsList.take(resultsList.size))
-                Log.i("Filter sIZE", this@CustomSuggestionAdapter.itemCount.toString())
                 notifyDataSetChanged()
             }
         }

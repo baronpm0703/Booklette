@@ -50,6 +50,7 @@ class ProductList : Fragment() {
 
         // After passing the selected genre from categories, set to this
         binding.selectedGenre.setText(this.arguments?.getString("Genre").toString() )
+        binding.selectedGenre.setText(this.arguments?.getString("SearchResult").toString() )
 
         val bookList = ArrayList<String>()
         bookList.add("1")
@@ -63,8 +64,6 @@ class ProductList : Fragment() {
 
         binding.gvProductList.adapter =
                 activity?.let {ProductListFragmentGridViewAdapter(it, bookList)}
-
-
 
         // Set up the select dialog when click the sort
         binding.tvSort.setOnClickListener{

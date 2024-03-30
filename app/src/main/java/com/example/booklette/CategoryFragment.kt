@@ -1,6 +1,7 @@
 package com.example.booklette
 
 import CategoryFragmentGridViewAdapter
+import CustomSuggestionAdapter
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -9,10 +10,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentCategoryBinding
 import com.mancj.materialsearchbar.MaterialSearchBar
+import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
 import com.maxkeppeler.sheets.core.SheetStyle
 
 
@@ -79,12 +83,13 @@ class CategoryFragment : Fragment() {
 
 
         val inflater = LayoutInflater.from(activity)
-        var customSuggestionAdapter = activity?.let { CustomSuggestionAdapter(it, inflater) }
-
+        var customSuggestionAdapter = activity?.let {
+            CustomSuggestionAdapter(it, inflater, binding.searchBar)
+        }
 
         val suggestions = listOf("Apple", "Banana", "Orange", "Mango", "Potato", "Melon", "Dragon Fruit", "Pineapple", "Chilly")
         if (customSuggestionAdapter != null) {
-            customSuggestionAdapter.suggestions =suggestions
+            customSuggestionAdapter.suggestions = suggestions
 
             binding.searchBar.setCustomSuggestionAdapter(customSuggestionAdapter)
         } else {
@@ -109,7 +114,16 @@ class CategoryFragment : Fragment() {
             }
 
             override fun onSearchConfirmed(text: CharSequence?) {
-                Log.i("Confirm", "Confirm")
+                Log.i("Confirm", text.toString())
+                val searchResult = text.toString()
+                val productList = ProductList()
+                val args = Bundle()
+                args.putString("SearchResult", searchResult)
+                productList.arguments = args
+
+                val ft = activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.fcvNavigation, productList)
+                    ?.commit()
             }
 
             override fun onButtonClicked(buttonCode: Int) {
@@ -129,6 +143,7 @@ class CategoryFragment : Fragment() {
 
             override fun afterTextChanged(editable: Editable) {}
         })
+
 
         val filterDialogSearch = FilterDialogSearch()
         binding.filterCategorySearchPage.setOnClickListener{
