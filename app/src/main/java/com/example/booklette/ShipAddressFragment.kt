@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentShipAddressBinding
+import com.maxkeppeler.sheets.core.SheetStyle
+import android.graphics.Color
+
 
 class ShipAddressFragment : Fragment(){
     private var _binding: FragmentShipAddressBinding? = null
@@ -31,6 +32,16 @@ class ShipAddressFragment : Fragment(){
         val adapter = ShipAddressFragmentRecycleViewAdapter(requireContext(), addressList)
         binding.rvShipAddress.adapter = adapter
         binding.rvShipAddress.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.addShipAddressBtn.setOnClickListener {
+            activity?.let {
+                AddShipAddressDialog().show(it){
+                    style(SheetStyle.BOTTOM_SHEET)
+                    title("Add New Address")
+                    titleColor(Color.parseColor("#FF0000"))
+                }
+            }
+        }
 
         return view
     }

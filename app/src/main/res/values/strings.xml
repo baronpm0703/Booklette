@@ -87,4 +87,17 @@
     <string name="myshop_best_sellers">Best Sellers</string>
     <string name="myshop_highly_recommended">Highly Recommended</string>
     <string name="myshop_more">More ></string>
+    <string name="book_detail_add_to_cart">Add to cart</string>
+    <string name="book_detail_add_to_wishlist">Add to wishlist</string>
+    <string name="book_detail_voucher">Vouchers</string>
+    <string name="bookDetailOtherProduct">Other product of the shop</string>
+    <string name="bookDetailSave">Save</string>
+    <string name="bookDetailMore">more ></string>
+    <string name="bookDetailDescription">Description</string>
+    <string name="bookDetailDescriptionExample">The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by adolescents for its theme of angst, alienation and as a critique  The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by adolescents for its theme of angst, alienation and as a critique...</string>
+    <string name="bookDetailRatingAndReview">Rating and Reviews</string>
+    <string name="bookDetailAddReview">Write a review</string>
+    <string name="bookDetailImage">with photo</string>
+    <string name="bookDetailYouMayLoveToBuy">You may love to buy</string>
+    <!-- TODO: Remove or change this placeholder text -->
 </resources>

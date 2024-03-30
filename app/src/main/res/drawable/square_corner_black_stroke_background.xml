@@ -1,0 +1,8 @@
+<!-- black_square_with_white_fill.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke
+        android:width="2dp"
+        android:color="@android:color/black" />
+    <solid android:color="@android:color/white" />
+</shape>

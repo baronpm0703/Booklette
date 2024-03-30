@@ -27,9 +27,11 @@ class homeActivity : AppCompatActivity() {
         val categoryFragment = CategoryFragment()
         val productList = ProductList()
         val cartFragment = CartFragment()
+        val bookDetailFragment = BookDetailFragment()
 
 
-        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, homeFragment).commit()
+//        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, homeFragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, bookDetailFragment).commit()
 
         binding.smoothBottomBar.setOnItemSelectedListener { item ->
             when (item) {

@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booklette.BankCardFragment
 import com.example.booklette.CheckoutItem
 import com.example.booklette.R
 import com.example.booklette.ShipAddressFragment
@@ -35,6 +36,14 @@ class CheckoutFragment : Fragment() {
             val shipAddressFragment = ShipAddressFragment()
             val ft = activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.fcvNavigation, shipAddressFragment)
+                ?.commit()
+        }
+
+        val changeCardBtn = view.findViewById<Button>(R.id.changeCardBtn)
+        changeCardBtn.setOnClickListener {
+            val bankCardFragment = BankCardFragment()
+            val ft = activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.fcvNavigation, bankCardFragment)
                 ?.commit()
         }
 

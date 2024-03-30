@@ -73,5 +73,11 @@
         <item name="chipStrokeWidth">1.5dp</item>
         <item name="android:textColor">@color/filter_categories_text_color</item>
     </style>
+    <style name="Color_Label_As_Ship_Address.MaterialComponents.Chip.Entry" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="chipBackgroundColor">@color/reverse_chip_background_color_label_as_ship_address</item>
+        <item name="chipStrokeColor">@color/chip_stroke_color_label_as_ship_address</item>
+        <item name="chipStrokeWidth">2dp</item>
+        <item name="android:textColor">@color/reverse_chip_text_color_label_as_ship_address</item>
+    </style>
 
 </resources>
