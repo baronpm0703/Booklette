@@ -13,10 +13,12 @@
     <ImageView
         android:id="@+id/bookCover"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:layout_gravity="center"
-        android:src="@drawable/image_book_2">
+        android:src="@drawable/image_book_2"
+        android:background="@drawable/image_round_corner">
     </ImageView>
 
     <per.wsj.library.AndRatingBar
@@ -24,6 +26,7 @@
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="10dp"
+        android:layout_marginTop="5dp"
         android:rating="3"
         app:bgColor="#6E6E6E"
         app:starColor="#FFBA49"

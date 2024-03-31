@@ -64,6 +64,12 @@ class ProductListFragmentGridViewAdapter(
             viewHolder.bookRate?.rating = 4.0F
             viewHolder.bookOwner?.setText("Phan Thai Khang")
             viewHolder.bookPrice?.setText("150.000 VND")
+        } else if (bookInfo.equals("3")) {
+            viewHolder.bookCover?.setImageResource(R.drawable.image_book_4)
+            viewHolder.bookTitle?.setText("Tuesday with morie")
+            viewHolder.bookRate?.rating = 3.0F
+            viewHolder.bookOwner?.setText("Phan Thai Khang")
+            viewHolder.bookPrice?.setText("100.000 VND")
         }
 
         return view as View
