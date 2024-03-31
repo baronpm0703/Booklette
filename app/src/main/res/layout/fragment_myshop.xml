@@ -1,262 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent" android:background="#B9FFFFFF">
-
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" android:background="#FFFFFF">
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="412dp"
-            android:layout_height="198dp" android:id="@+id/constraintLayout" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@drawable/myshop_bg" app:layout_constraintEnd_toEndOf="parent">
-        <com.mancj.materialsearchbar.MaterialSearchBar
-                android:id="@+id/searchBar"
-                style="@style/MaterialSearchBarLight"
-                android:layout_width="317dp"
-                android:layout_height="44dp"
-                app:mt_hint="@string/myshop_search_hint"
-                app:mt_searchBarColor="#5BF4F4F4"
-                app:mt_maxSuggestionsCount="10"
-                app:mt_searchIconDrawable="@drawable/magnifyingglass"
-                app:mt_searchIconTint="#FFFFFF"
-                app:mt_searchIconUseTint="true"
-                app:mt_speechMode="true"
-                app:mt_placeholder="@string/myshop_search"
-                tools:ignore="MissingClass"
-                android:layout_marginStart="1dp"
-                app:layout_constraintStart_toEndOf="@+id/backBtn" app:layout_constraintEnd_toStartOf="@+id/moreBtn"
-                android:layout_marginEnd="5dp"
-                app:layout_constraintBottom_toBottomOf="@+id/backBtn"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintTop_toTopOf="@+id/backBtn" app:mt_textColor="#000000" app:mt_hintColor="#000000"
-                app:mt_placeholderColor="#F3F0F0"
-                android:background="@drawable/searchbar_transparent_rounded">
-        </com.mancj.materialsearchbar.MaterialSearchBar>
-        <ImageView
-                android:layout_width="30dp"
-                android:layout_height="51dp" app:srcCompat="@drawable/more_verts" android:id="@+id/moreBtn"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@+id/searchBar"
-                app:layout_constraintBottom_toBottomOf="@+id/searchBar"/>
-        <ImageView
-                android:src="@drawable/back"
-                android:layout_width="31dp"
-                android:layout_height="29dp" android:id="@+id/backBtn"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp" app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="57dp" app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="112dp"/>
-        <Button
-                android:text="@string/myshop_manage_shop"
-                android:layout_width="152dp"
-                android:layout_height="25dp" android:id="@+id/button3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="68dp" android:background="@drawable/round_corner_100_right_side"
-                android:textAllCaps="false"
-                android:textStyle="bold"/>
-        <androidx.cardview.widget.CardView
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="23dp"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="12dp"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:elevation="12dp"
-                android:id="@+id/view2"
-                app:cardCornerRadius="40dp"
-                android:layout_centerHorizontal="true"
-                android:innerRadius="0dp"
-                android:shape="ring"
-                android:thicknessRatio="1.9">
-            <ImageView
-                    android:layout_height="60dp"
-                    android:layout_width="match_parent"
-                    android:id="@+id/usrAvt"
-                    tools:srcCompat="@tools:sample/avatars"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true">
-            </ImageView>
-        </androidx.cardview.widget.CardView>
-        <TextView
-                android:text="User123"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView20"
-                android:textColor="#FFFFFF" android:textStyle="bold"
-                android:textSize="20dp" android:layout_marginStart="18dp"
-                app:layout_constraintStart_toEndOf="@+id/view2"
-                android:layout_marginBottom="3dp" app:layout_constraintBottom_toTopOf="@+id/textView21"/>
-        <TextView
-                android:text="@string/myshop_followers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView21"
-                android:textSize="10dp" android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
-                android:layout_marginStart="18dp" app:layout_constraintStart_toEndOf="@+id/view2"/>
-        <TextView
-                android:text="0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/followerCnt"
-                android:textSize="10dp" android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
-                app:layout_constraintStart_toEndOf="@+id/textView21" android:layout_marginStart="5dp"
-                android:textStyle="bold"/>
-        <TextView
-                android:text="@string/myshop_following"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView23"
-                android:textSize="10dp" android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
-                android:layout_marginStart="12dp" app:layout_constraintStart_toEndOf="@+id/followerCnt"/>
-        <TextView
-                android:text="0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/followingCnt"
-                android:textSize="10dp" android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
-                android:textStyle="bold" app:layout_constraintStart_toEndOf="@+id/textView23"
-                android:layout_marginStart="5dp"/>
-        <TextView
-                android:text="@string/myshop_following"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView25"
-                android:textSize="10dp" android:textColor="#FFFFFF"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
-                android:layout_marginStart="14dp" app:layout_constraintStart_toEndOf="@+id/followingCnt"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="409dp"
-            android:layout_height="40dp" android:layout_marginTop="1dp"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="1dp" android:layout_marginEnd="1dp" app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/linearLayout7" android:gravity="center"
-            android:background="@drawable/bottom_shadow">
-        <Button
-                android:text="@string/myshop_shop_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginLeft="16dp" android:layout_marginStart="16dp" android:id="@+id/shopBtn"
-                android:layout_weight="1" android:gravity="start|center_vertical"
-                android:textAllCaps="false"
-                android:background="#00000000" android:textStyle="bold"/>
-        <Button
-                android:text="@string/myshop_books_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/bookBtn" android:layout_weight="1"
-                android:gravity="center" android:textAllCaps="false" android:background="#00000000"
-                android:textStyle="bold"/>
-        <Button
-                android:text="@string/myshop_categories_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/categoriesBtn" android:layout_weight="1"
-                android:gravity="center_vertical|end" android:textAllCaps="false"
-                android:background="#00000000"
-                android:textStyle="bold"/>
-    </LinearLayout>
-    <HorizontalScrollView
-            android:layout_width="414dp"
-            android:layout_height="85dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/bottom_shadow" app:layout_constraintHorizontal_bias="1.0"
-            android:id="@+id/horizontalScrollView2"
-            android:layout_marginTop="1dp" app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
-                      android:orientation="vertical"/>
-    </HorizontalScrollView>
-    <TextView
-            android:text="@string/myshop_new_arrivals"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/textView22"
-            android:textStyle="bold" android:textColor="#000000"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"/>
-    <TextView
-            android:text="@string/myshop_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/newMoreBtn"
-            android:textColor="#9A1E1E" android:textSize="12dp"
-            android:textStyle="bold" android:layout_marginEnd="24dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView2"/>
-    <HorizontalScrollView
-            android:layout_width="414dp"
-            android:layout_height="122dp"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="4dp" app:layout_constraintTop_toBottomOf="@+id/textView22"
-            android:background="@drawable/bottom_shadow"
-            app:layout_constraintHorizontal_bias="1.0" android:id="@+id/newArrivalsScrollView">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
-                      android:orientation="vertical"/>
-    </HorizontalScrollView>
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/myshop_best_seller"
-            android:id="@+id/imageView2"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintTop_toBottomOf="@+id/newArrivalsScrollView"/>
-    <TextView
-            android:text="@string/myshop_best_sellers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/textView24"
-            android:textStyle="bold" android:textColor="#000000"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/imageView2"/>
-    <TextView
-            android:text="@string/myshop_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/bestMoreBtn"
-            android:textColor="#9A1E1E" android:textSize="12dp"
-            android:textStyle="bold" android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/imageView2"/>
-    <HorizontalScrollView
-            android:layout_width="411dp"
-            android:layout_height="130dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="1dp"
-            android:background="@drawable/bottom_shadow"
-            app:layout_constraintTop_toBottomOf="@+id/textView24" android:id="@+id/bestSellersScrollView">
-        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
-                      android:orientation="vertical"/>
-    </HorizontalScrollView>
-    <RelativeLayout
-            android:layout_width="292dp"
-            android:layout_height="22dp"
-            android:layout_centerVertical="true"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/bestSellersScrollView">
-
-        <TextView
-                android:id="@+id/highlyRecommendText"
-                android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/constraintLayout"
+    >
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="@string/myshop_highly_recommended"
-                android:textColor="#000000" android:layout_centerInParent="true" android:textStyle="bold"/>
-
-        <View
+                android:background="@drawable/myshop_bg" app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/constraintLayout2">
+            <com.mancj.materialsearchbar.MaterialSearchBar
+                    android:id="@+id/searchBar"
+                    style="@style/MaterialSearchBarLight"
+                    android:layout_width="317dp"
+                    android:layout_height="44dp"
+                    app:mt_hint="@string/myshop_search_hint"
+                    app:mt_searchBarColor="#5BF4F4F4"
+                    app:mt_maxSuggestionsCount="10"
+                    app:mt_searchIconDrawable="@drawable/magnifyingglass"
+                    app:mt_searchIconTint="#FFFFFF"
+                    app:mt_searchIconUseTint="true"
+                    app:mt_speechMode="true"
+                    app:mt_placeholder="@string/myshop_search"
+                    tools:ignore="MissingClass"
+                    android:layout_marginStart="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/backBtn"
+                    app:layout_constraintEnd_toStartOf="@+id/moreBtn"
+                    android:layout_marginEnd="5dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/backBtn"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintTop_toTopOf="@+id/backBtn" app:mt_textColor="#000000"
+                    app:mt_hintColor="#000000"
+                    app:mt_placeholderColor="#F3F0F0"
+                    android:background="@drawable/searchbar_transparent_rounded">
+            </com.mancj.materialsearchbar.MaterialSearchBar>
+            <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="51dp" app:srcCompat="@drawable/more_verts" android:id="@+id/moreBtn"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@+id/searchBar"
+                    app:layout_constraintBottom_toBottomOf="@+id/searchBar"/>
+            <ImageView
+                    android:src="@drawable/back"
+                    android:layout_width="31dp"
+                    android:layout_height="29dp" android:id="@+id/backBtn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="16dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="57dp" app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="112dp"/>
+            <Button
+                    android:text="@string/myshop_manage_shop"
+                    android:layout_width="152dp"
+                    android:layout_height="25dp" android:id="@+id/button3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="68dp" android:background="@drawable/round_corner_100_right_side"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"/>
+            <androidx.cardview.widget.CardView
+                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="23dp"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="12dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:elevation="12dp"
+                    android:id="@+id/view2"
+                    app:cardCornerRadius="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:innerRadius="0dp"
+                    android:shape="ring"
+                    android:thicknessRatio="1.9">
+                <ImageView
+                        android:layout_height="60dp"
+                        android:layout_width="match_parent"
+                        android:id="@+id/usrAvt"
+                        tools:srcCompat="@tools:sample/avatars"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true">
+                </ImageView>
+            </androidx.cardview.widget.CardView>
+            <TextView
+                    android:text="User123"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView20"
+                    android:textColor="#FFFFFF" android:textStyle="bold"
+                    android:textSize="20dp" android:layout_marginStart="18dp"
+                    app:layout_constraintStart_toEndOf="@+id/view2"
+                    android:layout_marginBottom="3dp" app:layout_constraintBottom_toTopOf="@+id/textView21"/>
+            <TextView
+                    android:text="@string/myshop_followers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView21"
+                    android:textSize="10dp" android:textColor="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
+                    android:layout_marginStart="18dp" app:layout_constraintStart_toEndOf="@+id/view2"/>
+            <TextView
+                    android:text="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/followerCnt"
+                    android:textSize="10dp" android:textColor="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/textView21" android:layout_marginStart="5dp"
+                    android:textStyle="bold"/>
+            <TextView
+                    android:text="@string/myshop_following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView23"
+                    android:textSize="10dp" android:textColor="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
+                    android:layout_marginStart="12dp" app:layout_constraintStart_toEndOf="@+id/followerCnt"/>
+            <TextView
+                    android:text="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/followingCnt"
+                    android:textSize="10dp" android:textColor="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
+                    android:textStyle="bold" app:layout_constraintStart_toEndOf="@+id/textView23"
+                    android:layout_marginStart="5dp"/>
+            <TextView
+                    android:text="@string/myshop_following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView25"
+                    android:textSize="10dp" android:textColor="#FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
+                    android:layout_marginStart="14dp" app:layout_constraintStart_toEndOf="@+id/followingCnt"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_toStartOf="@id/highlyRecommendText"
-                android:background="#000000"
-        />
-
-        <View
+                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout7" android:gravity="center"
+                app:layout_constraintStart_toEndOf="@+id/constraintLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+                android:elevation="3dp"
+                android:background="#FFFFFF">
+            <Button
+                    android:text="@string/myshop_shop_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent"
+                    android:id="@+id/shopBtn"
+                    android:layout_weight="1" android:gravity="start|center_vertical"
+                    android:textAllCaps="false"
+                    android:background="#00000000" android:textStyle="bold" android:layout_marginStart="16dp"/>
+            <Button
+                    android:text="@string/myshop_books_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/bookBtn" android:layout_weight="1"
+                    android:gravity="center" android:textAllCaps="false" android:background="#00000000"
+                    android:textStyle="bold"/>
+            <Button
+                    android:text="@string/myshop_categories_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/categoriesBtn" android:layout_weight="1"
+                    android:gravity="center_vertical|end" android:textAllCaps="false"
+                    android:background="#00000000"
+                    android:textStyle="bold" android:layout_marginEnd="16dp"/>
+        </LinearLayout>
+        <HorizontalScrollView
+                android:layout_width="416dp"
+                android:layout_height="wrap_content" android:layout_weight="1"
+                app:layout_constraintStart_toStartOf="parent" android:id="@+id/discountHScroll"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout7"
+                android:paddingEnd="16dp">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" android:id="@+id/discountHScrollContent">
+            </LinearLayout>
+        </HorizontalScrollView>
+        <TextView
+                app:layout_constraintTop_toBottomOf="@+id/discountHScroll"
+                android:text="@string/myshop_new_arrivals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView22"
+                android:textStyle="bold" android:textColor="#000000"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp" android:layout_marginTop="8dp"/>
+        <TextView
+                android:text="@string/myshop_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/newMoreBtn"
+                android:textColor="#9A1E1E" android:textSize="12dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/discountHScroll" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp" android:layout_marginTop="8dp"/>
+        <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/newArrivalsScrollView"
+                app:layout_constraintTop_toBottomOf="@+id/textView22" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="4dp">
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
+                          android:orientation="horizontal" android:id="@+id/newArrivalsScrollViewContent"/>
+        </HorizontalScrollView>
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" app:srcCompat="@drawable/myshop_best_seller"
+                android:id="@+id/imageView2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintTop_toBottomOf="@+id/newArrivalsScrollView"/>
+        <TextView
+                android:text="@string/myshop_best_sellers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView24"
+                android:textStyle="bold" android:textColor="#000000"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"/>
+        <TextView
+                android:text="@string/myshop_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/bestMoreBtn"
+                android:textColor="#9A1E1E" android:textSize="12dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2" app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp" android:layout_marginTop="16dp"/>
+        <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bestSellersScrollView"
+                app:layout_constraintTop_toBottomOf="@+id/textView24" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="4dp"
+                android:elevation="3dp" android:background="#FFFFFF">
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
+                          android:orientation="horizontal" android:id="@+id/bestSellersScrollViewContent"/>
+        </HorizontalScrollView>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_toEndOf="@id/highlyRecommendText"
-                android:background="#000000"
-        />
-    </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="398dp"
-            android:layout_height="422dp" tools:layout_editor_absoluteY="772dp" tools:layout_editor_absoluteX="1dp"
-            android:id="@+id/highlyRecommendedList"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                android:id="@+id/relativeLayout4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bestSellersScrollView" android:layout_marginTop="12dp">
+
+            <TextView
+                    android:id="@+id/highlyRecommendText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/myshop_highly_recommended"
+                    android:textColor="#000000" android:textStyle="bold" android:layout_centerInParent="true"/>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_toStartOf="@id/highlyRecommendText"
+                    android:background="#000000"
+            />
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_toEndOf="@id/highlyRecommendText"
+                    android:background="#000000"
+            />
+        </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/highlyRecommendedList"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout4" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="12dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

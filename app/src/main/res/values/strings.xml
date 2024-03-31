@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Booklette</string>
-    <string name="welcome_text">Read more and stress less with our online old book shopping app. Shop from anywhere you are and discover titles that you love. Happy reading!</string>
+    <string name="welcome_text">Read more and stress less with our online old book shopping app. Shop from anywhere you
+        are and discover titles that you love. Happy reading!
+    </string>
     <string name="loginText">Log in</string>
     <string name="signUpText">Sign up</string>
     <string name="continueAsGuest">Continue as guest</string>
@@ -9,16 +11,28 @@
     <string name="rememberMe">Remember me</string>
     <string name="forgotPassword">Forgot password?</string>
     <string name="loginWith">Or log in with</string>
-    <string name="signUpGreeting">Don\'t have an account yet? <b>Sign up</b></string>
+    <string name="signUpGreeting">Don\'t have an account yet?
+        <b>Sign up</b>
+    </string>
     <string name="createAccount">Create Account,</string>
     <string name="createAccountGreeting">To get started now</string>
     <string name="signUpWith">Or sign up with</string>
-    <string name="alreadyHaveAccount"><u>Already have an account? <b>Log in</b></u></string>
+    <string name="alreadyHaveAccount">
+        <u>Already have an account?
+            <b>Log in</b>
+        </u>
+    </string>
     <string name="forgotPasswordStr">Forgot Password</string>
     <string name="forgotYourPassword">Forgot your password?</string>
-    <string name="forgotPassDescription">Enter the email address associated with your account and we’ll send you a OTP to reset your password.</string>
+    <string name="forgotPassDescription">Enter the email address associated with your account and we’ll send you a OTP
+        to reset your password.
+    </string>
     <string name="forgotPassSubmit">Send code</string>
-    <string name="backToLogin"><u>Back to <b>Log In</b></u></string>
+    <string name="backToLogin">
+        <u>Back to
+            <b>Log In</b>
+        </u>
+    </string>
     <string name="verifyEmail">Verify Your Email</string>
     <string name="dontWorry">Don\'t Worry!</string>
     <string name="dontWorryDescription">Please enter the 6 digit code sent to your email</string>
@@ -46,7 +60,9 @@
     <string name="fb_login_protocol_scheme" translatable="false">fb3919866068240723</string>
     <string name="facebook_client_token" translatable="false">7645327ab016da730fe1839af7f02eaa</string>
     <string name="navigation_home">Home</string>
-    <string name="web_client_id" translatable="false">586101897114-tv8rui2j9u4v9sr16sd8ef3duroee2s1.apps.googleusercontent.com</string>
+    <string name="web_client_id" translatable="false">
+        586101897114-tv8rui2j9u4v9sr16sd8ef3duroee2s1.apps.googleusercontent.com
+    </string>
     <string name="web_client_secret" translatable="false">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</string>
     <string name="navigation_category">Category</string>
     <string name="navigation_cart">Cart</string>
@@ -94,10 +110,17 @@
     <string name="bookDetailSave">Save</string>
     <string name="bookDetailMore">more ></string>
     <string name="bookDetailDescription">Description</string>
-    <string name="bookDetailDescriptionExample">The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by adolescents for its theme of angst, alienation and as a critique  The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by adolescents for its theme of angst, alienation and as a critique...</string>
+    <string name="bookDetailDescriptionExample">The Catcher in the Rye is a novel by J. D. Salinger, partially published
+        in serial form in 1945–1946 and as a novel in 1951. It was originally intended for adu lts but is often read by
+        adolescents for its theme of angst, alienation and as a critique The Catcher in the Rye is a novel by J. D.
+        Salinger, partially published in serial form in 1945–1946 and as a novel in 1951. It was originally intended for
+        adu lts but is often read by adolescents for its theme of angst, alienation and as a critique...
+    </string>
     <string name="bookDetailRatingAndReview">Rating and Reviews</string>
     <string name="bookDetailAddReview">Write a review</string>
     <string name="bookDetailImage">with photo</string>
     <string name="bookDetailYouMayLoveToBuy">You may love to buy</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

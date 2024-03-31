@@ -28,6 +28,8 @@ class homeActivity : AppCompatActivity() {
         val productList = ProductList()
         val cartFragment = CartFragment()
         val bookDetailFragment = BookDetailFragment()
+        // (Khoa) tui gán này là để test My Shop thôi nha (do chưa có My Profile mà My Shop phải đi từ đó vào). Khi nào có My Profile thì đổi
+        val profileFragment = MyShopFragment()
 
 
 //        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, homeFragment).commit()
@@ -47,18 +49,14 @@ class homeActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, cartFragment).commit()
                     true
                 }
-//                2 -> {
-//                    Toast.makeText(this@homeActivity, "Cart", Toast.LENGTH_SHORT).show()
-//                    true
-//                }
 //                3 -> {
 //                    Toast.makeText(this@homeActivity, "Cart", Toast.LENGTH_SHORT).show()
 //                    true
 //                }
-//                4 -> {
-//                    Toast.makeText(this@homeActivity, "Cart", Toast.LENGTH_SHORT).show()
-//                    true
-//                }
+                4 -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, profileFragment).commit()
+                    true
+                }
                 else -> false
             }
         }

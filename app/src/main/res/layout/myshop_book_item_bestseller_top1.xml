@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="360dp"
+            android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp" android:background="@drawable/round_corner_best_deal_price_off"
+            android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="105dp"
+                android:layout_height="172dp"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="12dp" app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="16dp" android:layout_marginStart="12dp" android:id="@+id/bookFrame">
+
+            <ImageView
+                    android:layout_width="105dp"
+                    android:layout_height="172dp" app:srcCompat="@drawable/myshop_book_example"
+                    android:id="@+id/bookImg"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/round_corner_edit_text"
+                    app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="4dp" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="9dp" android:layout_marginEnd="7dp"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+            <TextView
+                    android:text="Top 1"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp" android:id="@+id/textView36"
+                    app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/myshop_best_seller_top1"
+                    android:elevation="5dp"
+                    android:textAllCaps="true" android:gravity="center" android:textSize="7sp"
+                    android:textStyle="bold" android:textColor="#000000"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+                android:text="Example Genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="20dp" android:id="@+id/bookGenreText"
+                android:layout_marginStart="17dp"
+                app:layout_constraintStart_toEndOf="@+id/bookFrame"/>
+        <TextView
+                android:text="Example Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bookNameText"
+                android:layout_marginStart="17dp"
+                app:layout_constraintStart_toEndOf="@+id/bookFrame" android:textStyle="bold"
+                android:textColor="#000000" android:layout_marginTop="4dp"
+                app:layout_constraintTop_toBottomOf="@+id/bookGenreText"/>
+        <TextView
+                android:text="Example Author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bookAuthorText"
+                android:layout_marginStart="17dp"
+                app:layout_constraintStart_toEndOf="@+id/bookFrame" android:textSize="10sp" android:textStyle="bold"
+                android:layout_marginBottom="4dp" app:layout_constraintBottom_toTopOf="@+id/bookPriceText"/>
+        <TextView
+                android:text="Example Price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bookPriceText"
+                android:layout_marginStart="17dp"
+                app:layout_constraintStart_toEndOf="@+id/bookFrame" android:textSize="15sp" android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_marginBottom="6dp" app:layout_constraintBottom_toTopOf="@+id/bookDiscountText"/>
+        <TextView
+                android:text="Example discount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/bookDiscountText"
+                android:layout_marginStart="17dp"
+                app:layout_constraintStart_toEndOf="@+id/bookFrame" android:textSize="12sp" android:textStyle="bold"
+                android:textColor="#000000" app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="20dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
