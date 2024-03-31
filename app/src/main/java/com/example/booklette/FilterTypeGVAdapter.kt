@@ -19,7 +19,6 @@ class FilterTypeGVAdapter(
             item = row?.findViewById(R.id.filterCategory)
         }
     }
-
     private var checkedItems = BooleanArray(this.count)
     init {
         checkedItems.fill(false)

@@ -146,7 +146,39 @@
                 android:horizontalSpacing="5dp"
                 android:numColumns="4"
                 android:padding="10dp"
-                android:verticalSpacing="5dp"></GridView>
+                android:verticalSpacing="5dp"
+                tools:ignore="NestedScrolling" />
+
+            <View
+                android:layout_below="@+id/filterAgeDialogGV"
+                android:layout_width="match_parent"
+                android:layout_height="7dp"
+                android:id="@+id/gradientLine3"
+                android:background="@drawable/gradient_color" />
+
+            <TextView
+                android:id="@+id/applyFilterBtn"
+
+                android:layout_below="@+id/gradientLine3"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+
+                android:text="Apply"
+
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+
+                android:background="@drawable/apply_btn_round_corner"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
 
         </RelativeLayout>
     </ScrollView>

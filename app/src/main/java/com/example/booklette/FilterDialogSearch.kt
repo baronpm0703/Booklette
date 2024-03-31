@@ -17,7 +17,7 @@ class FilterDialogSearch: Sheet() {
     override val dialogTag = "FilterSheet"
     private lateinit var binding: FilterDialogSearchBinding
     private var chosenType = arrayListOf<String>()
-    private val type = arrayListOf<String>("Paper Back", "Hard Cover")
+    private val type = arrayListOf("Paper Back", "Hard Cover")
     private var chosenTypeTrueTableArray = BooleanArray(type.size)
     private var filterTypeDialogGVAdapter: FilterTypeGVAdapter? = null
 
@@ -61,7 +61,6 @@ class FilterDialogSearch: Sheet() {
 
         // Initialize adapter only if null, otherwise, reuse existing adapter
         if (filterTypeDialogGVAdapter == null) {
-            Log.d("New", "New")
             filterTypeDialogGVAdapter = FilterTypeGVAdapter(requireActivity(), type)
             filterTypeDialogGVAdapter!!.setCheckedItems(chosenTypeTrueTableArray)
         } else {
@@ -75,7 +74,7 @@ class FilterDialogSearch: Sheet() {
             if (!chosenType.contains(type[index])) {
                 chosenType.add(type[index])
                 chosenTypeTrueTableArray[index] = true
-                Log.d("OnItemCLick", chosenTypeTrueTableArray[index].toString())
+//                Log.d("OnItemCLick", chosenTypeTrueTableArray[index].toString())
             } else {
                 chosenType.remove(chosenType.filter { ty -> ty == type[index] }.single())
                 chosenTypeTrueTableArray[index] = false

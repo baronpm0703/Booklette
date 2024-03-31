@@ -10,6 +10,7 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentProductListBinding
+import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.maxkeppeler.sheets.option.DisplayMode
 import com.maxkeppeler.sheets.option.Option
@@ -49,8 +50,8 @@ class ProductList : Fragment() {
         val view = binding.root
 
         // After passing the selected genre from categories, set to this
-        binding.selectedGenre.setText(this.arguments?.getString("Genre").toString() )
-        binding.selectedGenre.setText(this.arguments?.getString("SearchResult").toString() )
+        if (this.arguments?.getString("Genre") != null) binding.selectedGenre.setText(this.arguments?.getString("Genre").toString() )
+        if (this.arguments?.getString("SearchResult") != null) binding.selectedGenre.setText(this.arguments?.getString("SearchResult").toString() )
 
         val bookList = ArrayList<String>()
         bookList.add("1")
@@ -58,7 +59,7 @@ class ProductList : Fragment() {
         bookList.add("2")
         bookList.add("2")
         bookList.add("1")
-        bookList.add("1")
+        bookList.add("3")
         bookList.add("1")
         bookList.add("1")
 
@@ -92,14 +93,18 @@ class ProductList : Fragment() {
             }
         }
 
+        val filterDialogProductList = FilterDialogProductList()
         binding.tvfilter.setOnClickListener {
             activity?.let {
 //                val newTheme = R.style.BottomSheetSignNightTheme
 //                requireActivity().theme.applyStyle(newTheme, true)
-                FilterDialogProductList().show(it){
+                filterDialogProductList.show(it){
                     style(SheetStyle.BOTTOM_SHEET)
                     title("Filter")
                     titleColor(Color.parseColor("#FF0000"))
+                    onPositive {
+                       ChangeTitle(getSliderValues())
+                    }
                 }
             }
         }
@@ -107,6 +112,10 @@ class ProductList : Fragment() {
 
         // Inflate the layout for this fragment
         return view
+    }
+
+    fun ChangeTitle(selectedSlider: ArrayList<String>) {
+        binding.selectedGenre.text = selectedSlider[0]
     }
 
     override fun onDestroyView() {

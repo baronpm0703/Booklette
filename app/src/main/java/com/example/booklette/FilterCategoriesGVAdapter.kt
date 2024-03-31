@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,11 +14,15 @@ class FilterCategoriesGVAdapter(
     private val categoryList: ArrayList<String>
 ): BaseAdapter(){
     private class ViewHolder(row: View?) {
-        var item: TextView? = null
-
+        var item: com.google.android.material.chip.Chip? = null
         init {
             item = row?.findViewById(R.id.filterCategory)
         }
+    }
+
+    private var checkedItems = BooleanArray(this.count)
+    init {
+        checkedItems.fill(false)
     }
 
     override fun getCount(): Int {
@@ -48,7 +53,23 @@ class FilterCategoriesGVAdapter(
 
         var categoryInfo = categoryList[position]
         viewHolder.item?.text = categoryInfo
+        viewHolder.item?.isChecked = checkedItems[position]
 
+        viewHolder.item?.setOnCheckedChangeListener { _, isChecked ->
+            checkedItems[position] = isChecked
+
+            (parent as? AdapterView<*>?)?.performItemClick(view, position, getItemId(position))
+        }
         return view as View
+    }
+
+    fun setCheckedItems(checkedItems: BooleanArray) {
+        if (checkedItems.size != this.checkedItems.size) {
+            throw IllegalArgumentException("Size of checkedItems array must match the size of chipNames array")
+        }
+        this.checkedItems.indices.forEach { index ->
+            this.checkedItems[index] = checkedItems[index]
+        }
+        notifyDataSetChanged()
     }
 }
