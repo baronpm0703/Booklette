@@ -29,7 +29,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Contact"
+                        android:text="@string/addShipAddressContact"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
@@ -48,7 +48,7 @@
                         app:errorTextColor="@color/red"
                         app:placeholderTextColor="#0066CC"
                         app:hintTextColor="#0066CC"
-                        android:hint="Full name"
+                        android:hint="@string/addShipAddressFullName"
                         app:startIconDrawable="@drawable/fullname_icon_24"
                         app:startIconContentDescription="oki"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -73,7 +73,7 @@
                         app:errorTextColor="@color/red"
                         app:placeholderTextColor="#0066CC"
                         app:hintTextColor="#0066CC"
-                        android:hint="Phone Number"
+                        android:hint="@string/addShipAddressPhoneNumber"
                         app:startIconDrawable="@drawable/phone_number"
                         app:startIconContentDescription="oki"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -100,7 +100,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Address"
+                        android:text="@string/addressLabel"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
@@ -119,7 +119,7 @@
                         app:errorTextColor="@color/red"
                         app:placeholderTextColor="#0066CC"
                         app:hintTextColor="#0066CC"
-                        android:hint="Province"
+                        android:hint="@string/addShipAddressProvince"
                         app:startIconDrawable="@drawable/location_icon"
                         app:startIconContentDescription="oki"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -144,7 +144,7 @@
                         app:errorTextColor="@color/red"
                         app:placeholderTextColor="#0066CC"
                         app:hintTextColor="#0066CC"
-                        android:hint="City/District"
+                        android:hint="@string/addShipAddressCity"
                         app:startIconDrawable="@drawable/location_icon"
                         app:startIconContentDescription="oki"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -169,7 +169,7 @@
                         app:errorTextColor="@color/red"
                         app:placeholderTextColor="#0066CC"
                         app:hintTextColor="#0066CC"
-                        android:hint="Ward"
+                        android:hint="@string/addShipAddressWard"
                         app:startIconDrawable="@drawable/location_icon"
                         app:startIconContentDescription="oki"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -194,7 +194,7 @@
                         app:errorTextColor="@color/red"
                         app:placeholderTextColor="#0066CC"
                         app:hintTextColor="#0066CC"
-                        android:hint="Address Number"
+                        android:hint="@string/addShipAddressNumber"
                         app:startIconDrawable="@drawable/detail_address_icon"
                         app:startIconContentDescription="oki"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -224,7 +224,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Setting"
+                        android:text="@string/settingAddress"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
@@ -236,7 +236,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Label As"
+                            android:text="@string/settingAddressType"
                             android:layout_marginLeft="20dp"
                             android:layout_marginBottom="10dp"
                             android:textColor="@color/black">
@@ -262,14 +262,14 @@
                                     style="@style/Color_Label_As_Ship_Address.MaterialComponents.Chip.Entry"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Work"/>
+                                    android:text="@string/addressWorkType"/>
 
                                 <com.google.android.material.chip.Chip
                                     android:id="@+id/freeShip15k"
                                     style="@style/Color_Label_As_Ship_Address.MaterialComponents.Chip.Entry"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Home"/>
+                                    android:text="@string/addressHomeType"/>
                             </com.google.android.material.chip.ChipGroup>
                         </HorizontalScrollView>
                     </RelativeLayout>
@@ -286,7 +286,7 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/button_go_to_check_out"
-                android:text="Save">
+                android:text="@string/addCardBtnSave">
             </Button>
         </LinearLayout>
     </ScrollView>

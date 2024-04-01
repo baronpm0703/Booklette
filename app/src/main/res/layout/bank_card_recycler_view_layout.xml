@@ -4,20 +4,148 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+>
 
-    <com.maxpilotto.creditcardview.CreditCardView
-        android:id="@+id/bankCardItem"
+    <LinearLayout
+        android:id="@+id/cardBackground"
         android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
         android:layout_height="200dp"
-        android:layout_marginHorizontal="20dp"
-        app:cardCvv="123"
-        app:cardExpiry="1234"
-        app:cardExpiryLabel="Expiry"
-        app:cardHolder="John Doe"
-        app:cardHolderLabel="Holder"
-        app:cardNumber="5201284799337668"
-        app:cardNumberSize="30dp"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bank_card_gradient"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:id="@+id/cardType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="Visa"
+                android:textColor="#DEDEDE"
+                android:textSize="7pt"
+                android:textStyle="bold|italic"></TextView>
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="33dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="244dp"
+                android:background="@drawable/master_card"></ImageView>
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/cardNumber"
+            android:layout_width="287dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:text="xxxx xxxx xxxx 2807"
+            android:textColor="@color/white"
+            android:textSize="12pt"
+            android:textStyle="bold"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="80dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:text="@string/cardHolder"
+                    android:textColor="@color/white">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/cardHolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vo Chanh Tin"
+                    android:textColor="@color/white"
+                    android:textSize="9pt"
+                    android:textStyle="bold">
+
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtBookAuthorNA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:text="@string/cardExpire"
+                    android:textColor="@color/white">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/expireDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="02/2026"
+                    android:textColor="@color/white"
+                    android:textSize="9pt"
+                    android:textStyle="bold">
+
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <RadioButton
+        android:id="@+id/chooseAddressButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardBackground"
+        app:layout_constraintVertical_bias="1.0"></RadioButton>
+
+    <TextView
+        android:layout_width="323dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="@string/chooseAsBankCardDefault"
+        android:textColor="#103667"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.081"
+        app:layout_constraintStart_toEndOf="@+id/chooseAddressButton"
+        app:layout_constraintTop_toBottomOf="@+id/cardBackground"
+        app:layout_constraintVertical_bias="0.695"></TextView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,9 +25,10 @@ class BankCardFragment : Fragment(){
 
         val bankCardList = ArrayList<String>()
         bankCardList.add("1")
+        bankCardList.add("2")
         bankCardList.add("1")
-        bankCardList.add("1")
-        bankCardList.add("1")
+        bankCardList.add("2")
+
 
 //        addressList.add("2")
 //        addressList.add("2")
@@ -36,7 +37,17 @@ class BankCardFragment : Fragment(){
 
         val adapter = BankCardFragmentAdapter(requireContext(), bankCardList)
         binding.rvBankCard.adapter = adapter
-        binding.rvBankCard.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvBankCard.layoutManager = LinearLayoutManager(requireContext())
+
+        binding.addBankCardBtn.setOnClickListener {
+            activity?.let {
+                AddBankCardDialog().show(it){
+                    style(SheetStyle.BOTTOM_SHEET)
+                    title("Add New Bank Card")
+                    titleColor(Color.parseColor("#FF0000"))
+                }
+            }
+        }
 
 //        binding.addShipAddressBtn.setOnClickListener {
 //            activity?.let {
