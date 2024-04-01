@@ -1,13 +1,11 @@
 package com.example.booklette
 
-import android.graphics.Color
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Im
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -15,91 +13,63 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentMyshopBinding
+import com.example.booklette.databinding.FragmentMyshopShopTabBinding
 import com.squareup.picasso.Picasso
 
 /**
  * A simple [Fragment] subclass.
- * Use the [MyShopFragment.newInstance] factory method to
+ * Use the [MyShopShopFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MyShopFragment : Fragment() {
+class MyShopShopFragment : Fragment() {
 //	private var discountHScrollView: HorizontalScrollView? = null
 //	private var newArrivalsHScrollView: HorizontalScrollView? = null
 	private var discountViews = arrayListOf<View>()
 	private var newArrivalsViews = arrayListOf<View>()
 	private var bestSellersViews = arrayListOf<View>()
 
-	private var _binding: FragmentMyshopBinding? = null
+	private var _binding: FragmentMyshopShopTabBinding? = null
 	private val binding get() = _binding!!
-
-	val shopTab = MyShopShopFragment()
-	val bookTab = MyShopProductList()
-	val categoryTab = MyShopCategoryFragment()
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View? {
 		// Inflate the layout for this fragment
-		_binding = FragmentMyshopBinding.inflate(inflater, container, false)
+		_binding = FragmentMyshopShopTabBinding.inflate(inflater, container, false)
 		val view = binding.root
 
 //		discountHScrollView = view.findViewById(R.id.discountHScroll)
 //		newArrivalsHScrollView = view.findViewById(R.id.newArrivalsScrollView)
 
-		// Shop info
-		val usrAvtIV = view.findViewById<ImageView>(R.id.usrAvt)
-		val sellerNameTV = view.findViewById<TextView>(R.id.sellerName)
-		sellerNameTV.text = "Nguyễn Anh Khoa"
-		val followerTV = view.findViewById<TextView>(R.id.followerCnt)
-		followerTV.text = "1000"
-		val followingTV = view.findViewById<TextView>(R.id.followingCnt)
-		followingTV.text = "1"
-		val shopRatingTV = view.findViewById<TextView>(R.id.shopRating)
-		shopRatingTV.text = "4.9"
+		// Discount scroll view
+		var discounts = arrayListOf(Triple(10, 100, 30), Triple(20, 150, 20), Triple(30, 120, 50))
+		setDiscountItemViews(view, discounts)
 
-		val shopTabButton = view.findViewById<Button>(R.id.shopBtn)
-		val bookTabButton = view.findViewById<Button>(R.id.bookBtn)
-		val categoryTabButton = view.findViewById<Button>(R.id.categoryBtn)
+		// New arrivals scroll view
+		var newArrivals = arrayListOf<BookObject>()
+		newArrivals.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+		newArrivals.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+		newArrivals.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+		var newArrivalsDisc = arrayListOf(5F, 4F, 3F, 2F, 1F)
+		setNewArrivalsItemViews(view, newArrivals, newArrivalsDisc)
 
-		requireActivity().supportFragmentManager.beginTransaction()
-			.replace(R.id.tabDisplayFCV, shopTab)
-			.commit()
-		shopTabButton.setTextColor(Color.parseColor("#D45555"))
+		// Best Sellers scroll view
+		var bestSellers = arrayListOf<BookObject>()
+		bestSellers.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+		bestSellers.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+		bestSellers.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
+		var bestSellersDisc = arrayListOf(5F, 4F, 3F, 2F, 1F)
+		setBestSellersItemViews(view, bestSellers, bestSellersDisc)
 
-		shopTabButton.setOnClickListener {
-			// Set color of the 3 buttons
-			shopTabButton.setTextColor(Color.parseColor("#D45555"))
-			bookTabButton.setTextColor(Color.parseColor("#000000"))
-			categoryTabButton.setTextColor(Color.parseColor("#000000"))
-
-			// Replace FCV's content with this fragment
-			requireActivity().supportFragmentManager.beginTransaction()
-				.replace(R.id.tabDisplayFCV, shopTab)
-				.commit()
-		}
-		bookTabButton.setOnClickListener {
-			// Set color of the 3 buttons
-			shopTabButton.setTextColor(Color.parseColor("#000000"))
-			bookTabButton.setTextColor(Color.parseColor("#D45555"))
-			categoryTabButton.setTextColor(Color.parseColor("#000000"))
-
-			// Replace FCV's content with this fragment
-			requireActivity().supportFragmentManager.beginTransaction()
-				.replace(R.id.tabDisplayFCV, bookTab)
-				.commit()
-		}
-		categoryTabButton.setOnClickListener {
-			// Set color of the 3 buttons
-			shopTabButton.setTextColor(Color.parseColor("#000000"))
-			bookTabButton.setTextColor(Color.parseColor("#000000"))
-			categoryTabButton.setTextColor(Color.parseColor("#D45555"))
-
-			// Replace FCV's content with this fragment
-			requireActivity().supportFragmentManager.beginTransaction()
-				.replace(R.id.tabDisplayFCV, categoryTab)
-				.commit()
-		}
+		// Highly Recommended scroll view
+		var highlyRecommended = arrayListOf<HRecommendedBookObject>()
+		highlyRecommended.add(HRecommendedBookObject(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F), 4.5F))
+		highlyRecommended.add(HRecommendedBookObject(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F), 4.5F))
+		highlyRecommended.add(HRecommendedBookObject(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F), 4.5F))
+		highlyRecommended.add(HRecommendedBookObject(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F), 4.5F))
+		highlyRecommended.add(HRecommendedBookObject(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F), 4.5F))
+		setHighlyRecommendedItemViews(view, highlyRecommended)
 
 		return view
 	}
