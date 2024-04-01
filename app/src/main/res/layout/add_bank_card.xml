@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="700dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/cardBackground"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_height="200dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bank_card_gradient"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp">
+
+                    <TextView
+                        android:id="@+id/cardTypeAddInfor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="Visa"
+                        android:textColor="#DEDEDE"
+                        android:textSize="7pt"
+                        android:textStyle="bold|italic"></TextView>
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="33dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="244dp"
+                        android:background="@drawable/master_card"></ImageView>
+                </RelativeLayout>
+
+
+                <TextView
+                    android:id="@+id/cardNumberAddInfor"
+                    android:layout_width="287dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="xxxx xxxx xxxx 2807"
+                    android:textColor="@color/white"
+                    android:textSize="12pt"
+                    android:textStyle="bold"></TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="80dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:text="CARD HOLDER"
+                            android:textColor="@color/white">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/cardHolderAddInfor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Vo Chanh Tin"
+                            android:textColor="@color/white"
+                            android:textSize="9pt"
+                            android:textStyle="bold">
+
+                        </TextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtBookAuthorNA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:text="EXPIRE"
+                            android:textColor="@color/white">
+
+                        </TextView>
+
+                        <TextView
+                            android:id="@+id/expireDateAddInfor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="02/2026"
+                            android:textColor="@color/white"
+                            android:textSize="9pt"
+                            android:textStyle="bold">
+
+                        </TextView>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add card information"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"></TextView>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cardNumber"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxStrokeErrorColor="@color/red"
+                        app:boxStrokeColor="#0066CC"
+                        app:errorEnabled="true"
+                        app:cursorColor="#0066CC"
+                        app:errorTextColor="@color/red"
+                        app:placeholderTextColor="#0066CC"
+                        app:hintTextColor="#0066CC"
+                        android:hint="Card Number"
+                        app:startIconDrawable="@drawable/card_number"
+                        app:startIconContentDescription="oki"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/expireDate"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxStrokeErrorColor="@color/red"
+                        app:boxStrokeColor="#0066CC"
+                        app:errorEnabled="true"
+                        app:cursorColor="#0066CC"
+                        app:errorTextColor="@color/red"
+                        app:placeholderTextColor="#0066CC"
+                        app:hintTextColor="#0066CC"
+                        android:hint="Expire"
+                        app:startIconDrawable="@drawable/expiredate"
+                        app:startIconContentDescription="oki"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cvvNumber"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxStrokeErrorColor="@color/red"
+                        app:boxStrokeColor="#0066CC"
+                        app:errorEnabled="true"
+                        app:cursorColor="#0066CC"
+                        app:errorTextColor="@color/red"
+                        app:placeholderTextColor="#0066CC"
+                        app:hintTextColor="#0066CC"
+                        android:hint="CVV"
+                        app:startIconDrawable="@drawable/cvv"
+                        app:startIconContentDescription="oki"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cardHolder"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxStrokeErrorColor="@color/red"
+                        app:boxStrokeColor="#0066CC"
+                        app:errorEnabled="true"
+                        app:cursorColor="#0066CC"
+                        app:errorTextColor="@color/red"
+                        app:placeholderTextColor="#0066CC"
+                        app:hintTextColor="#0066CC"
+                        android:hint="Card Holder"
+                        app:startIconDrawable="@drawable/card_holder"
+                        app:startIconContentDescription="oki"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btnAddBankCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/button_go_to_check_out"
+                android:text="Save">
+            </Button>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
