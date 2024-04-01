@@ -60,7 +60,7 @@
             android:paddingEnd="10dp"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:text="Shipping Address">
+            android:text="@string/shippingAddressLabel">
         </TextView>
 
         <LinearLayout
@@ -98,7 +98,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
-                            android:text="Shipping Address"
+                            android:text="@string/shippingAddressLabel"
                             android:textColor="@color/black"
                             android:textStyle="bold"></TextView>
 
@@ -117,7 +117,7 @@
                             android:paddingEnd="10dp"
                             android:background="@drawable/button_change_card"
                             android:drawableLeft="@drawable/change_card_icon"
-                            android:text="Change"></Button>
+                            android:text="@string/changeAddressBtn"></Button>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -244,7 +244,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:layout_height="30dp"
-                android:text="Ordered Items">
+                android:text="@string/orderedItemsLabel">
             </TextView>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -276,7 +276,7 @@
                     android:paddingEnd="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:text="Payment Method"
+                    android:text="@string/paymentMethodLabel"
                     android:layout_marginTop="20dp">
                 </TextView>
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -335,7 +335,7 @@
                                 android:background="@drawable/button_change_card"
                                 android:layout_toEndOf="@+id/option1"
                                 android:drawableLeft="@drawable/change_card_icon"
-                                android:text="Change"></Button>
+                                android:text="@string/changeAddressBtn"></Button>
                         </RelativeLayout>
 
                         <RadioButton
@@ -353,7 +353,7 @@
 
                             android:textSize="15dp"
                             android:textStyle="bold"
-                            android:text="Pay on delivery" />
+                            android:text="@string/payOnDelivery" />
 
                         <RadioButton
                             android:background="@drawable/custom_radio_selector_payment_method"
@@ -372,7 +372,7 @@
 
                             android:textSize="15dp"
                             android:textStyle="bold"
-                            android:text="Paypal" />
+                            android:text="@string/paypalMethod" />
 
                         <RadioButton
                             android:background="@drawable/custom_radio_selector_payment_method"
@@ -390,7 +390,7 @@
                             android:textStyle="bold"
                             android:drawableStart="@drawable/pay_on_delelivery_radio_button_image"
                             android:drawablePadding="30dp"
-                            android:text="Epay" />
+                            android:text="@string/epayMethod" />
                     </RadioGroup>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -405,7 +405,7 @@
                 android:paddingEnd="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:text="Total Amount"
+                android:text="@string/cart_fragment_total_amount"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp">
             </TextView>

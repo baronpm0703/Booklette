@@ -122,5 +122,34 @@
     <string name="bookDetailYouMayLoveToBuy">You may love to buy</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cardHolder">Card Holder</string>
+    <string name="cardExpire">Expire</string>
+    <string name="fillCardInfor">Card Information</string>
+    <string name="cardNumber">Card Number</string>
+    <string name="addCardBtnSave">Save</string>
+    <string name="addShipAddressContact">Contact</string>
+    <string name="addShipAddressFullName">Full name</string>
+    <string name="addShipAddressPhoneNumber">Phone Number</string>
+    <string name="addressLabel">Address</string>
+    <string name="addShipAddressProvince">Province</string>
+    <string name="addShipAddressCity">City/District</string>
+    <string name="addShipAddressWard">Ward</string>
+    <string name="addShipAddressNumber">Address Number</string>
+    <string name="settingAddress">Setting</string>
+    <string name="settingAddressType">Label As</string>
+    <string name="addressWorkType">Work</string>
+    <string name="addressHomeType">Home</string>
+    <string name="editAddressBtn">Edit</string>
+    <string name="chooseAsShipAddressDefault">Use as the shipping address</string>
+    <string name="chooseAsBankCardDefault">Use as default card to pay</string>
+    <string name="navigation_payment_card">Payment Cart</string>
+    <string name="shippingAddressLabel">Shipping Address</string>
+    <string name="changeAddressBtn">Change</string>
+    <string name="orderedItemsLabel">Ordered Items</string>
+    <string name="paymentMethodLabel">Payment Method</string>
+    <string name="payOnDelivery">Pay on delivery</string>
+    <string name="paypalMethod">Paypal</string>
+    <string name="epayMethod">Epay</string>
+    <string name="navigation_Ship_Address">Ship Address</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

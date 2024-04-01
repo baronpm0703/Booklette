@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/navigation_cart"
+            android:text="@string/navigation_payment_card"
             android:textColor="@color/black"
             android:textSize="21dp"
             android:textStyle="bold"></TextView>
@@ -66,7 +66,7 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="25dp"
                 android:background="@drawable/button_go_to_check_out"
-                android:text="Save">
+                android:text="@string/addCardBtnSave">
             </Button>
 
     </LinearLayout>

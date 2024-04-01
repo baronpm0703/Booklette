@@ -53,7 +53,7 @@
                         android:paddingEnd="10dp"
                         android:background="@drawable/button_edit_address"
                         android:drawableLeft="@drawable/edit_address_icon"
-                        android:text="Edit"></Button>
+                        android:text="@string/editAddressBtn"></Button>
                 </RelativeLayout>
 
                 <TextView
@@ -96,15 +96,14 @@
 
                     <TextView
                         android:layout_width="323dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="wrap_content" 
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="7dp"
                         android:layout_marginEnd="20dp"
                         android:layout_toEndOf="@+id/chooseAddressButton"
                         android:gravity="center_vertical"
-                        android:textSize="10dp"
-                        android:text="Use as the shipping address"
+                        android:text="@string/chooseAsShipAddressDefault"
                         android:textColor="#103667"
                         android:textStyle="bold"></TextView>
                 </RelativeLayout>

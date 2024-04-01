@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
-                    android:text="CARD HOLDER"
+                    android:text="@string/cardHolder"
                     android:textColor="@color/white">
 
                 </TextView>
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
-                    android:text="EXPIRE"
+                    android:text="@string/cardExpire"
                     android:textColor="@color/white">
 
                 </TextView>
@@ -137,9 +137,8 @@
         android:layout_width="323dp"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:text="Use as default payment method"
+        android:text="@string/chooseAsBankCardDefault"
         android:textColor="#103667"
-        android:textSize="10dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

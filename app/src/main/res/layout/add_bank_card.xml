@@ -7,7 +7,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="700dp">
+        android:layout_height="700dp"
+        tools:ignore="MissingConstraints">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -16,14 +17,13 @@
             <LinearLayout
                 android:id="@+id/cardBackground"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="20dp"
                 android:layout_height="200dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/bank_card_gradient"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                >
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="CARD HOLDER"
+                            android:text="@string/cardHolder"
                             android:textColor="@color/white">
 
                         </TextView>
@@ -108,7 +108,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="EXPIRE"
+                            android:text="@string/cardExpire"
                             android:textColor="@color/white">
 
                         </TextView>
@@ -144,7 +144,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Add card information"
+                        android:text="@string/fillCardInfor"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
@@ -163,7 +163,7 @@
                         app:errorTextColor="@color/red"
                         app:placeholderTextColor="#0066CC"
                         app:hintTextColor="#0066CC"
-                        android:hint="Card Number"
+                        android:hint="@string/cardNumber"
                         app:startIconDrawable="@drawable/card_number"
                         app:startIconContentDescription="oki"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -188,7 +188,7 @@
                         app:errorTextColor="@color/red"
                         app:placeholderTextColor="#0066CC"
                         app:hintTextColor="#0066CC"
-                        android:hint="Expire"
+                        android:hint="@string/cardExpire"
                         app:startIconDrawable="@drawable/expiredate"
                         app:startIconContentDescription="oki"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -238,7 +238,7 @@
                         app:errorTextColor="@color/red"
                         app:placeholderTextColor="#0066CC"
                         app:hintTextColor="#0066CC"
-                        android:hint="Card Holder"
+                        android:hint="@string/cardHolder"
                         app:startIconDrawable="@drawable/card_holder"
                         app:startIconContentDescription="oki"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -262,7 +262,7 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/button_go_to_check_out"
-                android:text="Save">
+                android:text="@string/addCardBtnSave">
             </Button>
         </LinearLayout>
     </ScrollView>
