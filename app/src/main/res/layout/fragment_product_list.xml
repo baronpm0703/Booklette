@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/ivHomeHamburgerView"
+            android:id="@+id/ivBackToPrev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -201,6 +201,16 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/unavailbleInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Your result is currently unavailable. Try again ?"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"/>
     <GridView
         android:id="@+id/gvProductList"
         android:layout_width="match_parent"
