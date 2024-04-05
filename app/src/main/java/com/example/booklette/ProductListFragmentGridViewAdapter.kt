@@ -2,6 +2,7 @@ package com.example.booklette
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,11 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.squareup.picasso.Picasso
 
 class ProductListFragmentGridViewAdapter(
     private val context: Context,
-    private val bookList: ArrayList<String>
+    private val bookList: ArrayList<ProductsObject>,
 ): BaseAdapter(){
 
     private class ViewHolder(row: View?) {
@@ -57,20 +59,32 @@ class ProductListFragmentGridViewAdapter(
             viewHolder = view.tag as ViewHolder
         }
 
-        var bookInfo = bookList[position]
-        if (bookInfo.equals("2")) {
-            viewHolder.bookCover?.setImageResource(R.drawable.image_book_3)
-            viewHolder.bookTitle?.setText("The Catcher in the eyes")
-            viewHolder.bookRate?.rating = 4.0F
-            viewHolder.bookOwner?.setText("Phan Thai Khang")
-            viewHolder.bookPrice?.setText("150.000 VND")
-        } else if (bookInfo.equals("3")) {
-            viewHolder.bookCover?.setImageResource(R.drawable.image_book_4)
-            viewHolder.bookTitle?.setText("Tuesday with morie")
-            viewHolder.bookRate?.rating = 3.0F
-            viewHolder.bookOwner?.setText("Phan Thai Khang")
-            viewHolder.bookPrice?.setText("100.000 VND")
-        }
+        val bookInfo = bookList[position]
+
+//        Log.i("GV", bookInfo.name)
+        viewHolder.bookTitle?.text = bookInfo.name
+        viewHolder.bookRate?.rating = bookInfo.rating
+        viewHolder.bookOwner?.text = bookInfo.author
+        val bookPrice = "%.3f".format(bookInfo.price * 100.000)
+        viewHolder.bookPrice?.text = bookPrice
+        Picasso.get()
+            .load(bookInfo.image)
+            .into(viewHolder.bookCover)
+
+
+//        if (bookInfo.equals("2")) {
+//            viewHolder.bookCover?.setImageResource(R.drawable.image_book_3)
+//            viewHolder.bookTitle?.setText("The Catcher in the eyes")
+//            viewHolder.bookRate?.rating = 4.0F
+//            viewHolder.bookOwner?.setText("Phan Thai Khang")
+//            viewHolder.bookPrice?.setText("150.000 VND")
+//        } else if (bookInfo.equals("3")) {
+//            viewHolder.bookCover?.setImageResource(R.drawable.image_book_4)
+//            viewHolder.bookTitle?.setText("Tuesday with morie")
+//            viewHolder.bookRate?.rating = 3.0F
+//            viewHolder.bookOwner?.setText("Phan Thai Khang")
+//            viewHolder.bookPrice?.setText("100.000 VND")
+//        }
 
         return view as View
     }

@@ -49,7 +49,7 @@ class CategoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -62,6 +62,8 @@ class CategoryFragment : Fragment() {
         categories.add("Horror")
         categories.add("Sci-fi")
         categories.add("Drama")
+        categories.add("Novel")
+        categories.add("Self-Help")
 
         binding.gvCategories.adapter =
             activity?.let { CategoryFragmentGridViewAdapter(it, categories) }

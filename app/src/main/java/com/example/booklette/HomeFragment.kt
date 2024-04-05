@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -59,6 +60,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -113,10 +115,10 @@ class HomeFragment : Fragment() {
             binding.txtWelcomeBack.text = "Welcome back, " + auth.currentUser!!.email.toString()
         }
 
-        binding.btnSignOut.setOnClickListener({
+        binding.btnSignOut.setOnClickListener {
             auth.signOut()
             startActivity(Intent(activity, LoginActivity::class.java))
-        })
+        }
 
         var bestDeals = ArrayList<BookObject>();
         var book_deal_sale = ArrayList<Float>();
