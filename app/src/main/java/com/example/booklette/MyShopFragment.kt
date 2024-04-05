@@ -2,7 +2,9 @@ package com.example.booklette
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.provider.ContactsContract.CommonDataKinds.Im
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +17,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentMyshopBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 import com.squareup.picasso.Picasso
+import kotlin.math.round
 
 /**
  * A simple [Fragment] subclass.
@@ -34,7 +40,7 @@ class MyShopFragment : Fragment() {
 
 	val shopTab = MyShopShopFragment()
 	val bookTab = MyShopProductList()
-	val categoryTab = MyShopCategoryFragment()
+	val categoryTab = CategoryFragment()
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -44,19 +50,47 @@ class MyShopFragment : Fragment() {
 		_binding = FragmentMyshopBinding.inflate(inflater, container, false)
 		val view = binding.root
 
-//		discountHScrollView = view.findViewById(R.id.discountHScroll)
-//		newArrivalsHScrollView = view.findViewById(R.id.newArrivalsScrollView)
+		val auth = Firebase.auth
+		val db = Firebase.firestore
 
 		// Shop info
-		val usrAvtIV = view.findViewById<ImageView>(R.id.usrAvt)
-		val sellerNameTV = view.findViewById<TextView>(R.id.sellerName)
-		sellerNameTV.text = "Nguyễn Anh Khoa"
-		val followerTV = view.findViewById<TextView>(R.id.followerCnt)
-		followerTV.text = "1000"
-		val followingTV = view.findViewById<TextView>(R.id.followingCnt)
-		followingTV.text = "1"
-		val shopRatingTV = view.findViewById<TextView>(R.id.shopRating)
-		shopRatingTV.text = "4.9"
+		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+			.addOnSuccessListener { documents ->
+//				Log.i("haimen", documents.size().toString())
+				if (documents.size() != 1) return@addOnSuccessListener	// Failsafe
+
+				for (document in documents) {
+					// Get avatar and seller's name
+					val usrAvtIV = view.findViewById<ImageView>(R.id.usrAvt)
+					Picasso.get()
+						.load(document.getString("avt"))
+						.into(usrAvtIV)
+					val sellerNameTV = view.findViewById<TextView>(R.id.sellerName)
+					sellerNameTV.text = document.getString("fullname")
+
+					Handler().postDelayed({
+						usrAvtIV.visibility = View.VISIBLE
+						sellerNameTV.visibility = View.VISIBLE
+					}, 2000)
+
+					document.getDocumentReference("store")!!.get().addOnSuccessListener { storeSnapshot ->
+						// Get shop's follow counts and average rating score
+						val followerTV = view.findViewById<TextView>(R.id.followerCnt)
+						followerTV.text = storeSnapshot.get("followers").toString()
+						val followingTV = view.findViewById<TextView>(R.id.followingCnt)
+						followingTV.text = storeSnapshot.get("following").toString()
+						val shopRatingTV = view.findViewById<TextView>(R.id.shopRating)
+						shopRatingTV.text = String.format("%.1f", (storeSnapshot.get("rating") as ArrayList<Float>).toFloatArray().average())
+
+						Handler().postDelayed({
+							followerTV.visibility = View.VISIBLE
+							followingTV.visibility = View.VISIBLE
+							followingTV.visibility = View.VISIBLE
+						}, 2000)
+					}
+				}
+			}
+
 
 		val shopTabButton = view.findViewById<Button>(R.id.shopBtn)
 		val bookTabButton = view.findViewById<Button>(R.id.bookBtn)
@@ -102,101 +136,6 @@ class MyShopFragment : Fragment() {
 		}
 
 		return view
-	}
-
-	private fun setDiscountItemViews(view: View, discounts: ArrayList<Triple<Int, Int, Int>>) {
-		val content = view.findViewById<LinearLayout>(R.id.discountHScrollContent)
-
-		for (discount in discounts) {
-			var singleFrame: View = layoutInflater.inflate(R.layout.myshop_discount_item, null)
-			singleFrame.id = discounts.indexOf(discount)
-
-			val discountPercentView = singleFrame.findViewById<TextView>(R.id.discountPercentText)
-			val discountMinimumView = singleFrame.findViewById<TextView>(R.id.discountMinimumText)
-			val discountExpireView = singleFrame.findViewById<TextView>(R.id.discountExpireText)
-			discountPercentView.text = discount.first.toString() + "%"
-			discountMinimumView.text = discount.second.toString()
-			discountExpireView.text = discount.third.toString()
-
-			discountViews.add(singleFrame)
-			content.addView(singleFrame)
-		}
-	}
-
-	private fun setNewArrivalsItemViews(view: View, newArrivals: ArrayList<BookObject>, discounts: ArrayList<Float>) {
-		val content = view.findViewById<LinearLayout>(R.id.newArrivalsScrollViewContent)
-
-		for (newArrival in newArrivals) {
-			var singleFrame: View = layoutInflater.inflate(R.layout.myshop_book_item, null)
-			singleFrame.id = newArrivals.indexOf(newArrival)
-
-			val bookImg = singleFrame.findViewById<ImageView>(R.id.bookImg)
-			val bookGenreText = singleFrame.findViewById<TextView>(R.id.bookGenreText)
-			val bookNameText = singleFrame.findViewById<TextView>(R.id.bookNameText)
-			val bookAuthorText = singleFrame.findViewById<TextView>(R.id.bookAuthorText)
-			val bookPriceText = singleFrame.findViewById<TextView>(R.id.bookPriceText)
-			val bookDiscountText = singleFrame.findViewById<TextView>(R.id.bookDiscountText)
-
-			Picasso.get()
-				.load(newArrival.image)
-				.into(bookImg)
-			bookGenreText.text = newArrival.genre
-			bookNameText.text = newArrival.name
-			bookAuthorText.text = newArrival.author
-			bookPriceText.text = newArrival.price.toString()
-			bookDiscountText.text = discounts[singleFrame.id].toString() + "%"
-
-			newArrivalsViews.add(singleFrame)
-			content.addView(singleFrame)
-		}
-	}
-
-	private fun setBestSellersItemViews(view: View, newArrivals: ArrayList<BookObject>, discounts: ArrayList<Float>) {
-		val content = view.findViewById<LinearLayout>(R.id.bestSellersScrollViewContent)
-
-		for (newArrival in newArrivals) {
-			var singleFrame: View
-			val id = newArrivals.indexOf(newArrival)
-
-			if (id == 0) singleFrame = layoutInflater.inflate(R.layout.myshop_book_item_bestseller_top1, null)
-			else if (id == 1) singleFrame = layoutInflater.inflate(R.layout.myshop_book_item_bestseller_top2, null)
-			else singleFrame = layoutInflater.inflate(R.layout.myshop_book_item, null)
-
-			singleFrame.id = newArrivals.indexOf(newArrival)
-
-			val bookImg = singleFrame.findViewById<ImageView>(R.id.bookImg)
-			val bookGenreText = singleFrame.findViewById<TextView>(R.id.bookGenreText)
-			val bookNameText = singleFrame.findViewById<TextView>(R.id.bookNameText)
-			val bookAuthorText = singleFrame.findViewById<TextView>(R.id.bookAuthorText)
-			val bookPriceText = singleFrame.findViewById<TextView>(R.id.bookPriceText)
-			val bookDiscountText = singleFrame.findViewById<TextView>(R.id.bookDiscountText)
-
-			Picasso.get()
-				.load(newArrival.image)
-				.into(bookImg)
-			bookGenreText.text = newArrival.genre
-			bookNameText.text = newArrival.name
-			bookAuthorText.text = newArrival.author
-			bookPriceText.text = newArrival.price.toString()
-			bookDiscountText.text = discounts[singleFrame.id].toString() + "%"
-
-			bestSellersViews.add(singleFrame)
-			content.addView(singleFrame)
-		}
-	}
-
-	private fun setHighlyRecommendedItemViews(view: View, books: ArrayList<HRecommendedBookObject>) {
-		val content = view.findViewById<RecyclerView>(R.id.highlyRecommendedList)
-
-		var highlyRecommendedAdapter = MyShopHighlyRecommendedAdapter(books)
-		highlyRecommendedAdapter.setOnItemClickListener(object: MyShopHighlyRecommendedAdapter.onItemClickListener {
-			override fun onItemClick(position: Int) {
-
-			}
-
-		})
-		content!!.adapter = highlyRecommendedAdapter
-		content.setLayoutManager(GridLayoutManager(view.context, 2, GridLayoutManager.HORIZONTAL, false))
 	}
 
 	override fun onDestroyView() {
