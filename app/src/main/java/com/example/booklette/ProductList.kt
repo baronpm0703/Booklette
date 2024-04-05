@@ -114,7 +114,6 @@ class ProductList : Fragment() {
                                 val image = reviewMap["image"] as String
                                 val score = (reviewMap["score"] as Long).toInt()
                                 val text = reviewMap["text"] as String
-
                                 avg_rating += score
                             }
                         }

@@ -7,13 +7,16 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booklette.CartObject
 import com.example.booklette.R
+import com.squareup.picasso.Picasso
 
 class CartFragmentRecyclerViewAdapter(
     private val context: Context,
-    private val bookInCartList: ArrayList<String>,
+    private val cartList: ArrayList<CartObject>,
 
 ) : RecyclerView.Adapter<CartFragmentRecyclerViewAdapter.ViewHolder>() {
+
     private val itemQuantities = ArrayList<Int>()
     private val itemSelections = ArrayList<Boolean>()
 
@@ -24,7 +27,7 @@ class CartFragmentRecyclerViewAdapter(
         val bookOwner: TextView = itemView.findViewById(R.id.bookOwner)
         val bookPrice: TextView = itemView.findViewById(R.id.bookPrice)
         val btnCartItemMinus: AppCompatButton = itemView.findViewById(R.id.btnCartItemMinus)
-        val tvCartItemCount: TextView = itemView.findViewById(R.id.tvCartItemCount)
+        val quantity: TextView = itemView.findViewById(R.id.tvCartItemCount)
         val btnCartItemAdd: AppCompatButton  = itemView.findViewById(R.id.btnCartItemAdd)
         val btnSelectItem: RadioButton = itemView.findViewById(R.id.btnSelectItem)
     }
@@ -44,7 +47,7 @@ class CartFragmentRecyclerViewAdapter(
 
     init {
         // Initialize itemQuantities with default quantities
-        for (i in bookInCartList.indices) {
+        for (i in cartList.indices) {
             itemQuantities.add(1) // Initialize with default quantity 1
             itemSelections.add(false) // Initialize with not selected
 
@@ -52,50 +55,34 @@ class CartFragmentRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val bookInfo = bookInCartList[position]
+        val cartInfo = cartList[position]
+        holder.bookTitle.text=cartInfo.bookName
+        holder.bookOwner.text=cartInfo.author
+        holder.quantity.text= cartInfo.bookQuantity.toString()
+        val bookPrice = "%.3f".format(cartInfo.price * 100.000)
+        holder.bookPrice.text = bookPrice
+        Picasso.get()
+            .load(cartInfo.bookCover)
+            .into(holder.bookCover)
 
-
-        if (bookInfo == "2") {
-            holder.bookCover.setImageResource(R.drawable.image_book_3)
-            holder.bookTitle.text = "The Catcher in the Rye"
-            holder.bookOwner.text = "Phan Thai Khang"
-            holder.bookPrice.text = "150.000 VND"
-        } else if (bookInfo == "1") {
-            holder.bookCover.setImageResource(R.drawable.image_book_2)
-            holder.bookTitle.text = "The Secret Society of Aunts & Uncles"
-            holder.bookOwner.text = "Jake Gyllenhaal, Greta Caruso"
-            holder.bookPrice.text = "250.000 VND"
-        }
-        else if (bookInfo == "3") {
-            holder.bookCover.setImageResource(R.drawable.image_book_2)
-            holder.bookTitle.text = "The Secret Society of Aunts & Uncles"
-            holder.bookOwner.text = "Jake Gyllenhaal, Greta Caruso"
-            holder.bookPrice.text = "100.000 VND"
-        }
-        else if (bookInfo == "4") {
-            holder.bookCover.setImageResource(R.drawable.image_book_2)
-            holder.bookTitle.text = "TestBook"
-            holder.bookOwner.text = "Khong coa ten"
-            holder.bookPrice.text = "120.000 VND"
-        }
-        holder.tvCartItemCount.text = itemQuantities[position].toString()
-        holder.btnSelectItem.isChecked = itemSelections[position]
-        holder.btnSelectItem.setOnClickListener {
-            toggleSelection(position)
-            notifyDataSetChanged() // Notify data change to update views
-        }
-
-        holder.btnCartItemMinus.setOnClickListener {
-            // Decrease quantity and notify data change
-            decreaseQuantity(position)
-            notifyDataSetChanged() // Notify data change to update views
-        }
-
-        holder.btnCartItemAdd.setOnClickListener {
-            // Increase quantity and notify data change
-            increaseQuantity(position)
-            notifyDataSetChanged() // Notify data change to update views
-        }
+//        holder.tvCartItemCount.text = itemQuantities[position].toString()
+//        holder.btnSelectItem.isChecked = itemSelections[position]
+//        holder.btnSelectItem.setOnClickListener {
+//            toggleSelection(position)
+//            notifyDataSetChanged() // Notify data change to update views
+//        }
+//
+//        holder.btnCartItemMinus.setOnClickListener {
+//            // Decrease quantity and notify data change
+//            decreaseQuantity(position)
+//            notifyDataSetChanged() // Notify data change to update views
+//        }
+//
+//        holder.btnCartItemAdd.setOnClickListener {
+//            // Increase quantity and notify data change
+//            increaseQuantity(position)
+//            notifyDataSetChanged() // Notify data change to update views
+//        }
     }
     private fun toggleSelection(position: Int) {
         itemSelections[position] = !itemSelections[position]
@@ -112,19 +99,19 @@ class CartFragmentRecyclerViewAdapter(
         }
     }
     override fun getItemCount(): Int {
-        return bookInCartList.size
+        return cartList.size
     }
 
     fun removeItem(position: Int) {
         // Xóa mục khỏi danh sách
-        bookInCartList.removeAt(position)
+        cartList.removeAt(position)
         // Thông báo cho RecyclerView biết rằng một mục đã bị xóa ở vị trí được chỉ định
         notifyItemRemoved(position)
     }
 
 
-    fun getItemInfo(position: Int): String {
+    fun getItemInfo(position: Int): CartObject {
         // Trả về thông tin của item tại vị trí được chỉ định
-        return bookInCartList[position]
+        return cartList[position]
     }
 }
