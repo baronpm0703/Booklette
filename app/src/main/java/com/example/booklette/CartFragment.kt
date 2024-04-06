@@ -5,6 +5,7 @@ import android.graphics.Paint
 import CartFragmentRecyclerViewAdapter
 import CategoryFragmentGridViewAdapter
 import CheckoutFragment
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.graphics.Canvas
 import android.graphics.RectF
@@ -49,24 +50,20 @@ class CartFragment : Fragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
+//    private lateinit var auth: FirebaseAuth
+//    private lateinit var db: FirebaseFirestore
 
     private var isFailedQuery: Boolean = false
     private var cartList: ArrayList<CartObject> = ArrayList()
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentCartBinding.inflate(inflater, container, false)
         val view = binding.root
-
-        auth = Firebase.auth
-        db = Firebase.firestore
-
-
         // Add more items as needed
 
         val adapter = CartFragmentRecyclerViewAdapter(requireContext(), cartList)
@@ -77,66 +74,6 @@ class CartFragment : Fragment() {
 //        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
 //        itemTouchHelper.attachToRecyclerView(binding.rvCart)
 
-        db.collection("accounts").whereEqualTo("UID", auth.uid).get()
-                .addOnSuccessListener { documents ->
-                    if (documents.size() != 1) return@addOnSuccessListener
-                    for (document in documents) {
-                        // Get avatar and seller's name
-                        if (document.data.get("cart") != null) {
-                            val cartArray = document.data.get("cart") as ArrayList<Map<String, Any>>
-                            cartArray?.let {
-                                for (cartMap in it) {
-                                    val itemId = cartMap["itemId"] as? String
-                                    val storeId = cartMap["storeId"] as? String
-                                    if(itemId != null && storeId != null){
-                                        db.collection("accounts").whereEqualTo("UID", storeId).get()
-                                            .addOnSuccessListener { storeDocument ->
-                                                for(eachStore in storeDocument){
-                                                    val storeName = eachStore.data.get("fullname")
-                                                    eachStore.getDocumentReference("store")!!.get().addOnSuccessListener { personalStoreDocument ->
-                                                        val itemIds = personalStoreDocument["items"] as? ArrayList<Map<String, Any>>
-                                                        itemIds?.let {
-                                                            for (itemId in it) {
-                                                                // Retrieve book details using itemId
-                                                                db.collection("books").whereEqualTo("bookID", itemId).get()
-                                                                    .addOnSuccessListener { bookDocument ->
-                                                                        for(eachBook in bookDocument) {
-                                                                            cartList.add(
-                                                                                CartObject(
-                                                                                    eachBook.data["bokID"].toString(),
-                                                                                    storeId.toString(),
-                                                                                    storeName.toString(),
-                                                                                    eachBook.data["image"].toString(),
-                                                                                    eachBook.data["name"].toString(),
-                                                                                    eachBook.data["author"].toString(),
-                                                                                    eachBook.data["price"].toString().toFloat(),
-                                                                                ))
-                                                                        }
-                                                                    }
-
-                                                            }
-
-                                                        }
-                                                    }
-                                                }
-
-                                            }
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (adapter != null) {
-                        adapter.notifyDataSetChanged()
-
-                        Handler().postDelayed({
-                            // Code to be executed after the delay
-                            // For example, you can start a new activity or update UI elements
-                            binding.rvCart.visibility = View.VISIBLE
-                        }, 2000)
-                    }
-                }
 
 
         adapter.quantityChangeListener = object : CartFragmentRecyclerViewAdapter.OnQuantityChangeListener {
@@ -150,6 +87,75 @@ class CartFragment : Fragment() {
                 // Implement your logic here...
             }
         }
+        val auth = Firebase.auth
+        val db = Firebase.firestore
+
+        // Shop info
+        db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+            .addOnSuccessListener { documents ->
+            if (documents.size() != 1) return@addOnSuccessListener
+            for (document in documents) {
+                // Get avatar and seller's name
+                if (document.data.get("cart") != null) {
+                    val cartArray = document.data.get("cart") as ArrayList<Map<String, Any>>
+                    cartArray.let {
+                        for (cartMap in it) {
+                            val itemId = cartMap["itemId"] as? String
+                            val storeId = cartMap["storeId"] as? String
+                            if(itemId != null && storeId != null){
+                                db.collection("accounts").whereEqualTo("UID", storeId).get()
+                                    .addOnSuccessListener { storeDocument ->
+                                        for(eachStore in storeDocument){
+                                            val storeName = eachStore.data.get("fullname")
+                                            eachStore.getDocumentReference("store")!!.get().addOnSuccessListener { personalStoreDocument ->
+                                                val itemList = personalStoreDocument["items"] as? ArrayList<Map<String, Any>>
+                                                itemList?.let {
+                                                    for (item in it) {
+//                                                        val id = itemIds.
+                                                        // Retrieve book details using itemId
+                                                        db.collection("books").whereEqualTo("bookID", item.get("itemID")).get()
+                                                            .addOnSuccessListener { bookDocument ->
+                                                                for(eachBook in bookDocument) {
+                                                                    cartList.add(
+                                                                        CartObject(
+                                                                            eachBook.data["bokID"].toString(),
+                                                                            storeId.toString(),
+                                                                            storeName.toString(),
+                                                                            eachBook.data["image"].toString(),
+                                                                            eachBook.data["name"].toString(),
+                                                                            eachBook.data["author"].toString(),
+                                                                            item["price"].toString().toFloat(),
+                                                                        ))
+                                                                }
+                                                            }
+
+                                                    }
+
+                                                }
+                                            }
+                                        }
+
+                                    }
+
+                            }
+                        }
+                    }
+                }
+            }
+            adapter.notifyDataSetChanged()
+
+            Handler().postDelayed({
+                // Code to be executed after the delay
+                // For example, you can start a new activity or update UI elements
+                binding.rvCart.visibility = View.VISIBLE
+            }, 2000)
+        }
+            .addOnFailureListener {
+                Log.i("UID", auth.uid.toString())
+            }
+            .addOnCanceledListener {
+                Log.i("UID", auth.uid.toString())
+            }
 
         binding.btnCheckOut.setOnClickListener {
             val checkOutFragment = CheckoutFragment()

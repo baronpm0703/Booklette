@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/baseline_arrow_back_ios_new_24"></ImageView>
+            android:src="@drawable/baseline_arrow_back_ios_new_24"/>
 
         <TextView
             android:id="@+id/selectedGenre"
@@ -31,7 +31,7 @@
             android:text="Non-Fictions"
             android:textColor="@color/black"
             android:textSize="21dp"
-            android:textStyle="bold"></TextView>
+            android:textStyle="bold"/>
 
 
         <ImageView
@@ -40,11 +40,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/search"></ImageView>
+            android:src="@drawable/search"/>
 
     </RelativeLayout>
 
     <HorizontalScrollView
+        android:visibility="invisible"
         android:id="@+id/horizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -141,11 +142,11 @@
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="15dp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
         <ImageView
             android:id="@+id/ivFilter"
@@ -153,7 +154,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/filter"></ImageView>
+            android:src="@drawable/filter"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/tvfilter"
@@ -167,7 +169,7 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="15dp"
-            android:textStyle="bold"></TextView>
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/ivSort"
@@ -176,7 +178,8 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="50dp"
             android:layout_toRightOf="@+id/tvfilter"
-            android:src="@drawable/baseline_swap_vert_24px"></ImageView>
+            android:src="@drawable/baseline_swap_vert_24px"
+            android:contentDescription="TODO"/>
 
         <TextView
             android:id="@+id/tvSort"
@@ -202,6 +205,7 @@
     </RelativeLayout>
 
     <TextView
+        android:visibility="invisible"
         android:id="@+id/unavailbleInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

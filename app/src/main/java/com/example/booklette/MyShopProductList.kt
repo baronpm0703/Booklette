@@ -160,7 +160,7 @@ class MyShopProductList : Fragment() {
             }
         }
 
-        val filterDialogProductList = FilterDialogProductList()
+        val filterDialogProductList = FilterDialogProductList(false)
         binding.tvfilter.setOnClickListener {
             activity?.let {
 //                val newTheme = R.style.BottomSheetSignNightTheme

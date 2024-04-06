@@ -3,13 +3,15 @@ package com.example.booklette
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentProductListBinding
 import com.google.firebase.Firebase
@@ -21,10 +23,6 @@ import com.maxkeppeler.sheets.core.SheetStyle
 import com.maxkeppeler.sheets.option.DisplayMode
 import com.maxkeppeler.sheets.option.Option
 import com.maxkeppeler.sheets.option.OptionSheet
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
-import kotlin.reflect.typeOf
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,6 +48,7 @@ class ProductList : Fragment() {
     private var isFailedQuery: Boolean = false
 
     private var chosenGenre: String? = null
+    private var chosenResult: String? = null
     private var searchRes: String? = null
     private var bookList: ArrayList<ProductsObject> = ArrayList()
 
@@ -61,6 +60,7 @@ class ProductList : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("SimpleDateFormat")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,6 +96,7 @@ class ProductList : Fragment() {
         binding.gvProductList.visibility = View.GONE
         binding.unavailbleInfo.visibility = View.GONE
         if (!chosenGenre.equals(null)) {
+            binding.ivSearch.visibility = View.GONE
             val docRef = db.collection("books").whereEqualTo("genre", chosenGenre).get()
             docRef.addOnSuccessListener { result ->
                     if (result.isEmpty) {
@@ -152,8 +153,66 @@ class ProductList : Fragment() {
                     }
                 }
         }
+        if (!searchRes.equals(null)) {
+            binding.horizontalScrollView.visibility = View.VISIBLE
+            val params = (binding.relativeLayout2.layoutParams as ViewGroup.MarginLayoutParams)
+            params.setMargins(0, 230, 0, 0)
+            val docRef = db.collection("books").get()
+            docRef.addOnSuccessListener { result ->
+                if (result.isEmpty) {
+                    binding.unavailbleInfo.visibility = View.VISIBLE
+                }
+                val bookIDListToCalcQuantity = ArrayList<String>()
+                for (document in result) {
+                    var avg_rating = 0.0F;
+                    var rating_num = 1;
+                    if (document.data.get("review") != null) {
+                        val reviewsArray = document.data.get("review") as ArrayList<Map<String, Any>>
+                        rating_num = reviewsArray.size
 
+                        for (reviewMap in reviewsArray) {
+                            val uid = reviewMap["UID"] as String
+                            val image = reviewMap["image"] as String
+                            val score = (reviewMap["score"] as Long).toInt()
+                            val text = reviewMap["text"] as String
 
+                            avg_rating += score
+                        }
+                    }
+                    bookIDListToCalcQuantity.add(document.data["id"].toString())
+                    val dDate = document.data["releaseDate"] as com.google.firebase.Timestamp
+                    bookList.add(ProductsObject(
+                        document.data["id"].toString(),
+                        document.data["name"].toString(),
+                        document.data["genre"].toString(),
+                        document.data["author"].toString(),
+                        dDate.toDate(),
+                        document.data["image"].toString(),
+                        document.data["price"].toString().toFloat(),
+                        avg_rating / rating_num
+                    ))
+                }
+                if (gvProductListAdapter != null){
+                    bookList.sortBy {
+                            book -> book.price
+                    }
+                    val quantityEachBook = ScanOrderCalcSellingAmount(bookIDListToCalcQuantity)
+                    var index = 0
+                    quantityEachBook.forEach {
+                        bookList[index++].quantitySale = it.toInt()
+                    }
+                    gvProductListAdapter.notifyDataSetChanged()
+
+                    Handler().postDelayed({
+                        // Code to be executed after the delay
+                        // For example, you can start a new activity or update UI elements
+                        //                        binding.smHomeFragmentBestDeal.visibility = View.GONE
+                        binding.gvProductList.visibility = View.VISIBLE
+                        //                        binding.smHomeFragmentBestDeal.stopShimmer()
+                    }, 2000)
+                }
+            }
+        }
 
         // Set up the select dialog when click the sort
         binding.tvSort.setOnClickListener{
@@ -225,7 +284,10 @@ class ProductList : Fragment() {
             }
         }
 
-        val filterDialogProductList = FilterDialogProductList()
+        var filterDialogProductList = FilterDialogProductList(false)
+        if (!searchRes.equals(null))
+            filterDialogProductList = FilterDialogProductList(true)
+
         binding.tvfilter.setOnClickListener {
             activity?.let {
 //                val newTheme = R.style.BottomSheetSignNightTheme
@@ -235,7 +297,7 @@ class ProductList : Fragment() {
                     title("Filter")
                     titleColor(Color.parseColor("#FF0000"))
                     onPositive {
-                       ChangeTitle(getSliderValues())
+                        FilterWithAttributes(getSliderValues(), getChosenCategory(), getChosenType(), getChosenAge())
                     }
                 }
             }
@@ -267,7 +329,7 @@ class ProductList : Fragment() {
         return res
     }
 
-    fun ChangeTitle(selectedSlider: ArrayList<String>) {
+    fun FilterWithAttributes(selectedSlider: ArrayList<String>, selectedCategories: ArrayList<String>, selectedType: ArrayList<String>, selectedAge: ArrayList<String>) {
         binding.selectedGenre.text = selectedSlider[0]
     }
 

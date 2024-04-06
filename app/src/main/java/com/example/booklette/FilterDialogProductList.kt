@@ -12,7 +12,9 @@ import java.util.Currency
 import com.example.booklette.databinding.FilterDialogProductListBinding
 
 private typealias PositiveListener = () -> Unit
-class FilterDialogProductList: Sheet() {
+class FilterDialogProductList(
+    private val needRemoveCategory: Boolean
+): Sheet() {
     override val dialogTag = "FilterSheet"
     private var selectedSlider = arrayListOf<String>("", "")
     private lateinit var binding: FilterDialogProductListBinding
@@ -57,9 +59,19 @@ class FilterDialogProductList: Sheet() {
         chosenAgeTrueTableArray = BooleanArray(ages.size)
     }
 
-
     fun getSliderValues(): ArrayList<String> {
         return selectedSlider
+    }
+
+    fun getChosenType(): ArrayList<String> {
+        return chosenType
+    }
+    fun getChosenAge(): ArrayList<String> {
+        return chosenAge
+    }
+
+    fun getChosenCategory(): ArrayList<String> {
+        return chosenCategory
     }
     fun onPositive(positiveListener: PositiveListener) {
         this.positiveListener = positiveListener
@@ -99,7 +111,14 @@ class FilterDialogProductList: Sheet() {
         }
 
         // Category
-        applyFilterCategoriesAdapter()
+        if (needRemoveCategory) {
+            binding.filterCategoryDialog.visibility = View.GONE
+            binding.filterCategoryDialogGV.visibility = View.GONE
+
+        } else {
+            applyFilterCategoriesAdapter()
+        }
+
         // Type
         applyFilterTypesAdapter()
         //Age
