@@ -128,7 +128,7 @@ class CartFragment : Fragment() {
                                                                                 eachBook.data["image"].toString(),
                                                                                 eachBook.data["name"].toString(),
                                                                                 eachBook.data["author"].toString(),
-                                                                                eachBook["price"].toString()
+                                                                                item["price"].toString()
                                                                                     .toFloat(),
                                                                             )
                                                                         )
