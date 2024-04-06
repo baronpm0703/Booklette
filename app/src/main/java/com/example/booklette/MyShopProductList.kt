@@ -106,7 +106,7 @@ class MyShopProductList : Fragment() {
                         document.data["author"].toString(),
                         dDate.toDate(),
                         document.data["image"].toString(),
-                        document.data["price"].toString().toFloat(),
+                        0,
                         avg_rating / rating_num
                     ))
                 }
@@ -160,7 +160,12 @@ class MyShopProductList : Fragment() {
             }
         }
 
-        val filterDialogProductList = FilterDialogProductList(false)
+        val initValues = InitFilterValuesProductList()
+        initValues.rangslider.apply {
+            add(0.0F * 100)
+            add(0.8F * 100)
+        }
+        val filterDialogProductList = FilterDialogProductList(false, initValues)
         binding.tvfilter.setOnClickListener {
             activity?.let {
 //                val newTheme = R.style.BottomSheetSignNightTheme

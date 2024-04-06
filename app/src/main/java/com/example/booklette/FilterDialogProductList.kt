@@ -13,7 +13,8 @@ import com.example.booklette.databinding.FilterDialogProductListBinding
 
 private typealias PositiveListener = () -> Unit
 class FilterDialogProductList(
-    private val needRemoveCategory: Boolean
+    private val needRemoveCategory: Boolean,
+    private val initValue: InitFilterValuesProductList
 ): Sheet() {
     override val dialogTag = "FilterSheet"
     private var selectedSlider = arrayListOf<String>("", "")
@@ -94,6 +95,8 @@ class FilterDialogProductList(
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.rangeSlider.values = initValue.rangslider
         binding.rangeSlider.setLabelFormatter { value: Float ->
             val format = NumberFormat.getCurrencyInstance()
             format.maximumFractionDigits = 0

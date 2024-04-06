@@ -65,7 +65,7 @@ class ProductListFragmentGridViewAdapter(
         viewHolder.bookTitle?.text = bookInfo.name
         viewHolder.bookRate?.rating = bookInfo.rating
         viewHolder.bookOwner?.text = bookInfo.author
-        val bookPrice = "%.3f".format(bookInfo.price * 100.000)
+        val bookPrice = "${bookInfo.price} VND"
         viewHolder.bookPrice?.text = bookPrice
         Picasso.get()
             .load(bookInfo.image)

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.res.booleanResource
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentProductListBinding
@@ -23,6 +24,12 @@ import com.maxkeppeler.sheets.core.SheetStyle
 import com.maxkeppeler.sheets.option.DisplayMode
 import com.maxkeppeler.sheets.option.Option
 import com.maxkeppeler.sheets.option.OptionSheet
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import kotlin.math.max
+import kotlin.math.min
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -52,6 +59,8 @@ class ProductList : Fragment() {
     private var searchRes: String? = null
     private var bookList: ArrayList<ProductsObject> = ArrayList()
 
+    private var smallestAmount: Long = Long.MAX_VALUE
+    private var largestAmount: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -72,6 +81,7 @@ class ProductList : Fragment() {
         // Authen and get data
         auth = Firebase.auth
         db = Firebase.firestore
+
 
         // After passing the selected genre from categories, set to this
         if (this.arguments?.getString("Genre") != null) {
@@ -102,7 +112,7 @@ class ProductList : Fragment() {
                     if (result.isEmpty) {
                         binding.unavailbleInfo.visibility = View.VISIBLE
                     }
-                    val bookIDListToCalcQuantity = ArrayList<String>()
+                    val bookIDListToCalc = ArrayList<String>()
                     for (document in result) {
                         var avg_rating = 0.0F;
                         var rating_num = 1;
@@ -118,16 +128,17 @@ class ProductList : Fragment() {
                                 avg_rating += score
                             }
                         }
-                        bookIDListToCalcQuantity.add(document.data["id"].toString())
+                        bookIDListToCalc.add(document.data["bookID"].toString())
                         val dDate = document.data["releaseDate"] as com.google.firebase.Timestamp
+
                         bookList.add(ProductsObject(
-                            document.data["id"].toString(),
+                            document.data["bookID"].toString(),
                             document.data["name"].toString(),
                             document.data["genre"].toString(),
                             document.data["author"].toString(),
                             dDate.toDate(),
                             document.data["image"].toString(),
-                            document.data["price"].toString().toFloat(),
+                            0,
                             avg_rating / rating_num
                             ))
                     }
@@ -136,11 +147,26 @@ class ProductList : Fragment() {
                         bookList.sortBy {
                                 book -> book.price
                         }
-                        val quantityEachBook = ScanOrderCalcSellingAmount(bookIDListToCalcQuantity)
-                        var index = 0
-                        quantityEachBook.forEach {
-                            bookList[index++].quantitySale = it.toInt()
+
+                        runBlocking {
+                            val quantityEachBook = ScanOrderCalcSellingQuantity(bookIDListToCalc)
+                            var index = 0
+                            quantityEachBook.forEach {
+                                bookList[index++].quantitySale = it.toInt()
+                            }
+
                         }
+                        runBlocking {
+                            val priceEachBook = ScanOrderCalcSellingAmount(bookIDListToCalc)
+                            var index = 0
+                            priceEachBook.forEach {
+                                smallestAmount = min(smallestAmount, it)
+                                largestAmount = max(largestAmount, it)
+                                bookList[index++].price = it
+                            }
+                        }
+
+
                         gvProductListAdapter.notifyDataSetChanged()
 
                         Handler().postDelayed({
@@ -162,7 +188,7 @@ class ProductList : Fragment() {
                 if (result.isEmpty) {
                     binding.unavailbleInfo.visibility = View.VISIBLE
                 }
-                val bookIDListToCalcQuantity = ArrayList<String>()
+                val bookIDListToCalc = ArrayList<String>()
                 for (document in result) {
                     var avg_rating = 0.0F;
                     var rating_num = 1;
@@ -179,16 +205,17 @@ class ProductList : Fragment() {
                             avg_rating += score
                         }
                     }
-                    bookIDListToCalcQuantity.add(document.data["id"].toString())
+                    bookIDListToCalc.add(document.data["bookID"].toString())
                     val dDate = document.data["releaseDate"] as com.google.firebase.Timestamp
+
                     bookList.add(ProductsObject(
-                        document.data["id"].toString(),
+                        document.data["bookID"].toString(),
                         document.data["name"].toString(),
                         document.data["genre"].toString(),
                         document.data["author"].toString(),
                         dDate.toDate(),
                         document.data["image"].toString(),
-                        document.data["price"].toString().toFloat(),
+                        0,
                         avg_rating / rating_num
                     ))
                 }
@@ -196,11 +223,24 @@ class ProductList : Fragment() {
                     bookList.sortBy {
                             book -> book.price
                     }
-                    val quantityEachBook = ScanOrderCalcSellingAmount(bookIDListToCalcQuantity)
-                    var index = 0
-                    quantityEachBook.forEach {
-                        bookList[index++].quantitySale = it.toInt()
+                    runBlocking {
+                        val quantityEachBook = ScanOrderCalcSellingQuantity(bookIDListToCalc)
+                        var index = 0
+                        quantityEachBook.forEach {
+                            bookList[index++].quantitySale = it.toInt()
+                        }
+
                     }
+                    runBlocking {
+                        val priceEachBook = ScanOrderCalcSellingAmount(bookIDListToCalc)
+                        var index = 0
+                        priceEachBook.forEach {
+                            smallestAmount = min(smallestAmount, it)
+                            largestAmount = max(largestAmount, it)
+                            bookList[index++].price = it
+                        }
+                    }
+
                     gvProductListAdapter.notifyDataSetChanged()
 
                     Handler().postDelayed({
@@ -284,9 +324,15 @@ class ProductList : Fragment() {
             }
         }
 
-        var filterDialogProductList = FilterDialogProductList(false)
+        val initValues = InitFilterValuesProductList()
+        initValues.rangslider.apply {
+            add((smallestAmount / 1000).toFloat())
+            add((largestAmount / 1000).toFloat())
+        }
+
+        var filterDialogProductList = FilterDialogProductList(false, initValues)
         if (!searchRes.equals(null))
-            filterDialogProductList = FilterDialogProductList(true)
+            filterDialogProductList = FilterDialogProductList(true, initValues)
 
         binding.tvfilter.setOnClickListener {
             activity?.let {
@@ -307,21 +353,29 @@ class ProductList : Fragment() {
         return view
     }
 
-    fun ScanOrderCalcSellingAmount(booksNeedObserver: ArrayList<String>): ArrayList<Long>{
-        val res = ArrayList<Long>(booksNeedObserver.size)
-        res.fill(0)
-        db.collection("orders").get().addOnSuccessListener { result ->
-            for (doc in result){
-                if (doc.data.get("items") != null) {
-                    val itemsArray = doc.data.get("items") as ArrayList<Map<String, Any>>
+    suspend fun ScanOrderCalcSellingQuantity(booksNeedObserver: ArrayList<String>): ArrayList<Long> {
+        val res = ArrayList<Long>()
+        booksNeedObserver.forEach {
+            res.add(0)
+        }
+        val db = FirebaseFirestore.getInstance()
+        val result = try {
+            db.collection("orders").get().await()
+        } catch (e: Exception) {
+            // Handle any exceptions
+            e.printStackTrace()
+            return res
+        }
 
-                    for (item in itemsArray) {
-                        val itemID = item["itemID"] as String
-                        val quantity = item["quantity"] as Long
-                        val indexContainItem = booksNeedObserver.indexOf(itemID)
-                        if (indexContainItem != -1){
-                            res[indexContainItem] += quantity
-                        }
+        for (doc in result) {
+            if (doc.data["items"] != null) {
+                val itemsArray = doc.data["items"] as ArrayList<Map<String, Any>>
+                for (item in itemsArray) {
+                    val itemID = item["itemID"] as String
+                    val quantity = item["quantity"] as Long
+                    val indexContainItem = booksNeedObserver.indexOf(itemID)
+                    if (indexContainItem != -1) {
+                        res[indexContainItem] += quantity
                     }
                 }
             }
@@ -329,10 +383,42 @@ class ProductList : Fragment() {
         return res
     }
 
-    fun FilterWithAttributes(selectedSlider: ArrayList<String>, selectedCategories: ArrayList<String>, selectedType: ArrayList<String>, selectedAge: ArrayList<String>) {
-        binding.selectedGenre.text = selectedSlider[0]
+    suspend fun ScanOrderCalcSellingAmount(booksNeedObserver: ArrayList<String>): ArrayList<Long> {
+        val res = ArrayList<Long>()
+
+        booksNeedObserver.forEach {
+            res.add(0)
+        }
+        val db = FirebaseFirestore.getInstance()
+        val result = withContext(Dispatchers.IO) {
+            db.collection("personalStores").get().await()
+        }
+
+        for (doc in result) {
+            if (doc.data["items"] != null) {
+                val itemsArray = doc.data["items"] as ArrayList<Map<String, Any>>
+                for (item in itemsArray) {
+                    val itemID = item["itemID"] as String
+                    val price = item["price"] as Long
+                    val indexContainItem = booksNeedObserver.indexOf(itemID)
+                    if (indexContainItem != -1) {
+                        res[indexContainItem] = price
+                    }
+                }
+            }
+        }
+        return res
     }
 
+
+    fun FilterWithAttributes(selectedSlider: ArrayList<String>, selectedCategories: ArrayList<String>, selectedType: ArrayList<String>, selectedAge: ArrayList<String>) {
+        bookList.filter {
+            checkInRangeSlider(it, selectedSlider)
+        }
+    }
+    fun checkInRangeSlider(item: ProductsObject, slider: ArrayList<String>): Boolean {
+        return item.price >= slider[0].toFloat() && item.price <= slider[1].toFloat()
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
