@@ -111,23 +111,30 @@ class CartFragment : Fragment() {
                                                 val itemList = personalStoreDocument["items"] as? ArrayList<Map<String, Any>>
                                                 itemList?.let {
                                                     for (item in it) {
+                                                        val bookID = item["itemID"] as? String
+                                                        if (itemId == bookID) {
 //                                                        val id = itemIds.
-                                                        // Retrieve book details using itemId
-                                                        db.collection("books").whereEqualTo("bookID", item.get("itemID")).get()
-                                                            .addOnSuccessListener { bookDocument ->
-                                                                for(eachBook in bookDocument) {
-                                                                    cartList.add(
-                                                                        CartObject(
-                                                                            eachBook.data["bokID"].toString(),
-                                                                            storeId.toString(),
-                                                                            storeName.toString(),
-                                                                            eachBook.data["image"].toString(),
-                                                                            eachBook.data["name"].toString(),
-                                                                            eachBook.data["author"].toString(),
-                                                                            item["price"].toString().toFloat(),
-                                                                        ))
+                                                            // Retrieve book details using itemId
+                                                            db.collection("books")
+                                                                .whereEqualTo("bookID", itemId)
+                                                                .get()
+                                                                .addOnSuccessListener { bookDocument ->
+                                                                    for (eachBook in bookDocument) {
+                                                                        cartList.add(
+                                                                            CartObject(
+                                                                                eachBook.data["bokID"].toString(),
+                                                                                storeId.toString(),
+                                                                                storeName.toString(),
+                                                                                eachBook.data["image"].toString(),
+                                                                                eachBook.data["name"].toString(),
+                                                                                eachBook.data["author"].toString(),
+                                                                                eachBook["price"].toString()
+                                                                                    .toFloat(),
+                                                                            )
+                                                                        )
+                                                                    }
                                                                 }
-                                                            }
+                                                        }
 
                                                     }
 

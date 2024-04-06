@@ -26,6 +26,7 @@ class CartFragmentRecyclerViewAdapter(
         val bookTitle: TextView = itemView.findViewById(R.id.bookTitle)
         val bookOwner: TextView = itemView.findViewById(R.id.bookOwner)
         val bookPrice: TextView = itemView.findViewById(R.id.bookPrice)
+        val storeName: TextView = itemView.findViewById(R.id.shopName)
         val btnCartItemMinus: AppCompatButton = itemView.findViewById(R.id.btnCartItemMinus)
         val quantity: TextView = itemView.findViewById(R.id.tvCartItemCount)
         val btnCartItemAdd: AppCompatButton  = itemView.findViewById(R.id.btnCartItemAdd)
@@ -56,6 +57,7 @@ class CartFragmentRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cartInfo = cartList[position]
+        holder.storeName.text=cartInfo.storeName
         holder.bookTitle.text=cartInfo.bookName
         holder.bookOwner.text=cartInfo.author
         holder.quantity.text= cartInfo.bookQuantity.toString()
