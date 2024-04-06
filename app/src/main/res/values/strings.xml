@@ -152,4 +152,22 @@
     <string name="epayMethod">Epay</string>
     <string name="navigation_Ship_Address">Ship Address</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="myprofile_myshop_flavor_text">My Shop ></string>
+    <string name="myprofile_follower">Follower</string>
+    <string name="myprofile_following">Following</string>
+    <string name="myprofile_my_wallets">My Wallets</string>
+    <string name="myprofile_my_wallets_epay_flavor">Top up your E-pay wallet to receive a voucher when paying</string>
+    <string name="myprofile_my_wallets_voucher">My voucher</string>
+    <string name="myprofile_my_wallets_voucher_flavor">Using vouchers at checkout helps you save more</string>
+    <string name="myprofile_my_orders">My Orders</string>
+    <string name="myprofile_shipping_address">Shipping Address</string>
+    <string name="myprofile_shipping_address_flavor">addresses</string>
+    <string name="myprofile_payment_method">Payment Method</string>
+    <string name="myprofile_my_reviews">My Reviews</string>
+    <string name="myprofile_settings">Settings</string>
+    <string name="myprofile_settings_flavor">Notifications, passwords</string>
+    <string name="myprofile_language">Language</string>
+    <string name="myprofile_favorites">Favorites</string>
+    <string name="myprofile_blacklist">Blacklist</string>
+    <string name="myprofile_help_center">Help Center</string>
 </resources>
