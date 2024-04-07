@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentHomeBinding
@@ -16,8 +15,11 @@ import com.google.android.material.chip.Chip
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,6 +48,7 @@ class HomeFragment : Fragment() {
     private var RCDBookRating = ArrayList<Float>()
     private var BookNewArrivalList = ArrayList<BookObject>()
     private var BookNewArrivalSaleList = ArrayList<Float>()
+    private lateinit var bookStoreList: ArrayList<personalStoreObject>
 
     lateinit var topBookAdapter: TopBookHomeFragmentAdapter
     lateinit var RCDAdapter: HomeFragmentTodayRCDTypeAdapter
@@ -87,6 +90,8 @@ class HomeFragment : Fragment() {
 
         }
 
+        bookStoreList = ArrayList<personalStoreObject>()
+
         binding.smHomeFragmentBestDeal.visibility = View.VISIBLE
         binding.rvBestDeal.visibility = View.INVISIBLE
         binding.smHomeFragmentBestDeal.startShimmer()
@@ -127,16 +132,28 @@ class HomeFragment : Fragment() {
         binding.rvBestDeal.pageMargin = 20
         binding.dotsIndicator.attachTo(binding.rvBestDeal)
 
+        getBookPrice("BK001")
+
         db.collection("books").whereNotEqualTo("best-deal-sale", null).get().addOnSuccessListener { result ->
             for (document in result) {
 //                Log.d("firestore", "${document.id} => ${document.data.get("name")}")
+
+                val tmp_id = document.data.get("bookID").toString()
+                var tmp = 0.0F
+
+                runBlocking {
+                    tmp = getBookPrice1(tmp_id)
+                }
+
                 bestDeals.add(BookObject(document.data.get("id").toString(),
                     document.data.get("name").toString(),
                     document.data.get("genre").toString(),
                     document.data.get("author").toString(),
                     document.data.get("releaseDate").toString(),
                     document.data.get("image").toString(),
-                    document.data.get("price").toString().toFloat()))
+//                    document.data.get("price").toString().toFloat()
+                    tmp
+                ))
 
                 book_deal_sale.add(document.data.get("best-deal-sale").toString().toFloat())
             }
@@ -182,13 +199,22 @@ class HomeFragment : Fragment() {
 
         db.collection("books").get().addOnSuccessListener { result ->
             for (document in result) {
+                val tmp_id = document.data.get("bookID").toString()
+                var tmp = 0.0F
+
+                runBlocking {
+                    tmp = getBookPrice1(tmp_id)
+                }
+
                 topBookArrayList.add(BookObject(document.data.get("id").toString(),
                     document.data.get("name").toString(),
                     document.data.get("genre").toString(),
                     document.data.get("author").toString(),
                     document.data.get("releaseDate").toString(),
                     document.data.get("image").toString(),
-                    document.data.get("price").toString().toFloat()))
+//                    document.data.get("price").toString().toFloat()
+                    tmp
+                ))
 
                 var avg_rating = 0.0F;
                 var rating_num = 1;
@@ -248,13 +274,22 @@ class HomeFragment : Fragment() {
 
         db.collection("books").get().addOnSuccessListener { result ->
             for (document in result) {
+                val tmp_id = document.data.get("bookID").toString()
+                var tmp = 0.0F
+
+                runBlocking {
+                    tmp = getBookPrice1(tmp_id)
+                }
+
                 RCDBookList.add(BookObject(document.data.get("id").toString(),
                     document.data.get("name").toString(),
                     document.data.get("genre").toString(),
                     document.data.get("author").toString(),
                     document.data.get("releaseDate").toString(),
                     document.data.get("image").toString(),
-                    document.data.get("price").toString().toFloat()))
+//                    document.data.get("price").toString().toFloat()
+                    tmp
+                ))
 
                 var avg_rating = 0.0F;
                 var rating_num = 1;
@@ -294,13 +329,22 @@ class HomeFragment : Fragment() {
 
         db.collection("books").whereEqualTo("is-new-arrival", true).get().addOnSuccessListener { result ->
             for (document in result) {
+                val tmp_id = document.data.get("bookID").toString()
+                var tmp = 0.0F
+
+                runBlocking {
+                    tmp = getBookPrice1(tmp_id)
+                }
+
                 BookNewArrivalList.add(BookObject(document.data.get("id").toString(),
                     document.data.get("name").toString(),
                     document.data.get("genre").toString(),
                     document.data.get("author").toString(),
                     document.data.get("releaseDate").toString(),
                     document.data.get("image").toString(),
-                    document.data.get("price").toString().toFloat()))
+                    tmp
+//                    document.data.get("price").toString().toFloat()
+                ))
 
                 if (document.data.get("best-deal-sale") != null)
                     BookNewArrivalSaleList.add(document.data.get("best-deal-sale").toString().toFloat())
@@ -322,6 +366,48 @@ class HomeFragment : Fragment() {
         return view
     }
 
+    fun getBookPrice(bookID: String): Float {
+        var res_return = 0.0F
+
+        db.collection("personalStores").whereNotEqualTo("items." + bookID + ".price", null).get().addOnSuccessListener { result ->
+            for (data in result) {
+                val bookList = data.data["items"] as? Map<String, Any>
+                val bookDetail = bookList?.get(bookID) as? Map<String, Any>
+
+                val price = bookDetail?.get("price")
+                if (price != null) {
+                    res_return = price.toString().toFloat()
+                }
+            }
+        }.addOnFailureListener { exception ->
+            // Handle failures
+            Log.d("firebase", "ERROR")
+        }
+        return res_return
+    }
+
+    suspend fun getBookPrice1(bookID: String): Float {
+        return try {
+            val querySnapshot = db.collection("personalStores").whereNotEqualTo("items.$bookID.price", null).get().await()
+            for (document in querySnapshot.documents) {
+                val bookList = document.data?.get("items") as? Map<String, Any>
+                val bookDetail = bookList?.get(bookID) as? Map<String, Any>
+
+                val price = bookDetail?.get("price").toString()
+                if (!price.isNullOrEmpty()) {
+                    return price.toFloat()
+                }
+            }
+            // Return a default value if the book price is not found
+            0.0F
+        } catch (e: Exception) {
+            // Handle failures
+            Log.e("Firestore", "Error getting book price", e)
+            // Return a default value in case of failure
+            0.0F
+        }
+    }
+
     fun getRCDBookCategories(kind: String) {
         binding.smHomeFragmentRCDBookRV.visibility = View.VISIBLE
         binding.rvTodayRCDHomeFragment.visibility = View.INVISIBLE
@@ -332,13 +418,22 @@ class HomeFragment : Fragment() {
 
         db.collection("books").whereEqualTo("genre", kind).get().addOnSuccessListener { result ->
             for (document in result) {
+                val tmp_id = document.data.get("bookID").toString()
+                var tmp = 0.0F
+
+                runBlocking {
+                    tmp = getBookPrice1(tmp_id)
+                }
+
                 RCDBookList.add(BookObject(document.data.get("id").toString(),
                     document.data.get("name").toString(),
                     document.data.get("genre").toString(),
                     document.data.get("author").toString(),
                     document.data.get("releaseDate").toString(),
                     document.data.get("image").toString(),
-                    document.data.get("price").toString().toFloat()))
+                    tmp
+//                    document.data.get("price").toString().toFloat()
+                ))
 
                 var avg_rating = 0.0F;
                 var rating_num = 1;
@@ -382,13 +477,22 @@ class HomeFragment : Fragment() {
         if (time == "") {
             db.collection("books").get().addOnSuccessListener { result ->
                 for (document in result) {
+                    val tmp_id = document.data.get("bookID").toString()
+                    var tmp = 0.0F
+
+                    runBlocking {
+                        tmp = getBookPrice1(tmp_id)
+                    }
+
                     topBookArrayList.add(BookObject(document.data.get("id").toString(),
                         document.data.get("name").toString(),
                         document.data.get("genre").toString(),
                         document.data.get("author").toString(),
                         document.data.get("releaseDate").toString(),
                         document.data.get("image").toString(),
-                        document.data.get("price").toString().toFloat()))
+                        tmp
+//                        document.data.get("price").toString().toFloat()
+                    ))
 
                     var avg_rating = 0.0F;
                     var rating_num = 1;
@@ -423,13 +527,22 @@ class HomeFragment : Fragment() {
         else {
             db.collection("books").whereEqualTo("top-book", time).get().addOnSuccessListener { result ->
                 for (document in result) {
+                    val tmp_id = document.data.get("bookID").toString()
+                    var tmp = 0.0F
+
+                    runBlocking {
+                        tmp = getBookPrice1(tmp_id)
+                    }
+
                     topBookArrayList.add(BookObject(document.data.get("id").toString(),
                         document.data.get("name").toString(),
                         document.data.get("genre").toString(),
                         document.data.get("author").toString(),
                         document.data.get("releaseDate").toString(),
                         document.data.get("image").toString(),
-                        document.data.get("price").toString().toFloat()))
+                        tmp
+//                        document.data.get("price").toString().toFloat()
+                    ))
 
                     var avg_rating = 0.0F;
                     var rating_num = 1;
