@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import com.squareup.picasso.Picasso
 
@@ -34,6 +33,12 @@ class HomeFragmentBestDealViewPagerAdapter(private val context: Context, private
             .into(ivBook)
 
         container.addView(view)
+
+        view.setOnClickListener({
+            if (context is homeActivity) {
+                context.changeFragmentContainer(BookDetailFragment(), context.smoothBottomBarStack[context.smoothBottomBarStack.size - 1])
+            }
+        })
 
         return view
     }

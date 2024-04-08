@@ -18,7 +18,6 @@ import com.example.booklette.ui.theme.BookletteTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-
 class MainActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityMainBinding

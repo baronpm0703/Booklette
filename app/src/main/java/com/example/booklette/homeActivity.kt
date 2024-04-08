@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.ActivityHomeBinding
 import com.example.booklette.databinding.ActivityLoginBinding
 import com.google.firebase.Firebase
@@ -15,6 +17,8 @@ class homeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var auth: FirebaseAuth
+    var smoothBottomBarStack = ArrayList<Int>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -32,21 +36,21 @@ class homeActivity : AppCompatActivity() {
         val profileFragment = MyShopFragment()
 
 
-//        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, homeFragment).commit()
-        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, bookDetailFragment).commit()
+        supportFragmentManager.beginTransaction().add(R.id.fcvNavigation, homeFragment).commit()
+        smoothBottomBarStack.add(0)
+//        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, bookDetailFragment).commit()
 
         binding.smoothBottomBar.setOnItemSelectedListener { item ->
             when (item) {
                 0 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, homeFragment).commit()
+                    changeFragmentContainer(homeFragment, 0)
                     true
                 }
                 1 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, categoryFragment).commit()
-                    true
+                    changeFragmentContainer(categoryFragment, 1)
                 }
                 2 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, cartFragment).commit()
+                    changeFragmentContainer(cartFragment, 2)
                     true
                 }
 //                3 -> {
@@ -54,12 +58,26 @@ class homeActivity : AppCompatActivity() {
 //                    true
 //                }
                 4 -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, profileFragment).commit()
+                    changeFragmentContainer(profileFragment, 4)
                     true
                 }
                 else -> false
             }
         }
 
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            Toast.makeText(this@homeActivity, "BACK", Toast.LENGTH_SHORT).show()
+            isEnabled = false
+            onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    fun changeFragmentContainer(fragment: Fragment, barItem: Int) {
+        supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, fragment).addToBackStack(null).commit()
+        smoothBottomBarStack.add(barItem)
     }
 }

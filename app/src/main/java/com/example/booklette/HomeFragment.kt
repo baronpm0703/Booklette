@@ -143,7 +143,7 @@ class HomeFragment : Fragment() {
                     tmp = getBookPrice1(tmp_id)
                     bestDeals.add(
                         BookObject(
-                            document.data.get("id").toString(),
+                            document.data.get("bookID").toString(),
                             document.data.get("name").toString(),
                             document.data.get("genre").toString(),
                             document.data.get("author").toString(),
@@ -207,7 +207,7 @@ class HomeFragment : Fragment() {
 
                     topBookArrayList.add(
                         BookObject(
-                            document.data.get("id").toString(),
+                            document.data.get("bookID").toString(),
                             document.data.get("name").toString(),
                             document.data.get("genre").toString(),
                             document.data.get("author").toString(),
@@ -286,7 +286,7 @@ class HomeFragment : Fragment() {
 
                     RCDBookList.add(
                         BookObject(
-                            document.data.get("id").toString(),
+                            document.data.get("bookID").toString(),
                             document.data.get("name").toString(),
                             document.data.get("genre").toString(),
                             document.data.get("author").toString(),
@@ -345,7 +345,7 @@ class HomeFragment : Fragment() {
 
                     BookNewArrivalList.add(
                         BookObject(
-                            document.data.get("id").toString(),
+                            document.data.get("bookID").toString(),
                             document.data.get("name").toString(),
                             document.data.get("genre").toString(),
                             document.data.get("author").toString(),
