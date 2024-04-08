@@ -2,6 +2,7 @@
 <resources>
     <color name="red">#FF0000</color>
     <color name="shimmerColor">#C2C2C2</color>
+    <color name="shimmerColorDarker">#717171</color>
 
     <color name="colorPrimary">@color/signThemeColorPrimary</color>
     <color name="colorPrimaryDark">@color/signThemeColorPrimary</color>

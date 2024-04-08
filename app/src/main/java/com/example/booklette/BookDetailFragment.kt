@@ -1,7 +1,10 @@
 package com.example.booklette
 
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
+import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
 import java.util.Random
 
@@ -36,6 +43,9 @@ class BookDetailFragment : Fragment() {
     private lateinit var shopVoucherAdapter: bookDetailShopVoucherRVAdapter
     private lateinit var otherBookFromShopAdapter: TopBookHomeFragmentAdapter
 
+    private lateinit var db: FirebaseFirestore
+    private  var bookID: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -51,7 +61,130 @@ class BookDetailFragment : Fragment() {
         _binding = FragmentBookDetailBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        Toast.makeText(activity, arguments?.getString("bookID").toString(), Toast.LENGTH_SHORT).show()
+        db = Firebase.firestore
+        bookID = arguments?.getString("bookID").toString()
+
+        binding.txtBookCategory.visibility = View.INVISIBLE
+        binding.smCategoryBook.visibility = View.VISIBLE
+        binding.smCategoryBook.startShimmer()
+
+        binding.txtBookName.visibility = View.INVISIBLE
+        binding.smBookName.visibility = View.VISIBLE
+        binding.smBookName.startShimmer()
+
+        binding.txtAuthorName.visibility = View.INVISIBLE
+        binding.smAuthorName.visibility = View.VISIBLE
+        binding.smAuthorName.startShimmer()
+
+        binding.txtBookOriginalPrice.visibility = View.INVISIBLE
+        binding.smBookOriginalPrice.visibility = View.VISIBLE
+        binding.smBookOriginalPrice.startShimmer()
+
+        binding.txtBookRealPrice.visibility = View.INVISIBLE
+        binding.smBookRealPrice.visibility = View.VISIBLE
+        binding.smBookRealPrice.startShimmer()
+
+        binding.rlSalePercent.visibility = View.INVISIBLE
+        binding.smSalePercent.visibility = View.VISIBLE
+        binding.smSalePercent.startShimmer()
+
+        binding.llRatingStarBook.visibility = View.GONE
+        binding.smRatingStarBook.visibility = View.VISIBLE
+        binding.smRatingStarBook.startShimmer()
+
+        binding.txtVoucher.visibility = View.INVISIBLE
+        binding.smVoucherSection.visibility = View.VISIBLE
+        binding.smVoucherSection.startShimmer()
+
+        binding.vpVoucherBookDetail.visibility = View.INVISIBLE
+        binding.smVoucherBookDetail.visibility = View.VISIBLE
+        binding.smVoucherBookDetail.startShimmer()
+
+        binding.llBookStoreInfo.visibility = View.INVISIBLE
+        binding.smBookStoreInfo.visibility = View.VISIBLE
+        binding.smBookStoreInfo.startShimmer()
+
+        binding.txtOtherBookBookDetail.visibility = View.INVISIBLE
+        binding.smTxtOtherBookBookDetail.visibility = View.VISIBLE
+        binding.smTxtOtherBookBookDetail.startShimmer()
+
+        binding.rvBookDetailShopVoucher.visibility = View.INVISIBLE
+        binding.smBookDetailShopVoucher.visibility = View.VISIBLE
+        binding.smBookDetailShopVoucher.startShimmer()
+
+        binding.clBookDetailMoreDetailPart.visibility = View.GONE
+
+        db.collection("books").whereEqualTo("bookID", bookID).get().addOnSuccessListener { result ->
+            for (document in result) {
+                Log.d("book_data", document.data.toString())
+
+                Picasso.get()
+                    .load(document.data.get("image").toString())
+                    .into(binding.ivBookImage)
+
+                binding.txtBookCategory.text = document.data.get("genre").toString()
+                binding.txtBookName.text = document.data.get("name").toString()
+                binding.txtAuthorName.text = document.data.get("author").toString()
+                binding.txtBookOriginalPrice.text = "10.000 VND" // MUST DO LATER: need to get the price when passing data from another fragment to this one
+                binding.txtBookRealPrice.text = "8.000 VND" // MUST DO LATER: need to get the price when passing data from another fragment to this one
+                binding.txtSalePercent.text = "20% OFF " // MUST DO LATER: need to get the price when passing data from another fragment to this one
+                // MUST DO LATER: get avg star for star diagram
+                // MUST DO LATER: get avg star for textView next to star diagram
+
+                Handler().postDelayed({
+                    binding.txtBookCategory.visibility = View.VISIBLE
+                    binding.smCategoryBook.visibility = View.INVISIBLE
+                    binding.smCategoryBook.stopShimmer()
+
+                    binding.txtBookName.visibility = View.VISIBLE
+                    binding.smBookName.visibility = View.INVISIBLE
+                    binding.smBookName.startShimmer()
+
+                    binding.txtAuthorName.visibility = View.VISIBLE
+                    binding.smAuthorName.visibility = View.INVISIBLE
+                    binding.smAuthorName.stopShimmer()
+
+                    binding.txtBookOriginalPrice.visibility = View.VISIBLE
+                    binding.smBookOriginalPrice.visibility = View.INVISIBLE
+                    binding.smBookOriginalPrice.stopShimmer()
+
+                    binding.txtBookRealPrice.visibility = View.VISIBLE
+                    binding.smBookRealPrice.visibility = View.INVISIBLE
+                    binding.smBookRealPrice.stopShimmer()
+
+                    binding.rlSalePercent.visibility = View.VISIBLE
+                    binding.smSalePercent.visibility = View.INVISIBLE
+                    binding.smSalePercent.stopShimmer()
+
+                    binding.llRatingStarBook.visibility = View.VISIBLE
+                    binding.smRatingStarBook.visibility = View.GONE
+                    binding.smRatingStarBook.stopShimmer()
+
+                    binding.txtVoucher.visibility = View.VISIBLE
+                    binding.smVoucherSection.visibility = View.INVISIBLE
+                    binding.smVoucherSection.stopShimmer()
+
+                    binding.vpVoucherBookDetail.visibility = View.VISIBLE
+                    binding.smVoucherBookDetail.visibility = View.INVISIBLE
+                    binding.smVoucherBookDetail.stopShimmer()
+
+                    binding.llBookStoreInfo.visibility = View.VISIBLE
+                    binding.smBookStoreInfo.visibility = View.INVISIBLE
+                    binding.smBookStoreInfo.stopShimmer()
+
+                    binding.txtOtherBookBookDetail.visibility = View.VISIBLE
+                    binding.smTxtOtherBookBookDetail.visibility = View.INVISIBLE
+                    binding.smTxtOtherBookBookDetail.stopShimmer()
+
+                    binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                    binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                    binding.smBookDetailShopVoucher.stopShimmer()
+
+                    binding.bookDetailDotLoading.visibility = View.GONE
+                    binding.clBookDetailMoreDetailPart.visibility = View.VISIBLE
+                }, 3000)
+            }
+        }
 
         var data = ArrayList<String>()
         data.add("A")

@@ -160,4 +160,7 @@ dependencies {
 
     //rating and reviews
     implementation("com.github.Inconnu08:android-ratingreviews:1.2.0")
+
+    //loading view
+    implementation ("com.github.hall9zeha:DotsLoadingView:2.0.0")
 }
