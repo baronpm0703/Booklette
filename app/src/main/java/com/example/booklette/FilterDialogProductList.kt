@@ -14,10 +14,11 @@ import com.example.booklette.databinding.FilterDialogProductListBinding
 private typealias PositiveListener = () -> Unit
 class FilterDialogProductList(
     private val needRemoveCategory: Boolean,
-    private val initValue: InitFilterValuesProductList
+    private var initValue: InitFilterValuesProductList
 ): Sheet() {
     override val dialogTag = "FilterSheet"
-    private var selectedSlider = arrayListOf<String>("", "")
+    private var moneyRange = 0.0F
+    private var selectedSlider = arrayListOf("", "")
     private lateinit var binding: FilterDialogProductListBinding
 
     private var chosenType = arrayListOf<String>()
@@ -87,30 +88,36 @@ class FilterDialogProductList(
         this.positiveText = positiveText
         this.positiveListener = positiveListener
     }
+
+    fun updateInitValues(initValues: InitFilterValuesProductList) {
+        this.initValue = initValues
+        moneyRange = (initValue.rangslider[1] - initValue.rangslider[0]) / 1000
+    }
+
     override fun onCreateLayoutView(): View {
         return FilterDialogProductListBinding.inflate(LayoutInflater.from(activity)).also { binding = it }.root
     }
-
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rangeSlider.values = initValue.rangslider
+        binding.rangeSlider.values = arrayListOf(0.0F, 100.0F)
         binding.rangeSlider.setLabelFormatter { value: Float ->
             val format = NumberFormat.getCurrencyInstance()
             format.maximumFractionDigits = 0
-            format.currency = Currency.getInstance("USD")
-            format.format(value.toDouble())
+            format.currency = Currency.getInstance("VND")
+            val value_to_display = (value * moneyRange / 100 + initValue.rangslider[0] / 1000)
+            format.format(value_to_display.toDouble())
         }
 
         binding.rangeSlider.addOnChangeListener { slider, value, fromUser ->
             val values = slider.values
-            val min = values[0].toInt()
-            val max = values[1].toInt()
-            selectedSlider[0] = min.toString()
+            val min = (values[0] * moneyRange / 100 + initValue.rangslider[0] / 1000).toInt()
+            val max = (values[1] * moneyRange / 100 + initValue.rangslider[0] / 1000).toInt()
+            selectedSlider[0] = min.toString() // Been divided for 1000
             selectedSlider[1] = max.toString()
-            binding.moneyRange.text = "${min}-${max}$"
+            binding.moneyRange.text = "${min}.000-${max}.000 VND"
         }
 
         // Category

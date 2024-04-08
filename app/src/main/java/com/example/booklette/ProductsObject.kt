@@ -1,6 +1,5 @@
 package com.example.booklette
 
-import com.google.type.DateTime
 import java.util.Date
 
 class ProductsObject(
@@ -10,7 +9,7 @@ class ProductsObject(
     var author: String,
     var releaseDate: Date,
     var image: String,
-    var price: Long,
+    var price: Float,
     var rating: Float
 ) {
     var quantitySale = 0

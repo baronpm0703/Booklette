@@ -3,11 +3,13 @@ package com.example.booklette
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.booklette.databinding.FragmentProductListBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -18,9 +20,9 @@ import com.maxkeppeler.sheets.core.SheetStyle
 import com.maxkeppeler.sheets.option.DisplayMode
 import com.maxkeppeler.sheets.option.Option
 import com.maxkeppeler.sheets.option.OptionSheet
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,63 +77,77 @@ class MyShopProductList : Fragment() {
         binding.gvProductList.adapter = gvProductListAdapter
 
         if (!chosenGenre.equals(null)) {
+            binding.ivSearch.visibility = View.GONE
             val docRef = db.collection("books").whereEqualTo("genre", chosenGenre).get()
             docRef.addOnSuccessListener { result ->
-                if (result.isEmpty) {
-                    binding.unavailbleInfo.visibility = View.VISIBLE
-                }
-                val bookIDListToCalcQuantity = ArrayList<String>()
-                for (document in result) {
-                    var avg_rating = 0.0F;
-                    var rating_num = 1;
-                    if (document.data.get("review") != null) {
-                        val reviewsArray = document.data.get("review") as ArrayList<Map<String, Any>>
-                        rating_num = reviewsArray.size
+                lifecycleScope.launch {
+                    if (result.isEmpty) {
+                        binding.unavailbleInfo.visibility = View.VISIBLE
+                    }
+                    val bookIDListToCalc = ArrayList<String>()
+                    for (document in result) {
+                        var avg_rating = 0.0F;
+                        var rating_num = 1;
+                        if (document.data.get("review") != null) {
+                            val reviewsArray = document.data.get("review") as ArrayList<Map<String, Any>>
+                            rating_num = reviewsArray.size
 
-                        for (reviewMap in reviewsArray) {
-                            val uid = reviewMap["UID"] as String
-                            val image = reviewMap["image"] as String
-                            val score = (reviewMap["score"] as Long).toInt()
-                            val text = reviewMap["text"] as String
-
-                            avg_rating += score
+                            for (reviewMap in reviewsArray) {
+                                val uid = reviewMap["UID"] as String
+                                val image = reviewMap["image"] as String
+                                val score = (reviewMap["score"] as Long).toInt()
+                                val text = reviewMap["text"] as String
+                                avg_rating += score
+                            }
                         }
+                        bookIDListToCalc.add(document.data["bookID"].toString())
+                        val dDate = document.data["releaseDate"] as com.google.firebase.Timestamp
+
+                        // Query BookPrice
+                        val bookPrice: ArrayList<Float> = getBookPrice(document.data["bookID"].toString())
+                        // Each Store have diff price
+                        bookPrice.forEach {
+
+                            bookList.add(ProductsObject(
+                                document.data["bookID"].toString(),
+                                document.data["name"].toString(),
+                                document.data["genre"].toString(),
+                                document.data["author"].toString(),
+                                dDate.toDate(),
+                                document.data["image"].toString(),
+                                it,
+                                avg_rating / rating_num
+                            ))
+                        }
+
                     }
-                    bookIDListToCalcQuantity.add(document.data["id"].toString())
-                    val dDate = document.data["releaseDate"] as com.google.firebase.Timestamp
-                    bookList.add(ProductsObject(
-                        document.data["id"].toString(),
-                        document.data["name"].toString(),
-                        document.data["genre"].toString(),
-                        document.data["author"].toString(),
-                        dDate.toDate(),
-                        document.data["image"].toString(),
-                        0,
-                        avg_rating / rating_num
-                    ))
+
+                    if (gvProductListAdapter != null){
+                        bookList.sortBy {
+                                book -> book.price
+                        }
+
+                        val quantityEachBook = ScanOrderCalcSellingQuantity(bookIDListToCalc)
+                        var index = 0
+                        quantityEachBook.forEach {
+                            bookList[index++].quantitySale = it.toInt()
+                        }
+
+                        gvProductListAdapter.notifyDataSetChanged()
+
+                        Handler().postDelayed({
+                            // Code to be executed after the delay
+                            // For example, you can start a new activity or update UI elements
+                            //                        binding.smHomeFragmentBestDeal.visibility = View.GONE
+                            binding.gvProductList.visibility = View.VISIBLE
+                            //                        binding.smHomeFragmentBestDeal.stopShimmer()
+                        }, 2000)
+                    }
                 }
 
-                if (gvProductListAdapter != null){
-                    bookList.sortBy {
-                            book -> book.price
-                    }
-                    val quantityEachBook = ScanOrderCalcSellingAmount(bookIDListToCalcQuantity)
-                    var index = 0
-                    quantityEachBook.forEach {
-                        bookList[index++].quantitySale = it.toInt()
-                    }
-                    gvProductListAdapter.notifyDataSetChanged()
-
-                    Handler().postDelayed({
-                        // Code to be executed after the delay
-                        // For example, you can start a new activity or update UI elements
-                        //                        binding.smHomeFragmentBestDeal.visibility = View.GONE
-                        binding.gvProductList.visibility = View.VISIBLE
-                        //                        binding.smHomeFragmentBestDeal.stopShimmer()
-                    }, 2000)
-                }
             }
         }
+
 
         // Set up the select dialog when click the sort
         binding.tvSort.setOnClickListener{
@@ -206,6 +222,60 @@ class MyShopProductList : Fragment() {
             }
         }
         return res
+    }
+
+    suspend fun ScanOrderCalcSellingQuantity(booksNeedObserver: ArrayList<String>): ArrayList<Long> {
+        val res = ArrayList<Long>()
+        booksNeedObserver.forEach {
+            res.add(0)
+        }
+        val db = FirebaseFirestore.getInstance()
+        val result = try {
+            db.collection("orders").get().await()
+        } catch (e: Exception) {
+            // Handle any exceptions
+            e.printStackTrace()
+            return res
+        }
+
+        for (doc in result) {
+            if (doc.data["items"] != null) {
+                val itemsArray = doc.data["items"] as ArrayList<Map<String, Any>>
+                for (item in itemsArray) {
+                    val itemID = item["itemID"] as String
+                    val quantity = item["quantity"] as Long
+                    val indexContainItem = booksNeedObserver.indexOf(itemID)
+                    if (indexContainItem != -1) {
+                        res[indexContainItem] += quantity
+                    }
+                }
+            }
+        }
+        return res
+    }
+
+
+    suspend fun getBookPrice(bookID: String): ArrayList<Float> {
+        val res = ArrayList<Float>()
+        return try {
+            val querySnapshot = db.collection("personalStores").whereNotEqualTo("items.$bookID.price", null).get().await()
+            for (document in querySnapshot.documents) {
+                val bookList = document.data?.get("items") as? Map<String, Any>
+                val bookDetail = bookList?.get(bookID) as? Map<String, Any>
+
+                val price = bookDetail?.get("price").toString()
+                if (price.isNotEmpty()) {
+                    res.add(price.toFloat())
+                }
+            }
+            return res
+
+        } catch (e: Exception) {
+            // Handle failures
+            Log.e("Firestore", "Error getting book price", e)
+            // Return a default value in case of failure
+            arrayListOf<Float>(0.0F)
+        }
     }
 
     fun ChangeTitle(selectedSlider: ArrayList<String>) {
