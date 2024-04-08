@@ -54,6 +54,8 @@ class HomeFragment : Fragment() {
     lateinit var RCDAdapter: HomeFragmentTodayRCDTypeAdapter
     lateinit var RCDBookAdapter: TopBookHomeFragmentAdapter
 
+    private var selectedChip: String = ""
+
     //best deal
     var bestDeals = ArrayList<BookObject>()
     var book_deal_sale = ArrayList<Float>()
@@ -82,24 +84,11 @@ class HomeFragment : Fragment() {
         auth = Firebase.auth
         db = Firebase.firestore
 
-        binding.homeFragmentCGTopBook.setOnCheckedStateChangeListener { group, checkedIds ->
-            if (checkedIds.size > 0) {
-                val chip: Chip? = group.findViewById(checkedIds[0])
-                if (chip != null && chip.isChecked) {
-                    Log.d("chip", chip.text.toString())
-                    getTopBookByCategory(chip.text.toString())
-                }
-            }
-            else {
-                Log.d("unchip", "unchip")
-                getTopBookByCategory("")
-            }
-
-        }
-
         bestDealInitialize()
 
         topBookInitialize(inflater)
+
+        handleChipSelected()
 
         topBookRVInitialize()
 
@@ -119,6 +108,34 @@ class HomeFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun handleChipSelected() {
+        for (i in 0 until binding.homeFragmentCGTopBook.childCount) {
+            val view = binding.homeFragmentCGTopBook.getChildAt(i)
+            if (view is Chip) {
+                val chip = view as Chip
+                if (chip.text == selectedChip) {
+                    chip.isChecked = true
+                }
+            }
+        }
+
+        binding.homeFragmentCGTopBook.setOnCheckedStateChangeListener { group, checkedIds ->
+            if (checkedIds.size > 0) {
+                val chip: Chip? = group.findViewById(checkedIds[0])
+                if (chip != null && chip.isChecked) {
+                    Log.d("chip", chip.text.toString())
+                    getTopBookByCategory(chip.text.toString())
+                    selectedChip = chip.text.toString()
+                }
+            }
+            else {
+                Log.d("unchip", "unchip")
+                getTopBookByCategory("")
+            }
+
+        }
     }
 
     private fun newArrivalInitalize() {
