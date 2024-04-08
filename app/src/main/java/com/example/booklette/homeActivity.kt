@@ -48,6 +48,7 @@ class homeActivity : AppCompatActivity() {
                 }
                 1 -> {
                     changeFragmentContainer(categoryFragment, 1)
+                    true
                 }
                 2 -> {
                     changeFragmentContainer(cartFragment, 2)
@@ -70,7 +71,11 @@ class homeActivity : AppCompatActivity() {
 
     private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            Toast.makeText(this@homeActivity, "BACK", Toast.LENGTH_SHORT).show()
+            smoothBottomBarStack.removeAt(smoothBottomBarStack.size - 1)
+
+            if (smoothBottomBarStack.size > 0) {
+                binding.smoothBottomBar.itemActiveIndex = smoothBottomBarStack[smoothBottomBarStack.size - 1]
+            }
             isEnabled = false
             onBackPressedDispatcher.onBackPressed()
         }

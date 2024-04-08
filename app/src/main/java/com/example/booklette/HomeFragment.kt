@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,12 +51,18 @@ class HomeFragment : Fragment() {
     private var RCDBookRating = ArrayList<Float>()
     private var BookNewArrivalList = ArrayList<BookObject>()
     private var BookNewArrivalSaleList = ArrayList<Float>()
-    private lateinit var bookStoreList: ArrayList<personalStoreObject>
 
     lateinit var topBookAdapter: TopBookHomeFragmentAdapter
     lateinit var RCDAdapter: HomeFragmentTodayRCDTypeAdapter
     lateinit var RCDBookAdapter: TopBookHomeFragmentAdapter
 
+    //best deal
+    var bestDeals = ArrayList<BookObject>()
+    var book_deal_sale = ArrayList<Float>()
+    lateinit var bestDealAdapter: HomeFragmentBestDealViewPagerAdapter
+
+    //top book
+    var times = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,31 +99,17 @@ class HomeFragment : Fragment() {
 
         }
 
-        bookStoreList = ArrayList<personalStoreObject>()
+        bestDealInitialize()
 
-        binding.smHomeFragmentBestDeal.visibility = View.VISIBLE
-        binding.rvBestDeal.visibility = View.INVISIBLE
-        binding.smHomeFragmentBestDeal.startShimmer()
+        topBookInitialize(inflater)
 
-        binding.smHomeFragmentTopBook.visibility = View.VISIBLE
-        binding.horizontalScrollView.visibility = View.INVISIBLE
-        binding.smHomeFragmentTopBook.startShimmer()
+        topBookRVInitialize()
 
-        binding.smHomeFragmentTopBookRV.visibility = View.VISIBLE
-        binding.rvTopBookHomeFragment.visibility = View.INVISIBLE
-        binding.smHomeFragmentTopBookRV.startShimmer()
+        recommandationTypeInitialize()
 
-        binding.smRCDHomeFragment.visibility = View.VISIBLE
-        binding.rvTodayRecommandationsType.visibility = View.INVISIBLE
-        binding.smRCDHomeFragment.startShimmer()
+        recommandationBookInitialize()
 
-        binding.smHomeFragmentRCDBookRV.visibility = View.VISIBLE
-        binding.rvTodayRCDHomeFragment.visibility = View.INVISIBLE
-        binding.smHomeFragmentRCDBookRV.startShimmer()
-
-        binding.smNewArrivalsHomeFragment.visibility = View.VISIBLE
-        binding.vpNewArrivalsHomeFragment.visibility = View.GONE
-        binding.smNewArrivalsHomeFragment.startShimmer()
+        newArrivalInitalize()
 
         if (auth.currentUser != null) {
             binding.txtWelcomeBack.text = "Welcome back, " + auth.currentUser!!.email.toString()
@@ -127,55 +120,256 @@ class HomeFragment : Fragment() {
             startActivity(Intent(activity, LoginActivity::class.java))
         }
 
-        var bestDeals = ArrayList<BookObject>();
-        var book_deal_sale = ArrayList<Float>();
-        val bestDealAdapter = activity?.let { HomeFragmentBestDealViewPagerAdapter(it, bestDeals, book_deal_sale) }
-        binding.rvBestDeal.adapter = bestDealAdapter
-        binding.rvBestDeal.pageMargin = 20
-        binding.dotsIndicator.attachTo(binding.rvBestDeal)
+        return view
+    }
 
-        db.collection("books").whereNotEqualTo("best-deal-sale", null).get().addOnSuccessListener { result ->
-            lifecycleScope.launch {
-                for (document in result) {
-                    val tmp_id = document.data.get("bookID").toString()
-                    var tmp = 0.0F
+    private fun newArrivalInitalize() {
+        val newArrivalsAdapter = activity?.let { HomeFragmentNewArrivaltemAdapter(it, BookNewArrivalList, BookNewArrivalSaleList) }
+        binding.vpNewArrivalsHomeFragment.adapter = newArrivalsAdapter
+        binding.vpNewArrivalsHomeFragment.pageMargin = 20
 
-                    tmp = getBookPrice1(tmp_id)
-                    bestDeals.add(
-                        BookObject(
-                            document.data.get("bookID").toString(),
-                            document.data.get("name").toString(),
-                            document.data.get("genre").toString(),
-                            document.data.get("author").toString(),
-                            document.data.get("releaseDate").toString(),
-                            document.data.get("image").toString(),
-//                    document.data.get("price").toString().toFloat()
-                            tmp
+        if (BookNewArrivalList.size == 0 || BookNewArrivalSaleList.size == 0) {
+            binding.smNewArrivalsHomeFragment.visibility = View.VISIBLE
+            binding.vpNewArrivalsHomeFragment.visibility = View.GONE
+            binding.smNewArrivalsHomeFragment.startShimmer()
+
+            db.collection("books").whereEqualTo("is-new-arrival", true).get().addOnSuccessListener { result ->
+                lifecycleScope.launch {
+                    for (document in result) {
+                        val tmp_id = document.data.get("bookID").toString()
+                        var tmp = 0.0F
+
+                        tmp = getBookPrice1(tmp_id)
+
+                        BookNewArrivalList.add(
+                            BookObject(
+                                document.data.get("bookID").toString(),
+                                document.data.get("name").toString(),
+                                document.data.get("genre").toString(),
+                                document.data.get("author").toString(),
+                                document.data.get("releaseDate").toString(),
+                                document.data.get("image").toString(),
+                                tmp
+                            )
                         )
-                    )
 
-                    book_deal_sale.add(document.data.get("best-deal-sale").toString().toFloat())
-                }
+                        if (document.data.get("best-deal-sale") != null)
+                            BookNewArrivalSaleList.add(
+                                document.data.get("best-deal-sale").toString().toFloat()
+                            )
+                        else
+                            BookNewArrivalSaleList.add(0F)
+                    }
 
+                    if (newArrivalsAdapter != null) {
+                        newArrivalsAdapter.notifyDataSetChanged()
 
-                if (bestDealAdapter != null) {
-                    bestDealAdapter.notifyDataSetChanged()
-
-                    Handler().postDelayed({
-                        binding.smHomeFragmentBestDeal.visibility = View.GONE
-                        binding.rvBestDeal.visibility = View.VISIBLE
-                        binding.smHomeFragmentBestDeal.stopShimmer()
-                    }, 2000)
+                        Handler().postDelayed({
+                            binding.smNewArrivalsHomeFragment.visibility = View.GONE
+                            binding.vpNewArrivalsHomeFragment.visibility = View.VISIBLE
+                            binding.smNewArrivalsHomeFragment.stopShimmer()
+                        }, 2000)
+                    }
                 }
             }
         }
+        else {
+            binding.smNewArrivalsHomeFragment.visibility = View.GONE
+            binding.vpNewArrivalsHomeFragment.visibility = View.VISIBLE
+            binding.smNewArrivalsHomeFragment.stopShimmer()
+        }
+    }
 
-        db.collection("top-book").get().addOnSuccessListener { result ->
-//            Log.d("firestore", "${result.documents[0].data!!.get("time")}")
-            val times = result.documents[0].data!!.get("time") as? ArrayList<String>
+    private fun recommandationBookInitialize() {
+        RCDBookAdapter = TopBookHomeFragmentAdapter(RCDBookList, RCDBookRating)
+        binding.rvTodayRCDHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvTodayRCDHomeFragment.adapter = RCDBookAdapter
 
+        if (RCDBookList.size == 0 || RCDBookRating.size == 0) {
+            binding.smHomeFragmentRCDBookRV.visibility = View.VISIBLE
+            binding.rvTodayRCDHomeFragment.visibility = View.INVISIBLE
+            binding.smHomeFragmentRCDBookRV.startShimmer()
+
+            db.collection("books").get().addOnSuccessListener { result ->
+                lifecycleScope.launch {
+                    for (document in result) {
+                        val tmp_id = document.data.get("bookID").toString()
+                        var tmp = 0.0F
+
+                        tmp = getBookPrice1(tmp_id)
+
+                        RCDBookList.add(
+                            BookObject(
+                                document.data.get("bookID").toString(),
+                                document.data.get("name").toString(),
+                                document.data.get("genre").toString(),
+                                document.data.get("author").toString(),
+                                document.data.get("releaseDate").toString(),
+                                document.data.get("image").toString(),
+//                    document.data.get("price").toString().toFloat()
+                                tmp
+                            )
+                        )
+
+                        var avg_rating = 0.0F;
+                        var rating_num = 1;
+                        if (document.data.get("review") != null) {
+                            val reviewsArray =
+                                document.data.get("review") as ArrayList<Map<String, Any>>
+                            rating_num = reviewsArray.size
+
+                            for (reviewMap in reviewsArray) {
+                                val uid = reviewMap["UID"] as String
+                                val image = reviewMap["image"] as String
+                                val score = (reviewMap["score"] as Long).toInt()
+                                val text = reviewMap["text"] as String
+
+                                avg_rating += score
+                            }
+                        }
+
+                        RCDBookRating.add(avg_rating / rating_num)
+                    }
+
+                    if (RCDBookAdapter != null) {
+                        RCDBookAdapter.notifyDataSetChanged()
+
+                        Handler().postDelayed({
+                            binding.smHomeFragmentRCDBookRV.visibility = View.GONE
+                            binding.rvTodayRCDHomeFragment.visibility = View.VISIBLE
+                            binding.smHomeFragmentRCDBookRV.stopShimmer()
+                        }, 2000)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun recommandationTypeInitialize() {
+        RCDAdapter = HomeFragmentTodayRCDTypeAdapter(bookCategory, this)
+        binding.rvTodayRecommandationsType.adapter = RCDAdapter
+        binding.rvTodayRecommandationsType.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+
+        if (bookCategory.size == 0) {
+            binding.smRCDHomeFragment.visibility = View.VISIBLE
+            binding.rvTodayRecommandationsType.visibility = View.INVISIBLE
+            binding.smRCDHomeFragment.startShimmer()
+
+            db.collection("book-category").get().addOnSuccessListener { result ->
+                val times = result.documents[0].data!!.get("categories") as? ArrayList<String>
+
+                for (time in times!!)
+                    bookCategory.add(time.toString())
+
+                Handler().postDelayed({
+                    RCDAdapter.notifyDataSetChanged()
+
+                    binding.smRCDHomeFragment.visibility = View.INVISIBLE
+                    binding.rvTodayRecommandationsType.visibility = View.VISIBLE
+                    binding.smRCDHomeFragment.stopShimmer()
+                }, 2000)
+            }
+        }
+        else {
+            binding.smRCDHomeFragment.visibility = View.INVISIBLE
+            binding.rvTodayRecommandationsType.visibility = View.VISIBLE
+            binding.smRCDHomeFragment.stopShimmer()
+        }
+    }
+
+    private fun topBookRVInitialize() {
+        binding.rvTopBookHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        topBookAdapter = TopBookHomeFragmentAdapter(topBookArrayList, topBookRating)
+        binding.rvTopBookHomeFragment.adapter = topBookAdapter
+
+        if (topBookArrayList.size == 0 || topBookRating.size == 0) {
+            binding.smHomeFragmentTopBookRV.visibility = View.VISIBLE
+            binding.rvTopBookHomeFragment.visibility = View.INVISIBLE
+            binding.smHomeFragmentTopBookRV.startShimmer()
+
+            db.collection("books").get().addOnSuccessListener { result ->
+                lifecycleScope.launch {
+
+                    for (document in result) {
+                        val tmp_id = document.data.get("bookID").toString()
+                        var tmp = 0.0F
+
+                        tmp = getBookPrice1(tmp_id)
+
+                        topBookArrayList.add(
+                            BookObject(
+                                document.data.get("bookID").toString(),
+                                document.data.get("name").toString(),
+                                document.data.get("genre").toString(),
+                                document.data.get("author").toString(),
+                                document.data.get("releaseDate").toString(),
+                                document.data.get("image").toString(),
+//                    document.data.get("price").toString().toFloat()
+                                tmp
+                            )
+                        )
+
+                        var avg_rating = 0.0F;
+                        var rating_num = 1;
+                        if (document.data.get("review") != null) {
+                            val reviewsArray =
+                                document.data.get("review") as ArrayList<Map<String, Any>>
+                            rating_num = reviewsArray.size
+
+                            for (reviewMap in reviewsArray) {
+                                val uid = reviewMap["UID"] as String
+                                val image = reviewMap["image"] as String
+                                val score = (reviewMap["score"] as Long).toInt()
+                                val text = reviewMap["text"] as String
+
+                                avg_rating += score
+                            }
+                        }
+
+                        topBookRating.add(avg_rating / rating_num)
+                    }
+
+                    if (topBookAdapter != null) {
+                        topBookAdapter.notifyDataSetChanged()
+
+                        Handler().postDelayed({
+                            binding.smHomeFragmentTopBookRV.visibility = View.GONE
+                            binding.rvTopBookHomeFragment.visibility = View.VISIBLE
+                            binding.smHomeFragmentTopBookRV.stopShimmer()
+                        }, 2000)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun topBookInitialize(inflater: LayoutInflater) {
+
+        if (times.size == 0) {
+            binding.smHomeFragmentTopBook.visibility = View.VISIBLE
+            binding.horizontalScrollView.visibility = View.INVISIBLE
+            binding.smHomeFragmentTopBook.startShimmer()
+
+            db.collection("top-book").get().addOnSuccessListener { result ->
+                times = (result.documents[0].data!!.get("time") as? ArrayList<String>)!!
+
+                for (time in times!!) {
+
+                    val chip = inflater.inflate(R.layout.home_fragment_chip_top_book, binding.homeFragmentCGTopBook, false) as Chip
+                    chip.text = time.toString()
+
+                    binding.homeFragmentCGTopBook.addView(chip)
+                }
+
+                Handler().postDelayed({
+                    binding.smHomeFragmentTopBook.visibility = View.GONE
+                    binding.horizontalScrollView.visibility = View.VISIBLE
+                    binding.smHomeFragmentTopBook.stopShimmer()
+                }, 2000)
+            }
+        }
+        else {
             for (time in times!!) {
-//                Log.d("firestore", "${time}")
 
                 val chip = inflater.inflate(R.layout.home_fragment_chip_top_book, binding.homeFragmentCGTopBook, false) as Chip
                 chip.text = time.toString()
@@ -183,221 +377,61 @@ class HomeFragment : Fragment() {
                 binding.homeFragmentCGTopBook.addView(chip)
             }
 
-            Handler().postDelayed({
-                binding.smHomeFragmentTopBook.visibility = View.GONE
-                binding.horizontalScrollView.visibility = View.VISIBLE
-                binding.smHomeFragmentTopBook.stopShimmer()
-            }, 2000)
+            binding.smHomeFragmentTopBook.visibility = View.GONE
+            binding.horizontalScrollView.visibility = View.VISIBLE
+            binding.smHomeFragmentTopBook.stopShimmer()
         }
-
-        topBookArrayList = ArrayList<BookObject>()
-        topBookRating = ArrayList<Float>()
-        binding.rvTopBookHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        topBookAdapter = TopBookHomeFragmentAdapter(topBookArrayList, topBookRating)
-        binding.rvTopBookHomeFragment.adapter = topBookAdapter
-
-        db.collection("books").get().addOnSuccessListener { result ->
-            lifecycleScope.launch {
-
-                for (document in result) {
-                    val tmp_id = document.data.get("bookID").toString()
-                    var tmp = 0.0F
-
-                    tmp = getBookPrice1(tmp_id)
-
-                    topBookArrayList.add(
-                        BookObject(
-                            document.data.get("bookID").toString(),
-                            document.data.get("name").toString(),
-                            document.data.get("genre").toString(),
-                            document.data.get("author").toString(),
-                            document.data.get("releaseDate").toString(),
-                            document.data.get("image").toString(),
-//                    document.data.get("price").toString().toFloat()
-                            tmp
-                        )
-                    )
-
-                    var avg_rating = 0.0F;
-                    var rating_num = 1;
-                    if (document.data.get("review") != null) {
-                        val reviewsArray =
-                            document.data.get("review") as ArrayList<Map<String, Any>>
-                        rating_num = reviewsArray.size
-
-                        for (reviewMap in reviewsArray) {
-                            val uid = reviewMap["UID"] as String
-                            val image = reviewMap["image"] as String
-                            val score = (reviewMap["score"] as Long).toInt()
-                            val text = reviewMap["text"] as String
-
-                            avg_rating += score
-                        }
-                    }
-
-                    topBookRating.add(avg_rating / rating_num)
-                }
-
-                if (topBookAdapter != null) {
-                    topBookAdapter.notifyDataSetChanged()
-
-                    Handler().postDelayed({
-                        binding.smHomeFragmentTopBookRV.visibility = View.GONE
-                        binding.rvTopBookHomeFragment.visibility = View.VISIBLE
-                        binding.smHomeFragmentTopBookRV.stopShimmer()
-                    }, 2000)
-                }
-            }
-        }
-
-        bookCategory = ArrayList<String>();
-        RCDAdapter = HomeFragmentTodayRCDTypeAdapter(bookCategory, this)
-        binding.rvTodayRecommandationsType.adapter = RCDAdapter
-        binding.rvTodayRecommandationsType.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-
-        db.collection("book-category").get().addOnSuccessListener { result ->
-            val times = result.documents[0].data!!.get("categories") as? ArrayList<String>
-
-            for (time in times!!)
-                bookCategory.add(time.toString())
-
-            Handler().postDelayed({
-                RCDAdapter.notifyDataSetChanged()
-
-                binding.smRCDHomeFragment.visibility = View.INVISIBLE
-                binding.rvTodayRecommandationsType.visibility = View.VISIBLE
-                binding.smRCDHomeFragment.stopShimmer()
-            }, 2000)
-        }
-
-        RCDBookList = ArrayList<BookObject>()
-        RCDBookRating = ArrayList<Float>()
-        RCDBookAdapter = TopBookHomeFragmentAdapter(RCDBookList, RCDBookRating)
-        binding.rvTodayRCDHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvTodayRCDHomeFragment.adapter = RCDBookAdapter
-
-        db.collection("books").get().addOnSuccessListener { result ->
-            lifecycleScope.launch {
-                for (document in result) {
-                    val tmp_id = document.data.get("bookID").toString()
-                    var tmp = 0.0F
-
-                    tmp = getBookPrice1(tmp_id)
-
-                    RCDBookList.add(
-                        BookObject(
-                            document.data.get("bookID").toString(),
-                            document.data.get("name").toString(),
-                            document.data.get("genre").toString(),
-                            document.data.get("author").toString(),
-                            document.data.get("releaseDate").toString(),
-                            document.data.get("image").toString(),
-//                    document.data.get("price").toString().toFloat()
-                            tmp
-                        )
-                    )
-
-                    var avg_rating = 0.0F;
-                    var rating_num = 1;
-                    if (document.data.get("review") != null) {
-                        val reviewsArray =
-                            document.data.get("review") as ArrayList<Map<String, Any>>
-                        rating_num = reviewsArray.size
-
-                        for (reviewMap in reviewsArray) {
-                            val uid = reviewMap["UID"] as String
-                            val image = reviewMap["image"] as String
-                            val score = (reviewMap["score"] as Long).toInt()
-                            val text = reviewMap["text"] as String
-
-                            avg_rating += score
-                        }
-                    }
-
-                    RCDBookRating.add(avg_rating / rating_num)
-                }
-
-                if (RCDBookAdapter != null) {
-                    RCDBookAdapter.notifyDataSetChanged()
-
-                    Handler().postDelayed({
-                        binding.smHomeFragmentRCDBookRV.visibility = View.GONE
-                        binding.rvTodayRCDHomeFragment.visibility = View.VISIBLE
-                        binding.smHomeFragmentRCDBookRV.stopShimmer()
-                    }, 2000)
-                }
-            }
-        }
-
-        BookNewArrivalList = ArrayList<BookObject>()
-        BookNewArrivalSaleList = ArrayList<Float>()
-        val newArrivalsAdapter = activity?.let { HomeFragmentNewArrivaltemAdapter(it, BookNewArrivalList, BookNewArrivalSaleList) }
-        binding.vpNewArrivalsHomeFragment.adapter = newArrivalsAdapter
-        binding.vpNewArrivalsHomeFragment.pageMargin = 20
-
-        db.collection("books").whereEqualTo("is-new-arrival", true).get().addOnSuccessListener { result ->
-            lifecycleScope.launch {
-                for (document in result) {
-                    val tmp_id = document.data.get("bookID").toString()
-                    var tmp = 0.0F
-
-                    tmp = getBookPrice1(tmp_id)
-
-                    BookNewArrivalList.add(
-                        BookObject(
-                            document.data.get("bookID").toString(),
-                            document.data.get("name").toString(),
-                            document.data.get("genre").toString(),
-                            document.data.get("author").toString(),
-                            document.data.get("releaseDate").toString(),
-                            document.data.get("image").toString(),
-                            tmp
-//                    document.data.get("price").toString().toFloat()
-                        )
-                    )
-
-                    if (document.data.get("best-deal-sale") != null)
-                        BookNewArrivalSaleList.add(
-                            document.data.get("best-deal-sale").toString().toFloat()
-                        )
-                    else
-                        BookNewArrivalSaleList.add(0F)
-                }
-
-                if (newArrivalsAdapter != null) {
-                    newArrivalsAdapter.notifyDataSetChanged()
-
-                    Handler().postDelayed({
-                        binding.smNewArrivalsHomeFragment.visibility = View.GONE
-                        binding.vpNewArrivalsHomeFragment.visibility = View.VISIBLE
-                        binding.smNewArrivalsHomeFragment.stopShimmer()
-                    }, 2000)
-                }
-            }
-        }
-
-        return view
     }
 
-//    fun getBookPrice(bookID: String): Float {
-//        var res_return = 0.0F
-//
-//        db.collection("personalStores").whereNotEqualTo("items." + bookID + ".price", null).get().addOnSuccessListener { result ->
-//            for (data in result) {
-//                val bookList = data.data["items"] as? Map<String, Any>
-//                val bookDetail = bookList?.get(bookID) as? Map<String, Any>
-//
-//                val price = bookDetail?.get("price")
-//                if (price != null) {
-//                    res_return = price.toString().toFloat()
-//                }
-//            }
-//        }.addOnFailureListener { exception ->
-//            // Handle failures
-//            Log.d("firebase", "ERROR")
-//        }
-//        return res_return
-//    }
+    fun bestDealInitialize() {
+        bestDealAdapter =
+            activity?.let { HomeFragmentBestDealViewPagerAdapter(it, bestDeals, book_deal_sale) }!!
+        binding.rvBestDeal.adapter = bestDealAdapter
+        binding.rvBestDeal.pageMargin = 20
+        binding.dotsIndicator.attachTo(binding.rvBestDeal)
+
+        if (bestDeals.size == 0 || book_deal_sale.size == 0) {
+            binding.smHomeFragmentBestDeal.visibility = View.VISIBLE
+            binding.rvBestDeal.visibility = View.INVISIBLE
+            binding.smHomeFragmentBestDeal.startShimmer()
+
+            db.collection("books").whereNotEqualTo("best-deal-sale", null).get().addOnSuccessListener { result ->
+                lifecycleScope.launch {
+                    for (document in result) {
+                        val tmp_id = document.data.get("bookID").toString()
+                        var tmp = 0.0F
+
+                        tmp = getBookPrice1(tmp_id)
+                        bestDeals.add(
+                            BookObject(
+                                document.data.get("bookID").toString(),
+                                document.data.get("name").toString(),
+                                document.data.get("genre").toString(),
+                                document.data.get("author").toString(),
+                                document.data.get("releaseDate").toString(),
+                                document.data.get("image").toString(),
+//                    document.data.get("price").toString().toFloat()
+                                tmp
+                            )
+                        )
+
+                        book_deal_sale.add(document.data.get("best-deal-sale").toString().toFloat())
+                    }
+
+
+                    if (bestDealAdapter != null) {
+                        bestDealAdapter.notifyDataSetChanged()
+
+                        Handler().postDelayed({
+                            binding.smHomeFragmentBestDeal.visibility = View.GONE
+                            binding.rvBestDeal.visibility = View.VISIBLE
+                            binding.smHomeFragmentBestDeal.stopShimmer()
+                        }, 2000)
+                    }
+                }
+            }
+        }
+    }
 
     suspend fun getBookPrice1(bookID: String): Float {
         return try {
@@ -591,7 +625,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 
     companion object {
