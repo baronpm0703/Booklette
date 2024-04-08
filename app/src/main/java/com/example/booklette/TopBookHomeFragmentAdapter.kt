@@ -1,16 +1,20 @@
 package com.example.booklette
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import per.wsj.library.AndRatingBar
 
-class TopBookHomeFragmentAdapter(private val dataList: ArrayList<BookObject>,
-                                 private val ratings: ArrayList<Float>) :
+class TopBookHomeFragmentAdapter(
+    val context: FragmentActivity?, private val dataList: ArrayList<BookObject>,
+    private val ratings: ArrayList<Float>) :
     RecyclerView.Adapter<TopBookHomeFragmentAdapter.ViewHolder>() {
 
     // Create new views (invoked by the layout manager)
@@ -32,6 +36,18 @@ class TopBookHomeFragmentAdapter(private val dataList: ArrayList<BookObject>,
             .into(holder.ivTopBook)
 
         holder.topBookRating.rating = ratings[position]
+
+        holder.itemView.setOnClickListener({
+            var bdFragment = BookDetailFragment()
+
+            var bundle = Bundle()
+            bundle.putString("bookID", dataList[position].bookID)
+
+            bdFragment.arguments = bundle
+            if (context is homeActivity) {
+                context.changeFragmentContainer(bdFragment, context.smoothBottomBarStack[context.smoothBottomBarStack.size - 1])
+            }
+        })
 
 //        try {
 //                holder.topBookRating.setRating(ratings[position])

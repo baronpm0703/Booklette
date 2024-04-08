@@ -75,7 +75,7 @@ class homeActivity : AppCompatActivity() {
 
             if (smoothBottomBarStack.size > 0) {
                 binding.smoothBottomBar.itemActiveIndex = smoothBottomBarStack[smoothBottomBarStack.size - 1]
-                Toast.makeText(this@homeActivity, binding.smoothBottomBar.itemActiveIndex.toString(), Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this@homeActivity, binding.smoothBottomBar.itemActiveIndex.toString(), Toast.LENGTH_SHORT).show()
             }
             isEnabled = false
             onBackPressedDispatcher.onBackPressed()

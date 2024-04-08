@@ -1,6 +1,7 @@
 package com.example.booklette
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,21 @@ class HomeFragmentNewArrivaltemAdapter(private val context: Context, private val
             .into(ivBook)
 
         container.addView(view)
+
+        view.setOnClickListener({
+            if (context is homeActivity) {
+                var bdFragment = BookDetailFragment()
+
+                var bundle = Bundle()
+                bundle.putString("bookID", pageTitles[position].bookID)
+
+                bdFragment.arguments = bundle
+
+//                Toast.makeText(context, pageTitles[position].bookID.toString(), Toast.LENGTH_SHORT).show()
+
+                context.changeFragmentContainer(bdFragment, context.smoothBottomBarStack[context.smoothBottomBarStack.size - 1])
+            }
+        })
 
         return view
     }

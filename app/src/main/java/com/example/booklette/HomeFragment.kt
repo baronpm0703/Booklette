@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +16,6 @@ import com.google.android.material.chip.Chip
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
@@ -181,7 +179,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun recommandationBookInitialize() {
-        RCDBookAdapter = TopBookHomeFragmentAdapter(RCDBookList, RCDBookRating)
+        RCDBookAdapter = TopBookHomeFragmentAdapter(activity, RCDBookList, RCDBookRating)
         binding.rvTodayRCDHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvTodayRCDHomeFragment.adapter = RCDBookAdapter
 
@@ -279,7 +277,7 @@ class HomeFragment : Fragment() {
 
     private fun topBookRVInitialize() {
         binding.rvTopBookHomeFragment.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        topBookAdapter = TopBookHomeFragmentAdapter(topBookArrayList, topBookRating)
+        topBookAdapter = TopBookHomeFragmentAdapter(activity, topBookArrayList, topBookRating)
         binding.rvTopBookHomeFragment.adapter = topBookAdapter
 
         if (topBookArrayList.size == 0 || topBookRating.size == 0) {

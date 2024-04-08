@@ -1,11 +1,13 @@
 package com.example.booklette
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.viewpager.widget.PagerAdapter
 import com.squareup.picasso.Picasso
 
@@ -36,7 +38,16 @@ class HomeFragmentBestDealViewPagerAdapter(private val context: Context, private
 
         view.setOnClickListener({
             if (context is homeActivity) {
-                context.changeFragmentContainer(BookDetailFragment(), context.smoothBottomBarStack[context.smoothBottomBarStack.size - 1])
+                var bdFragment = BookDetailFragment()
+
+                var bundle = Bundle()
+                bundle.putString("bookID", pageTitles[position].bookID)
+
+                bdFragment.arguments = bundle
+
+//                Toast.makeText(context, pageTitles[position].bookID.toString(), Toast.LENGTH_SHORT).show()
+
+                context.changeFragmentContainer(bdFragment, context.smoothBottomBarStack[context.smoothBottomBarStack.size - 1])
             }
         })
 

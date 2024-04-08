@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,6 +51,8 @@ class BookDetailFragment : Fragment() {
         _binding = FragmentBookDetailBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        Toast.makeText(activity, arguments?.getString("bookID").toString(), Toast.LENGTH_SHORT).show()
+
         var data = ArrayList<String>()
         data.add("A")
         data.add("A")
@@ -81,7 +84,7 @@ class BookDetailFragment : Fragment() {
         stars.add(4.5F)
         stars.add(4.5F)
 
-        otherBookFromShopAdapter = TopBookHomeFragmentAdapter(books, stars)
+        otherBookFromShopAdapter = TopBookHomeFragmentAdapter(activity, books, stars)
         binding.rvOtherBookFromShopBookDetail.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvOtherBookFromShopBookDetail.adapter = otherBookFromShopAdapter
 
