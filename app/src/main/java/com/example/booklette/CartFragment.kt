@@ -3,37 +3,25 @@ package com.example.booklette
 import android.graphics.Color
 import android.graphics.Paint
 import CartFragmentRecyclerViewAdapter
-import CategoryFragmentGridViewAdapter
 import CheckoutFragment
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.graphics.Canvas
 import android.graphics.RectF
-import com.example.booklette.R
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentCartBinding
+import com.example.booklette.model.CartObject
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import com.squareup.picasso.Picasso
 
 
 // TODO: Rename parameter arguments, choose names that match

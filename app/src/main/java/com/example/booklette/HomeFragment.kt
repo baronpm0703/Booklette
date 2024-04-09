@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentHomeBinding
+import com.example.booklette.model.BookObject
 import com.google.android.material.chip.Chip
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -491,7 +492,8 @@ class HomeFragment : Fragment() {
                     tmp = getBookPrice1(tmp_id)
                 }
 
-                RCDBookList.add(BookObject(document.data.get("id").toString(),
+                RCDBookList.add(
+                    BookObject(document.data.get("id").toString(),
                     document.data.get("name").toString(),
                     document.data.get("genre").toString(),
                     document.data.get("author").toString(),
@@ -500,7 +502,8 @@ class HomeFragment : Fragment() {
                     tmp,
                     document.data.get("description").toString()
 //                    document.data.get("price").toString().toFloat()
-                ))
+                )
+                )
 
                 var avg_rating = 0.0F;
                 var rating_num = 1;
@@ -551,7 +554,8 @@ class HomeFragment : Fragment() {
                         tmp = getBookPrice1(tmp_id)
                     }
 
-                    topBookArrayList.add(BookObject(document.data.get("id").toString(),
+                    topBookArrayList.add(
+                        BookObject(document.data.get("id").toString(),
                         document.data.get("name").toString(),
                         document.data.get("genre").toString(),
                         document.data.get("author").toString(),
@@ -560,7 +564,8 @@ class HomeFragment : Fragment() {
                         tmp,
                         document.data.get("description").toString()
 //                        document.data.get("price").toString().toFloat()
-                    ))
+                    )
+                    )
 
                     var avg_rating = 0.0F;
                     var rating_num = 1;
@@ -602,7 +607,8 @@ class HomeFragment : Fragment() {
                         tmp = getBookPrice1(tmp_id)
                     }
 
-                    topBookArrayList.add(BookObject(document.data.get("id").toString(),
+                    topBookArrayList.add(
+                        BookObject(document.data.get("id").toString(),
                         document.data.get("name").toString(),
                         document.data.get("genre").toString(),
                         document.data.get("author").toString(),
@@ -611,7 +617,8 @@ class HomeFragment : Fragment() {
                         tmp,
                         document.data.get("description").toString()
 //                        document.data.get("price").toString().toFloat()
-                    ))
+                    )
+                    )
 
                     var avg_rating = 0.0F;
                     var rating_num = 1;

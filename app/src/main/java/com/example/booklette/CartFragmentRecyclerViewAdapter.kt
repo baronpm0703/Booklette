@@ -7,7 +7,7 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
-import com.example.booklette.CartObject
+import com.example.booklette.model.CartObject
 import com.example.booklette.R
 import com.squareup.picasso.Picasso
 
@@ -15,7 +15,7 @@ class CartFragmentRecyclerViewAdapter(
     private val context: Context,
     private val cartList: ArrayList<CartObject>,
 
-) : RecyclerView.Adapter<CartFragmentRecyclerViewAdapter.ViewHolder>() {
+    ) : RecyclerView.Adapter<CartFragmentRecyclerViewAdapter.ViewHolder>() {
 
     private val itemQuantities = ArrayList<Int>()
     private val itemSelections = ArrayList<Boolean>()

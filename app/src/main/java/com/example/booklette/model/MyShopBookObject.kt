@@ -1,4 +1,6 @@
-package com.example.booklette
+package com.example.booklette.model
+
+import com.example.booklette.model.BookObject
 
 class MyShopBookObject {
     var basicInfo: BookObject

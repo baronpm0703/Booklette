@@ -1,12 +1,12 @@
-package com.example.booklette
+package com.example.booklette.model
 
 import com.google.firebase.Timestamp
 
-class DiscountObject {
+class VoucherObject {
     var discountFilter: String
     var discountID: String
     var discountName: String
-    var discountType: String
+    var discountType: Int
     var endDate: Timestamp
     var percent: Float
     var startDate: Timestamp
@@ -15,7 +15,7 @@ class DiscountObject {
         discountFilter: String,
         discountID: String,
         discountName: String,
-        discountType: String,
+        discountType: Int,
         endDate: Timestamp,
         percent: Float,
         startDate: Timestamp

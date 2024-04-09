@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
+import com.example.booklette.model.BookObject
 import com.squareup.picasso.Picasso
 
 class HomeFragmentNewArrivaltemAdapter(private val context: Context, private val pageTitles: ArrayList<BookObject>,

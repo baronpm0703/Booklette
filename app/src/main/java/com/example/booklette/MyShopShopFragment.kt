@@ -1,7 +1,6 @@
 package com.example.booklette
 
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +9,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.booklette.databinding.FragmentMyshopBinding
 import com.example.booklette.databinding.FragmentMyshopShopTabBinding
+import com.example.booklette.model.BookObject
 import com.squareup.picasso.Picasso
 
 /**

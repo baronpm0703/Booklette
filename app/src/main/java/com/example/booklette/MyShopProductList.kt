@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.booklette.databinding.FragmentProductListBinding
+import com.example.booklette.model.ProductsObject
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -21,7 +22,6 @@ import com.maxkeppeler.sheets.option.DisplayMode
 import com.maxkeppeler.sheets.option.Option
 import com.maxkeppeler.sheets.option.OptionSheet
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 
 // TODO: Rename parameter arguments, choose names that match
@@ -108,7 +108,8 @@ class MyShopProductList : Fragment() {
                         // Each Store have diff price
                         bookPrice.forEach {
 
-                            bookList.add(ProductsObject(
+                            bookList.add(
+                                ProductsObject(
                                 document.data["bookID"].toString(),
                                 document.data["name"].toString(),
                                 document.data["genre"].toString(),
@@ -118,7 +119,8 @@ class MyShopProductList : Fragment() {
                                 it,
                                 avg_rating / rating_num,
                                 document.data["type"].toString()
-                            ))
+                            )
+                            )
                         }
 
                     }

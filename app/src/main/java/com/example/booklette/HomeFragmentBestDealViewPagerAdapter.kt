@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.viewpager.widget.PagerAdapter
+import com.example.booklette.model.BookObject
 import com.squareup.picasso.Picasso
 
 class HomeFragmentBestDealViewPagerAdapter(private val context: Context, private val pageTitles: ArrayList<BookObject>,

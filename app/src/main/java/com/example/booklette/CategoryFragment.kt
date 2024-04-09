@@ -15,9 +15,17 @@ import android.widget.AdapterView.OnItemClickListener
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentCategoryBinding
+import com.example.booklette.model.SimpleFuzzySearch
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
 import com.maxkeppeler.sheets.core.SheetStyle
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,6 +45,12 @@ class CategoryFragment : Fragment() {
 
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
+    private var suggestions = ArrayList<String>()
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+
+    private  var fuzzySearchArraySample = ArrayList<Map<String, String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +66,10 @@ class CategoryFragment : Fragment() {
     ): View {
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        // Authen and get data
+        auth = Firebase.auth
+        db = Firebase.firestore
 
         val categories = ArrayList<String>()
         categories.add("Non-fiction")
@@ -78,9 +96,6 @@ class CategoryFragment : Fragment() {
             val ft = activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.fcvNavigation, productList)
                 ?.commit()
-
-//            ft.replace(R.id.fragment_holder, MusicAlbumList(), "albumlist")
-//            ft.commit()
         }
 
 
@@ -89,7 +104,12 @@ class CategoryFragment : Fragment() {
             CustomSuggestionAdapter(it, inflater, binding.searchBar)
         }
 
-        val suggestions = listOf("Apple", "Banana", "Orange", "Mango", "Potato", "Melon", "Dragon Fruit", "Pineapple", "Chilly")
+        if (suggestions.isEmpty()) {
+            runBlocking {
+                suggestions = getBookNamesAlongSetupDataArraySample()
+            }
+        }
+//        val suggestions = listOf("Apple", "Banana", "Orange", "Mango", "Potato", "Melon", "Dragon Fruit", "Pineapple", "Chilly")
         if (customSuggestionAdapter != null) {
             customSuggestionAdapter.suggestions = suggestions
 
@@ -117,13 +137,33 @@ class CategoryFragment : Fragment() {
 
             override fun onSearchConfirmed(text: CharSequence?) {
                 Log.i("Confirm", text.toString())
-                val searchResult = text.toString()
+                val wordToSearch = text.toString()
+
+                val sfs = SimpleFuzzySearch(fuzzySearchArraySample, arrayListOf("bookName", "genre"))
+                // Line break and debug for more result
+                val resultFromFuzzySearch = sfs.search(wordToSearch) as ArrayList
+
                 val productList = ProductList()
                 val args = Bundle()
-                args.putString("SearchResult", searchResult)
+
+                if (resultFromFuzzySearch[0][1] == "genre") { // If first res relate to genre
+                    val obj = resultFromFuzzySearch[0][0] as Map<String, String>
+                    args.putString("Genre", obj["genre"])
+                } else {
+                    val listOfBookName = ArrayList<String>()
+                    resultFromFuzzySearch.forEach { item ->
+                        val obj = item[0] as Map<String, String>
+                        val bookName = obj["bookName"].toString()
+
+                        listOfBookName.add(bookName)
+                    }
+                    args.putString("WordToSearch", wordToSearch)
+                    args.putStringArrayList("SearchResult", listOfBookName)
+                }
+
                 productList.arguments = args
 
-                val ft = activity?.supportFragmentManager?.beginTransaction()
+                activity?.supportFragmentManager?.beginTransaction()
                     ?.replace(R.id.fcvNavigation, productList)
                     ?.commit()
             }
@@ -158,7 +198,7 @@ class CategoryFragment : Fragment() {
             }
         }
 
-        val topSearch = arrayListOf<String>("Hot", "Non-Fiction", "Fiction", "Horror", "LifeStyle Book", "Report Book", "Material", "Children Book", "Over 18s", "Mysterious")
+        val topSearch = arrayListOf("Hot", "Non-Fiction", "Fiction", "Horror", "LifeStyle Book", "Report Book", "Material", "Children Book", "Over 18s", "Mysterious")
         binding.topSearchGV.adapter = FilterTypeGVAdapter(requireActivity(), topSearch)
 
         binding.topSearchGV.setOnItemClickListener { parent, view, position, id ->
@@ -169,6 +209,21 @@ class CategoryFragment : Fragment() {
         return view
     }
 
+    private suspend fun getBookNamesAlongSetupDataArraySample(): ArrayList<String>{
+        val res = ArrayList<String>()
+        val docRef = db.collection("books").get().await()
+        docRef.documents.forEach{ doc ->
+            val name = doc.data?.get("name").toString()
+            val genre = doc.data?.get("genre").toString()
+            res.add(name)
+
+            fuzzySearchArraySample.add(mapOf(
+                "bookName" to name,
+                "genre" to genre
+            ))
+        }
+        return res
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
