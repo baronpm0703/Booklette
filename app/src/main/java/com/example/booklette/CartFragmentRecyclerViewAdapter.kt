@@ -28,7 +28,7 @@ class CartFragmentRecyclerViewAdapter(
         val bookPrice: TextView = itemView.findViewById(R.id.bookPrice)
         val storeName: TextView = itemView.findViewById(R.id.shopName)
         val btnCartItemMinus: AppCompatButton = itemView.findViewById(R.id.btnCartItemMinus)
-        val quantity: TextView = itemView.findViewById(R.id.tvCartItemCount)
+        val quantity: TextView = itemView.findViewById(R.id.quantity)
         val btnCartItemAdd: AppCompatButton  = itemView.findViewById(R.id.btnCartItemAdd)
         val btnSelectItem: RadioButton = itemView.findViewById(R.id.btnSelectItem)
     }

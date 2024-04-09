@@ -11,6 +11,5 @@ class CartObject(
     var bookName:String,
     var author:String,
     var price: Float,
-) {
-    var bookQuantity:Number = 0
-}
+    var bookQuantity:Number
+)

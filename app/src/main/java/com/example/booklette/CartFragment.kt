@@ -102,6 +102,7 @@ class CartFragment : Fragment() {
                         for (cartMap in it) {
                             val itemId = cartMap["itemId"] as? String
                             val storeId = cartMap["storeId"] as? String
+                            val quantity = cartMap["quantity"] as? Number
                             if(itemId != null && storeId != null){
                                 db.collection("accounts").whereEqualTo("UID", storeId).get()
                                     .addOnSuccessListener { storeDocument ->
@@ -124,7 +125,8 @@ class CartFragment : Fragment() {
                                                                     eachBook.data["name"].toString(),
                                                                     eachBook.data["author"].toString(),
                                                                     eachItem?.get("price").toString().toFloat(),
-                                                                )
+                                                                    quantity?.toInt() ?: 0
+                                                                    )
                                                             )
                                                         }
                                                         adapter.notifyDataSetChanged()
@@ -141,11 +143,11 @@ class CartFragment : Fragment() {
 
                                     }
                             }
-                        }
+                    }
                     }
                 }
 
-        }
+            }
 
         binding.btnCheckOut.setOnClickListener {
             val checkOutFragment = CheckoutFragment()
