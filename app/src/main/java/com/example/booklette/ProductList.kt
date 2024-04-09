@@ -54,7 +54,7 @@ class ProductList : Fragment() {
     private lateinit var gvProductListAdapter: ProductListFragmentGridViewAdapter
 
     private var chosenGenre: String? = null
-    private var chosenResult: String? = null
+    private var typeRes: String? = null
     private var searchRes = ArrayList<String>()
     private var bookList: ArrayList<ProductsObject> = ArrayList()
 
@@ -396,16 +396,21 @@ class ProductList : Fragment() {
     suspend fun getBookPrice(bookID: String): ArrayList<Float> {
         val res = ArrayList<Float>()
         return try {
-            val querySnapshot = db.collection("personalStores").whereNotEqualTo("items.$bookID.price", null).get().await()
-            for (document in querySnapshot.documents) {
-                val bookList = document.data?.get("items") as? Map<String, Any>
-                val bookDetail = bookList?.get(bookID) as? Map<String, Any>
+            val querySnapshot = db.collection("personalStores").get().await()
 
-                val price = bookDetail?.get("price").toString()
-                if (price.isNotEmpty()) {
-                    res.add(price.toFloat())
+            for (document in querySnapshot.documents) {
+                val bookData = document.get("items.$bookID") as Map<String, Any>// Fetching book data if it exists
+                if (bookData != null && bookData["price"] != null) {
+                    val bookList = document.data?.get("items") as? Map<String, Any>
+                    val bookDetail = bookList?.get(bookID) as? Map<String, Any>
+
+                    val price = bookDetail?.get("price").toString()
+                    if (price.isNotEmpty()) {
+                        res.add(price.toFloat())
+                    }
                 }
             }
+
             return res
 
         } catch (e: Exception) {

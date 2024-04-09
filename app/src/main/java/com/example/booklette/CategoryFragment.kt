@@ -50,7 +50,7 @@ class CategoryFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    private  var fuzzySearchArraySample = ArrayList<Map<String, String>>()
+    private var fuzzySearchArraySample = ArrayList<Map<String, String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,7 +139,7 @@ class CategoryFragment : Fragment() {
                 Log.i("Confirm", text.toString())
                 val wordToSearch = text.toString()
 
-                val sfs = SimpleFuzzySearch(fuzzySearchArraySample, arrayListOf("bookName", "genre"))
+                val sfs = SimpleFuzzySearch(fuzzySearchArraySample, arrayListOf("bookName", "genre", "author"))
                 // Line break and debug for more result
                 val resultFromFuzzySearch = sfs.search(wordToSearch) as ArrayList
 
@@ -215,11 +215,13 @@ class CategoryFragment : Fragment() {
         docRef.documents.forEach{ doc ->
             val name = doc.data?.get("name").toString()
             val genre = doc.data?.get("genre").toString()
+            val author = doc.data?.get("author").toString()
             res.add(name)
 
             fuzzySearchArraySample.add(mapOf(
                 "bookName" to name,
-                "genre" to genre
+                "genre" to genre,
+                "author" to author
             ))
         }
         return res

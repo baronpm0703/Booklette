@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booklette.model.BookObject
 import com.squareup.picasso.Picasso
 import per.wsj.library.AndRatingBar
 
