@@ -42,6 +42,8 @@ class HomeFragmentBestDealViewPagerAdapter(private val context: Context, private
 
                 var bundle = Bundle()
                 bundle.putString("bookID", pageTitles[position].bookID)
+//                bundle.putFloat("price", pageTitles[position].price)
+//                bundle.putFloat("salePercent", price_off[position])
 
                 bdFragment.arguments = bundle
 

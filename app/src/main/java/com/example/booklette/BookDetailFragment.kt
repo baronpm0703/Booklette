@@ -1,6 +1,7 @@
 package com.example.booklette
 
 import android.graphics.Color
+import android.graphics.Paint
 import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
@@ -125,9 +126,79 @@ class BookDetailFragment : Fragment() {
                 binding.txtBookCategory.text = document.data.get("genre").toString()
                 binding.txtBookName.text = document.data.get("name").toString()
                 binding.txtAuthorName.text = document.data.get("author").toString()
-                binding.txtBookOriginalPrice.text = "10.000 VND" // MUST DO LATER: need to get the price when passing data from another fragment to this one
-                binding.txtBookRealPrice.text = "8.000 VND" // MUST DO LATER: need to get the price when passing data from another fragment to this one
-                binding.txtSalePercent.text = "20% OFF " // MUST DO LATER: need to get the price when passing data from another fragment to this one
+
+                val salePercent = document.data.get("best-deal-sale").toString().toFloat()
+                db.collection("personalStores").whereNotEqualTo("items.$bookID.price", null).get().addOnSuccessListener { result ->
+                    if (result.documents.size == 0) {
+                        binding.txtBookOriginalPrice.visibility = View.GONE
+                        binding.txtSalePercent.visibility = View.GONE
+                        binding.txtBookRealPrice.text = "0 VND"
+
+                        Handler().postDelayed({
+                            binding.smBookOriginalPrice.visibility = View.INVISIBLE
+                            binding.smBookOriginalPrice.stopShimmer()
+
+                            binding.txtBookRealPrice.visibility = View.VISIBLE
+                            binding.smBookRealPrice.visibility = View.INVISIBLE
+                            binding.smBookRealPrice.stopShimmer()
+
+                            binding.smSalePercent.visibility = View.INVISIBLE
+                            binding.smSalePercent.stopShimmer()
+                        }, 3000)
+                    }
+                    else {
+                        val dcm = result.documents[0]
+
+                        val bookList = dcm.data?.get("items") as? Map<String, Any>
+                        val bookDetail = bookList?.get(bookID) as? Map<String, Any>
+                        val price = bookDetail?.get("price").toString().toFloat()
+
+                        if (salePercent == null || salePercent == 0.0F) {
+                            binding.txtBookOriginalPrice.visibility = View.GONE
+                            binding.txtSalePercent.visibility = View.GONE
+                            binding.txtBookRealPrice.text = price.toString() + " VND"
+
+                            Handler().postDelayed({
+                                binding.smBookOriginalPrice.visibility = View.INVISIBLE
+                                binding.smBookOriginalPrice.stopShimmer()
+
+                                binding.txtBookRealPrice.visibility = View.VISIBLE
+                                binding.smBookRealPrice.visibility = View.INVISIBLE
+                                binding.smBookRealPrice.stopShimmer()
+
+                                binding.smSalePercent.visibility = View.INVISIBLE
+                                binding.smSalePercent.stopShimmer()
+                            }, 3000)
+                        }
+                        else {
+                            binding.txtBookOriginalPrice.apply {
+                                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                                text = price.toString() + " VND"
+                            }
+                            binding.txtBookRealPrice.text =
+                                (price - price * salePercent).toString() + " VND" // MUST DO LATER: need to get the price when passing data from another fragment to this one
+                            binding.txtSalePercent.text =
+                                (salePercent * 100).toString() + "% OFF " // MUST DO LATER: need to get the price when passing data from another fragment to this one
+
+                            Handler().postDelayed({
+                                binding.txtBookOriginalPrice.visibility = View.VISIBLE
+                                binding.smBookOriginalPrice.visibility = View.INVISIBLE
+                                binding.smBookOriginalPrice.stopShimmer()
+
+                                binding.txtBookRealPrice.visibility = View.VISIBLE
+                                binding.smBookRealPrice.visibility = View.INVISIBLE
+                                binding.smBookRealPrice.stopShimmer()
+
+                                binding.rlSalePercent.visibility = View.VISIBLE
+                                binding.smSalePercent.visibility = View.INVISIBLE
+                                binding.smSalePercent.stopShimmer()
+                            }, 3000)
+
+                        }
+                    }
+                }
+
+
                 // MUST DO LATER: get avg star for star diagram
                 // MUST DO LATER: get avg star for textView next to star diagram
 
@@ -143,18 +214,6 @@ class BookDetailFragment : Fragment() {
                     binding.txtAuthorName.visibility = View.VISIBLE
                     binding.smAuthorName.visibility = View.INVISIBLE
                     binding.smAuthorName.stopShimmer()
-
-                    binding.txtBookOriginalPrice.visibility = View.VISIBLE
-                    binding.smBookOriginalPrice.visibility = View.INVISIBLE
-                    binding.smBookOriginalPrice.stopShimmer()
-
-                    binding.txtBookRealPrice.visibility = View.VISIBLE
-                    binding.smBookRealPrice.visibility = View.INVISIBLE
-                    binding.smBookRealPrice.stopShimmer()
-
-                    binding.rlSalePercent.visibility = View.VISIBLE
-                    binding.smSalePercent.visibility = View.INVISIBLE
-                    binding.smSalePercent.stopShimmer()
 
                     binding.llRatingStarBook.visibility = View.VISIBLE
                     binding.smRatingStarBook.visibility = View.GONE
