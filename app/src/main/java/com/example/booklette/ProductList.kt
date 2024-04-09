@@ -53,7 +53,7 @@ class ProductList : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    private var isFailedQuery: Boolean = false
+    private lateinit var gvProductListAdapter: ProductListFragmentGridViewAdapter
 
     private var chosenGenre: String? = null
     private var chosenResult: String? = null
@@ -62,6 +62,7 @@ class ProductList : Fragment() {
 
     private var smallestAmount: Float = Float.MAX_VALUE
     private var largestAmount: Float = 0.0F
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -83,16 +84,7 @@ class ProductList : Fragment() {
         auth = Firebase.auth
         db = Firebase.firestore
 
-        // Init filter dialog
-        val initValues = InitFilterValuesProductList()
-        initValues.rangslider.apply {
-            add(smallestAmount)
-            add(largestAmount)
-        }
 
-        var filterDialogProductList = FilterDialogProductList(false, initValues)
-        if (!searchRes.equals(null))
-            filterDialogProductList = FilterDialogProductList(true, initValues)
 
         // After passing the selected genre from categories, set to this
         if (this.arguments?.getString("Genre") != null) {
@@ -104,6 +96,17 @@ class ProductList : Fragment() {
             searchRes = this.arguments?.getString("SearchResult").toString()
         }
 
+        // Init filter dialog
+        val initValues = InitFilterValuesProductList()
+        initValues.rangslider.apply {
+            add(smallestAmount)
+            add(largestAmount)
+        }
+        var filterDialogProductList = FilterDialogProductList(true, initValues)
+        if (!searchRes.equals(null))
+            filterDialogProductList = FilterDialogProductList(false, initValues)
+
+        // Set up back btn
         binding.ivBackToPrev.setOnClickListener {
             val categoryFragment = CategoryFragment()
             activity?.supportFragmentManager?.beginTransaction()
@@ -111,11 +114,14 @@ class ProductList : Fragment() {
                 ?.commit()
         }
 
-        val gvProductListAdapter = activity?.let { ProductListFragmentGridViewAdapter(it, bookList) }
+        // Product List Grid view
+        gvProductListAdapter = activity?.let { ProductListFragmentGridViewAdapter(it, bookList) }!!
 
         binding.gvProductList.adapter = gvProductListAdapter
         binding.gvProductList.visibility = View.GONE
         binding.unavailbleInfo.visibility = View.GONE
+
+        // Generate data
         if (!chosenGenre.equals(null)) {
             binding.ivSearch.visibility = View.GONE
             val docRef = db.collection("books").whereEqualTo("genre", chosenGenre).get()
@@ -145,6 +151,7 @@ class ProductList : Fragment() {
 
                         // Query BookPrice
                         val bookPrice: ArrayList<Float> = getBookPrice(document.data["bookID"].toString())
+                        val bookQuantity = getBookQuantity(document.data["bookID"].toString())
                         // Each Store have diff price
                         bookPrice.forEach {
                             smallestAmount = min(smallestAmount, it)
@@ -155,7 +162,8 @@ class ProductList : Fragment() {
                             initValues.rangslider[1] = largestAmount
                             filterDialogProductList.updateInitValues(initValues)
 
-                            bookList.add(ProductsObject(
+
+                            val productsObject = ProductsObject(
                                 document.data["bookID"].toString(),
                                 document.data["name"].toString(),
                                 document.data["genre"].toString(),
@@ -163,35 +171,31 @@ class ProductList : Fragment() {
                                 dDate.toDate(),
                                 document.data["image"].toString(),
                                 it,
-                                avg_rating / rating_num
-                            ))
+                                avg_rating / rating_num,
+                                document.data["type"].toString()
+                            )
+                            productsObject.quantitySale = bookQuantity
+                            bookList.add(productsObject)
+
                         }
 
                     }
 
-                    if (gvProductListAdapter != null){
-                        bookList.sortBy {
-                                book -> book.price
-                        }
-
-                        val quantityEachBook = ScanOrderCalcSellingQuantity(bookIDListToCalc)
-                        var index = 0
-                        quantityEachBook.forEach {
-                            bookList[index++].quantitySale = it.toInt()
-                        }
-
-                        gvProductListAdapter.notifyDataSetChanged()
-
-
-                        Handler().postDelayed({
-                            // Code to be executed after the delay
-                            // For example, you can start a new activity or update UI elements
-                            //                        binding.smHomeFragmentBestDeal.visibility = View.GONE
-                            binding.gvProductList.visibility = View.VISIBLE
-                            //                        binding.smHomeFragmentBestDeal.stopShimmer()
-                        }, 2000)
+                    bookList.sortBy {
+                            book -> book.price
                     }
-                    }
+
+                    gvProductListAdapter.notifyDataSetChanged()
+
+
+                    Handler().postDelayed({
+                        // Code to be executed after the delay
+                        // For example, you can start a new activity or update UI elements
+                        //                        binding.smHomeFragmentBestDeal.visibility = View.GONE
+                        binding.gvProductList.visibility = View.VISIBLE
+                        //                        binding.smHomeFragmentBestDeal.stopShimmer()
+                    }, 2000)
+                }
 
                 }
         }
@@ -226,8 +230,8 @@ class ProductList : Fragment() {
                         bookIDListToCalc.add(document.data["bookID"].toString())
                         val dDate = document.data["releaseDate"] as com.google.firebase.Timestamp
 
-                        // Query BookPrice
                         val bookPrice: ArrayList<Float> = getBookPrice(document.data["bookID"].toString())
+                        val bookQuantity = getBookQuantity(document.data["bookID"].toString())
                         // Each Store have diff price
                         bookPrice.forEach {
                             smallestAmount = min(smallestAmount, it)
@@ -238,7 +242,8 @@ class ProductList : Fragment() {
                             initValues.rangslider[1] = largestAmount
                             filterDialogProductList.updateInitValues(initValues)
 
-                            bookList.add(ProductsObject(
+
+                            val productsObject = ProductsObject(
                                 document.data["bookID"].toString(),
                                 document.data["name"].toString(),
                                 document.data["genre"].toString(),
@@ -246,21 +251,16 @@ class ProductList : Fragment() {
                                 dDate.toDate(),
                                 document.data["image"].toString(),
                                 it,
-                                avg_rating / rating_num
-                            ))
+                                avg_rating / rating_num,
+                                document.data["type"].toString()
+                            )
+                            productsObject.quantitySale = bookQuantity
+                            bookList.add(productsObject)
                         }
                     }
                     if (gvProductListAdapter != null){
                         bookList.sortBy {
                                 book -> book.price
-                        }
-                        runBlocking {
-                            val quantityEachBook = ScanOrderCalcSellingQuantity(bookIDListToCalc)
-                            var index = 0
-                            quantityEachBook.forEach {
-                                bookList[index++].quantitySale = it.toInt()
-                            }
-
                         }
 
                         gvProductListAdapter.notifyDataSetChanged()
@@ -342,7 +342,7 @@ class ProductList : Fragment() {
                                 binding.tvSort.text = "Price: Highest to low"
                             }
                         }
-                        Toast.makeText(activity, option.toString(), Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(activity, option.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -358,6 +358,8 @@ class ProductList : Fragment() {
                     title("Filter")
                     titleColor(Color.parseColor("#FF0000"))
                     onPositive {
+                        Toast.makeText(activity, "Is triggered", Toast.LENGTH_SHORT).show()
+                        this.dismiss()
                         FilterWithAttributes(getSliderValues(), getChosenCategory(), getChosenType(), getChosenAge())
                     }
                 }
@@ -368,34 +370,27 @@ class ProductList : Fragment() {
         return view
     }
 
-    suspend fun ScanOrderCalcSellingQuantity(booksNeedObserver: ArrayList<String>): ArrayList<Long> {
-        val res = ArrayList<Long>()
-        booksNeedObserver.forEach {
-            res.add(0)
-        }
-        val db = FirebaseFirestore.getInstance()
-        val result = try {
-            db.collection("orders").get().await()
-        } catch (e: Exception) {
-            // Handle any exceptions
-            e.printStackTrace()
-            return res
-        }
+    suspend fun getBookQuantity(bookID: String): Int {
+        var res = 0
+        return try {
+            val querySnapshot = db.collection("orders").whereNotEqualTo("items.$bookID.quantity", null).get().await()
+            for (document in querySnapshot.documents) {
+                val orderList = document.data?.get("items") as? Map<String, Any>
+                val orderItemDetail = orderList?.get(bookID) as? Map<String, Any>
 
-        for (doc in result) {
-            if (doc.data["items"] != null) {
-                val itemsArray = doc.data["items"] as ArrayList<Map<String, Any>>
-                for (item in itemsArray) {
-                    val itemID = item["itemID"] as String
-                    val quantity = item["quantity"] as Long
-                    val indexContainItem = booksNeedObserver.indexOf(itemID)
-                    if (indexContainItem != -1) {
-                        res[indexContainItem] += quantity
-                    }
+                val quantity = orderItemDetail?.get("quantity").toString()
+                if (quantity.isNotEmpty()) {
+                    res += quantity.toInt()
                 }
             }
+            return res
+
+        } catch (e: Exception) {
+            // Handle failures
+            Log.e("Firestore", "Error getting book quantity", e)
+            // Return a default value in case of failure
+            0
         }
-        return res
     }
 
     suspend fun getBookPrice(bookID: String): ArrayList<Float> {
@@ -423,12 +418,27 @@ class ProductList : Fragment() {
 
 
     fun FilterWithAttributes(selectedSlider: ArrayList<String>, selectedCategories: ArrayList<String>, selectedType: ArrayList<String>, selectedAge: ArrayList<String>) {
-        bookList.filter {
-            checkInRangeSlider(it, selectedSlider)
-        }
+        val filterList = bookList.filter {
+            checkInRangeSlider(it, selectedSlider) && checkInGenres(it, selectedCategories) && checkInCoverType(it, selectedType)
+        } as ArrayList
+
+        gvProductListAdapter.updateBookList(filterList)
+
+        gvProductListAdapter.notifyDataSetChanged()
     }
     fun checkInRangeSlider(item: ProductsObject, slider: ArrayList<String>): Boolean {
-        return item.price >= slider[0].toFloat() && item.price <= slider[1].toFloat()
+        if (slider[0].isEmpty() || slider[1].isEmpty()) return true
+        return item.price >= slider[0].toFloat() * 1000 && item.price <= slider[1].toFloat() * 1000
+    }
+
+    fun checkInGenres(item: ProductsObject, genres: ArrayList<String>): Boolean {
+        if (genres.contains("All") || genres.isEmpty()) return true
+        return genres.contains(item.genre)
+    }
+
+    fun checkInCoverType(item: ProductsObject, typeCover: ArrayList<String>): Boolean {
+        if (typeCover.isEmpty()) return true
+        return typeCover.contains(item.typeCover)
     }
     override fun onDestroyView() {
         super.onDestroyView()

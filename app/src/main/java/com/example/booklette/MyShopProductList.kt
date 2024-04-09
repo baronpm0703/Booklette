@@ -116,7 +116,8 @@ class MyShopProductList : Fragment() {
                                 dDate.toDate(),
                                 document.data["image"].toString(),
                                 it,
-                                avg_rating / rating_num
+                                avg_rating / rating_num,
+                                document.data["type"].toString()
                             ))
                         }
 

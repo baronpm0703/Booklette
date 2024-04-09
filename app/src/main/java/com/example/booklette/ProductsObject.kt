@@ -10,7 +10,8 @@ class ProductsObject(
     var releaseDate: Date,
     var image: String,
     var price: Float,
-    var rating: Float
+    var rating: Float,
+    var typeCover: String
 ) {
     var quantitySale = 0
 

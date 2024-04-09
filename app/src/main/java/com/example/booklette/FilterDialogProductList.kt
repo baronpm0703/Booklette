@@ -183,11 +183,11 @@ class FilterDialogProductList(
         binding.filterTypeDialogGV.adapter = filterTypeDialogGVAdapter
         // Type OnIemClick
         binding.filterTypeDialogGV.setOnItemClickListener { parent, view, position, id ->
-            if (!chosenType.contains(categories[position])) {
-                chosenType.add(categories[position])
+            if (!chosenType.contains(type[position])) {
+                chosenType.add(type[position])
                 chosenTypeTrueTableArray[position] = true
             } else {
-                chosenType.remove(chosenType.filter { ty -> ty == type[position] }.single())
+                chosenType.remove(chosenType.single { ty -> ty == type[position] })
                 chosenTypeTrueTableArray[position] = false
             }
 
@@ -206,11 +206,11 @@ class FilterDialogProductList(
         binding.filterAgeDialogGV.adapter = filterAgeGVAdapter
         // Ages OnIemClick
         binding.filterAgeDialogGV.setOnItemClickListener { parent, view, position, id ->
-            if (!chosenAge.contains(categories[position])) {
-                chosenAge.add(categories[position])
+            if (!chosenAge.contains(ages[position])) {
+                chosenAge.add(ages[position])
                 chosenAgeTrueTableArray[position] = true
             } else {
-                chosenAge.remove(chosenAge.filter { ty -> ty == ages[position] }.single())
+                chosenAge.remove(chosenAge.single { ty -> ty == ages[position] })
                 chosenAgeTrueTableArray[position] = false
             }
 
