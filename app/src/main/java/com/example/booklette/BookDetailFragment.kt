@@ -48,6 +48,7 @@ class BookDetailFragment : Fragment() {
     private lateinit var voucherAdapter: bookDetailFragmentVoucherViewPagerAdapter
     private lateinit var shopVoucherAdapter: bookDetailShopVoucherRVAdapter
     private lateinit var otherBookFromShopAdapter: TopBookHomeFragmentAdapter
+    private lateinit var bookDetailYouMayLoveAdapter: bookDetailYouMayLoveAdapter
 
     private lateinit var db: FirebaseFirestore
     private var bookID: String = ""
@@ -55,6 +56,8 @@ class BookDetailFragment : Fragment() {
     private var voucherList = ArrayList<VoucherObject>()
     private var otherBookFromStore = ArrayList<BookObject>()
     private var otherBookFromStoreRating = ArrayList<Float>()
+    private var otherBookFromOtherStore = ArrayList<BookObject>()
+    private var otherBookFromOtherStoreRating = ArrayList<Float>()
 
     private lateinit var bookList: Map<String, Any>
     private lateinit var bookDetail: Map<String, Any>
@@ -349,10 +352,75 @@ class BookDetailFragment : Fragment() {
         binding.lvUserReviewDetail.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         binding.lvUserReviewDetail.adapter = bookDetailUserReviewAdapter()
 
+        getOtherBookFromAllStore()
+        bookDetailYouMayLoveAdapter = bookDetailYouMayLoveAdapter(context, otherBookFromOtherStore, otherBookFromOtherStoreRating)
         binding.rvBookDetailYouMayLove.layoutManager = GridLayoutManager(activity, 2)
-        binding.rvBookDetailYouMayLove.adapter = bookDetailYouMayLoveAdapter()
+        binding.rvBookDetailYouMayLove.adapter = bookDetailYouMayLoveAdapter
 
         return view
+    }
+
+    fun getOtherBookFromAllStore() {
+            db.collection("books").whereNotEqualTo("bookID", bookID).limit(kotlin.random.Random.nextLong(4, 8 + 1)).get().addOnSuccessListener { result ->
+                lifecycleScope.launch {
+                    for (document in result) {
+                        val tmp_id = document.data.get("bookID").toString()
+                        var tmp = 0.0F
+
+                        tmp = getBookPrice1(tmp_id)
+                        otherBookFromOtherStore.add(
+                            BookObject(
+                                document.data.get("bookID").toString(),
+                                document.data.get("name").toString(),
+                                document.data.get("genre").toString(),
+                                document.data.get("author").toString(),
+                                document.data.get("releaseDate").toString(),
+                                document.data.get("image").toString(),
+                                tmp,
+                                document.data.get("description").toString()
+                            )
+                        )
+
+                        var avg_rating = 0.0F;
+                        var rating_num = 1;
+                        if (document.data.get("review") != null) {
+                            val reviewsArray =
+                                document.data.get("review") as ArrayList<Map<String, Any>>
+                            rating_num = reviewsArray.size
+
+                            for (reviewMap in reviewsArray) {
+                                val uid = reviewMap["UID"] as String
+                                val image = reviewMap["image"] as String
+                                val score = (reviewMap["score"] as Long).toInt()
+                                val text = reviewMap["text"] as String
+
+                                avg_rating += score
+                            }
+                        }
+
+                        otherBookFromOtherStoreRating.add(avg_rating / rating_num)
+                    }
+
+                    if (bookDetailYouMayLoveAdapter != null) {
+                        val indices = otherBookFromOtherStore.indices.shuffled()
+
+                        val shuffledList1 = ArrayList<BookObject>()
+                        val shuffledList2 = ArrayList<Float>()
+                        for (index in indices) {
+                            shuffledList1.add(otherBookFromOtherStore[index])
+                            shuffledList2.add(otherBookFromOtherStoreRating[index])
+                        }
+
+                        otherBookFromOtherStore.clear()
+                        otherBookFromOtherStore.addAll(shuffledList1)
+
+                        otherBookFromOtherStoreRating.clear()
+                        otherBookFromOtherStoreRating.addAll(shuffledList2)
+
+                        bookDetailYouMayLoveAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
     }
 
     fun getOtherBook() {
