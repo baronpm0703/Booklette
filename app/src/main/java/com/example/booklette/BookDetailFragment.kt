@@ -2,19 +2,18 @@ package com.example.booklette
 
 import android.graphics.Color
 import android.graphics.Paint
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.squareup.picasso.Picasso
@@ -46,7 +45,9 @@ class BookDetailFragment : Fragment() {
     private lateinit var otherBookFromShopAdapter: TopBookHomeFragmentAdapter
 
     private lateinit var db: FirebaseFirestore
-    private  var bookID: String = ""
+    private var bookID: String = ""
+
+    private var voucherList = ArrayList<VoucherObject>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -197,8 +198,36 @@ class BookDetailFragment : Fragment() {
                             }, 3000)
 
                             var bookVoucher = bookDetail["discounts"] as ArrayList<String>
-//                            Log.d("vouchers", bookVoucher.toString())
-//                    db.collection("discounts").whereEqualTo("discountID", bookDetail[""])
+                            for (vch in bookVoucher) {
+                                db.collection("discounts").whereEqualTo("discountID", vch).get().addOnSuccessListener { result ->
+                                    if (result.documents.size == 0) {
+                                        binding.rvBookDetailShopVoucher.visibility = View.GONE
+                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                        binding.smBookDetailShopVoucher.stopShimmer()
+                                    }
+                                    else {
+                                        voucherList.add(
+                                            VoucherObject(
+                                                result.documents[0].data?.get("discountFilter").toString(),
+                                                result.documents[0].data?.get("discountID").toString(),
+                                                result.documents[0].data?.get("discountName").toString(),
+                                                result.documents[0].data?.get("discountType").toString().toInt(),
+                                                result.documents[0].data?.get("endDate") as Timestamp,
+                                                result.documents[0].data?.get("percent").toString().toFloat(),
+                                                result.documents[0].data?.get("startDate") as Timestamp
+                                            )
+                                        )
+
+                                        shopVoucherAdapter.notifyDataSetChanged()
+
+                                        Handler().postDelayed({
+                                            binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                            binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                            binding.smBookDetailShopVoucher.stopShimmer()
+                                        }, 3000)
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -254,10 +283,6 @@ class BookDetailFragment : Fragment() {
                     binding.smTxtOtherBookBookDetail.visibility = View.INVISIBLE
                     binding.smTxtOtherBookBookDetail.stopShimmer()
 
-                    binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
-                    binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                    binding.smBookDetailShopVoucher.stopShimmer()
-
                     binding.bookDetailDotLoading.visibility = View.GONE
                     binding.clBookDetailMoreDetailPart.visibility = View.VISIBLE
                 }, 3000)
@@ -275,7 +300,7 @@ class BookDetailFragment : Fragment() {
         binding.vpVoucherBookDetail.adapter = voucherAdapter
         binding.vpVoucherBookDetail.pageMargin = 20
 
-        shopVoucherAdapter = bookDetailShopVoucherRVAdapter()
+        shopVoucherAdapter = bookDetailShopVoucherRVAdapter(context, voucherList)
         binding.rvBookDetailShopVoucher.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvBookDetailShopVoucher.adapter = shopVoucherAdapter
 

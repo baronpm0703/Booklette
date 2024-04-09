@@ -1,16 +1,14 @@
 package com.example.booklette
 
-import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.google.api.Context
+import java.time.Instant
 
-class bookDetailShopVoucherRVAdapter() :
+class bookDetailShopVoucherRVAdapter(var context: android.content.Context?, var data: ArrayList<VoucherObject>) :
     RecyclerView.Adapter<bookDetailShopVoucherRVAdapter.ViewHolder>() {
 
     // Create new views (invoked by the layout manager)
@@ -28,13 +26,25 @@ class bookDetailShopVoucherRVAdapter() :
 //        holder.itemView.setOnClickListener({
 //            fragment.getRCDBookCategories(dataList[position].toString())
 //        })
+
+        holder.txtVoucherCode.text = data[position].discountID
+        holder.txtDesciptionVoucher.text = data[position].discountName
+        holder.txtVoucherRemainingTime.text = calculateRemainingDays(Instant.now().epochSecond, data[position].endDate.seconds).toString() + " day(s) left"
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = 10
+    override fun getItemCount() = data.size
 
     // Provide a reference to the views for each data item
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//        val textView: TextView = itemView.findViewById(R.id.bookCategory)
+        val txtVoucherCode: TextView = itemView.findViewById(R.id.txtVoucherCode)
+        val txtDesciptionVoucher: TextView = itemView.findViewById(R.id.txtDesciptionVoucher)
+        val txtVoucherRemainingTime: TextView = itemView.findViewById(R.id.txtVoucherRemainingTime)
+        val btnSaveVoucher: Button = itemView.findViewById(R.id.btnSaveVoucher)
+    }
+
+    private fun calculateRemainingDays(currentTimestamp: Long, variableUnixTimestamp: Long): Long {
+        val differenceSeconds = variableUnixTimestamp - currentTimestamp
+        return differenceSeconds / (24 * 3600)
     }
 }
