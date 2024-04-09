@@ -587,6 +587,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/vpVoucherBookDetail">
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivStoreAvatar"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/book_shop_avatar"
@@ -603,6 +604,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/txtBookStoreName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
@@ -631,6 +633,7 @@
                             android:src="@drawable/pin_light" />
 
                         <TextView
+                            android:id="@+id/txtStoreLocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="2dp"
@@ -669,7 +672,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Voucher of shop"
+                    android:text="@string/book_detail_voucher"
                     android:textColor="@color/shimmerColor"
                     android:background="@color/shimmerColor"
                     android:textSize="7pt"
@@ -685,7 +688,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="15dp"
-                android:text="Voucher of shop"
+                android:text="@string/book_detail_voucher"
                 android:textColor="@color/black"
                 android:textSize="7pt"
                 android:textStyle="bold"

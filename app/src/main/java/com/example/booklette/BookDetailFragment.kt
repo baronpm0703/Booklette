@@ -128,6 +128,9 @@ class BookDetailFragment : Fragment() {
 
                 val salePercent = document.data.get("best-deal-sale").toString().toFloat()
                 db.collection("personalStores").whereNotEqualTo("items.$bookID.price", null).get().addOnSuccessListener { result ->
+                    var bookList: Map<String, Any>
+                    var bookDetail : Map<String, Any>
+
                     if (result.documents.size == 0) {
                         binding.txtBookOriginalPrice.visibility = View.GONE
                         binding.txtSalePercent.visibility = View.GONE
@@ -148,8 +151,8 @@ class BookDetailFragment : Fragment() {
                     else {
                         val dcm = result.documents[0]
 
-                        val bookList = dcm.data?.get("items") as? Map<String, Any>
-                        val bookDetail = bookList?.get(bookID) as? Map<String, Any>
+                        bookList = (dcm.data?.get("items") as? Map<String, Any>)!!
+                        bookDetail = (bookList?.get(bookID) as? Map<String, Any>)!!
                         val price = bookDetail?.get("price").toString().toFloat()
 
                         if (salePercent == null || salePercent == 0.0F) {
@@ -193,8 +196,23 @@ class BookDetailFragment : Fragment() {
                                 binding.smSalePercent.stopShimmer()
                             }, 3000)
 
+                            var bookVoucher = bookDetail["discounts"] as ArrayList<String>
+//                            Log.d("vouchers", bookVoucher.toString())
+//                    db.collection("discounts").whereEqualTo("discountID", bookDetail[""])
                         }
                     }
+
+                    binding.txtBookStoreName.text = result.documents[0].data?.get("storeName").toString()
+                    binding.txtStoreLocation.text = result.documents[0].data?.get("storeLocation").toString()
+                    Picasso.get()
+                        .load(result.documents[0].data?.get("storeAvatar").toString())
+                        .into(binding.ivStoreAvatar)
+
+                    Handler().postDelayed({
+                        binding.llBookStoreInfo.visibility = View.VISIBLE
+                        binding.smBookStoreInfo.visibility = View.INVISIBLE
+                        binding.smBookStoreInfo.stopShimmer()
+                    }, 3000)
                 }
 
                 val reviewList = document.data.get("review") as ArrayList<Map<Any, Any>>
@@ -231,10 +249,6 @@ class BookDetailFragment : Fragment() {
                     binding.vpVoucherBookDetail.visibility = View.GONE
                     binding.smVoucherBookDetail.visibility = View.INVISIBLE
                     binding.smVoucherBookDetail.stopShimmer()
-
-                    binding.llBookStoreInfo.visibility = View.VISIBLE
-                    binding.smBookStoreInfo.visibility = View.INVISIBLE
-                    binding.smBookStoreInfo.stopShimmer()
 
                     binding.txtOtherBookBookDetail.visibility = View.VISIBLE
                     binding.smTxtOtherBookBookDetail.visibility = View.INVISIBLE
