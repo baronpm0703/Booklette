@@ -20,6 +20,7 @@ import com.google.firebase.firestore.firestore
 import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
 import java.util.Random
+import kotlin.math.round
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -117,8 +118,6 @@ class BookDetailFragment : Fragment() {
 
         db.collection("books").whereEqualTo("bookID", bookID).get().addOnSuccessListener { result ->
             for (document in result) {
-                Log.d("book_data", document.data.toString())
-
                 Picasso.get()
                     .load(document.data.get("image").toString())
                     .into(binding.ivBookImage)
@@ -198,6 +197,15 @@ class BookDetailFragment : Fragment() {
                     }
                 }
 
+                val reviewList = document.data.get("review") as ArrayList<Map<Any, Any>>
+
+                var avgRating = 0.0F
+                for (review in reviewList) avgRating += (review["score"]).toString().toFloat()
+                avgRating /= reviewList.size
+                avgRating = round(avgRating * 10) / 10
+
+                binding.ratingStarBar.rating = avgRating
+                binding.txtAVGrating.text = avgRating.toString()
 
                 // MUST DO LATER: get avg star for star diagram
                 // MUST DO LATER: get avg star for textView next to star diagram

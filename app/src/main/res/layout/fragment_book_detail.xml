@@ -132,6 +132,7 @@
                         android:orientation="horizontal">
 
                         <per.wsj.library.AndRatingBar
+                            android:id="@+id/ratingStarBar"
                             android:layout_width="wrap_content"
                             android:layout_height="20dp"
                             android:layout_marginLeft="5dp"
@@ -144,6 +145,7 @@
                             app:starDrawable="@drawable/star_filled" />
 
                         <TextView
+                            android:id="@+id/txtAVGrating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
