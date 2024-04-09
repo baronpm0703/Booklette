@@ -207,9 +207,6 @@ class BookDetailFragment : Fragment() {
                 binding.ratingStarBar.rating = avgRating
                 binding.txtAVGrating.text = avgRating.toString()
 
-                // MUST DO LATER: get avg star for star diagram
-                // MUST DO LATER: get avg star for textView next to star diagram
-
                 Handler().postDelayed({
                     binding.txtBookCategory.visibility = View.VISIBLE
                     binding.smCategoryBook.visibility = View.INVISIBLE
@@ -227,11 +224,11 @@ class BookDetailFragment : Fragment() {
                     binding.smRatingStarBook.visibility = View.GONE
                     binding.smRatingStarBook.stopShimmer()
 
-                    binding.txtVoucher.visibility = View.VISIBLE
+                    binding.txtVoucher.visibility = View.GONE
                     binding.smVoucherSection.visibility = View.INVISIBLE
                     binding.smVoucherSection.stopShimmer()
 
-                    binding.vpVoucherBookDetail.visibility = View.VISIBLE
+                    binding.vpVoucherBookDetail.visibility = View.GONE
                     binding.smVoucherBookDetail.visibility = View.INVISIBLE
                     binding.smVoucherBookDetail.stopShimmer()
 
