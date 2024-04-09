@@ -139,4 +139,5 @@
     <string name="myprofile_favorites">Danh sách yêu thích</string>
     <string name="myprofile_blacklist">Danh sách đen</string>
     <string name="myprofile_help_center">Trung tâm hỗ trợ</string>
+    <string name="bookDetailLess">ẩn bớt ></string>
 </resources>

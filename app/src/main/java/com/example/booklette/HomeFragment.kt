@@ -164,7 +164,8 @@ class HomeFragment : Fragment() {
                                 document.data.get("author").toString(),
                                 document.data.get("releaseDate").toString(),
                                 document.data.get("image").toString(),
-                                tmp
+                                tmp,
+                                document.data.get("description").toString()
                             )
                         )
 
@@ -222,7 +223,8 @@ class HomeFragment : Fragment() {
                                 document.data.get("releaseDate").toString(),
                                 document.data.get("image").toString(),
 //                    document.data.get("price").toString().toFloat()
-                                tmp
+                                tmp,
+                                document.data.get("description").toString()
                             )
                         )
 
@@ -320,7 +322,8 @@ class HomeFragment : Fragment() {
                                 document.data.get("releaseDate").toString(),
                                 document.data.get("image").toString(),
 //                    document.data.get("price").toString().toFloat()
-                                tmp
+                                tmp,
+                                document.data.get("description").toString()
                             )
                         )
 
@@ -426,7 +429,8 @@ class HomeFragment : Fragment() {
                                 document.data.get("releaseDate").toString(),
                                 document.data.get("image").toString(),
 //                    document.data.get("price").toString().toFloat()
-                                tmp
+                                tmp,
+                                document.data.get("description").toString()
                             )
                         )
 
@@ -493,7 +497,8 @@ class HomeFragment : Fragment() {
                     document.data.get("author").toString(),
                     document.data.get("releaseDate").toString(),
                     document.data.get("image").toString(),
-                    tmp
+                    tmp,
+                    document.data.get("description").toString()
 //                    document.data.get("price").toString().toFloat()
                 ))
 
@@ -552,7 +557,8 @@ class HomeFragment : Fragment() {
                         document.data.get("author").toString(),
                         document.data.get("releaseDate").toString(),
                         document.data.get("image").toString(),
-                        tmp
+                        tmp,
+                        document.data.get("description").toString()
 //                        document.data.get("price").toString().toFloat()
                     ))
 
@@ -602,7 +608,8 @@ class HomeFragment : Fragment() {
                         document.data.get("author").toString(),
                         document.data.get("releaseDate").toString(),
                         document.data.get("image").toString(),
-                        tmp
+                        tmp,
+                        document.data.get("description").toString()
 //                        document.data.get("price").toString().toFloat()
                     ))
 
