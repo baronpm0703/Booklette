@@ -193,8 +193,7 @@ class ProductList : Fragment() {
                         //                        binding.smHomeFragmentBestDeal.stopShimmer()
                     }, 2000)
                 }
-
-                }
+            }
         }
         if (!wordToSearch.equals(null)) {
             binding.horizontalScrollView.visibility = View.VISIBLE
@@ -237,12 +236,9 @@ class ProductList : Fragment() {
                                 bookPrice.forEach {
                                     smallestAmount = min(smallestAmount, it)
                                     largestAmount = max(largestAmount, it)
-
-                                    // Update the filter range slider
                                     initValues.rangslider[0] = smallestAmount
                                     initValues.rangslider[1] = largestAmount
                                     filterDialogProductList.updateInitValues(initValues)
-
 
                                     val productsObject = ProductsObject(
                                         document.data["bookID"].toString(),
@@ -275,12 +271,10 @@ class ProductList : Fragment() {
                                 }, 2000)
                             }
                         }
-
                     }
                 }
             }
         }
-
         // Set up the select dialog when click the sort
         binding.tvSort.setOnClickListener{
 //            binding.linearLayout.visibility = View.VISIBLE

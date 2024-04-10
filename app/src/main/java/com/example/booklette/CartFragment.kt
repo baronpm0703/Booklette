@@ -74,8 +74,8 @@ class CartFragment : Fragment() {
                 // Get avatar and seller's name
                 if (document.data.get("cart") != null) {
                     val cartArray = document.data.get("cart") as ArrayList<Map<String, Any>>
-                    cartArray.let {
-                        for (cartMap in it) {
+                    cartArray?.let { cartListData ->
+                        for (cartMap in cartListData) {
                             val itemId = cartMap["itemId"] as? String
                             val storeId = cartMap["storeId"] as? String
                             val quantity = cartMap["quantity"] as? Number
@@ -104,14 +104,15 @@ class CartFragment : Fragment() {
                                                                     quantity?.toInt() ?: 0
                                                                     )
                                                             )
-                                                        }
-                                                        adapter.notifyDataSetChanged()
+                                                            adapter.notifyDataSetChanged()
 
-                                                        Handler().postDelayed({
-                                                            // Code to be executed after the delay
-                                                            // For example, you can start a new activity or update UI elements
-                                                            binding.rvCart.visibility = View.VISIBLE
-                                                        }, 3000)
+                                                            Handler().postDelayed({
+                                                                // Code to be executed after the delay
+                                                                // For example, you can start a new activity or update UI elements
+                                                                binding.rvCart.visibility = View.VISIBLE
+                                                            }, 3000)
+                                                        }
+
                                                     }
                                                 }
                                             }
@@ -119,7 +120,6 @@ class CartFragment : Fragment() {
 
                                     }
                             }
-
                     }
                     }
                 }
@@ -137,10 +137,13 @@ class CartFragment : Fragment() {
         return view
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
 //        _binding = null
     }
+
+
 
 private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
@@ -211,7 +214,7 @@ private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0,
         builder.setPositiveButton("Delete") { dialog, which ->
             val adapter = binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter
             adapter?.removeItem(position)
-            adapter?.notifyItemRemoved(position) // Cập nhật giao diện
+            adapter?.notifyItemRemoved(position)
             dialog.dismiss()
         }
 
@@ -221,6 +224,18 @@ private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0,
         }
 
         val alertDialog = builder.create()
+
+        // Store the current position before showing the dialog
+        val currentPosition = (binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter)?.getItemInfo(position)
+
+        alertDialog.setOnCancelListener {
+            // If the deletion is canceled, restore the item to its original position
+            currentPosition?.let { restoredItem ->
+                val adapter = binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter
+                adapter?.notifyItemChanged(position)
+            }
+        }
+
         alertDialog.show()
     }
 }
