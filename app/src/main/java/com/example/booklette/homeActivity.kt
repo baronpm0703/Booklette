@@ -62,6 +62,9 @@ class homeActivity : AppCompatActivity() {
                     changeFragmentContainer(profileFragment, 4)
                     true
                 }
+                5 -> {
+                    // Leave 5 for product list
+                }
                 else -> false
             }
         }

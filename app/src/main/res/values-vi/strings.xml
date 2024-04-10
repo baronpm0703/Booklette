@@ -139,9 +139,5 @@
     <string name="myprofile_favorites">Danh sách yêu thích</string>
     <string name="myprofile_blacklist">Danh sách đen</string>
     <string name="myprofile_help_center">Trung tâm hỗ trợ</string>
-    <string name="my_order_label">Đơn mua</string>
-    <string name="my_order_processing_button">Đang xử lý</string>
-    <string name="my_order_completed_button">Đã giao</string>
-    <string name="my_order_cancelled_button">Đã huỷ</string>
-    <string name="my_order_returned_button">Đã trả</string>
+    <string name="bookDetailLess">ẩn bớt ></string>
 </resources>

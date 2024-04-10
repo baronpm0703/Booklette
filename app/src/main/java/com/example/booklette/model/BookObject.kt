@@ -1,4 +1,4 @@
-package com.example.booklette
+package com.example.booklette.model
 
 class BookObject {
     var bookID: String
@@ -8,6 +8,7 @@ class BookObject {
     var releaseDate: String
     var image: String
     var price: Float
+    var description: String
 
     constructor(
         bookID: String,
@@ -16,7 +17,8 @@ class BookObject {
         author: String,
         releaseDate: String,
         image: String,
-        price: Float
+        price: Float,
+        description: String
     ) {
         this.bookID = bookID
         this.name = name
@@ -25,5 +27,6 @@ class BookObject {
         this.releaseDate = releaseDate
         this.image = image
         this.price = price
+        this.description = description
     }
 }

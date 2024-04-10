@@ -15,9 +15,17 @@ import android.widget.AdapterView.OnItemClickListener
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentCategoryBinding
+import com.example.booklette.model.SimpleFuzzySearch
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
 import com.maxkeppeler.sheets.core.SheetStyle
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,6 +45,12 @@ class CategoryFragment : Fragment() {
 
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
+    private var suggestions = ArrayList<String>()
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+
+    private var fuzzySearchArraySample = ArrayList<Map<String, String>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +67,11 @@ class CategoryFragment : Fragment() {
         _binding = FragmentCategoryBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        // Authen and get data
+        auth = Firebase.auth
+        db = Firebase.firestore
+
+        // Init fixed categories
         val categories = ArrayList<String>()
         categories.add("Non-fiction")
         categories.add("Classics")
@@ -65,9 +84,12 @@ class CategoryFragment : Fragment() {
         categories.add("Novel")
         categories.add("Self-Help")
 
+        // Pass those categories to CustomAdapter then re-assign to layout GV adapter
         binding.gvCategories.adapter =
             activity?.let { CategoryFragmentGridViewAdapter(it, categories) }
 
+        // On every item selected, get the item's genre and call the changeFragment from home Page
+        // In order to allow onBack/Gesture navigation work with been conflicted/fragment layout stack
         binding.gvCategories.setOnItemClickListener { parent, view, position, id ->
             val genre = categories[position]
             val productList = ProductList()
@@ -75,12 +97,9 @@ class CategoryFragment : Fragment() {
             args.putString("Genre", genre)
             productList.arguments = args
 
-            val ft = activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fcvNavigation, productList)
-                ?.commit()
-
-//            ft.replace(R.id.fragment_holder, MusicAlbumList(), "albumlist")
-//            ft.commit()
+            // Have to cast homePage to "activity as HomePage", otherwise the supportFragment can recognize the host
+            val homeAct = (activity as homeActivity)
+            homeAct.changeFragmentContainer(productList, 5)
         }
 
 
@@ -89,7 +108,12 @@ class CategoryFragment : Fragment() {
             CustomSuggestionAdapter(it, inflater, binding.searchBar)
         }
 
-        val suggestions = listOf("Apple", "Banana", "Orange", "Mango", "Potato", "Melon", "Dragon Fruit", "Pineapple", "Chilly")
+        if (suggestions.isEmpty()) {
+            runBlocking {
+                suggestions = getBookNamesAlongSetupDataArraySample()
+            }
+        }
+//        val suggestions = listOf("Apple", "Banana", "Orange", "Mango", "Potato", "Melon", "Dragon Fruit", "Pineapple", "Chilly")
         if (customSuggestionAdapter != null) {
             customSuggestionAdapter.suggestions = suggestions
 
@@ -97,6 +121,7 @@ class CategoryFragment : Fragment() {
         } else {
             binding.searchBar.lastSuggestions = suggestions
         }
+
         binding.searchBar.setOnSearchActionListener(object: MaterialSearchBar.OnSearchActionListener{
             override fun onSearchStateChanged(enabled: Boolean) {
                 Log.i("State", enabled.toString())
@@ -117,15 +142,40 @@ class CategoryFragment : Fragment() {
 
             override fun onSearchConfirmed(text: CharSequence?) {
                 Log.i("Confirm", text.toString())
-                val searchResult = text.toString()
+                val wordToSearch = text.toString() // Client input
+
+                // Define the available sample to search, and attribute to which we want our client input compare
+                val sfs = SimpleFuzzySearch(fuzzySearchArraySample, arrayListOf("bookName", "genre", "author"))
+                // Line break and debug for more result
+                val resultFromFuzzySearch = sfs.search(wordToSearch) as ArrayList // Implement my smart search algorithms
+                // Define prospect fragment
                 val productList = ProductList()
                 val args = Bundle()
-                args.putString("SearchResult", searchResult)
-                productList.arguments = args
 
-                val ft = activity?.supportFragmentManager?.beginTransaction()
-                    ?.replace(R.id.fcvNavigation, productList)
-                    ?.commit()
+                // Conditions to define attribute to which client input belong
+                // Usually, if the user enter genre keyword, the first array's item have the "genre" attribute type
+                if (resultFromFuzzySearch.isNotEmpty() && resultFromFuzzySearch[0][1] == "genre") {
+                    // The "resultFromFuzzySearch" return an Array contain possible/available result relate to client input
+                    val obj = resultFromFuzzySearch[0][0] as Map<String, String>
+                    args.putString("Genre", obj["genre"])
+                } else { // Other case, which have bookName or author of book relate to input
+                    val listOfBookName = ArrayList<String>() // Just focus on the BookName cause productList about books..
+                    resultFromFuzzySearch.forEach { item ->
+                        // Place a line break here to watch the structure of the item
+                        val obj = item[0] as Map<String, String>
+                        val bookName = obj["bookName"].toString()
+
+                        listOfBookName.add(bookName)
+                    }
+                    args.putString("WordToSearch", wordToSearch)
+                    args.putStringArrayList("SearchResult", listOfBookName)
+                }
+
+                // Add args to fragment we 'bout change to
+                productList.arguments = args
+                // Have to cast homePage to "activity as HomePage", otherwise the supportFragment can recognize the host
+                val homeAct = (activity as homeActivity)
+                homeAct.changeFragmentContainer(productList, 5) //Let the homePage handle changing fragment
             }
 
             override fun onButtonClicked(buttonCode: Int) {
@@ -133,6 +183,7 @@ class CategoryFragment : Fragment() {
             }
         })
 
+        // Handle behavior of the search bar, may fit with adding effect
         binding.searchBar.addTextChangeListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
@@ -142,7 +193,6 @@ class CategoryFragment : Fragment() {
                     customSuggestionAdapter.getFilter().filter(binding.searchBar.getText())
                 }
             }
-
             override fun afterTextChanged(editable: Editable) {}
         })
 
@@ -158,7 +208,7 @@ class CategoryFragment : Fragment() {
             }
         }
 
-        val topSearch = arrayListOf<String>("Hot", "Non-Fiction", "Fiction", "Horror", "LifeStyle Book", "Report Book", "Material", "Children Book", "Over 18s", "Mysterious")
+        val topSearch = arrayListOf("Hot", "Non-Fiction", "Fiction", "Horror", "LifeStyle Book", "Report Book", "Material", "Children Book", "Over 18s", "Mysterious")
         binding.topSearchGV.adapter = FilterTypeGVAdapter(requireActivity(), topSearch)
 
         binding.topSearchGV.setOnItemClickListener { parent, view, position, id ->
@@ -169,10 +219,27 @@ class CategoryFragment : Fragment() {
         return view
     }
 
+    private suspend fun getBookNamesAlongSetupDataArraySample(): ArrayList<String>{
+        val res = ArrayList<String>()
+        val docRef = db.collection("books").get().await()
+        docRef.documents.forEach{ doc ->
+            val name = doc.data?.get("name").toString()
+            val genre = doc.data?.get("genre").toString()
+            val author = doc.data?.get("author").toString()
+            res.add(name)
+
+            fuzzySearchArraySample.add(mapOf(
+                "bookName" to name,
+                "genre" to genre,
+                "author" to author
+            ))
+        }
+        return res
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 
     companion object {

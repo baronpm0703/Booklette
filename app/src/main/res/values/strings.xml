@@ -170,9 +170,5 @@
     <string name="myprofile_favorites">Favorites</string>
     <string name="myprofile_blacklist">Blacklist</string>
     <string name="myprofile_help_center">Help Center</string>
-    <string name="my_order_label">My Order</string>
-    <string name="my_order_processing_button">Processing</string>
-    <string name="my_order_completed_button">Completed</string>
-    <string name="my_order_cancelled_button">Cancelled</string>
-    <string name="my_order_returned_button">Returned</string>
+    <string name="bookDetailLess">less ></string>
 </resources>

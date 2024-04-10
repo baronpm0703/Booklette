@@ -4,21 +4,25 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.postDelayed
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
+import com.example.booklette.model.BookObject
+import com.example.booklette.model.VoucherObject
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
-import java.util.Random
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlin.math.round
 
 
@@ -43,11 +47,30 @@ class BookDetailFragment : Fragment() {
     private lateinit var voucherAdapter: bookDetailFragmentVoucherViewPagerAdapter
     private lateinit var shopVoucherAdapter: bookDetailShopVoucherRVAdapter
     private lateinit var otherBookFromShopAdapter: TopBookHomeFragmentAdapter
+    private lateinit var bookDetailYouMayLoveAdapter: bookDetailYouMayLoveAdapter
+    private lateinit var bookDetailUserReviewAdapter: bookDetailUserReviewAdapter
 
     private lateinit var db: FirebaseFirestore
     private var bookID: String = ""
 
     private var voucherList = ArrayList<VoucherObject>()
+    private var otherBookFromStore = ArrayList<BookObject>()
+    private var otherBookFromStoreRating = ArrayList<Float>()
+    private var otherBookFromOtherStore = ArrayList<BookObject>()
+    private var otherBookFromOtherStoreRating = ArrayList<Float>()
+
+    private var userReviewList = ArrayList<UserReviewObject>()
+
+    private lateinit var bookList: Map<String, Any>
+    private lateinit var bookDetail: Map<String, Any>
+
+    val colors = intArrayOf(
+        Color.parseColor("#0e9d58"),
+        Color.parseColor("#bfd047"),
+        Color.parseColor("#ffc105"),
+        Color.parseColor("#ef7e14"),
+        Color.parseColor("#d36259")
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,7 +138,7 @@ class BookDetailFragment : Fragment() {
         binding.smBookDetailShopVoucher.visibility = View.VISIBLE
         binding.smBookDetailShopVoucher.startShimmer()
 
-        binding.clBookDetailMoreDetailPart.visibility = View.GONE
+        binding.clBookDetailMoreDetailPart.visibility = View.INVISIBLE
 
         db.collection("books").whereEqualTo("bookID", bookID).get().addOnSuccessListener { result ->
             for (document in result) {
@@ -126,12 +149,13 @@ class BookDetailFragment : Fragment() {
                 binding.txtBookCategory.text = document.data.get("genre").toString()
                 binding.txtBookName.text = document.data.get("name").toString()
                 binding.txtAuthorName.text = document.data.get("author").toString()
+                binding.txtDescriptionBookDetail.text = document.data.get("description").toString()
 
-                val salePercent = document.data.get("best-deal-sale").toString().toFloat()
+                var salePercent = 0.0F
+                if (document.data.get("best-deal-sale") != null)
+                    salePercent = document.data.get("best-deal-sale").toString().toFloat()
+
                 db.collection("personalStores").whereNotEqualTo("items.$bookID.price", null).get().addOnSuccessListener { result ->
-                    var bookList: Map<String, Any>
-                    var bookDetail : Map<String, Any>
-
                     if (result.documents.size == 0) {
                         binding.txtBookOriginalPrice.visibility = View.GONE
                         binding.txtSalePercent.visibility = View.GONE
@@ -147,6 +171,10 @@ class BookDetailFragment : Fragment() {
 
                             binding.smSalePercent.visibility = View.INVISIBLE
                             binding.smSalePercent.stopShimmer()
+
+                            binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                            binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                            binding.smBookDetailShopVoucher.stopShimmer()
                         }, 3000)
                     }
                     else {
@@ -196,8 +224,17 @@ class BookDetailFragment : Fragment() {
                                 binding.smSalePercent.visibility = View.INVISIBLE
                                 binding.smSalePercent.stopShimmer()
                             }, 3000)
+                        }
 
-                            var bookVoucher = bookDetail["discounts"] as ArrayList<String>
+                        var bookVoucher = bookDetail["discounts"] as ArrayList<String>
+                        if (bookVoucher.size == 0) {
+                            Handler().postDelayed({
+                                binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                binding.smBookDetailShopVoucher.stopShimmer()
+                            }, 3000)
+                        }
+                        else {
                             for (vch in bookVoucher) {
                                 db.collection("discounts").whereEqualTo("discountID", vch).get().addOnSuccessListener { result ->
                                     if (result.documents.size == 0) {
@@ -219,23 +256,36 @@ class BookDetailFragment : Fragment() {
                                         )
 
                                         shopVoucherAdapter.notifyDataSetChanged()
-
-                                        Handler().postDelayed({
-                                            binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
-                                            binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                            binding.smBookDetailShopVoucher.stopShimmer()
-                                        }, 3000)
                                     }
+
+                                    Handler().postDelayed({
+                                        binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                        binding.smBookDetailShopVoucher.stopShimmer()
+                                    }, 3000)
                                 }
+
+                                Handler().postDelayed({
+                                    binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                    binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                    binding.smBookDetailShopVoucher.stopShimmer()
+                                }, 3000)
                             }
                         }
                     }
 
-                    binding.txtBookStoreName.text = result.documents[0].data?.get("storeName").toString()
-                    binding.txtStoreLocation.text = result.documents[0].data?.get("storeLocation").toString()
-                    Picasso.get()
-                        .load(result.documents[0].data?.get("storeAvatar").toString())
-                        .into(binding.ivStoreAvatar)
+                    if (result.documents.size == 0) {
+                        binding.txtBookStoreName.text = "NULL"
+                        binding.txtStoreLocation.text = "NULL"
+                    }
+                    else {
+                        binding.txtBookStoreName.text = result.documents[0].data?.get("storeName").toString()
+                        binding.txtStoreLocation.text = result.documents[0].data?.get("storeLocation").toString()
+
+                        Picasso.get()
+                            .load(result.documents[0].data?.get("storeAvatar").toString())
+                            .into(binding.ivStoreAvatar)
+                    }
 
                     Handler().postDelayed({
                         binding.llBookStoreInfo.visibility = View.VISIBLE
@@ -247,12 +297,65 @@ class BookDetailFragment : Fragment() {
                 val reviewList = document.data.get("review") as ArrayList<Map<Any, Any>>
 
                 var avgRating = 0.0F
-                for (review in reviewList) avgRating += (review["score"]).toString().toFloat()
+                var star_1_count = 0
+                var star_2_count = 0
+                var star_3_count = 0
+                var star_4_count = 0
+                var star_5_count = 0
+
+                for (review in reviewList)  {
+                    avgRating += (review["score"]).toString().toFloat()
+
+                    if ((review["score"]).toString().toFloat() > 0 && (review["score"]).toString().toFloat() <= 1)
+                        star_1_count++
+                    else if ((review["score"]).toString().toFloat() <= 2)
+                        star_2_count++
+                    else if ((review["score"]).toString().toFloat() <= 3)
+                        star_3_count++
+                    else if ((review["score"]).toString().toFloat() <= 4)
+                        star_4_count++
+                    else if ((review["score"]).toString().toFloat() <= 5)
+                        star_5_count++
+
+                    db.collection("accounts").whereEqualTo("UID", review["UID"].toString()).get().addOnSuccessListener { result ->
+                        for (tmp in result) {
+                            val uid = tmp.data.get("UID").toString()
+                            val username = tmp.data.get("fullname").toString()
+                            val avatar = tmp.data.get("avt").toString()
+                            val rating = review["score"].toString().toFloat()
+                            val description = review["text"].toString()
+
+                            userReviewList.add(UserReviewObject(
+                                uid,
+                                username,
+                                avatar,
+                                rating,
+                                description
+                            ))
+
+                            bookDetailUserReviewAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+
                 avgRating /= reviewList.size
                 avgRating = round(avgRating * 10) / 10
 
                 binding.ratingStarBar.rating = avgRating
                 binding.txtAVGrating.text = avgRating.toString()
+
+                binding.txtRatingBookDetail.text = avgRating.toString()
+                binding.txtNumberOfReview.text = reviewList.size.toString() + " review(s)"
+
+                val raters = intArrayOf(
+                    star_1_count,
+                    star_2_count,
+                    star_3_count,
+                    star_4_count,
+                    star_5_count
+                )
+
+                binding.ratingReviews.createRatingBars(maxOf(star_1_count, star_2_count, star_3_count, star_4_count, star_5_count), BarLabels.STYPE5, colors, raters)
 
                 Handler().postDelayed({
                     binding.txtBookCategory.visibility = View.VISIBLE
@@ -285,70 +388,191 @@ class BookDetailFragment : Fragment() {
 
                     binding.bookDetailDotLoading.visibility = View.GONE
                     binding.clBookDetailMoreDetailPart.visibility = View.VISIBLE
+//                    binding.ratingReviews.visibility = View.VISIBLE
+//                    binding.ratingReviews.is
                 }, 3000)
             }
         }
 
-        var data = ArrayList<String>()
-        data.add("A")
-        data.add("A")
-        data.add("A")
-        data.add("A")
-        data.add("A")
-
-        voucherAdapter = bookDetailFragmentVoucherViewPagerAdapter(requireContext(), data)
-        binding.vpVoucherBookDetail.adapter = voucherAdapter
-        binding.vpVoucherBookDetail.pageMargin = 20
+//        voucherAdapter = bookDetailFragmentVoucherViewPagerAdapter(requireContext(), data)
+//        binding.vpVoucherBookDetail.adapter = voucherAdapter
+//        binding.vpVoucherBookDetail.pageMargin = 20
 
         shopVoucherAdapter = bookDetailShopVoucherRVAdapter(context, voucherList)
         binding.rvBookDetailShopVoucher.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvBookDetailShopVoucher.adapter = shopVoucherAdapter
 
-        var books = ArrayList<BookObject>()
-        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
-        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
-        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
-        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
-        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
-        books.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F))
-
-        var stars = ArrayList<Float>()
-        stars.add(4.5F)
-        stars.add(4.5F)
-        stars.add(4.5F)
-        stars.add(4.5F)
-        stars.add(4.5F)
-        stars.add(4.5F)
-
-        otherBookFromShopAdapter = TopBookHomeFragmentAdapter(activity, books, stars)
+        otherBookFromShopAdapter = TopBookHomeFragmentAdapter(activity, otherBookFromStore, otherBookFromStoreRating)
         binding.rvOtherBookFromShopBookDetail.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         binding.rvOtherBookFromShopBookDetail.adapter = otherBookFromShopAdapter
+        getOtherBook()
 
-        val colors = intArrayOf(
-            Color.parseColor("#0e9d58"),
-            Color.parseColor("#bfd047"),
-            Color.parseColor("#ffc105"),
-            Color.parseColor("#ef7e14"),
-            Color.parseColor("#d36259")
-        )
+        binding.txtBookDetailDescriptionMore.setOnClickListener({
+            if (binding.txtBookDetailDescriptionMore.text == getString(R.string.bookDetailMore)) {
+                binding.txtDescriptionBookDetail.maxLines = Int.MAX_VALUE
+                binding.txtBookDetailDescriptionMore.text = getString(R.string.bookDetailLess)
+            }
+            else {
+                binding.txtDescriptionBookDetail.maxLines = 10
+                binding.txtBookDetailDescriptionMore.text = getString(R.string.bookDetailMore)
+            }
+        })
 
-        val raters = intArrayOf(
-            Random().nextInt(100),
-            Random().nextInt(100),
-            Random().nextInt(100),
-            Random().nextInt(100),
-            Random().nextInt(100)
-        )
-
-        binding.ratingReviews.createRatingBars(100, BarLabels.STYPE5, colors, raters)
-
+        bookDetailUserReviewAdapter = bookDetailUserReviewAdapter(context, userReviewList)
         binding.lvUserReviewDetail.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        binding.lvUserReviewDetail.adapter = bookDetailUserReviewAdapter()
+        binding.lvUserReviewDetail.adapter = bookDetailUserReviewAdapter
 
+        getOtherBookFromAllStore()
+        bookDetailYouMayLoveAdapter = bookDetailYouMayLoveAdapter(context, otherBookFromOtherStore, otherBookFromOtherStoreRating)
         binding.rvBookDetailYouMayLove.layoutManager = GridLayoutManager(activity, 2)
-        binding.rvBookDetailYouMayLove.adapter = bookDetailYouMayLoveAdapter()
+        binding.rvBookDetailYouMayLove.adapter = bookDetailYouMayLoveAdapter
 
         return view
+    }
+
+    fun getOtherBookFromAllStore() {
+            db.collection("books").whereNotEqualTo("bookID", bookID).limit(kotlin.random.Random.nextLong(4, 8 + 1)).get().addOnSuccessListener { result ->
+                lifecycleScope.launch {
+                    for (document in result) {
+                        val tmp_id = document.data.get("bookID").toString()
+                        var tmp = 0.0F
+
+                        tmp = getBookPrice1(tmp_id)
+                        otherBookFromOtherStore.add(
+                            BookObject(
+                                document.data.get("bookID").toString(),
+                                document.data.get("name").toString(),
+                                document.data.get("genre").toString(),
+                                document.data.get("author").toString(),
+                                document.data.get("releaseDate").toString(),
+                                document.data.get("image").toString(),
+                                tmp,
+                                document.data.get("description").toString()
+                            )
+                        )
+
+                        var avg_rating = 0.0F;
+                        var rating_num = 1;
+                        if (document.data.get("review") != null) {
+                            val reviewsArray =
+                                document.data.get("review") as ArrayList<Map<String, Any>>
+                            rating_num = reviewsArray.size
+
+                            for (reviewMap in reviewsArray) {
+                                val uid = reviewMap["UID"] as String
+                                val image = reviewMap["image"] as String
+                                val score = (reviewMap["score"] as Long).toInt()
+                                val text = reviewMap["text"] as String
+
+                                avg_rating += score
+                            }
+                        }
+
+                        otherBookFromOtherStoreRating.add(avg_rating / rating_num)
+                    }
+
+                    if (bookDetailYouMayLoveAdapter != null) {
+                        val indices = otherBookFromOtherStore.indices.shuffled()
+
+                        val shuffledList1 = ArrayList<BookObject>()
+                        val shuffledList2 = ArrayList<Float>()
+                        for (index in indices) {
+                            shuffledList1.add(otherBookFromOtherStore[index])
+                            shuffledList2.add(otherBookFromOtherStoreRating[index])
+                        }
+
+                        otherBookFromOtherStore.clear()
+                        otherBookFromOtherStore.addAll(shuffledList1)
+
+                        otherBookFromOtherStoreRating.clear()
+                        otherBookFromOtherStoreRating.addAll(shuffledList2)
+
+                        bookDetailYouMayLoveAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+    }
+
+    fun getOtherBook() {
+        db.collection("personalStores").whereNotEqualTo("items.$bookID.price", null).get().addOnSuccessListener {result ->
+            for (document in result) {
+                var storeBookList = (document.data?.get("items") as? Map<String, Any>)!!
+                var storeBookDetail = (storeBookList?.get(bookID) as? Map<String, Any>)!!
+
+                for ((key, value) in storeBookList) {
+                    if (key != bookID) {
+                        db.collection("books").whereEqualTo("bookID", key).get().addOnSuccessListener { result ->
+                            lifecycleScope.launch {
+                                for (document in result) {
+                                    val tmp_id = document.data.get("bookID").toString()
+                                    var tmp = 0.0F
+
+                                    tmp = getBookPrice1(tmp_id)
+                                    otherBookFromStore.add(
+                                        BookObject(
+                                            document.data.get("bookID").toString(),
+                                            document.data.get("name").toString(),
+                                            document.data.get("genre").toString(),
+                                            document.data.get("author").toString(),
+                                            document.data.get("releaseDate").toString(),
+                                            document.data.get("image").toString(),
+                                            tmp,
+                                            document.data.get("description").toString()
+                                        )
+                                    )
+                                }
+
+                                var avg_rating = 0.0F;
+                                var rating_num = 1;
+                                if (document.data.get("review") != null) {
+                                    val reviewsArray =
+                                        document.data.get("review") as ArrayList<Map<String, Any>>
+                                    rating_num = reviewsArray.size
+
+                                    for (reviewMap in reviewsArray) {
+                                        val uid = reviewMap["UID"] as String
+                                        val image = reviewMap["image"] as String
+                                        val score = (reviewMap["score"] as Long).toInt()
+                                        val text = reviewMap["text"] as String
+
+                                        avg_rating += score
+                                    }
+                                }
+
+                                otherBookFromStoreRating.add(avg_rating / rating_num)
+
+
+                                if (otherBookFromShopAdapter != null) {
+                                    otherBookFromShopAdapter.notifyDataSetChanged()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    suspend fun getBookPrice1(bookID: String): Float {
+        return try {
+            val querySnapshot = db.collection("personalStores").whereNotEqualTo("items.$bookID.price", null).get().await()
+            for (document in querySnapshot.documents) {
+                val bookList = document.data?.get("items") as? Map<String, Any>
+                val bookDetail = bookList?.get(bookID) as? Map<String, Any>
+
+                val price = bookDetail?.get("price").toString()
+                if (!price.isNullOrEmpty()) {
+                    return price.toFloat()
+                }
+            }
+            // Return a default value if the book price is not found
+            0.0F
+        } catch (e: Exception) {
+            // Handle failures
+            Log.e("Firestore", "Error getting book price", e)
+            // Return a default value in case of failure
+            0.0F
+        }
     }
 
     companion object {

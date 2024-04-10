@@ -3,37 +3,25 @@ package com.example.booklette
 import android.graphics.Color
 import android.graphics.Paint
 import CartFragmentRecyclerViewAdapter
-import CategoryFragmentGridViewAdapter
 import CheckoutFragment
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.graphics.Canvas
 import android.graphics.RectF
-import com.example.booklette.R
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentCartBinding
+import com.example.booklette.model.CartObject
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import com.squareup.picasso.Picasso
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -75,18 +63,6 @@ class CartFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.rvCart)
 
 
-
-        adapter.quantityChangeListener = object : CartFragmentRecyclerViewAdapter.OnQuantityChangeListener {
-            override fun onQuantityDecreased(position: Int) {
-                // Decrease item quantity
-                // Implement your logic here...
-            }
-
-            override fun onQuantityIncreased(position: Int) {
-                // Increase item quantity
-                // Implement your logic here...
-            }
-        }
         val auth = Firebase.auth
         val db = Firebase.firestore
 
@@ -98,8 +74,8 @@ class CartFragment : Fragment() {
                 // Get avatar and seller's name
                 if (document.data.get("cart") != null) {
                     val cartArray = document.data.get("cart") as ArrayList<Map<String, Any>>
-                    cartArray.let {
-                        for (cartMap in it) {
+                    cartArray?.let { cartListData ->
+                        for (cartMap in cartListData) {
                             val itemId = cartMap["itemId"] as? String
                             val storeId = cartMap["storeId"] as? String
                             val quantity = cartMap["quantity"] as? Number
@@ -128,14 +104,15 @@ class CartFragment : Fragment() {
                                                                     quantity?.toInt() ?: 0
                                                                     )
                                                             )
-                                                        }
-                                                        adapter.notifyDataSetChanged()
+                                                            adapter.notifyDataSetChanged()
 
-                                                        Handler().postDelayed({
-                                                            // Code to be executed after the delay
-                                                            // For example, you can start a new activity or update UI elements
-                                                            binding.rvCart.visibility = View.VISIBLE
-                                                        }, 2000)
+                                                            Handler().postDelayed({
+                                                                // Code to be executed after the delay
+                                                                // For example, you can start a new activity or update UI elements
+                                                                binding.rvCart.visibility = View.VISIBLE
+                                                            }, 3000)
+                                                        }
+
                                                     }
                                                 }
                                             }
@@ -160,10 +137,13 @@ class CartFragment : Fragment() {
         return view
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
+
+
 
 private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
@@ -234,7 +214,7 @@ private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0,
         builder.setPositiveButton("Delete") { dialog, which ->
             val adapter = binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter
             adapter?.removeItem(position)
-            adapter?.notifyItemRemoved(position) // Cập nhật giao diện
+            adapter?.notifyItemRemoved(position)
             dialog.dismiss()
         }
 
@@ -244,6 +224,18 @@ private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0,
         }
 
         val alertDialog = builder.create()
+
+        // Store the current position before showing the dialog
+        val currentPosition = (binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter)?.getItemInfo(position)
+
+        alertDialog.setOnCancelListener {
+            // If the deletion is canceled, restore the item to its original position
+            currentPosition?.let { restoredItem ->
+                val adapter = binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter
+                adapter?.notifyItemChanged(position)
+            }
+        }
+
         alertDialog.show()
     }
 }

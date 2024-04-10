@@ -1,4 +1,4 @@
-package com.example.booklette
+package com.example.booklette.model
 
 import java.util.Date
 

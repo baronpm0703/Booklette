@@ -1,5 +1,7 @@
 package com.example.booklette
 
+import com.example.booklette.model.BookObject
+
 class HRecommendedBookObject {
     var basicInfo: BookObject
     var rating: Float
