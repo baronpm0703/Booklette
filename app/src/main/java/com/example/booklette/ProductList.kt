@@ -395,30 +395,34 @@ class ProductList : Fragment() {
 
     suspend fun getBookPrice(bookID: String): ArrayList<Float> {
         val res = ArrayList<Float>()
-        return try {
-            val querySnapshot = db.collection("personalStores").get().await()
+        try {
+            val querySnapshot = db.collection("personalStores").whereNotEqualTo("items.$bookID", null).get()
 
-            for (document in querySnapshot.documents) {
-                val bookData = document.get("items.$bookID") as Map<String, Any>// Fetching book data if it exists
-                if (bookData != null && bookData["price"] != null) {
-                    val bookList = document.data?.get("items") as? Map<String, Any>
-                    val bookDetail = bookList?.get(bookID) as? Map<String, Any>
-
-                    val price = bookDetail?.get("price").toString()
-                    if (price.isNotEmpty()) {
-                        res.add(price.toFloat())
+            querySnapshot.addOnSuccessListener { result ->
+                if (result.isEmpty) {
+                    res.add(0.0F)
+                } else {
+                    for (document in result) {
+                        val bookList = document.data.get("items") as? Map<String, Any>
+                        val bookDetail = bookList?.get(bookID) as? Map<String, Any>
+                        val price = bookDetail?.get("price").toString()
+                        if (price.isNotEmpty()) {
+                            res.add(price.toFloat())
+                        }
                     }
                 }
+
             }
 
-            return res
 
         } catch (e: Exception) {
             // Handle failures
             Log.e("Firestore", "Error getting book price", e)
             // Return a default value in case of failure
-            arrayListOf(0.0F)
+            res.add(0.0F)
         }
+
+        return res
     }
 
 
