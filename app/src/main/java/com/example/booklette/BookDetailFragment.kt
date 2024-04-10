@@ -128,7 +128,7 @@ class BookDetailFragment : Fragment() {
         binding.smBookDetailShopVoucher.visibility = View.VISIBLE
         binding.smBookDetailShopVoucher.startShimmer()
 
-        binding.clBookDetailMoreDetailPart.visibility = View.GONE
+        binding.clBookDetailMoreDetailPart.visibility = View.INVISIBLE
 
         db.collection("books").whereEqualTo("bookID", bookID).get().addOnSuccessListener { result ->
             for (document in result) {
@@ -299,20 +299,15 @@ class BookDetailFragment : Fragment() {
 
                     binding.bookDetailDotLoading.visibility = View.GONE
                     binding.clBookDetailMoreDetailPart.visibility = View.VISIBLE
+//                    binding.ratingReviews.visibility = View.VISIBLE
+//                    binding.ratingReviews.is
                 }, 3000)
             }
         }
 
-        var data = ArrayList<String>()
-        data.add("A")
-        data.add("A")
-        data.add("A")
-        data.add("A")
-        data.add("A")
-
-        voucherAdapter = bookDetailFragmentVoucherViewPagerAdapter(requireContext(), data)
-        binding.vpVoucherBookDetail.adapter = voucherAdapter
-        binding.vpVoucherBookDetail.pageMargin = 20
+//        voucherAdapter = bookDetailFragmentVoucherViewPagerAdapter(requireContext(), data)
+//        binding.vpVoucherBookDetail.adapter = voucherAdapter
+//        binding.vpVoucherBookDetail.pageMargin = 20
 
         shopVoucherAdapter = bookDetailShopVoucherRVAdapter(context, voucherList)
         binding.rvBookDetailShopVoucher.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
