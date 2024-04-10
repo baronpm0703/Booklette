@@ -151,7 +151,10 @@ class BookDetailFragment : Fragment() {
                 binding.txtAuthorName.text = document.data.get("author").toString()
                 binding.txtDescriptionBookDetail.text = document.data.get("description").toString()
 
-                val salePercent = document.data.get("best-deal-sale").toString().toFloat()
+                var salePercent = 0.0F
+                if (document.data.get("best-deal-sale") != null)
+                    salePercent = document.data.get("best-deal-sale").toString().toFloat()
+
                 db.collection("personalStores").whereNotEqualTo("items.$bookID.price", null).get().addOnSuccessListener { result ->
                     if (result.documents.size == 0) {
                         binding.txtBookOriginalPrice.visibility = View.GONE
@@ -168,6 +171,10 @@ class BookDetailFragment : Fragment() {
 
                             binding.smSalePercent.visibility = View.INVISIBLE
                             binding.smSalePercent.stopShimmer()
+
+                            binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                            binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                            binding.smBookDetailShopVoucher.stopShimmer()
                         }, 3000)
                     }
                     else {
@@ -204,54 +211,6 @@ class BookDetailFragment : Fragment() {
                             binding.txtSalePercent.text =
                                 (salePercent * 100).toString() + "% OFF " // MUST DO LATER: need to get the price when passing data from another fragment to this one
 
-                            var bookVoucher = bookDetail["discounts"] as ArrayList<String>
-
-                            if (bookVoucher.size == 0) {
-                                Handler().postDelayed({
-                                    binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
-                                    binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                    binding.smBookDetailShopVoucher.stopShimmer()
-                                }, 3000)
-                            }
-                            else {
-                                for (vch in bookVoucher) {
-                                    db.collection("discounts").whereEqualTo("discountID", vch).get().addOnSuccessListener { result ->
-                                        if (result.documents.size == 0) {
-                                            binding.rvBookDetailShopVoucher.visibility = View.GONE
-                                            binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                            binding.smBookDetailShopVoucher.stopShimmer()
-                                        }
-                                        else {
-                                            voucherList.add(
-                                                VoucherObject(
-                                                    result.documents[0].data?.get("discountFilter").toString(),
-                                                    result.documents[0].data?.get("discountID").toString(),
-                                                    result.documents[0].data?.get("discountName").toString(),
-                                                    result.documents[0].data?.get("discountType").toString().toInt(),
-                                                    result.documents[0].data?.get("endDate") as Timestamp,
-                                                    result.documents[0].data?.get("percent").toString().toFloat(),
-                                                    result.documents[0].data?.get("startDate") as Timestamp
-                                                )
-                                            )
-
-                                            shopVoucherAdapter.notifyDataSetChanged()
-                                        }
-
-                                        Handler().postDelayed({
-                                            binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
-                                            binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                            binding.smBookDetailShopVoucher.stopShimmer()
-                                        }, 3000)
-                                    }
-
-                                    Handler().postDelayed({
-                                        binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
-                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                        binding.smBookDetailShopVoucher.stopShimmer()
-                                    }, 3000)
-                                }
-                            }
-
                             Handler().postDelayed({
                                 binding.txtBookOriginalPrice.visibility = View.VISIBLE
                                 binding.smBookOriginalPrice.visibility = View.INVISIBLE
@@ -265,6 +224,53 @@ class BookDetailFragment : Fragment() {
                                 binding.smSalePercent.visibility = View.INVISIBLE
                                 binding.smSalePercent.stopShimmer()
                             }, 3000)
+                        }
+
+                        var bookVoucher = bookDetail["discounts"] as ArrayList<String>
+                        if (bookVoucher.size == 0) {
+                            Handler().postDelayed({
+                                binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                binding.smBookDetailShopVoucher.stopShimmer()
+                            }, 3000)
+                        }
+                        else {
+                            for (vch in bookVoucher) {
+                                db.collection("discounts").whereEqualTo("discountID", vch).get().addOnSuccessListener { result ->
+                                    if (result.documents.size == 0) {
+                                        binding.rvBookDetailShopVoucher.visibility = View.GONE
+                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                        binding.smBookDetailShopVoucher.stopShimmer()
+                                    }
+                                    else {
+                                        voucherList.add(
+                                            VoucherObject(
+                                                result.documents[0].data?.get("discountFilter").toString(),
+                                                result.documents[0].data?.get("discountID").toString(),
+                                                result.documents[0].data?.get("discountName").toString(),
+                                                result.documents[0].data?.get("discountType").toString().toInt(),
+                                                result.documents[0].data?.get("endDate") as Timestamp,
+                                                result.documents[0].data?.get("percent").toString().toFloat(),
+                                                result.documents[0].data?.get("startDate") as Timestamp
+                                            )
+                                        )
+
+                                        shopVoucherAdapter.notifyDataSetChanged()
+                                    }
+
+                                    Handler().postDelayed({
+                                        binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                        binding.smBookDetailShopVoucher.stopShimmer()
+                                    }, 3000)
+                                }
+
+                                Handler().postDelayed({
+                                    binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                    binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                    binding.smBookDetailShopVoucher.stopShimmer()
+                                }, 3000)
+                            }
                         }
                     }
 
