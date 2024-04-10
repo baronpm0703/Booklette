@@ -23,7 +23,6 @@ import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import java.util.Random
 import kotlin.math.round
 
 
@@ -49,6 +48,7 @@ class BookDetailFragment : Fragment() {
     private lateinit var shopVoucherAdapter: bookDetailShopVoucherRVAdapter
     private lateinit var otherBookFromShopAdapter: TopBookHomeFragmentAdapter
     private lateinit var bookDetailYouMayLoveAdapter: bookDetailYouMayLoveAdapter
+    private lateinit var bookDetailUserReviewAdapter: bookDetailUserReviewAdapter
 
     private lateinit var db: FirebaseFirestore
     private var bookID: String = ""
@@ -59,8 +59,18 @@ class BookDetailFragment : Fragment() {
     private var otherBookFromOtherStore = ArrayList<BookObject>()
     private var otherBookFromOtherStoreRating = ArrayList<Float>()
 
+    private var userReviewList = ArrayList<UserReviewObject>()
+
     private lateinit var bookList: Map<String, Any>
     private lateinit var bookDetail: Map<String, Any>
+
+    val colors = intArrayOf(
+        Color.parseColor("#0e9d58"),
+        Color.parseColor("#bfd047"),
+        Color.parseColor("#ffc105"),
+        Color.parseColor("#ef7e14"),
+        Color.parseColor("#d36259")
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -194,6 +204,54 @@ class BookDetailFragment : Fragment() {
                             binding.txtSalePercent.text =
                                 (salePercent * 100).toString() + "% OFF " // MUST DO LATER: need to get the price when passing data from another fragment to this one
 
+                            var bookVoucher = bookDetail["discounts"] as ArrayList<String>
+
+                            if (bookVoucher.size == 0) {
+                                Handler().postDelayed({
+                                    binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                    binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                    binding.smBookDetailShopVoucher.stopShimmer()
+                                }, 3000)
+                            }
+                            else {
+                                for (vch in bookVoucher) {
+                                    db.collection("discounts").whereEqualTo("discountID", vch).get().addOnSuccessListener { result ->
+                                        if (result.documents.size == 0) {
+                                            binding.rvBookDetailShopVoucher.visibility = View.GONE
+                                            binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                            binding.smBookDetailShopVoucher.stopShimmer()
+                                        }
+                                        else {
+                                            voucherList.add(
+                                                VoucherObject(
+                                                    result.documents[0].data?.get("discountFilter").toString(),
+                                                    result.documents[0].data?.get("discountID").toString(),
+                                                    result.documents[0].data?.get("discountName").toString(),
+                                                    result.documents[0].data?.get("discountType").toString().toInt(),
+                                                    result.documents[0].data?.get("endDate") as Timestamp,
+                                                    result.documents[0].data?.get("percent").toString().toFloat(),
+                                                    result.documents[0].data?.get("startDate") as Timestamp
+                                                )
+                                            )
+
+                                            shopVoucherAdapter.notifyDataSetChanged()
+                                        }
+
+                                        Handler().postDelayed({
+                                            binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                            binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                            binding.smBookDetailShopVoucher.stopShimmer()
+                                        }, 3000)
+                                    }
+
+                                    Handler().postDelayed({
+                                        binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                        binding.smBookDetailShopVoucher.stopShimmer()
+                                    }, 3000)
+                                }
+                            }
+
                             Handler().postDelayed({
                                 binding.txtBookOriginalPrice.visibility = View.VISIBLE
                                 binding.smBookOriginalPrice.visibility = View.INVISIBLE
@@ -207,46 +265,21 @@ class BookDetailFragment : Fragment() {
                                 binding.smSalePercent.visibility = View.INVISIBLE
                                 binding.smSalePercent.stopShimmer()
                             }, 3000)
-
-                            var bookVoucher = bookDetail["discounts"] as ArrayList<String>
-                            for (vch in bookVoucher) {
-                                db.collection("discounts").whereEqualTo("discountID", vch).get().addOnSuccessListener { result ->
-                                    if (result.documents.size == 0) {
-                                        binding.rvBookDetailShopVoucher.visibility = View.GONE
-                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                        binding.smBookDetailShopVoucher.stopShimmer()
-                                    }
-                                    else {
-                                        voucherList.add(
-                                            VoucherObject(
-                                                result.documents[0].data?.get("discountFilter").toString(),
-                                                result.documents[0].data?.get("discountID").toString(),
-                                                result.documents[0].data?.get("discountName").toString(),
-                                                result.documents[0].data?.get("discountType").toString().toInt(),
-                                                result.documents[0].data?.get("endDate") as Timestamp,
-                                                result.documents[0].data?.get("percent").toString().toFloat(),
-                                                result.documents[0].data?.get("startDate") as Timestamp
-                                            )
-                                        )
-
-                                        shopVoucherAdapter.notifyDataSetChanged()
-
-                                        Handler().postDelayed({
-                                            binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
-                                            binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                            binding.smBookDetailShopVoucher.stopShimmer()
-                                        }, 3000)
-                                    }
-                                }
-                            }
                         }
                     }
 
-                    binding.txtBookStoreName.text = result.documents[0].data?.get("storeName").toString()
-                    binding.txtStoreLocation.text = result.documents[0].data?.get("storeLocation").toString()
-                    Picasso.get()
-                        .load(result.documents[0].data?.get("storeAvatar").toString())
-                        .into(binding.ivStoreAvatar)
+                    if (result.documents.size == 0) {
+                        binding.txtBookStoreName.text = "NULL"
+                        binding.txtStoreLocation.text = "NULL"
+                    }
+                    else {
+                        binding.txtBookStoreName.text = result.documents[0].data?.get("storeName").toString()
+                        binding.txtStoreLocation.text = result.documents[0].data?.get("storeLocation").toString()
+
+                        Picasso.get()
+                            .load(result.documents[0].data?.get("storeAvatar").toString())
+                            .into(binding.ivStoreAvatar)
+                    }
 
                     Handler().postDelayed({
                         binding.llBookStoreInfo.visibility = View.VISIBLE
@@ -258,7 +291,47 @@ class BookDetailFragment : Fragment() {
                 val reviewList = document.data.get("review") as ArrayList<Map<Any, Any>>
 
                 var avgRating = 0.0F
-                for (review in reviewList) avgRating += (review["score"]).toString().toFloat()
+                var star_1_count = 0
+                var star_2_count = 0
+                var star_3_count = 0
+                var star_4_count = 0
+                var star_5_count = 0
+
+                for (review in reviewList)  {
+                    avgRating += (review["score"]).toString().toFloat()
+
+                    if ((review["score"]).toString().toFloat() > 0 && (review["score"]).toString().toFloat() <= 1)
+                        star_1_count++
+                    else if ((review["score"]).toString().toFloat() <= 2)
+                        star_2_count++
+                    else if ((review["score"]).toString().toFloat() <= 3)
+                        star_3_count++
+                    else if ((review["score"]).toString().toFloat() <= 4)
+                        star_4_count++
+                    else if ((review["score"]).toString().toFloat() <= 5)
+                        star_5_count++
+
+                    db.collection("accounts").whereEqualTo("UID", review["UID"].toString()).get().addOnSuccessListener { result ->
+                        for (tmp in result) {
+                            val uid = tmp.data.get("UID").toString()
+                            val username = tmp.data.get("fullname").toString()
+                            val avatar = tmp.data.get("avt").toString()
+                            val rating = review["score"].toString().toFloat()
+                            val description = review["text"].toString()
+
+                            userReviewList.add(UserReviewObject(
+                                uid,
+                                username,
+                                avatar,
+                                rating,
+                                description
+                            ))
+
+                            bookDetailUserReviewAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+
                 avgRating /= reviewList.size
                 avgRating = round(avgRating * 10) / 10
 
@@ -267,6 +340,16 @@ class BookDetailFragment : Fragment() {
 
                 binding.txtRatingBookDetail.text = avgRating.toString()
                 binding.txtNumberOfReview.text = reviewList.size.toString() + " review(s)"
+
+                val raters = intArrayOf(
+                    star_1_count,
+                    star_2_count,
+                    star_3_count,
+                    star_4_count,
+                    star_5_count
+                )
+
+                binding.ratingReviews.createRatingBars(maxOf(star_1_count, star_2_count, star_3_count, star_4_count, star_5_count), BarLabels.STYPE5, colors, raters)
 
                 Handler().postDelayed({
                     binding.txtBookCategory.visibility = View.VISIBLE
@@ -329,26 +412,9 @@ class BookDetailFragment : Fragment() {
             }
         })
 
-        val colors = intArrayOf(
-            Color.parseColor("#0e9d58"),
-            Color.parseColor("#bfd047"),
-            Color.parseColor("#ffc105"),
-            Color.parseColor("#ef7e14"),
-            Color.parseColor("#d36259")
-        )
-
-        val raters = intArrayOf(
-            Random().nextInt(100),
-            Random().nextInt(100),
-            Random().nextInt(100),
-            Random().nextInt(100),
-            Random().nextInt(100)
-        )
-
-        binding.ratingReviews.createRatingBars(100, BarLabels.STYPE5, colors, raters)
-
+        bookDetailUserReviewAdapter = bookDetailUserReviewAdapter(context, userReviewList)
         binding.lvUserReviewDetail.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        binding.lvUserReviewDetail.adapter = bookDetailUserReviewAdapter()
+        binding.lvUserReviewDetail.adapter = bookDetailUserReviewAdapter
 
         getOtherBookFromAllStore()
         bookDetailYouMayLoveAdapter = bookDetailYouMayLoveAdapter(context, otherBookFromOtherStore, otherBookFromOtherStoreRating)
