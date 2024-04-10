@@ -140,7 +140,7 @@
     <string name="myprofile_blacklist">Danh sách đen</string>
     <string name="myprofile_help_center">Trung tâm hỗ trợ</string>
     <string name="bookDetailLess">ẩn bớt ></string>
-    <string name="my_order_label">Đơn mua</string>
+    <string name="my_order_label">Đơn Mua</string>
     <string name="my_order_processing_button">Đang xử lý</string>
     <string name="my_order_completed_button">Đã hoàn thành</string>
     <string name="my_order_cancelled_button">Đã huỷ</string>
