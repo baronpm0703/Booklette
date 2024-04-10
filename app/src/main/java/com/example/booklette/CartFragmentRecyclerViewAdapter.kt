@@ -15,11 +15,16 @@ import com.squareup.picasso.Picasso
 class CartFragmentRecyclerViewAdapter(
     private val context: Context,
     private val cartList: ArrayList<CartObject>,
-
     ) : RecyclerView.Adapter<CartFragmentRecyclerViewAdapter.ViewHolder>() {
 
     private val itemQuantities = ArrayList<Int>()
     private val itemSelections = HashMap<Int, Boolean>()
+
+    interface OnSelectItemClickListener {
+        fun onSelectItemClick(position: Int)
+    }
+
+    var onSelectItemClickListener: OnSelectItemClickListener? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -50,11 +55,7 @@ class CartFragmentRecyclerViewAdapter(
                 decreaseQuantity(adapterPosition)
             }
         }
-
-
     }
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.fragment_cart_recycle_view_item, parent, false)
@@ -68,12 +69,11 @@ class CartFragmentRecyclerViewAdapter(
         holder.bookTitle.text=cartInfo.bookName
         holder.bookOwner.text=cartInfo.author
         holder.quantity.text= cartInfo.bookQuantity.toString()
-        val bookPrice = "%.3f".format(cartInfo.price * 100.000)
-        holder.bookPrice.text = bookPrice
+        val formattedPrice = String.format("%,.0f", cartInfo.price) // Format as integer with thousand separator
+        holder.bookPrice.text = "$formattedPrice VND"
         Picasso.get()
             .load(cartInfo.bookCover)
             .into(holder.bookCover)
-
 //        holder.tvCartItemCount.text = itemQuantities[position].toString()
         holder.btnSelectItem.isChecked = itemSelections[position] ?: false
 
@@ -90,6 +90,8 @@ class CartFragmentRecyclerViewAdapter(
 //            notifyDataSetChanged() // Notify data change to update views
 //        }
     }
+
+
     private fun toggleSelection(position: Int) {
         itemSelections[position] = !(itemSelections[position] ?: false)
     }
