@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.model.CartObject
 import com.example.booklette.R
+import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
 class CartFragmentRecyclerViewAdapter(
@@ -19,7 +20,6 @@ class CartFragmentRecyclerViewAdapter(
 
     private val itemQuantities = ArrayList<Int>()
     private val itemSelections = HashMap<Int, Boolean>()
-
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -41,17 +41,19 @@ class CartFragmentRecyclerViewAdapter(
                     notifyItemChanged(position)
                 }
             }
+
+            btnCartItemAdd.setOnClickListener {
+                increaseQuantity(adapterPosition)
+            }
+
+            btnCartItemMinus.setOnClickListener {
+                decreaseQuantity(adapterPosition)
+            }
         }
 
 
     }
 
-    interface OnQuantityChangeListener {
-        fun onQuantityDecreased(position: Int)
-        fun onQuantityIncreased(position: Int)
-    }
-
-    var quantityChangeListener: OnQuantityChangeListener? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -103,15 +105,20 @@ class CartFragmentRecyclerViewAdapter(
     }
 
     private fun increaseQuantity(position: Int) {
-        itemQuantities[position]++
+        val cartObject = cartList[position]
+        cartObject.bookQuantity = cartObject.bookQuantity.toInt() + 1
+        notifyItemChanged(position)
     }
 
-    // Decrease quantity for an item, ensuring it doesn't go below 0
     private fun decreaseQuantity(position: Int) {
-        if (itemQuantities[position] > 0) {
-            itemQuantities[position]--
+        val cartObject = cartList[position]
+        if (cartObject.bookQuantity.toInt() > 0) {
+            cartObject.bookQuantity = cartObject.bookQuantity.toInt() - 1
+            notifyItemChanged(position)
         }
     }
+
+
     override fun getItemCount(): Int {
         return cartList.size
     }

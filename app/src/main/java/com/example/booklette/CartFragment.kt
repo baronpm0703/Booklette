@@ -63,18 +63,6 @@ class CartFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.rvCart)
 
 
-
-        adapter.quantityChangeListener = object : CartFragmentRecyclerViewAdapter.OnQuantityChangeListener {
-            override fun onQuantityDecreased(position: Int) {
-                // Decrease item quantity
-                // Implement your logic here...
-            }
-
-            override fun onQuantityIncreased(position: Int) {
-                // Increase item quantity
-                // Implement your logic here...
-            }
-        }
         val auth = Firebase.auth
         val db = Firebase.firestore
 
