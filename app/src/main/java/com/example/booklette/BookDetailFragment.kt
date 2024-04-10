@@ -265,6 +265,9 @@ class BookDetailFragment : Fragment() {
                 binding.ratingStarBar.rating = avgRating
                 binding.txtAVGrating.text = avgRating.toString()
 
+                binding.txtRatingBookDetail.text = avgRating.toString()
+                binding.txtNumberOfReview.text = reviewList.size.toString() + " review(s)"
+
                 Handler().postDelayed({
                     binding.txtBookCategory.visibility = View.VISIBLE
                     binding.smCategoryBook.visibility = View.INVISIBLE
