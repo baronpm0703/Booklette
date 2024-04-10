@@ -123,7 +123,7 @@ class CartFragment : Fragment() {
                                                             // Code to be executed after the delay
                                                             // For example, you can start a new activity or update UI elements
                                                             binding.rvCart.visibility = View.VISIBLE
-                                                        }, 2000)
+                                                        }, 3000)
                                                     }
                                                 }
                                             }
@@ -131,6 +131,7 @@ class CartFragment : Fragment() {
 
                                     }
                             }
+
                     }
                     }
                 }

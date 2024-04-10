@@ -18,7 +18,8 @@ class CartFragmentRecyclerViewAdapter(
     ) : RecyclerView.Adapter<CartFragmentRecyclerViewAdapter.ViewHolder>() {
 
     private val itemQuantities = ArrayList<Int>()
-    private val itemSelections = ArrayList<Boolean>()
+    private val itemSelections = HashMap<Int, Boolean>()
+
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,6 +32,18 @@ class CartFragmentRecyclerViewAdapter(
         val quantity: TextView = itemView.findViewById(R.id.quantity)
         val btnCartItemAdd: AppCompatButton  = itemView.findViewById(R.id.btnCartItemAdd)
         val btnSelectItem: RadioButton = itemView.findViewById(R.id.btnSelectItem)
+
+        init {
+            btnSelectItem.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    toggleSelection(position)
+                    notifyItemChanged(position)
+                }
+            }
+        }
+
+
     }
 
     interface OnQuantityChangeListener {
@@ -46,14 +59,6 @@ class CartFragmentRecyclerViewAdapter(
         return ViewHolder(view)
     }
 
-    init {
-        // Initialize itemQuantities with default quantities
-        for (i in cartList.indices) {
-            itemQuantities.add(1) // Initialize with default quantity 1
-            itemSelections.add(false) // Initialize with not selected
-
-        }
-    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cartInfo = cartList[position]
@@ -68,11 +73,8 @@ class CartFragmentRecyclerViewAdapter(
             .into(holder.bookCover)
 
 //        holder.tvCartItemCount.text = itemQuantities[position].toString()
-//        holder.btnSelectItem.isChecked = itemSelections[position]
-//        holder.btnSelectItem.setOnClickListener {
-//            toggleSelection(position)
-//            notifyDataSetChanged() // Notify data change to update views
-//        }
+        holder.btnSelectItem.isChecked = itemSelections[position] ?: false
+
 //
 //        holder.btnCartItemMinus.setOnClickListener {
 //            // Decrease quantity and notify data change
@@ -87,7 +89,17 @@ class CartFragmentRecyclerViewAdapter(
 //        }
     }
     private fun toggleSelection(position: Int) {
-        itemSelections[position] = !itemSelections[position]
+        itemSelections[position] = !(itemSelections[position] ?: false)
+    }
+
+    fun getSelectedItems(): List<CartObject> {
+        val selectedItems = mutableListOf<CartObject>()
+        itemSelections.forEach { (position, isSelected) ->
+            if (isSelected) {
+                selectedItems.add(cartList[position])
+            }
+        }
+        return selectedItems
     }
 
     private fun increaseQuantity(position: Int) {
