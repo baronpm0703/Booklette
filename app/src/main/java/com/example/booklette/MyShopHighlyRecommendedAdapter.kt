@@ -1,13 +1,13 @@
 package com.example.booklette
 
 import android.annotation.SuppressLint
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booklette.model.HRecommendedBookObject
 import com.squareup.picasso.Picasso
 import per.wsj.library.AndRatingBar
 
@@ -27,6 +27,7 @@ class MyShopHighlyRecommendedAdapter(private val books : List<HRecommendedBookOb
 	class ViewHolder(listItemView: View, clickListener: onItemClickListener) : RecyclerView.ViewHolder(listItemView) {
 		val bookImg = listItemView.findViewById(R.id.bookImg) as ImageView
 		val bookRating = listItemView.findViewById(R.id.bookRating) as AndRatingBar
+		val bookRatingCnt = listItemView.findViewById(R.id.bookRatingCnt) as TextView
 		val bookNameText = listItemView.findViewById(R.id.bookNameText) as TextView
 		val bookPriceText = listItemView.findViewById(R.id.bookPriceText) as TextView
 
@@ -56,10 +57,11 @@ class MyShopHighlyRecommendedAdapter(private val books : List<HRecommendedBookOb
 		val book: HRecommendedBookObject = books[position]
 		// Set item views based on your views and data model
 		Picasso.get()
-			.load(book.basicInfo.image)
+			.load(book.img)
 			.into(holder.bookImg)
 		holder.bookRating.rating = book.rating
-		holder.bookNameText.text = book.basicInfo.name
-		holder.bookPriceText.text = book.basicInfo.price.toString()
+		holder.bookRatingCnt.text = "(" + book.ratingCnt.toString() + ")"
+		holder.bookNameText.text = book.name
+		holder.bookPriceText.text = book.price.toString()
 	}
 }

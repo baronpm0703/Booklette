@@ -22,7 +22,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/myshop_bg" app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                android:id="@+id/constraintLayout2">
+                android:id="@+id/constraintLayout2"
+                app:layout_constraintHorizontal_bias="0.0">
             <Button
                     android:text="@string/myprofile_myshop_flavor_text"
                     android:layout_width="wrap_content"
@@ -247,7 +248,7 @@
                 <TextView
                         android:text="@string/myprofile_my_orders"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/textView27"
+                        android:layout_height="wrap_content" android:id="@+id/textViewMP27"
                         android:textStyle="bold"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="29dp"
