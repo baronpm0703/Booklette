@@ -1,9 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="180dp"
+    android:orientation="horizontal"
+    android:layout_margin="10dp"
+    android:background="@drawable/round_corner_order_item">
 
+    <TextView
+        android:id="@+id/orderNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/order"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/dateOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="placeholder"
+        android:textColor="#03A9F4"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/trackingNumberLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/tracking_number"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/orderNumber"
+        app:layout_constraintTop_toBottomOf="@+id/orderNumber" />
+
+    <TextView
+        android:id="@+id/quantityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/quantity"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/trackingNumberLabel"
+        app:layout_constraintTop_toBottomOf="@+id/trackingNumberLabel" />
+
+    <TextView
+        android:id="@+id/totalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/total"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/quantityLabel"
+        app:layout_constraintEnd_toStartOf="@+id/totalField" />
+
+    <Button
+        android:id="@+id/detailButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/details"
+        android:elevation="2dp"
+        android:textStyle="bold"
+        android:background="@drawable/button_my_order"
+        app:layout_constraintStart_toStartOf="@+id/trackingNumberLabel"
+        app:layout_constraintTop_toBottomOf="@+id/quantityLabel" />
+
+    <TextView
+        android:id="@+id/statusField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/detailButton"
+        app:layout_constraintEnd_toEndOf="@+id/totalField" />
+
+    <TextView
+        android:id="@+id/orderNumberField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/orderNumber"
+        app:layout_constraintTop_toTopOf="@+id/orderNumber" />
+
+    <TextView
+        android:id="@+id/trackingNumberField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#D45555"
+        app:layout_constraintStart_toEndOf="@+id/trackingNumberLabel"
+        app:layout_constraintTop_toTopOf="@+id/trackingNumberLabel" />
+
+    <TextView
+        android:id="@+id/quantityField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#D45555"
+        app:layout_constraintStart_toEndOf="@+id/quantityLabel"
+        app:layout_constraintTop_toTopOf="@+id/quantityLabel" />
+
+    <TextView
+        android:id="@+id/totalField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#D45555"
+        app:layout_constraintBaseline_toBaselineOf="@+id/totalLabel"
+        app:layout_constraintEnd_toEndOf="@+id/dateOrder" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -176,4 +176,9 @@
     <string name="my_order_cancelled_button">Cancelled</string>
     <string name="my_order_processing_button">Processing</string>
     <string name="my_order_returned_button">Returned</string>
+    <string name="order">Order №</string>
+    <string name="tracking_number">Tracking number:</string>
+    <string name="quantity">Quantity:</string>
+    <string name="total">Total:</string>
+    <string name="details">Details</string>
 </resources>
