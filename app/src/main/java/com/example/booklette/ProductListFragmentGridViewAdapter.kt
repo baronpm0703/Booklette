@@ -1,6 +1,7 @@
 package com.example.booklette
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +73,19 @@ class ProductListFragmentGridViewAdapter(
             .load(bookInfo.image)
             .into(viewHolder.bookCover)
 
+        view.setOnClickListener {
+            var bdFragment = BookDetailFragment()
 
+            var bundle = Bundle()
+            bundle.putString("bookID", bookInfo.bookID)
+//                bundle.putFloat("price", pageTitles[position].price)
+//                bundle.putFloat("salePercent", price_off[position])
+
+            bdFragment.arguments = bundle
+
+            val homeAct = (context as homeActivity)
+            homeAct.changeFragmentContainer(bdFragment, context.smoothBottomBarStack[context.smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
+        }
         return view as View
     }
 

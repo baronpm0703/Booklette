@@ -67,6 +67,14 @@ class CartFragment : Fragment() {
         adapter.onSelectItemClickListener = object : CartFragmentRecyclerViewAdapter.OnSelectItemClickListener {
             override fun onSelectItemClick(selectedItems: ArrayList<CartObject>) {
                 val totalAmount = adapter.calculateTotalAmount()
+                if (totalAmount == 0f) {
+                    binding.btnCheckOut.isEnabled = false
+                    binding.btnCheckOut.setBackgroundResource(R.drawable.button_go_to_check_out_disabled)
+                } else {
+                    binding.btnCheckOut.isEnabled = true
+                    binding.btnCheckOut.setBackgroundResource(R.drawable.button_go_to_check_out)
+
+                }
                 val afterFomartedTotalAmount = String.format("%,.0f", totalAmount)
                 binding.totalAmount.text = "$afterFomartedTotalAmount VND"
             }
@@ -120,7 +128,7 @@ class CartFragment : Fragment() {
                                                                             eachBook.data["name"].toString(),
                                                                             eachBook.data["author"].toString(),
                                                                             eachItem?.get("price").toString().toFloat(),
-                                                                            quantity?.toInt() ?: 0,
+                                                                            quantity?.toInt() ?: 1,
                                                                         )
                                                                     )
                                                                     adapter.notifyDataSetChanged()
@@ -158,9 +166,10 @@ class CartFragment : Fragment() {
             // Create a new instance of CheckOutFragment and pass the selectedItems
             val checkOutFragment = CheckOutFragment.passSelectedItemToCheckOut(adapter.getSelectedItems())
             // Navigate to the CheckOutFragment
-            val ft = activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fcvNavigation, checkOutFragment)
-                ?.commit()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fcvNavigation, checkOutFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
         return view

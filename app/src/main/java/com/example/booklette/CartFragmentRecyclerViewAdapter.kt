@@ -123,7 +123,7 @@ class CartFragmentRecyclerViewAdapter(
 
     private fun decreaseQuantity(position: Int) {
         val cartObject = cartList[position]
-        if (cartObject.bookQuantity.toInt() > 0) {
+        if (cartObject.bookQuantity.toInt() > 1) {
             cartObject.bookQuantity = cartObject.bookQuantity.toInt() - 1
             notifyItemChanged(position)
             updateTotalAmount()

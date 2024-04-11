@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/ivbackActivity"
+                android:id="@+id/ivBackToPrev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -41,13 +41,7 @@
                 android:textStyle="bold"></TextView>
 
 
-            <ImageView
-                android:id="@+id/ivSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/search"></ImageView>
+
         </RelativeLayout>
 
         <TextView
@@ -193,12 +187,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:paddingTop="6dp"
-                android:text="@string/cart_fragment_total_amount"
+                android:text="@string/cart_fragment_total_payment"
                 android:textColor="@color/black"
                 android:textStyle="bold"></TextView>
 
             <TextView
-
+                android:id="@+id/totalPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
@@ -210,6 +204,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/placeOrderBtn"
             android:layout_width="119dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -406,7 +401,7 @@
                 android:paddingEnd="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:text="@string/cart_fragment_total_amount"
+                android:text="@string/payment_detail"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp">
             </TextView>
@@ -420,7 +415,8 @@
             android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+            android:visibility="gone">
 
             <com.google.android.material.chip.ChipGroup
                 android:layout_width="match_parent"
@@ -461,9 +457,11 @@
                 android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+                android:visibility="gone">
 
-                <com.google.android.material.chip.ChipGroup
+
+            <com.google.android.material.chip.ChipGroup
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:singleSelection="true">
@@ -535,6 +533,7 @@
                 </TextView>
             </RelativeLayout>
             <RelativeLayout
+                android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible">
@@ -542,17 +541,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="@string/cart_fragment_total_payment"
                     android:layout_alignParentLeft="true"
-                    android:paddingStart="25dp">
-                </TextView>
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="5dp"
+                    android:paddingStart="25dp"
+                    android:text="@string/cart_fragment_total_payment"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"></TextView>
 
                 <TextView
+                    android:id="@+id/totalPaymentInPaymentDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
+                    android:textColor="#D45555"
                     android:textStyle="bold"
+                    android:textSize="18dp"
                     android:text="100.000VND"
                     android:layout_alignParentRight="true"
                     android:paddingEnd="25dp">
