@@ -102,7 +102,7 @@
                         android:textStyle="bold"></TextView>
 
                     <TextView
-                        android:id="@+id/tvCartItemCount"
+                        android:id="@+id/quantity"
                         android:layout_width="126dp"
                         android:layout_height="30dp"
                         android:layout_marginRight="20dp"

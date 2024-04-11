@@ -1,4 +1,5 @@
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,8 +8,8 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
-import com.example.booklette.model.CartObject
 import com.example.booklette.R
+import com.example.booklette.model.CartObject
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
@@ -19,9 +20,10 @@ class CartFragmentRecyclerViewAdapter(
 
     private val itemQuantities = ArrayList<Int>()
     private val itemSelections = HashMap<Int, Boolean>()
+    private val selectedItems = ArrayList<CartObject>() // ArrayList to store selected items
 
     interface OnSelectItemClickListener {
-        fun onSelectItemClick(position: Int)
+        fun onSelectItemClick(selectedItems: ArrayList<CartObject>)
     }
 
     var onSelectItemClickListener: OnSelectItemClickListener? = null
@@ -44,7 +46,12 @@ class CartFragmentRecyclerViewAdapter(
                 if (position != RecyclerView.NO_POSITION) {
                     toggleSelection(position)
                     notifyItemChanged(position)
+
+                    // Notify the fragment when an item is selected
+                    onSelectItemClickListener?.onSelectItemClick(getSelectedItems())
+
                 }
+
             }
 
             btnCartItemAdd.setOnClickListener {
@@ -75,20 +82,19 @@ class CartFragmentRecyclerViewAdapter(
             .load(cartInfo.bookCover)
             .into(holder.bookCover)
         holder.btnSelectItem.isChecked = itemSelections[position] ?: false
-
     }
 
     private fun toggleSelection(position: Int) {
         itemSelections[position] = !(itemSelections[position] ?: false)
+        // Update selected items list
+        if (itemSelections[position] == true) {
+            selectedItems.add(cartList[position])
+        } else {
+            selectedItems.remove(cartList[position])
+        }
     }
 
-    fun getSelectedItems(): List<CartObject> {
-        val selectedItems = mutableListOf<CartObject>()
-        itemSelections.forEach { (position, isSelected) ->
-            if (isSelected) {
-                selectedItems.add(cartList[position])
-            }
-        }
+    fun getSelectedItems(): ArrayList<CartObject> {
         return selectedItems
     }
 

@@ -7,40 +7,47 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.BankCardFragment
-import com.example.booklette.CheckoutItem
 import com.example.booklette.R
 import com.example.booklette.ShipAddressFragment
+import com.example.booklette.databinding.FragmentCheckOutBinding
+import com.example.booklette.model.CartObject
 
-class CheckoutFragment : Fragment() {
+class CheckOutFragment : Fragment() {
+    private var _binding: FragmentCheckOutBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var selectedItems: ArrayList<CartObject>
+    companion object {
+        fun newInstance(selectedItems: ArrayList<CartObject>): CheckOutFragment {
+            val fragment = CheckOutFragment()
+            val args = Bundle()
+            args.putParcelableArrayList("SELECTED_ITEMS", selectedItems)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_check_out, container, false)
 
-        val checkoutItems = listOf(
-            CheckoutItem("Vo Chanh Tin bookstore", "Tuesday Mooney Talks to Ghosts", "Kate Racculia", "120.000", "2"),
-            CheckoutItem("Vo Chanh Tin bookstore", "Tuesday Mooney Talks to Ghosts", "Kate Racculia", "120.000", "2"),
-            CheckoutItem("Vo Chanh Tin bookstore", "Tuesday Mooney Talks to Ghosts", "Kate Racculia", "120.000", "2"),
-            CheckoutItem("Vo Chanh Tin bookstore", "Tuesday Mooney Talks to Ghosts", "Kate Racculia", "120.000", "2"),
-        )
+        _binding = FragmentCheckOutBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        val rvCheckout = view.findViewById<RecyclerView>(R.id.rvCheckout)
-        rvCheckout.layoutManager = LinearLayoutManager(requireContext())
-        val adapter = CheckOutRecyclerViewAdapter(requireContext(), checkoutItems)
-        rvCheckout.adapter = adapter
+        selectedItems = arguments?.getParcelableArrayList<CartObject>("SELECTED_ITEMS") ?: ArrayList()
 
-        val btnChangeAddress = view.findViewById<Button>(R.id.changeAddress)
+        val adapter = CheckOutRecyclerViewAdapter(requireContext(), selectedItems)
+        binding.rvCheckout.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvCheckout.adapter = adapter
 
-        btnChangeAddress.setOnClickListener {
+        binding.changeAddress.setOnClickListener {
             val shipAddressFragment = ShipAddressFragment()
             val ft = activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.fcvNavigation, shipAddressFragment)
                 ?.commit()
         }
-
-        val changeCardBtn = view.findViewById<Button>(R.id.changeCardBtn)
-        changeCardBtn.setOnClickListener {
+        binding.changeCardBtn.setOnClickListener {
             val bankCardFragment = BankCardFragment()
             val ft = activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.fcvNavigation, bankCardFragment)

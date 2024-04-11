@@ -3,12 +3,13 @@ package com.example.booklette
 import android.graphics.Color
 import android.graphics.Paint
 import CartFragmentRecyclerViewAdapter
-import CheckoutFragment
+import CheckOutFragment
 import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.os.Bundle
 import android.os.Handler
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentCartBinding
-import com.example.booklette.model.CartObject
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import android.util.Log
+import com.example.booklette.model.CartObject
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -55,11 +57,24 @@ class CartFragment : Fragment() {
         val view = binding.root
         // Add more items as needed
 
+
         val adapter = CartFragmentRecyclerViewAdapter(requireContext(), cartList)
         binding.rvCart.adapter = adapter
+        adapter.onSelectItemClickListener = object : CartFragmentRecyclerViewAdapter.OnSelectItemClickListener {
+            override fun onSelectItemClick(selectedItems: ArrayList<CartObject>) {
+                // Log the information of selectedItems
+                for (item in selectedItems) {
+                    Log.d("CartFragment", "Selected Item:")
+                    Log.d("CartFragment", "Book Name: ${item.bookName}")
+                    Log.d("CartFragment", "Author: ${item.author}")
+                    Log.d("CartFragment", "Price: ${item.price}")
+                    // Add more properties as needed
+                }
+                // You can also perform any other actions with the selected items here
+            }
+        }
         binding.rvCart.visibility = View.GONE
         binding.rvCart.layoutManager = LinearLayoutManager(requireContext())
-
 
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvCart)
@@ -105,7 +120,7 @@ class CartFragment : Fragment() {
                                                                             eachBook.data["name"].toString(),
                                                                             eachBook.data["author"].toString(),
                                                                             eachItem?.get("price").toString().toFloat(),
-                                                                            quantity?.toInt() ?: 0
+                                                                            quantity?.toInt() ?: 0,
                                                                         )
                                                                     )
                                                                     adapter.notifyDataSetChanged()
@@ -137,8 +152,9 @@ class CartFragment : Fragment() {
             binding.rvCart.visibility = View.VISIBLE
         }
         binding.btnCheckOut.setOnClickListener {
-            val checkOutFragment = CheckoutFragment()
-
+            // Create a new instance of CheckOutFragment and pass the selectedItems
+            val checkOutFragment = CheckOutFragment.newInstance(adapter.getSelectedItems())
+            // Navigate to the CheckOutFragment
             val ft = activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.fcvNavigation, checkOutFragment)
                 ?.commit()
