@@ -50,6 +50,7 @@ class CartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _binding = FragmentCartBinding.inflate(inflater, container, false)
         val view = binding.root
         // Add more items as needed
@@ -59,6 +60,7 @@ class CartFragment : Fragment() {
         binding.rvCart.visibility = View.GONE
         binding.rvCart.layoutManager = LinearLayoutManager(requireContext())
 
+
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvCart)
 
@@ -66,66 +68,74 @@ class CartFragment : Fragment() {
         val auth = Firebase.auth
         val db = Firebase.firestore
 
-        // Shop info
-        db.collection("accounts").whereEqualTo("UID", auth.uid).get()
-            .addOnSuccessListener { documents ->
-            if (documents.size() != 1) return@addOnSuccessListener
-            for (document in documents) {
-                // Get avatar and seller's name
-                if (document.data.get("cart") != null) {
-                    val cartArray = document.data.get("cart") as ArrayList<Map<String, Any>>
-                    cartArray?.let { cartListData ->
-                        for (cartMap in cartListData) {
-                            val itemId = cartMap["itemId"] as? String
-                            val storeId = cartMap["storeId"] as? String
-                            val quantity = cartMap["quantity"] as? Number
-                            if(itemId != null && storeId != null){
-                                db.collection("accounts").whereEqualTo("UID", storeId).get()
-                                    .addOnSuccessListener { storeDocument ->
-                                        for(eachStore in storeDocument){
-                                            val storeName = eachStore.data.get("fullname")
-                                            eachStore.getDocumentReference("store")!!.get().addOnSuccessListener { personalStoreDocument ->
-                                                val itemList = personalStoreDocument["items"] as? Map<String, Any>
-                                                val eachItem = itemList?.get(itemId) as? Map<String, Any>
-                                                db.collection("books")
-                                                    .whereEqualTo("bookID", itemId)
-                                                    .get()
-                                                    .addOnSuccessListener { bookDocument ->
-                                                        for (eachBook in bookDocument) {
-                                                            cartList.add(
-                                                                CartObject(
-                                                                    eachBook.data["bokID"].toString(),
-                                                                    storeId.toString(),
-                                                                    storeName.toString(),
-                                                                    eachBook.data["image"].toString(),
-                                                                    eachBook.data["name"].toString(),
-                                                                    eachBook.data["author"].toString(),
-                                                                    eachItem?.get("price").toString().toFloat(),
-                                                                    quantity?.toInt() ?: 0
+        if(cartList.size == 0){
+            binding.loadingAnim.visibility = View.VISIBLE
+            binding.rvCart.visibility = View.GONE
+            db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+                .addOnSuccessListener { documents ->
+                    if (documents.size() != 1) return@addOnSuccessListener
+                    for (document in documents) {
+                        // Get avatar and seller's name
+                        if (document.data.get("cart") != null) {
+                            val cartArray = document.data.get("cart") as ArrayList<Map<String, Any>>
+                            cartArray?.let { cartListData ->
+                                for (cartMap in cartListData) {
+                                    val itemId = cartMap["itemId"] as? String
+                                    val storeId = cartMap["storeId"] as? String
+                                    val quantity = cartMap["quantity"] as? Number
+                                    if(itemId != null && storeId != null){
+                                        db.collection("accounts").whereEqualTo("UID", storeId).get()
+                                            .addOnSuccessListener { storeDocument ->
+                                                for(eachStore in storeDocument){
+                                                    val storeName = eachStore.data.get("fullname")
+                                                    eachStore.getDocumentReference("store")!!.get().addOnSuccessListener { personalStoreDocument ->
+                                                        val itemList = personalStoreDocument["items"] as? Map<String, Any>
+                                                        val eachItem = itemList?.get(itemId) as? Map<String, Any>
+                                                        db.collection("books")
+                                                            .whereEqualTo("bookID", itemId)
+                                                            .get()
+                                                            .addOnSuccessListener { bookDocument ->
+                                                                for (eachBook in bookDocument) {
+                                                                    cartList.add(
+                                                                        CartObject(
+                                                                            eachBook.data["bokID"].toString(),
+                                                                            storeId.toString(),
+                                                                            storeName.toString(),
+                                                                            eachBook.data["image"].toString(),
+                                                                            eachBook.data["name"].toString(),
+                                                                            eachBook.data["author"].toString(),
+                                                                            eachItem?.get("price").toString().toFloat(),
+                                                                            quantity?.toInt() ?: 0
+                                                                        )
                                                                     )
-                                                            )
-                                                            adapter.notifyDataSetChanged()
+                                                                    adapter.notifyDataSetChanged()
 
-                                                            Handler().postDelayed({
-                                                                // Code to be executed after the delay
-                                                                // For example, you can start a new activity or update UI elements
-                                                                binding.rvCart.visibility = View.VISIBLE
-                                                            }, 3000)
-                                                        }
+                                                                    Handler().postDelayed({
+                                                                        // Code to be executed after the delay
+                                                                        // For example, you can start a new activity or update UI elements
+                                                                        binding.rvCart.visibility = View.VISIBLE
+                                                                        binding.loadingAnim.visibility = View.GONE
 
+                                                                    }, 2000)
+                                                                }
+
+                                                            }
                                                     }
                                                 }
                                             }
-                                        }
 
                                     }
+                                }
                             }
+                        }
                     }
-                    }
+
                 }
-
-            }
-
+        }
+        else {
+            binding.loadingAnim.visibility = View.GONE
+            binding.rvCart.visibility = View.VISIBLE
+        }
         binding.btnCheckOut.setOnClickListener {
             val checkOutFragment = CheckoutFragment()
 
@@ -144,8 +154,7 @@ class CartFragment : Fragment() {
     }
 
 
-
-private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+    private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
         return false
@@ -210,7 +219,6 @@ private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0,
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Are you sure you want to delete this item?")
 
-        // Xác nhận xóa item
         builder.setPositiveButton("Delete") { dialog, which ->
             val adapter = binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter
             adapter?.removeItem(position)
@@ -218,18 +226,15 @@ private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0,
             dialog.dismiss()
         }
 
-        // Hủy thao tác xóa item
         builder.setNegativeButton("Cancel") { dialog, which ->
             dialog.dismiss()
         }
 
         val alertDialog = builder.create()
 
-        // Store the current position before showing the dialog
         val currentPosition = (binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter)?.getItemInfo(position)
 
         alertDialog.setOnCancelListener {
-            // If the deletion is canceled, restore the item to its original position
             currentPosition?.let { restoredItem ->
                 val adapter = binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter
                 adapter?.notifyItemChanged(position)

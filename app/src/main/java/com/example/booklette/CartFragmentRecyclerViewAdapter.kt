@@ -74,23 +74,9 @@ class CartFragmentRecyclerViewAdapter(
         Picasso.get()
             .load(cartInfo.bookCover)
             .into(holder.bookCover)
-//        holder.tvCartItemCount.text = itemQuantities[position].toString()
         holder.btnSelectItem.isChecked = itemSelections[position] ?: false
 
-//
-//        holder.btnCartItemMinus.setOnClickListener {
-//            // Decrease quantity and notify data change
-//            decreaseQuantity(position)
-//            notifyDataSetChanged() // Notify data change to update views
-//        }
-//
-//        holder.btnCartItemAdd.setOnClickListener {
-//            // Increase quantity and notify data change
-//            increaseQuantity(position)
-//            notifyDataSetChanged() // Notify data change to update views
-//        }
     }
-
 
     private fun toggleSelection(position: Int) {
         itemSelections[position] = !(itemSelections[position] ?: false)
@@ -126,15 +112,12 @@ class CartFragmentRecyclerViewAdapter(
     }
 
     fun removeItem(position: Int) {
-        // Xóa mục khỏi danh sách
         cartList.removeAt(position)
-        // Thông báo cho RecyclerView biết rằng một mục đã bị xóa ở vị trí được chỉ định
         notifyItemRemoved(position)
     }
 
 
     fun getItemInfo(position: Int): CartObject {
-        // Trả về thông tin của item tại vị trí được chỉ định
         return cartList[position]
     }
 }

@@ -164,4 +164,8 @@ dependencies {
 
     //loading view
     implementation ("com.github.hall9zeha:DotsLoadingView:2.0.0")
+
+    //loading animation
+    implementation ("com.github.Marvel999:Android-Loading-Animation:1.0.0")
+
 }
