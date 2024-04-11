@@ -6,12 +6,12 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/round_corner_order_item_white_with_shadow"
-    android:layout_margin="5dp">
+    android:layout_margin="10dp">
 
     <ImageView
         android:id="@+id/orderDetailItemImage"
         android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_marginStart="8dp"
         android:background="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"

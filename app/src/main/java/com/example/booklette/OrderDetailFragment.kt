@@ -29,7 +29,7 @@ class OrderDetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
     private var _binding: FragmentOrderDetailBinding? = null
-    private lateinit var bookIDs: ArrayList<String>
+
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
@@ -39,7 +39,6 @@ class OrderDetailFragment : Fragment() {
             orderID = it.getString(ORDERID_PARAM)
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,7 +59,7 @@ class OrderDetailFragment : Fragment() {
         val totalField = binding.orderDetailTotalField
 
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
-        bookIDs = ArrayList()
+
         var tempTotalOrgMoney: Long = 0
         db.collection("orders")
             .whereEqualTo("orderID",orderID)
@@ -74,7 +73,7 @@ class OrderDetailFragment : Fragment() {
                     val itemsMap = orderData?.get("items") as? Map<String, Any>
                     var totalQuantity: Long = 0
                     itemsMap?.forEach { (itemID, itemData) ->
-                        bookIDs.add(itemID)
+
                         val itemMap = itemData as? Map<String, Any>
 
                         //Log.d("number",itemMap.toString())
@@ -88,7 +87,7 @@ class OrderDetailFragment : Fragment() {
                     val paymentMethodType = paymentMethod?.get("Type")
 
                     // setup recycler view for books
-                    val itemsFragment = OrderDetailItemListFragment.newInstance(1,bookIDs)
+                    val itemsFragment = OrderDetailItemListFragment.newInstance(1,itemsMap!!)
                     childFragmentManager.beginTransaction()
                         .replace(orderItemLayout.id,itemsFragment)
                         .commit()

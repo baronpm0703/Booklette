@@ -98,17 +98,17 @@
             app:layout_constraintEnd_toEndOf="@+id/orderDetailDateField"
             app:layout_constraintTop_toTopOf="@+id/orderDetailTrackingNumberField" />
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/orderDetailProductsFragmentFrameLayout"
             android:layout_width="0dp"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/round_corner_order_item_white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailTrackingNumberField">
 
-        </FrameLayout>
+        </androidx.fragment.app.FragmentContainerView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/orderDetailOrderInformationFrameLayout"
