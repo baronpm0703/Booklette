@@ -40,6 +40,10 @@ class CartFragment : Fragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
 
+
+    private var totalAmount: Float = 0f
+
+
 //    private lateinit var auth: FirebaseAuth
 //    private lateinit var db: FirebaseFirestore
 
@@ -62,19 +66,15 @@ class CartFragment : Fragment() {
         binding.rvCart.adapter = adapter
         adapter.onSelectItemClickListener = object : CartFragmentRecyclerViewAdapter.OnSelectItemClickListener {
             override fun onSelectItemClick(selectedItems: ArrayList<CartObject>) {
-                // Log the information of selectedItems
-                for (item in selectedItems) {
-                    Log.d("CartFragment", "Selected Item:")
-                    Log.d("CartFragment", "Book Name: ${item.bookName}")
-                    Log.d("CartFragment", "Author: ${item.author}")
-                    Log.d("CartFragment", "Price: ${item.price}")
-                    // Add more properties as needed
-                }
-                // You can also perform any other actions with the selected items here
+                val totalAmount = adapter.calculateTotalAmount()
+                val afterFomartedTotalAmount = String.format("%,.0f", totalAmount)
+                binding.totalAmount.text = "$afterFomartedTotalAmount VND"
             }
         }
+
         binding.rvCart.visibility = View.GONE
         binding.rvCart.layoutManager = LinearLayoutManager(requireContext())
+
 
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvCart)
@@ -151,9 +151,12 @@ class CartFragment : Fragment() {
             binding.loadingAnim.visibility = View.GONE
             binding.rvCart.visibility = View.VISIBLE
         }
+
+        binding.totalAmount.text = "0 VND"
+
         binding.btnCheckOut.setOnClickListener {
             // Create a new instance of CheckOutFragment and pass the selectedItems
-            val checkOutFragment = CheckOutFragment.newInstance(adapter.getSelectedItems())
+            val checkOutFragment = CheckOutFragment.passSelectedItemToCheckOut(adapter.getSelectedItems())
             // Navigate to the CheckOutFragment
             val ft = activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.fcvNavigation, checkOutFragment)

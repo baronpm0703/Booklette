@@ -18,10 +18,20 @@ class CheckOutFragment : Fragment() {
 
     private lateinit var selectedItems: ArrayList<CartObject>
     companion object {
-        fun newInstance(selectedItems: ArrayList<CartObject>): CheckOutFragment {
+        fun passSelectedItemToCheckOut(selectedItems: ArrayList<CartObject>): CheckOutFragment {
             val fragment = CheckOutFragment()
             val args = Bundle()
             args.putParcelableArrayList("SELECTED_ITEMS", selectedItems)
+            fragment.arguments = args
+            return fragment
+        }
+
+        private const val ARG_TOTAL_AMOUNT = "total_amount"
+
+        fun passSTotalAmountItemToCheckOut(totalAmount: Float): CheckOutFragment {
+            val fragment = CheckOutFragment()
+            val args = Bundle()
+            args.putFloat(ARG_TOTAL_AMOUNT, totalAmount)
             fragment.arguments = args
             return fragment
         }
@@ -31,7 +41,6 @@ class CheckOutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentCheckOutBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -54,6 +63,19 @@ class CheckOutFragment : Fragment() {
                 ?.commit()
         }
 
+
+        val totalAmount = adapter.calculateTotalAmount()
+        val afterFomartedTotalAmount = String.format("%,.0f", totalAmount)
+        binding.totalAmount.text = "$afterFomartedTotalAmount VND"
+
         return view
+    }
+
+    private fun calculateTotalAmount(): Float {
+        var total = 0f
+        for (item in selectedItems) {
+            total += item.price * item.bookQuantity
+        }
+        return total
     }
 }

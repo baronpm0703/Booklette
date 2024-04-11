@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso
 class CartFragmentRecyclerViewAdapter(
     private val context: Context,
     private val cartList: ArrayList<CartObject>,
-    ) : RecyclerView.Adapter<CartFragmentRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CartFragmentRecyclerViewAdapter.ViewHolder>() {
 
     private val itemQuantities = ArrayList<Int>()
     private val itemSelections = HashMap<Int, Boolean>()
@@ -25,7 +25,21 @@ class CartFragmentRecyclerViewAdapter(
     interface OnSelectItemClickListener {
         fun onSelectItemClick(selectedItems: ArrayList<CartObject>)
     }
+    interface TotalAmountListener {
+        fun onTotalAmountCalculated(totalAmount: Float)
+    }
 
+    private fun updateTotalAmount() {
+        onSelectItemClickListener?.onSelectItemClick(selectedItems)
+    }
+
+    fun calculateTotalAmount(): Float {
+        var total = 0f
+        for (item in selectedItems) {
+            total += item.price * item.bookQuantity
+        }
+        return total
+    }
     var onSelectItemClickListener: OnSelectItemClickListener? = null
 
 
@@ -39,6 +53,7 @@ class CartFragmentRecyclerViewAdapter(
         val quantity: TextView = itemView.findViewById(R.id.quantity)
         val btnCartItemAdd: AppCompatButton  = itemView.findViewById(R.id.btnCartItemAdd)
         val btnSelectItem: RadioButton = itemView.findViewById(R.id.btnSelectItem)
+
 
         init {
             btnSelectItem.setOnClickListener {
@@ -102,6 +117,8 @@ class CartFragmentRecyclerViewAdapter(
         val cartObject = cartList[position]
         cartObject.bookQuantity = cartObject.bookQuantity.toInt() + 1
         notifyItemChanged(position)
+        updateTotalAmount()
+
     }
 
     private fun decreaseQuantity(position: Int) {
@@ -109,6 +126,7 @@ class CartFragmentRecyclerViewAdapter(
         if (cartObject.bookQuantity.toInt() > 0) {
             cartObject.bookQuantity = cartObject.bookQuantity.toInt() - 1
             notifyItemChanged(position)
+            updateTotalAmount()
         }
     }
 

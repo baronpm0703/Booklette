@@ -12,9 +12,18 @@ import com.squareup.picasso.Picasso
 
 class CheckOutRecyclerViewAdapter(
     private val context: Context,
-    private val selectedItems: ArrayList<CartObject>
+    private val selectedItems: ArrayList<CartObject>,
+
 ) :
     RecyclerView.Adapter<CheckOutRecyclerViewAdapter.ViewHolder>() {
+
+    fun calculateTotalAmount(): Float {
+        var total = 0f
+        for (item in selectedItems) {
+            total += item.price * item.bookQuantity
+        }
+        return total
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.fragment_check_out_list_view_item, parent, false)
@@ -34,6 +43,8 @@ class CheckOutRecyclerViewAdapter(
             .into(holder.bookCover)
         holder.quantityTextView.text= currentItem.bookQuantity.toString()
     }
+
+
 
     override fun getItemCount(): Int {
         return selectedItems.size

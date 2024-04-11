@@ -260,11 +260,12 @@
                 android:textStyle="bold"></TextView>
 
             <TextView
+                android:id="@+id/totalAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
 
-                android:text="160.000 VND"
+                android:text="0 VND"
                 android:textColor="#D45555"
                 android:textSize="20dp"
                 android:textStyle="bold"></TextView>
