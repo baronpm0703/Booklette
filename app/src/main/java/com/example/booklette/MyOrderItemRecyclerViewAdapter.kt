@@ -3,6 +3,7 @@ package com.example.booklette
 import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.MyOrderItemBinding
@@ -18,7 +19,7 @@ data class OrderDataClass (val ID: String,val creationDate: Date, val trackingNu
 class MyOrderItemRecyclerViewAdapter(
     private var values: List<OrderDataClass>
 ) : RecyclerView.Adapter<MyOrderItemRecyclerViewAdapter.ViewHolder>() {
-
+    var onButtonClick: ((OrderDataClass) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
@@ -44,6 +45,7 @@ class MyOrderItemRecyclerViewAdapter(
         holder.quantityLabel.text = "  " + item.quantity.toString()
         holder.totalLabel.text = "  " + item.total.toString()
         holder.statusField.text = item.status
+
     }
 
     override fun getItemCount(): Int = values.size
@@ -55,10 +57,15 @@ class MyOrderItemRecyclerViewAdapter(
         val quantityLabel: TextView = binding.quantityField
         val totalLabel: TextView = binding.totalField
         val statusField: TextView = binding.statusField
-
+        val detailButton: Button = binding.detailButton
 //        override fun toString(): String {
 //            //return super.toString() + " '" + contentView.text + "'"
 //        }
+        init {
+            detailButton.setOnClickListener {
+                onButtonClick?.invoke(values[adapterPosition])
+            }
+        }
     }
 
 }

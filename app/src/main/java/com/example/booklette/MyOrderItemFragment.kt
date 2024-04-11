@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.example.booklette.placeholder.PlaceholderContent
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
@@ -85,6 +86,14 @@ class MyOrderItemFragment : Fragment() {
             .addOnFailureListener { exception ->
                 Log.w("CanhBao", "Error getting documents.", exception)
             }
+
+        adapter.onButtonClick = { orderItem ->
+            val detailFragment = OrderDetailFragment.newInstance(orderItem.trackingNumber)
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fcvNavigation, detailFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
 
         return view
     }
