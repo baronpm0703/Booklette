@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/order"
+        android:text="@string/order_item_order"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/tracking_number"
+        android:text="@string/order_item_tracking_number"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/orderNumber"
         app:layout_constraintTop_toBottomOf="@+id/orderNumber" />
@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/quantity"
+        android:text="@string/order_item_quantity"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/trackingNumberLabel"
         app:layout_constraintTop_toBottomOf="@+id/trackingNumberLabel" />
@@ -55,7 +55,7 @@
         android:id="@+id/totalLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/total"
+        android:text="@string/order_item_total"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/quantityLabel"
         app:layout_constraintEnd_toStartOf="@+id/totalField" />
@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/details"
+        android:text="@string/order_item_details"
         android:elevation="2dp"
         android:textStyle="bold"
         android:background="@drawable/button_my_order"

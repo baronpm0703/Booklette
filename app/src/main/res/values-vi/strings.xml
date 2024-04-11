@@ -145,9 +145,17 @@
     <string name="my_order_completed_button">Đã hoàn thành</string>
     <string name="my_order_cancelled_button">Đã huỷ</string>
     <string name="my_order_returned_button">Trả lại</string>
-    <string name="order">Đơn hàng №</string>
-    <string name="tracking_number">Mã đơn:</string>
-    <string name="quantity">Số lượng:</string>
-    <string name="total">Tổng:</string>
-    <string name="details">Chi tiết</string>
+    <string name="order_item_order">Đơn hàng №</string>
+    <string name="order_item_tracking_number">Mã đơn:</string>
+    <string name="order_item_quantity">Số lượng:</string>
+    <string name="order_item_total">Tổng:</string>
+    <string name="order_item_details">Chi tiết</string>
+    <string name="order_detail">Chi tiết đơn hàng</string>
+    <string name="order_information">Thông tin đơn hàng</string>
+    <string name="shipping_address">Địa chỉ nhận hàng:</string>
+    <string name="payment_method">Phương thức thanh toán:</string>
+    <string name="delivery_method">Hình thức vẫn chuyển:</string>
+    <string name="discount">Giảm giá:</string>
+    <string name="total_amount">Thành tiền:</string>
+    <string name="cancel_order">Huỷ Đơn Hàng</string>
 </resources>

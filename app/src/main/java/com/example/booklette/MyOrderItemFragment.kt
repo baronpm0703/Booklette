@@ -95,7 +95,6 @@ class MyOrderItemFragment : Fragment() {
         } else {
             userOrders.addAll(ArrayList(originalValues.filter { it.status.contains(query, ignoreCase = false) }))  // Filter by status
         }
-        Log.d("Filter", "Filtered userOrders: $userOrders") // Log the filtered userOrders
         adapter.notifyDataSetChanged() // Notify the adapter that the data has changed
     }
 
