@@ -99,7 +99,7 @@ class CategoryFragment : Fragment() {
 
             // Have to cast homePage to "activity as HomePage", otherwise the supportFragment can recognize the host
             val homeAct = (activity as homeActivity)
-            homeAct.changeFragmentContainer(productList, 5)
+            homeAct.changeFragmentContainer(productList, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
         }
 
 
@@ -175,7 +175,7 @@ class CategoryFragment : Fragment() {
                 productList.arguments = args
                 // Have to cast homePage to "activity as HomePage", otherwise the supportFragment can recognize the host
                 val homeAct = (activity as homeActivity)
-                homeAct.changeFragmentContainer(productList, 5) //Let the homePage handle changing fragment
+                homeAct.changeFragmentContainer(productList, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
             }
 
             override fun onButtonClicked(buttonCode: Int) {

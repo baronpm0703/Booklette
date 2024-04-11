@@ -64,6 +64,9 @@ class homeActivity : AppCompatActivity() {
                 5 -> {
                     // Leave 5 for product list
                 }
+                6 -> {
+                    // Leave 6 for book detail
+                }
                 else -> false
             }
         }

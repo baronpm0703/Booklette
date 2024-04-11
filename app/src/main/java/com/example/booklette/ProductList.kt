@@ -100,7 +100,7 @@ class ProductList : Fragment() {
             add(largestAmount)
         }
         var filterDialogProductList = FilterDialogProductList(true, initValues)
-        if (!searchRes.equals(null))
+        if (searchRes.isNotEmpty())
             filterDialogProductList = FilterDialogProductList(false, initValues)
 
         // Set up back btn
