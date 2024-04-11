@@ -1,6 +1,7 @@
 package com.example.booklette
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -58,7 +59,7 @@ class OrderDetailFragment : Fragment() {
         val totalField = binding.orderDetailTotalField
 
 
-        var tempTotalOrgMoney = 0.0F
+        var tempTotalOrgMoney: Long = 0
         db.collection("orders")
             .whereEqualTo("orderID",orderID)
             .get()
@@ -72,7 +73,8 @@ class OrderDetailFragment : Fragment() {
                     var totalQuantity: Long = 0
                     itemsMap?.forEach { (_, itemData) ->
                         val itemMap = itemData as? Map<String, Any>
-                        tempTotalOrgMoney += (itemMap?.get("totalSum") as? Float) ?: 0.0F
+                        //Log.d("number",itemMap.toString())
+                        tempTotalOrgMoney += itemMap?.get("totalSum") as Long
                         totalQuantity += itemMap?.get("quantity") as Long
                     }
                     val totalMoney = (orderData?.get("totalSum") as Long).toFloat()
@@ -93,7 +95,8 @@ class OrderDetailFragment : Fragment() {
                     shippingAddressField.text = "227 Nguyễn Văn Cừ, P4, Quận 5, Tp HCM."
                     paymentMethodField.text = paymentMethodType.toString()
                     deliveryMethodField.text = "Giao Hàng Nhanh"
-                    discountField.text = ((totalMoney / tempTotalOrgMoney) * 100).toString()
+
+                    discountField.text = "30%"
                     totalField.text = totalMoney.toString()
 
                 }
