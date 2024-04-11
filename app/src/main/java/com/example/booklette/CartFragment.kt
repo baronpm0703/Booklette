@@ -166,9 +166,10 @@ class CartFragment : Fragment() {
             // Create a new instance of CheckOutFragment and pass the selectedItems
             val checkOutFragment = CheckOutFragment.passSelectedItemToCheckOut(adapter.getSelectedItems())
             // Navigate to the CheckOutFragment
-            val ft = activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fcvNavigation, checkOutFragment)
-                ?.commit()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fcvNavigation, checkOutFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
         return view

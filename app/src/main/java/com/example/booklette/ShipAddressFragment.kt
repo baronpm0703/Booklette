@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import CheckOutFragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +42,10 @@ class ShipAddressFragment : Fragment(){
                     titleColor(Color.parseColor("#FF0000"))
                 }
             }
+        }
+
+        binding.ivBackToPrev.setOnClickListener {
+            parentFragmentManager.popBackStack()
         }
 
         return view

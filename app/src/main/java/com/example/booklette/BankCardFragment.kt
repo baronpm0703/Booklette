@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import CheckOutFragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -49,6 +50,10 @@ class BankCardFragment : Fragment(){
             }
         }
 
+        binding.ivBackToPrev.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
 //        binding.addShipAddressBtn.setOnClickListener {
 //            activity?.let {
 //                AddShipAddressDialog().show(it){
@@ -58,6 +63,9 @@ class BankCardFragment : Fragment(){
 //                }
 //            }
 //        }
+
+
+
         return view
     }
 

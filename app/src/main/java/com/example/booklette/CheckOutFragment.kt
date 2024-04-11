@@ -53,15 +53,17 @@ class CheckOutFragment : Fragment() {
 
         binding.changeAddress.setOnClickListener {
             val shipAddressFragment = ShipAddressFragment()
-            val ft = activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fcvNavigation, shipAddressFragment)
-                ?.commit()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fcvNavigation, shipAddressFragment)
+                .addToBackStack(null)
+                .commit()
         }
         binding.changeCardBtn.setOnClickListener {
             val bankCardFragment = BankCardFragment()
-            val ft = activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fcvNavigation, bankCardFragment)
-                ?.commit()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fcvNavigation, bankCardFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
 
@@ -71,11 +73,15 @@ class CheckOutFragment : Fragment() {
         binding.totalPayment.text = "$afterFomartedTotalAmount VND"
         binding.totalPaymentInPaymentDetail.text = "$afterFomartedTotalAmount VND"
 
+//        binding.ivBackToPrev.setOnClickListener {
+//            val cartFragment = CartFragment()
+//            activity?.supportFragmentManager?.beginTransaction()
+//                ?.replace(R.id.fcvNavigation, cartFragment)
+//                ?.commit()
+//        }
+
         binding.ivBackToPrev.setOnClickListener {
-            val cartFragment = CartFragment()
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fcvNavigation, cartFragment)
-                ?.commit()
+            parentFragmentManager.popBackStack()
         }
 
         return view
