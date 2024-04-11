@@ -32,9 +32,6 @@ class MyOrderItemRecyclerViewAdapter(
 
     }
 
-
-
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         val sdf = SimpleDateFormat("dd-MM-yyyy")

@@ -10,7 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import com.example.booklette.placeholder.PlaceholderContent
+import com.example.booklette.databinding.MyOrderItemListBinding
+
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
@@ -23,6 +24,8 @@ class MyOrderItemFragment : Fragment() {
     private lateinit var adapter: MyOrderItemRecyclerViewAdapter
     private var userOrders = arrayListOf<OrderDataClass>()
     private var originalValues = arrayListOf<OrderDataClass>()
+    private var _binding: MyOrderItemListBinding? = null
+    private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,7 +37,8 @@ class MyOrderItemFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.my_order_item_list, container, false)
+        _binding = MyOrderItemListBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         adapter = MyOrderItemRecyclerViewAdapter(userOrders)
 
@@ -108,7 +112,10 @@ class MyOrderItemFragment : Fragment() {
     }
 
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 
     fun completedButton(){
