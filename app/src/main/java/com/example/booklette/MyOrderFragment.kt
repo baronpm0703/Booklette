@@ -17,6 +17,7 @@ class MyOrderFragment : Fragment() {
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var myOrderItemFragment: MyOrderItemFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,65 +40,67 @@ class MyOrderFragment : Fragment() {
         val returnedButton: Button = binding.returnedButton
 
         val itemListContainer = binding.itemsRecyclerView // fragmentContainerView
-        val childFragment = childFragmentManager.findFragmentById(itemListContainer.id) as? MyOrderItemFragment
-
+        myOrderItemFragment = MyOrderItemFragment.newInstance(1)
+        childFragmentManager.beginTransaction()
+            .replace(itemListContainer.id,myOrderItemFragment)
+            .commit()
 
 
         processingButton.setOnClickListener {
             resetColorButton()
-            if (childFragment != null) {
+            if (myOrderItemFragment != null) {
                 if (lastPressedButton == processingButton){
                     lastPressedButton = null
-                    childFragment.unfilter()
+                    myOrderItemFragment.unfilter()
                 }
                 else{
                     lastPressedButton = processingButton
                     processingButton.backgroundTintList = null
-                    childFragment.processingButton()
+                    myOrderItemFragment.processingButton()
                 }
             }
         }
         completedButton.setOnClickListener{
             resetColorButton()
-            if (childFragment != null) {
+            if (myOrderItemFragment != null) {
                 if (lastPressedButton == completedButton){
                     lastPressedButton = null
-                    childFragment.unfilter()
+                    myOrderItemFragment.unfilter()
                 }
                 else{
                     lastPressedButton = completedButton
                     completedButton.backgroundTintList = null
-                    childFragment.completedButton()
+                    myOrderItemFragment.completedButton()
                 }
 
             }
         }
         cancelledButton.setOnClickListener {
             resetColorButton()
-            if (childFragment != null) {
+            if (myOrderItemFragment != null) {
                 if (lastPressedButton == cancelledButton){
                     lastPressedButton = null
-                    childFragment.unfilter()
+                    myOrderItemFragment.unfilter()
                 }
                 else{
                     lastPressedButton = cancelledButton
                     cancelledButton.backgroundTintList = null
-                    childFragment.cancelledButton()
+                    myOrderItemFragment.cancelledButton()
                 }
 
             }
         }
         returnedButton.setOnClickListener {
             resetColorButton()
-            if (childFragment != null) {
+            if (myOrderItemFragment != null) {
                 if (lastPressedButton == returnedButton){
                     lastPressedButton = null
-                    childFragment.returnedButton()
+                    myOrderItemFragment.returnedButton()
                 }
                 else{
                     lastPressedButton = returnedButton
                     returnedButton.backgroundTintList = null
-                    childFragment.returnedButton()
+                    myOrderItemFragment.returnedButton()
                 }
             }
         }

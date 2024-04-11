@@ -40,20 +40,7 @@ class MyOrderItemFragment : Fragment() {
         _binding = MyOrderItemListBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        adapter = MyOrderItemRecyclerViewAdapter(userOrders)
-
         val db = Firebase.firestore
-
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = this@MyOrderItemFragment.adapter
-            }
-        }
 
         // Fetch data from Firestore
         db.collection("orders")
@@ -83,24 +70,35 @@ class MyOrderItemFragment : Fragment() {
                     }
                     originalValues = ArrayList(userOrders)
                 }
-                // Notify the adapter that the data has changed
-                adapter.notifyDataSetChanged()
+                adapter = MyOrderItemRecyclerViewAdapter(userOrders)
 
+                // Check if the listener is already set before assigning it
+                if (adapter.onButtonClick == null) {
+                    adapter.onButtonClick = { orderItem ->
+                        val detailFragment = OrderDetailFragment.newInstance(orderItem.trackingNumber)
+                        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+
+                        transaction.replace(R.id.fcvNavigation, detailFragment)
+                        transaction.addToBackStack(null)
+                        transaction.commit()
+                    }
+//                    view.setOnClickListener({
+//                        if (context is homeActivity) {
+//                            context.changeFragmentContainer(bdFragment, context.smoothBottomBarStack[context.smoothBottomBarStack.size - 1])
+//                        }
+//                    })
+                }
+
+                view.adapter = adapter
+                view.layoutManager = LinearLayoutManager(context)
             }
             .addOnFailureListener { exception ->
                 Log.w("CanhBao", "Error getting documents.", exception)
             }
 
-        adapter.onButtonClick = { orderItem ->
-            val detailFragment = OrderDetailFragment.newInstance(orderItem.trackingNumber)
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fcvNavigation, detailFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-
         return view
     }
+
     fun filter(query: String) {
         userOrders.clear()
         if (query.isBlank()) {
@@ -133,6 +131,7 @@ class MyOrderItemFragment : Fragment() {
     fun unfilter(){
         filter("")
     }
+
     companion object {
         const val ARG_COLUMN_COUNT = "column-count"
 

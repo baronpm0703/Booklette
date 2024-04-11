@@ -102,7 +102,6 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/itemsRecyclerView"
-        android:name="com.example.booklette.MyOrderItemFragment"
         android:layout_width="365dp"
         android:layout_height="562dp"
         android:layout_marginStart="8dp"
