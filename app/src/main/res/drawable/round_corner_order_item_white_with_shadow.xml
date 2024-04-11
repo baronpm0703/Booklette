@@ -1,0 +1,23 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp" /> <!-- Adjust the radius to control the roundness -->
+            <solid android:color="#ECECEC" /> <!-- Set the button color -->
+            <padding android:left="5dp" android:top="5dp" android:right="5dp" android:bottom="5dp" /> <!-- Padding to accommodate the shadow -->
+            <stroke android:width="0dp" android:color="#00000000" /> <!-- Remove stroke -->
+            <corners android:radius="20dp" /> <!-- Adjust the radius to control the roundness -->
+            <padding android:bottom="5dp" android:left="5dp" android:right="5dp" android:top="5dp" />
+            <solid android:color="#ECECEC" /> <!-- Set the button color -->
+            <size android:height="10dp" /> <!-- Adjust shadow size -->
+
+        </shape>
+    </item>
+    <!-- White background -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp" /> <!-- Adjust the radius to control the roundness -->
+            <solid android:color="@android:color/white" /> <!-- Set the background color to white -->
+        </shape>
+    </item>
+</layer-list>

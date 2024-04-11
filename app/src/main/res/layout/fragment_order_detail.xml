@@ -103,7 +103,7 @@
             android:layout_width="0dp"
             android:layout_height="300dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/round_corner_order_item"
+            android:background="@drawable/round_corner_order_item_white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailTrackingNumberField">
@@ -115,7 +115,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@drawable/round_corner_order_item"
+            android:background="@drawable/round_corner_order_item_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailProductsFragmentFrameLayout">

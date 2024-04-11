@@ -29,6 +29,7 @@ class OrderDetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
     private var _binding: FragmentOrderDetailBinding? = null
+    private lateinit var bookIDs: ArrayList<String>
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
@@ -58,7 +59,8 @@ class OrderDetailFragment : Fragment() {
         val discountField = binding.orderDetailDiscountField
         val totalField = binding.orderDetailTotalField
 
-
+        val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
+        bookIDs = ArrayList()
         var tempTotalOrgMoney: Long = 0
         db.collection("orders")
             .whereEqualTo("orderID",orderID)
@@ -71,8 +73,10 @@ class OrderDetailFragment : Fragment() {
                     val date: Date? = timeStamp?.toDate()
                     val itemsMap = orderData?.get("items") as? Map<String, Any>
                     var totalQuantity: Long = 0
-                    itemsMap?.forEach { (_, itemData) ->
+                    itemsMap?.forEach { (itemID, itemData) ->
+                        bookIDs.add(itemID)
                         val itemMap = itemData as? Map<String, Any>
+
                         //Log.d("number",itemMap.toString())
                         tempTotalOrgMoney += itemMap?.get("totalSum") as Long
                         totalQuantity += itemMap?.get("quantity") as Long
@@ -83,8 +87,11 @@ class OrderDetailFragment : Fragment() {
                     val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
                     val paymentMethodType = paymentMethod?.get("Type")
 
-
-
+                    // setup recycler view for books
+                    val itemsFragment = OrderDetailItemListFragment.newInstance(1,bookIDs)
+                    childFragmentManager.beginTransaction()
+                        .replace(orderItemLayout.id,itemsFragment)
+                        .commit()
                     // assign to field in view
                     numberField.text = orderID
                     val sdf = SimpleDateFormat("dd-MM-yyyy")
@@ -99,9 +106,10 @@ class OrderDetailFragment : Fragment() {
                     discountField.text = "30%"
                     totalField.text = totalMoney.toString()
 
-                }
 
+                }
             }
+
         return view
     }
 
