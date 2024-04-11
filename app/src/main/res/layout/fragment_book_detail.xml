@@ -905,10 +905,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="7"
+                        android:padding="10dp"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/txtRatingBookDetail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="4.3"
@@ -919,6 +921,7 @@
                         </TextView>
 
                         <TextView
+                            android:id="@+id/txtNumberOfReview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="23 ratings"
@@ -937,7 +940,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         bar:animation="true"
-                        bar:max_value="100"
                         bar:rounded="true"
                         bar:show_label="true"
                         bar:spaces="3dp"
@@ -948,6 +950,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:visibility="invisible"
                     android:id="@+id/txtBookDetailReviews"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

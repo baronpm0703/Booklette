@@ -54,7 +54,7 @@ class ProductList : Fragment() {
     private lateinit var gvProductListAdapter: ProductListFragmentGridViewAdapter
 
     private var chosenGenre: String? = null
-    private var typeRes: String? = null
+    private var wordToSearch: String? = null
     private var searchRes = ArrayList<String>()
     private var bookList: ArrayList<ProductsObject> = ArrayList()
 
@@ -89,6 +89,7 @@ class ProductList : Fragment() {
         }
         if (this.arguments?.getString("WordToSearch") != null) {
             binding.selectedGenre.setText(this.arguments?.getString("WordToSearch").toString() )
+            wordToSearch = this.arguments?.getString("WordToSearch").toString()
             searchRes = requireArguments().getStringArrayList("SearchResult")!!
         }
 
@@ -99,7 +100,7 @@ class ProductList : Fragment() {
             add(largestAmount)
         }
         var filterDialogProductList = FilterDialogProductList(true, initValues)
-        if (!searchRes.equals(null))
+        if (searchRes.isNotEmpty())
             filterDialogProductList = FilterDialogProductList(false, initValues)
 
         // Set up back btn
@@ -192,92 +193,88 @@ class ProductList : Fragment() {
                         //                        binding.smHomeFragmentBestDeal.stopShimmer()
                     }, 2000)
                 }
-
-                }
+            }
         }
-        if (!searchRes.isEmpty()) {
+        if (!wordToSearch.equals(null)) {
             binding.horizontalScrollView.visibility = View.VISIBLE
             val params = (binding.relativeLayout2.layoutParams as ViewGroup.MarginLayoutParams)
             params.setMargins(0, 230, 0, 0)
 
-            searchRes.forEach {bookName ->
-                val docRef = db.collection("books").whereEqualTo("name", bookName).get()
-                docRef.addOnSuccessListener { result ->
-                    if (result.isEmpty) {
-                        binding.unavailbleInfo.visibility = View.VISIBLE
-                    }
+            if (searchRes.isEmpty()) { binding.unavailbleInfo.visibility = View.VISIBLE }
+            else {
+                searchRes.forEach {bookName ->
+                    val docRef = db.collection("books").whereEqualTo("name", bookName).get()
+                    docRef.addOnSuccessListener { result ->
+                        if (result.isEmpty) {
+                            binding.unavailbleInfo.visibility = View.VISIBLE
+                        }
 
-                    lifecycleScope.launch {
-                        val bookIDListToCalc = ArrayList<String>()
-                        for (document in result) {
-                            var avg_rating = 0.0F;
-                            var rating_num = 1;
-                            if (document.data.get("review") != null) {
-                                val reviewsArray = document.data.get("review") as ArrayList<Map<String, Any>>
-                                rating_num = reviewsArray.size
+                        lifecycleScope.launch {
+                            val bookIDListToCalc = ArrayList<String>()
+                            for (document in result) {
+                                var avg_rating = 0.0F;
+                                var rating_num = 1;
+                                if (document.data.get("review") != null) {
+                                    val reviewsArray = document.data.get("review") as ArrayList<Map<String, Any>>
+                                    rating_num = reviewsArray.size
 
-                                for (reviewMap in reviewsArray) {
-                                    val uid = reviewMap["UID"] as String
-                                    val image = reviewMap["image"] as String
-                                    val score = (reviewMap["score"] as Long).toInt()
-                                    val text = reviewMap["text"] as String
+                                    for (reviewMap in reviewsArray) {
+                                        val uid = reviewMap["UID"] as String
+                                        val image = reviewMap["image"] as String
+                                        val score = (reviewMap["score"] as Long).toInt()
+                                        val text = reviewMap["text"] as String
 
-                                    avg_rating += score
+                                        avg_rating += score
+                                    }
+                                }
+                                bookIDListToCalc.add(document.data["bookID"].toString())
+                                val dDate = document.data["releaseDate"] as com.google.firebase.Timestamp
+
+                                val bookPrice: ArrayList<Float> = getBookPrice(document.data["bookID"].toString())
+                                val bookQuantity = getBookQuantity(document.data["bookID"].toString())
+                                // Each Store have diff price
+                                bookPrice.forEach {
+                                    smallestAmount = min(smallestAmount, it)
+                                    largestAmount = max(largestAmount, it)
+                                    initValues.rangslider[0] = smallestAmount
+                                    initValues.rangslider[1] = largestAmount
+                                    filterDialogProductList.updateInitValues(initValues)
+
+                                    val productsObject = ProductsObject(
+                                        document.data["bookID"].toString(),
+                                        document.data["name"].toString(),
+                                        document.data["genre"].toString(),
+                                        document.data["author"].toString(),
+                                        dDate.toDate(),
+                                        document.data["image"].toString(),
+                                        it,
+                                        avg_rating / rating_num,
+                                        document.data["type"].toString()
+                                    )
+                                    productsObject.quantitySale = bookQuantity
+                                    bookList.add(productsObject)
                                 }
                             }
-                            bookIDListToCalc.add(document.data["bookID"].toString())
-                            val dDate = document.data["releaseDate"] as com.google.firebase.Timestamp
+                            if (gvProductListAdapter != null){
+                                bookList.sortBy {
+                                        book -> book.price
+                                }
 
-                            val bookPrice: ArrayList<Float> = getBookPrice(document.data["bookID"].toString())
-                            val bookQuantity = getBookQuantity(document.data["bookID"].toString())
-                            // Each Store have diff price
-                            bookPrice.forEach {
-                                smallestAmount = min(smallestAmount, it)
-                                largestAmount = max(largestAmount, it)
+                                gvProductListAdapter.notifyDataSetChanged()
 
-                                // Update the filter range slider
-                                initValues.rangslider[0] = smallestAmount
-                                initValues.rangslider[1] = largestAmount
-                                filterDialogProductList.updateInitValues(initValues)
-
-
-                                val productsObject = ProductsObject(
-                                    document.data["bookID"].toString(),
-                                    document.data["name"].toString(),
-                                    document.data["genre"].toString(),
-                                    document.data["author"].toString(),
-                                    dDate.toDate(),
-                                    document.data["image"].toString(),
-                                    it,
-                                    avg_rating / rating_num,
-                                    document.data["type"].toString()
-                                )
-                                productsObject.quantitySale = bookQuantity
-                                bookList.add(productsObject)
+                                Handler().postDelayed({
+                                    // Code to be executed after the delay
+                                    // For example, you can start a new activity or update UI elements
+                                    //                        binding.smHomeFragmentBestDeal.visibility = View.GONE
+                                    binding.gvProductList.visibility = View.VISIBLE
+                                    //                        binding.smHomeFragmentBestDeal.stopShimmer()
+                                }, 2000)
                             }
-                        }
-                        if (gvProductListAdapter != null){
-                            bookList.sortBy {
-                                    book -> book.price
-                            }
-
-                            gvProductListAdapter.notifyDataSetChanged()
-
-                            Handler().postDelayed({
-                                // Code to be executed after the delay
-                                // For example, you can start a new activity or update UI elements
-                                //                        binding.smHomeFragmentBestDeal.visibility = View.GONE
-                                binding.gvProductList.visibility = View.VISIBLE
-                                //                        binding.smHomeFragmentBestDeal.stopShimmer()
-                            }, 2000)
                         }
                     }
-
                 }
             }
-
         }
-
         // Set up the select dialog when click the sort
         binding.tvSort.setOnClickListener{
 //            binding.linearLayout.visibility = View.VISIBLE
@@ -393,7 +390,7 @@ class ProductList : Fragment() {
         }
     }
 
-    suspend fun getBookPrice(bookID: String): ArrayList<Float> {
+    fun getBookPrice(bookID: String): ArrayList<Float> {
         val res = ArrayList<Float>()
         try {
             val querySnapshot = db.collection("personalStores").whereNotEqualTo("items.$bookID", null).get()
@@ -451,7 +448,7 @@ class ProductList : Fragment() {
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 
     companion object {

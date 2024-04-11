@@ -3,12 +3,13 @@ package com.example.booklette
 import android.graphics.Color
 import android.graphics.Paint
 import CartFragmentRecyclerViewAdapter
-import CheckoutFragment
+import CheckOutFragment
 import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.os.Bundle
 import android.os.Handler
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentCartBinding
-import com.example.booklette.model.CartObject
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import android.util.Log
+import com.example.booklette.model.CartObject
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,6 +40,10 @@ class CartFragment : Fragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
 
+
+    private var totalAmount: Float = 0f
+
+
 //    private lateinit var auth: FirebaseAuth
 //    private lateinit var db: FirebaseFirestore
 
@@ -50,110 +56,133 @@ class CartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _binding = FragmentCartBinding.inflate(inflater, container, false)
         val view = binding.root
         // Add more items as needed
 
+
         val adapter = CartFragmentRecyclerViewAdapter(requireContext(), cartList)
         binding.rvCart.adapter = adapter
+        adapter.onSelectItemClickListener = object : CartFragmentRecyclerViewAdapter.OnSelectItemClickListener {
+            override fun onSelectItemClick(selectedItems: ArrayList<CartObject>) {
+                val totalAmount = adapter.calculateTotalAmount()
+                if (totalAmount == 0f) {
+                    binding.btnCheckOut.isEnabled = false
+                    binding.btnCheckOut.setBackgroundResource(R.drawable.button_go_to_check_out_disabled)
+                } else {
+                    binding.btnCheckOut.isEnabled = true
+                    binding.btnCheckOut.setBackgroundResource(R.drawable.button_go_to_check_out)
+
+                }
+                val afterFomartedTotalAmount = String.format("%,.0f", totalAmount)
+                binding.totalAmount.text = "$afterFomartedTotalAmount VND"
+            }
+        }
+
         binding.rvCart.visibility = View.GONE
         binding.rvCart.layoutManager = LinearLayoutManager(requireContext())
+
 
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvCart)
 
 
-
-        adapter.quantityChangeListener = object : CartFragmentRecyclerViewAdapter.OnQuantityChangeListener {
-            override fun onQuantityDecreased(position: Int) {
-                // Decrease item quantity
-                // Implement your logic here...
-            }
-
-            override fun onQuantityIncreased(position: Int) {
-                // Increase item quantity
-                // Implement your logic here...
-            }
-        }
         val auth = Firebase.auth
         val db = Firebase.firestore
 
-        // Shop info
-        db.collection("accounts").whereEqualTo("UID", auth.uid).get()
-            .addOnSuccessListener { documents ->
-            if (documents.size() != 1) return@addOnSuccessListener
-            for (document in documents) {
-                // Get avatar and seller's name
-                if (document.data.get("cart") != null) {
-                    val cartArray = document.data.get("cart") as ArrayList<Map<String, Any>>
-                    cartArray.let {
-                        for (cartMap in it) {
-                            val itemId = cartMap["itemId"] as? String
-                            val storeId = cartMap["storeId"] as? String
-                            val quantity = cartMap["quantity"] as? Number
-                            if(itemId != null && storeId != null){
-                                db.collection("accounts").whereEqualTo("UID", storeId).get()
-                                    .addOnSuccessListener { storeDocument ->
-                                        for(eachStore in storeDocument){
-                                            val storeName = eachStore.data.get("fullname")
-                                            eachStore.getDocumentReference("store")!!.get().addOnSuccessListener { personalStoreDocument ->
-                                                val itemList = personalStoreDocument["items"] as? Map<String, Any>
-                                                val eachItem = itemList?.get(itemId) as? Map<String, Any>
-                                                db.collection("books")
-                                                    .whereEqualTo("bookID", itemId)
-                                                    .get()
-                                                    .addOnSuccessListener { bookDocument ->
-                                                        for (eachBook in bookDocument) {
-                                                            cartList.add(
-                                                                CartObject(
-                                                                    eachBook.data["bokID"].toString(),
-                                                                    storeId.toString(),
-                                                                    storeName.toString(),
-                                                                    eachBook.data["image"].toString(),
-                                                                    eachBook.data["name"].toString(),
-                                                                    eachBook.data["author"].toString(),
-                                                                    eachItem?.get("price").toString().toFloat(),
-                                                                    quantity?.toInt() ?: 0
+        if(cartList.size == 0){
+            binding.loadingAnim.visibility = View.VISIBLE
+            binding.rvCart.visibility = View.GONE
+            db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+                .addOnSuccessListener { documents ->
+                    if (documents.size() != 1) return@addOnSuccessListener
+                    for (document in documents) {
+                        // Get avatar and seller's name
+                        if (document.data.get("cart") != null) {
+                            val cartArray = document.data.get("cart") as ArrayList<Map<String, Any>>
+                            cartArray?.let { cartListData ->
+                                for (cartMap in cartListData) {
+                                    val itemId = cartMap["itemId"] as? String
+                                    val storeId = cartMap["storeId"] as? String
+                                    val quantity = cartMap["quantity"] as? Number
+                                    if(itemId != null && storeId != null){
+                                        db.collection("accounts").whereEqualTo("UID", storeId).get()
+                                            .addOnSuccessListener { storeDocument ->
+                                                for(eachStore in storeDocument){
+                                                    val storeName = eachStore.data.get("fullname")
+                                                    eachStore.getDocumentReference("store")!!.get().addOnSuccessListener { personalStoreDocument ->
+                                                        val itemList = personalStoreDocument["items"] as? Map<String, Any>
+                                                        val eachItem = itemList?.get(itemId) as? Map<String, Any>
+                                                        db.collection("books")
+                                                            .whereEqualTo("bookID", itemId)
+                                                            .get()
+                                                            .addOnSuccessListener { bookDocument ->
+                                                                for (eachBook in bookDocument) {
+                                                                    cartList.add(
+                                                                        CartObject(
+                                                                            eachBook.data["bokID"].toString(),
+                                                                            storeId.toString(),
+                                                                            storeName.toString(),
+                                                                            eachBook.data["image"].toString(),
+                                                                            eachBook.data["name"].toString(),
+                                                                            eachBook.data["author"].toString(),
+                                                                            eachItem?.get("price").toString().toFloat(),
+                                                                            quantity?.toInt() ?: 1,
+                                                                        )
                                                                     )
-                                                            )
-                                                        }
-                                                        adapter.notifyDataSetChanged()
+                                                                    adapter.notifyDataSetChanged()
 
-                                                        Handler().postDelayed({
-                                                            // Code to be executed after the delay
-                                                            // For example, you can start a new activity or update UI elements
-                                                            binding.rvCart.visibility = View.VISIBLE
-                                                        }, 2000)
+                                                                    Handler().postDelayed({
+                                                                        // Code to be executed after the delay
+                                                                        // For example, you can start a new activity or update UI elements
+                                                                        binding.rvCart.visibility = View.VISIBLE
+                                                                        binding.loadingAnim.visibility = View.GONE
+
+                                                                    }, 2000)
+                                                                }
+
+                                                            }
                                                     }
                                                 }
                                             }
-                                        }
 
                                     }
+                                }
                             }
+                        }
                     }
-                    }
-                }
 
-            }
+                }
+        }
+        else {
+            binding.loadingAnim.visibility = View.GONE
+            binding.rvCart.visibility = View.VISIBLE
+        }
+
+        binding.totalAmount.text = "0 VND"
 
         binding.btnCheckOut.setOnClickListener {
-            val checkOutFragment = CheckoutFragment()
-
-            val ft = activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fcvNavigation, checkOutFragment)
-                ?.commit()
+            // Create a new instance of CheckOutFragment and pass the selectedItems
+            val checkOutFragment = CheckOutFragment.passSelectedItemToCheckOut(adapter.getSelectedItems())
+            // Navigate to the CheckOutFragment
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fcvNavigation, checkOutFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
         return view
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 
-private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+
+    private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
         return false
@@ -218,20 +247,28 @@ private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0,
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Are you sure you want to delete this item?")
 
-        // Xác nhận xóa item
         builder.setPositiveButton("Delete") { dialog, which ->
             val adapter = binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter
             adapter?.removeItem(position)
-            adapter?.notifyItemRemoved(position) // Cập nhật giao diện
+            adapter?.notifyItemRemoved(position)
             dialog.dismiss()
         }
 
-        // Hủy thao tác xóa item
         builder.setNegativeButton("Cancel") { dialog, which ->
             dialog.dismiss()
         }
 
         val alertDialog = builder.create()
+
+        val currentPosition = (binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter)?.getItemInfo(position)
+
+        alertDialog.setOnCancelListener {
+            currentPosition?.let { restoredItem ->
+                val adapter = binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter
+                adapter?.notifyItemChanged(position)
+            }
+        }
+
         alertDialog.show()
     }
 }

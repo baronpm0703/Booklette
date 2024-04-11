@@ -1,4 +1,5 @@
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,18 +8,39 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
-import com.example.booklette.model.CartObject
 import com.example.booklette.R
+import com.example.booklette.model.CartObject
+import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
 class CartFragmentRecyclerViewAdapter(
     private val context: Context,
     private val cartList: ArrayList<CartObject>,
-
-    ) : RecyclerView.Adapter<CartFragmentRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CartFragmentRecyclerViewAdapter.ViewHolder>() {
 
     private val itemQuantities = ArrayList<Int>()
-    private val itemSelections = ArrayList<Boolean>()
+    private val itemSelections = HashMap<Int, Boolean>()
+    private val selectedItems = ArrayList<CartObject>() // ArrayList to store selected items
+
+    interface OnSelectItemClickListener {
+        fun onSelectItemClick(selectedItems: ArrayList<CartObject>)
+    }
+    interface TotalAmountListener {
+        fun onTotalAmountCalculated(totalAmount: Float)
+    }
+
+    private fun updateTotalAmount() {
+        onSelectItemClickListener?.onSelectItemClick(selectedItems)
+    }
+
+    fun calculateTotalAmount(): Float {
+        var total = 0f
+        for (item in selectedItems) {
+            total += item.price * item.bookQuantity
+        }
+        return total
+    }
+    var onSelectItemClickListener: OnSelectItemClickListener? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,29 +53,37 @@ class CartFragmentRecyclerViewAdapter(
         val quantity: TextView = itemView.findViewById(R.id.quantity)
         val btnCartItemAdd: AppCompatButton  = itemView.findViewById(R.id.btnCartItemAdd)
         val btnSelectItem: RadioButton = itemView.findViewById(R.id.btnSelectItem)
+
+
+        init {
+            btnSelectItem.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    toggleSelection(position)
+                    notifyItemChanged(position)
+
+                    // Notify the fragment when an item is selected
+                    onSelectItemClickListener?.onSelectItemClick(getSelectedItems())
+
+                }
+
+            }
+
+            btnCartItemAdd.setOnClickListener {
+                increaseQuantity(adapterPosition)
+            }
+
+            btnCartItemMinus.setOnClickListener {
+                decreaseQuantity(adapterPosition)
+            }
+        }
     }
-
-    interface OnQuantityChangeListener {
-        fun onQuantityDecreased(position: Int)
-        fun onQuantityIncreased(position: Int)
-    }
-
-    var quantityChangeListener: OnQuantityChangeListener? = null
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.fragment_cart_recycle_view_item, parent, false)
         return ViewHolder(view)
     }
 
-    init {
-        // Initialize itemQuantities with default quantities
-        for (i in cartList.indices) {
-            itemQuantities.add(1) // Initialize with default quantity 1
-            itemSelections.add(false) // Initialize with not selected
-
-        }
-    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cartInfo = cartList[position]
@@ -61,59 +91,57 @@ class CartFragmentRecyclerViewAdapter(
         holder.bookTitle.text=cartInfo.bookName
         holder.bookOwner.text=cartInfo.author
         holder.quantity.text= cartInfo.bookQuantity.toString()
-        val bookPrice = "%.3f".format(cartInfo.price * 100.000)
-        holder.bookPrice.text = bookPrice
+        val formattedPrice = String.format("%,.0f", cartInfo.price) // Format as integer with thousand separator
+        holder.bookPrice.text = "$formattedPrice VND"
         Picasso.get()
             .load(cartInfo.bookCover)
             .into(holder.bookCover)
-
-//        holder.tvCartItemCount.text = itemQuantities[position].toString()
-//        holder.btnSelectItem.isChecked = itemSelections[position]
-//        holder.btnSelectItem.setOnClickListener {
-//            toggleSelection(position)
-//            notifyDataSetChanged() // Notify data change to update views
-//        }
-//
-//        holder.btnCartItemMinus.setOnClickListener {
-//            // Decrease quantity and notify data change
-//            decreaseQuantity(position)
-//            notifyDataSetChanged() // Notify data change to update views
-//        }
-//
-//        holder.btnCartItemAdd.setOnClickListener {
-//            // Increase quantity and notify data change
-//            increaseQuantity(position)
-//            notifyDataSetChanged() // Notify data change to update views
-//        }
+        holder.btnSelectItem.isChecked = itemSelections[position] ?: false
     }
+
     private fun toggleSelection(position: Int) {
-        itemSelections[position] = !itemSelections[position]
+        itemSelections[position] = !(itemSelections[position] ?: false)
+        // Update selected items list
+        if (itemSelections[position] == true) {
+            selectedItems.add(cartList[position])
+        } else {
+            selectedItems.remove(cartList[position])
+        }
+    }
+
+    fun getSelectedItems(): ArrayList<CartObject> {
+        return selectedItems
     }
 
     private fun increaseQuantity(position: Int) {
-        itemQuantities[position]++
+        val cartObject = cartList[position]
+        cartObject.bookQuantity = cartObject.bookQuantity.toInt() + 1
+        notifyItemChanged(position)
+        updateTotalAmount()
+
     }
 
-    // Decrease quantity for an item, ensuring it doesn't go below 0
     private fun decreaseQuantity(position: Int) {
-        if (itemQuantities[position] > 0) {
-            itemQuantities[position]--
+        val cartObject = cartList[position]
+        if (cartObject.bookQuantity.toInt() > 1) {
+            cartObject.bookQuantity = cartObject.bookQuantity.toInt() - 1
+            notifyItemChanged(position)
+            updateTotalAmount()
         }
     }
+
+
     override fun getItemCount(): Int {
         return cartList.size
     }
 
     fun removeItem(position: Int) {
-        // Xóa mục khỏi danh sách
         cartList.removeAt(position)
-        // Thông báo cho RecyclerView biết rằng một mục đã bị xóa ở vị trí được chỉ định
         notifyItemRemoved(position)
     }
 
 
     fun getItemInfo(position: Int): CartObject {
-        // Trả về thông tin của item tại vị trí được chỉ định
         return cartList[position]
     }
 }

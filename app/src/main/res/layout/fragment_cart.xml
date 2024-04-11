@@ -17,230 +17,293 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/ivbackActivity"
+            android:id="@+id/ivHomeHamburgerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/baseline_arrow_back_ios_new_24"></ImageView>
+            android:src="@drawable/baseline_density_medium_24">
+
+        </ImageView>
 
         <TextView
             android:id="@+id/wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:paddingTop="5dp"
+            android:gravity="center"
             android:text="@string/navigation_cart"
             android:textColor="@color/black"
             android:textSize="21dp"
             android:textStyle="bold"></TextView>
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivHomeProfile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/booklette_logo">
+
+        </de.hdodenhof.circleimageview.CircleImageView>
 
         <ImageView
-            android:id="@+id/ivSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/search"></ImageView>
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/ivHomeProfile"
+            android:src="@drawable/subtract">
+
+        </ImageView>
+
     </RelativeLayout>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout6"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent">-->
+
+<!--&lt;!&ndash;        <EditText&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:hint="@string/cart_fragment_voucher_hint"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:paddingEnd="25dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:paddingStart="25dp">&ndash;&gt;-->
+<!--&lt;!&ndash;        </EditText>&ndash;&gt;-->
+
+<!--        <HorizontalScrollView-->
+<!--            android:visibility="gone"-->
+<!--            android:id="@+id/horizontalScrollViewBookletteDiscount"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="15dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginRight="15dp"-->
+<!--            android:scrollbars="none"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">-->
+
+<!--            <com.google.android.material.chip.ChipGroup-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:singleSelection="true">-->
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/discount50"-->
+<!--                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Sale 50%"/>-->
+
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/discount30"-->
+<!--                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Sale 30%"/>-->
+
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/discount20"-->
+<!--                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Sale 20%"/>-->
+
+<!--            </com.google.android.material.chip.ChipGroup>-->
+
+<!--        </HorizontalScrollView>-->
+
+<!--        <HorizontalScrollView-->
+<!--            android:id="@+id/horizontalScrollViewFreeShip"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="15dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginRight="15dp"-->
+<!--            android:scrollbars="none"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">-->
+
+<!--            <com.google.android.material.chip.ChipGroup-->
+<!--                android:visibility="gone"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:singleSelection="true">-->
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/freeShip30k"-->
+<!--                    style="@style/Color_Ship_Discount_Choice.MaterialComponents.Chip.Entry"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Free ship 30k"/>-->
+
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/freeShip15k"-->
+<!--                    style="@style/Color_Ship_Discount_Choice.MaterialComponents.Chip.Entry"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Free ship 15k"/>-->
+
+<!--            </com.google.android.material.chip.ChipGroup>-->
+
+<!--        </HorizontalScrollView>-->
+
+<!--        <RelativeLayout-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="15dp">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:text="@string/cart_fragment_total_amount"-->
+<!--                android:layout_alignParentLeft="true"-->
+<!--                android:paddingStart="25dp">-->
+<!--            </TextView>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/totalAmount"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="120.000VND"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:paddingEnd="25dp">-->
+<!--            </TextView>-->
+<!--        </RelativeLayout>-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="gone">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:text="@string/cart_fragment_discount_amount"-->
+<!--                android:layout_alignParentLeft="true"-->
+<!--                android:paddingStart="25dp">-->
+<!--            </TextView>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textStyle="bold"-->
+<!--                android:text="120.000VND"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:paddingEnd="25dp">-->
+<!--            </TextView>-->
+<!--        </RelativeLayout>-->
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="visible">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:text="@string/cart_fragment_total_payment"-->
+<!--                android:layout_alignParentLeft="true"-->
+<!--                android:paddingStart="25dp">-->
+<!--            </TextView>-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textStyle="bold"-->
+<!--                android:text="100.000VND"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:paddingEnd="25dp">-->
+<!--            </TextView>-->
+<!--        </RelativeLayout>-->
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:paddingEnd="25dp"-->
+<!--            android:paddingStart="25dp"-->
+<!--            android:paddingBottom="25dp">-->
+<!--            <Button-->
+<!--                android:id="@+id/btnCheckOut"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textStyle="bold"-->
+<!--                android:background="@drawable/button_go_to_check_out"-->
+<!--                android:text="@string/cart_fragment_checkout">-->
+<!--            </Button>-->
+<!--        </RelativeLayout>-->
+
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-<!--        <EditText-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="@string/cart_fragment_voucher_hint"-->
-<!--            android:paddingEnd="25dp"-->
-<!--            android:paddingStart="25dp">-->
-<!--        </EditText>-->
+        <LinearLayout
+            android:layout_width="228dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp">
 
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollViewBookletteDiscount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="15dp"
-            android:scrollbars="none"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:singleSelection="true">
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/discount50"
-                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sale 50%"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/discount30"
-                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sale 30%"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/discount20"
-                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sale 20%"/>
-
-            </com.google.android.material.chip.ChipGroup>
-
-        </HorizontalScrollView>
-
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollViewFreeShip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="15dp"
-            android:scrollbars="none"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:singleSelection="true">
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/freeShip30k"
-                    style="@style/Color_Ship_Discount_Choice.MaterialComponents.Chip.Entry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Free ship 30k"/>
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/freeShip15k"
-                    style="@style/Color_Ship_Discount_Choice.MaterialComponents.Chip.Entry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Free ship 15k"/>
-
-            </com.google.android.material.chip.ChipGroup>
-
-        </HorizontalScrollView>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:gravity="right"
+                android:paddingTop="6dp"
                 android:text="@string/cart_fragment_total_amount"
-                android:layout_alignParentLeft="true"
-                android:paddingStart="25dp">
-            </TextView>
+                android:textColor="@color/black"
+                android:textStyle="bold"></TextView>
 
             <TextView
                 android:id="@+id/totalAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="120.000VND"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_alignParentRight="true"
-                android:paddingEnd="25dp">
-            </TextView>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="@string/cart_fragment_discount_amount"
-                android:layout_alignParentLeft="true"
-                android:paddingStart="25dp">
-            </TextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:text="120.000VND"
-                android:layout_alignParentRight="true"
-                android:paddingEnd="25dp">
-            </TextView>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="@string/cart_fragment_total_payment"
-                android:layout_alignParentLeft="true"
-                android:paddingStart="25dp">
-            </TextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:text="100.000VND"
-                android:layout_alignParentRight="true"
-                android:paddingEnd="25dp">
-            </TextView>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingEnd="25dp"
-            android:paddingStart="25dp"
-            android:paddingBottom="25dp">
-            <Button
-                android:id="@+id/btnCheckOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:background="@drawable/button_go_to_check_out"
-                android:text="@string/cart_fragment_checkout">
-            </Button>
-        </RelativeLayout>
+                android:gravity="right"
 
+                android:text="0 VND"
+                android:textColor="#D45555"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCheckOut"
+            android:layout_width="119dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_go_to_check_out_disabled"
+            android:text="@string/cart_fragment_checkout"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"></Button>
     </LinearLayout>
-<!--    <ListView-->
-<!--        android:id="@+id/listViewCart"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:gravity="center"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="1.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"-->
-<!--        >-->
-<!--    </ListView>-->
+
+    <com.example.loadinganimation.LoadingAnimation
+        android:id="@+id/loadingAnim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:barType="@drawable/dot_anim"
+        app:enlarge="3"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCart"
