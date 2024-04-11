@@ -18,17 +18,26 @@
 
     </ImageView>
 
-    <per.wsj.library.AndRatingBar
-            android:id="@+id/bookRating"
-            android:layout_marginLeft="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="13dp"
-            android:rating="2.5"
-            android:layout_marginTop="10dp"
-            app:bgColor="#6E6E6E"
-            app:starColor="#FFBA49"
-            app:bgDrawable="@drawable/star"
-            app:starDrawable="@drawable/star_filled"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <per.wsj.library.AndRatingBar
+                android:id="@+id/bookRating"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="13dp"
+                android:rating="2.5"
+                android:layout_marginTop="10dp"
+                app:bgColor="#6E6E6E"
+                app:starColor="#FFBA49"
+                app:bgDrawable="@drawable/star"
+                app:starDrawable="@drawable/star_filled"/>
+        <TextView
+                android:text="(0)"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/bookRatingCnt" android:layout_weight="1"/>
+    </LinearLayout>
 
     <TextView
             android:id="@+id/bookNameText"

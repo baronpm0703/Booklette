@@ -1,6 +1,9 @@
 package com.example.booklette
 
+import android.icu.util.Calendar
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +15,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentMyshopShopTabBinding
 import com.example.booklette.model.BookObject
+import com.example.booklette.model.HRecommendedBookObject
+import com.example.booklette.model.MyShopBookObject
+import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 import com.squareup.picasso.Picasso
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 
 /**
  * A simple [Fragment] subclass.
@@ -37,6 +49,9 @@ class MyShopShopFragment : Fragment() {
 		_binding = FragmentMyshopShopTabBinding.inflate(inflater, container, false)
 		val view = binding.root
 
+		val auth = Firebase.auth
+		val db = Firebase.firestore
+
 //		discountHScrollView = view.findViewById(R.id.discountHScroll)
 //		newArrivalsHScrollView = view.findViewById(R.id.newArrivalsScrollView)
 
@@ -44,30 +59,73 @@ class MyShopShopFragment : Fragment() {
 		var discounts = arrayListOf(Triple(10, 100, 30), Triple(20, 150, 20), Triple(30, 120, 50))
 		setDiscountItemViews(view, discounts)
 
-		// New arrivals scroll view
-		var newArrivals = arrayListOf<BookObject>()
-		newArrivals.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"))
-		newArrivals.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"))
-		newArrivals.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"))
-		var newArrivalsDisc = arrayListOf(5F, 4F, 3F, 2F, 1F)
-		setNewArrivalsItemViews(view, newArrivals, newArrivalsDisc)
+		// Data arrays
+		val newArrivals = arrayListOf<MyShopBookObject>()
+		val bestSellers = arrayListOf<MyShopBookObject>()
+		val highlyRecommended = arrayListOf<HRecommendedBookObject>()
+		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+			.addOnSuccessListener { documents ->
+				if (documents.size() != 1) return@addOnSuccessListener	// Failsafe
 
-		// Best Sellers scroll view
-		var bestSellers = arrayListOf<BookObject>()
-		bestSellers.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"))
-		bestSellers.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"))
-		bestSellers.add(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"))
-		var bestSellersDisc = arrayListOf(5F, 4F, 3F, 2F, 1F)
-		setBestSellersItemViews(view, bestSellers, bestSellersDisc)
+				for (document in documents) {
+					document.getDocumentReference("store")!!.get().addOnSuccessListener { storeSnapshot ->
+						val books = storeSnapshot.get("items") as Map<String, Map<String, Any>>
+						books.map { entry ->
+							val book = entry.value.toMutableMap()
 
-		// Highly Recommended scroll view
-		var highlyRecommended = arrayListOf<HRecommendedBookObject>()
-		highlyRecommended.add(HRecommendedBookObject(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"), 4.5F))
-		highlyRecommended.add(HRecommendedBookObject(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"), 4.5F))
-		highlyRecommended.add(HRecommendedBookObject(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"), 4.5F))
-		highlyRecommended.add(HRecommendedBookObject(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"), 4.5F))
-		highlyRecommended.add(HRecommendedBookObject(BookObject("B001", "The Catcher in the Eyes", "Novel", "Chanh Tin", "10/03/2003", "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Books%2FCatcher.jpg?alt=media&token=dd8c6fab-4be1-495a-9b07-fe411e61718b", 12.50F, "ABC"), 4.5F))
-		setHighlyRecommendedItemViews(view, highlyRecommended)
+							db.collection("books").whereEqualTo("bookID", entry.key).get().addOnSuccessListener {bookQuery ->
+								if (bookQuery.size() != 1) return@addOnSuccessListener   // Failsafe
+
+								for (info in bookQuery) {
+									val bookId = info.get("bookID").toString()
+									val bookImg = info.get("image").toString()
+									val bookName = info.get("name").toString()
+									val bookGenre = info.get("genre").toString()
+									val bookAuthor = info.get("author").toString()
+									val bookReleaseDate = info.get("releaseDate") as Timestamp
+									val bookPrice = book["price"] as Long
+//									val bookDiscount = info.get("best-deal-sale") as Float
+									val bookDiscount = 0.5F
+									val bookRemain = book["remain"] as Long
+									val bookSold = book["sold"] as Long
+									val bookStatus = book["status"].toString()
+									val bookRating = (info.get("review") as ArrayList<Float>).toFloatArray().average().toFloat()
+									val bookRatingCnt = (info.get("review") as ArrayList<Float>).size
+
+									val newBookObject = MyShopBookObject(
+										bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice, bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate
+									)
+									val newRecommendedBookObject = HRecommendedBookObject(
+										bookId, bookImg, bookRating, bookRatingCnt.toLong(), bookName, bookPrice
+									)
+
+									val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
+									val dateTo = Calendar.getInstance().apply { time = bookReleaseDate.toDate() }
+									val period = Math.abs(dateTo.get(Calendar.MONTH) - dateFrom.get(Calendar.MONTH))
+									if (period >= 1) {
+										newArrivals.add(newBookObject)
+									}
+									if (bestSellers.size == 0 || bestSellers[0].sold >= bookSold)
+										bestSellers.add(newBookObject)
+									else bestSellers.add(0, newBookObject)
+									if (highlyRecommended.size == 0 || highlyRecommended[0].rating >= bookRating)
+										highlyRecommended.add(0, newRecommendedBookObject)
+									else highlyRecommended.add(newRecommendedBookObject)
+								}
+							}
+						}
+
+						Handler().postDelayed({
+							// New Arrivals scroll view
+							setNewArrivalsItemViews(view, newArrivals)
+							// Best Sellers scroll view
+							setBestSellersItemViews(view, bestSellers)
+							// Highly Recommended scroll view
+							setHighlyRecommendedItemViews(view, highlyRecommended)
+						}, 2000)
+					}
+				}
+			}
 
 		return view
 	}
@@ -91,7 +149,7 @@ class MyShopShopFragment : Fragment() {
 		}
 	}
 
-	private fun setNewArrivalsItemViews(view: View, newArrivals: ArrayList<BookObject>, discounts: ArrayList<Float>) {
+	private fun setNewArrivalsItemViews(view: View, newArrivals: ArrayList<MyShopBookObject>) {
 		val content = view.findViewById<LinearLayout>(R.id.newArrivalsScrollViewContent)
 
 		for (newArrival in newArrivals) {
@@ -111,26 +169,28 @@ class MyShopShopFragment : Fragment() {
 			bookGenreText.text = newArrival.genre
 			bookNameText.text = newArrival.name
 			bookAuthorText.text = newArrival.author
-			bookPriceText.text = newArrival.price.toString()
-			bookDiscountText.text = discounts[singleFrame.id].toString() + "%"
+			bookPriceText.text = newArrival.shopPrice.toString()
+			bookDiscountText.text = (newArrival.discount * 100).toString() + "%"
 
 			newArrivalsViews.add(singleFrame)
 			content.addView(singleFrame)
 		}
+
+		content.visibility = View.VISIBLE
 	}
 
-	private fun setBestSellersItemViews(view: View, newArrivals: ArrayList<BookObject>, discounts: ArrayList<Float>) {
+	private fun setBestSellersItemViews(view: View, bestSellers: ArrayList<MyShopBookObject>) {
 		val content = view.findViewById<LinearLayout>(R.id.bestSellersScrollViewContent)
 
-		for (newArrival in newArrivals) {
+		for (bestSeller in bestSellers) {
 			var singleFrame: View
-			val id = newArrivals.indexOf(newArrival)
+			val id = bestSellers.indexOf(bestSeller)
 
 			if (id == 0) singleFrame = layoutInflater.inflate(R.layout.myshop_book_item_bestseller_top1, null)
 			else if (id == 1) singleFrame = layoutInflater.inflate(R.layout.myshop_book_item_bestseller_top2, null)
 			else singleFrame = layoutInflater.inflate(R.layout.myshop_book_item, null)
 
-			singleFrame.id = newArrivals.indexOf(newArrival)
+			singleFrame.id = bestSellers.indexOf(bestSeller)
 
 			val bookImg = singleFrame.findViewById<ImageView>(R.id.bookImg)
 			val bookGenreText = singleFrame.findViewById<TextView>(R.id.bookGenreText)
@@ -140,17 +200,19 @@ class MyShopShopFragment : Fragment() {
 			val bookDiscountText = singleFrame.findViewById<TextView>(R.id.bookDiscountText)
 
 			Picasso.get()
-				.load(newArrival.image)
+				.load(bestSeller.image)
 				.into(bookImg)
-			bookGenreText.text = newArrival.genre
-			bookNameText.text = newArrival.name
-			bookAuthorText.text = newArrival.author
-			bookPriceText.text = newArrival.price.toString()
-			bookDiscountText.text = discounts[singleFrame.id].toString() + "%"
+			bookGenreText.text = bestSeller.genre
+			bookNameText.text = bestSeller.name
+			bookAuthorText.text = bestSeller.author
+			bookPriceText.text = bestSeller.shopPrice.toString()
+			bookDiscountText.text = (bestSeller.discount * 100).toString() + "%"
 
 			bestSellersViews.add(singleFrame)
 			content.addView(singleFrame)
 		}
+
+		content.visibility = View.VISIBLE
 	}
 
 	private fun setHighlyRecommendedItemViews(view: View, books: ArrayList<HRecommendedBookObject>) {
@@ -165,6 +227,8 @@ class MyShopShopFragment : Fragment() {
 		})
 		content!!.adapter = highlyRecommendedAdapter
 		content.setLayoutManager(GridLayoutManager(view.context, 2, GridLayoutManager.HORIZONTAL, false))
+
+		content.visibility = View.VISIBLE
 	}
 
 	override fun onDestroyView() {

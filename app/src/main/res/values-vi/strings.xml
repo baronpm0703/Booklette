@@ -129,12 +129,12 @@
     <string name="myprofile_my_wallets_voucher">Voucher của tôi</string>
     <string name="myprofile_my_wallets_voucher_flavor">Tiết kiệm khi thanh toán với voucher</string>
     <string name="myprofile_my_orders">Đơn hàng của tôi</string>
-    <string name="myprofile_shipping_address">Địa chỉ nhận hàng</string>
+    <string name="myprofile_shipping_address">Địa chỉ giao hàng</string>
     <string name="myprofile_shipping_address_flavor">địa chỉ</string>
     <string name="myprofile_payment_method">Phương thức thanh toán</string>
-    <string name="myprofile_my_reviews">Đánh giá</string>
+    <string name="myprofile_my_reviews">Nhận xét của tôi</string>
     <string name="myprofile_settings">Cài đặt</string>
-    <string name="myprofile_settings_flavor">Thông báo, mật khẩu</string>
+    <string name="myprofile_settings_flavor">Thông báo, Mật khẩu</string>
     <string name="myprofile_language">Ngôn ngữ</string>
     <string name="myprofile_favorites">Danh sách yêu thích</string>
     <string name="myprofile_blacklist">Danh sách đen</string>
