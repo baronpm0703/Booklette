@@ -36,12 +36,17 @@ class CheckOutRecyclerViewAdapter(
         holder.shopNameTextView.text = currentItem.storeName
         holder.bookTitleTextView.text = currentItem.bookName
         holder.bookOwnerTextView.text = currentItem.author
-        val formattedPrice = String.format("%,.0f", currentItem.price) // Format as integer with thousand separator
+        val formattedPrice = String.format("%,.0f", currentItem.price) 
         holder.bookPriceTextView.text = "$formattedPrice VND"
         Picasso.get()
             .load(currentItem.bookCover)
             .into(holder.bookCover)
         holder.quantityTextView.text= currentItem.bookQuantity.toString()
+
+        val bookpricewithquantity = currentItem.price * currentItem.bookQuantity
+        val formattedPriceWithQuantity = String.format("%,.0f", bookpricewithquantity)
+        holder.BookPriceWithQuantity.text = "$formattedPriceWithQuantity VND"
+
     }
 
 
@@ -57,5 +62,7 @@ class CheckOutRecyclerViewAdapter(
         val bookPriceTextView: TextView = itemView.findViewById(R.id.bookPrice)
         val quantityTextView: TextView = itemView.findViewById(R.id.quantity)
         val bookCover: ImageView = itemView.findViewById(R.id.bookCover)
+        val BookPriceWithQuantity: TextView = itemView.findViewById(R.id.BookPriceWithQuantity)
+
     }
 }
