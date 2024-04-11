@@ -1,14 +1,11 @@
 package com.example.booklette
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.ActivityHomeBinding
-import com.example.booklette.databinding.ActivityLoginBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -35,6 +32,8 @@ class homeActivity : AppCompatActivity() {
         // (Khoa) tui gán này là để test My Shop thôi nha (do chưa có My Profile mà My Shop phải đi từ đó vào). Khi nào có My Profile thì đổi
         val profileFragment = MyShopFragment()
 
+        // (Hải) t gán để test cái MyOrder
+        val myOrderFragment = MyOrderFragment()
 
         supportFragmentManager.beginTransaction().add(R.id.fcvNavigation, homeFragment).commit()
         smoothBottomBarStack.add(0)
@@ -54,10 +53,10 @@ class homeActivity : AppCompatActivity() {
                     changeFragmentContainer(cartFragment, 2)
                     true
                 }
-//                3 -> {
-//                    Toast.makeText(this@homeActivity, "Cart", Toast.LENGTH_SHORT).show()
-//                    true
-//                }
+                3 -> {
+                    changeFragmentContainer(myOrderFragment,3)
+                    true
+                }
                 4 -> {
                     changeFragmentContainer(profileFragment, 4)
                     true

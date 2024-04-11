@@ -144,5 +144,10 @@
     <string name="my_order_processing_button">Đang xử lý</string>
     <string name="my_order_completed_button">Đã hoàn thành</string>
     <string name="my_order_cancelled_button">Đã huỷ</string>
-    <string name="my_order_returned_button">Đã trả lại</string>
+    <string name="my_order_returned_button">Trả lại</string>
+    <string name="order">Đơn hàng №</string>
+    <string name="tracking_number">Mã đơn:</string>
+    <string name="quantity">Số lượng:</string>
+    <string name="total">Tổng:</string>
+    <string name="details">Chi tiết</string>
 </resources>

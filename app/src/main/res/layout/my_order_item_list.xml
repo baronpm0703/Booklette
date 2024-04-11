@@ -8,6 +8,8 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
+    android:background="#F9F9F9"
     app:layoutManager="LinearLayoutManager"
     tools:context=".MyOrderItemFragment"
-    tools:listitem="@layout/my_order_item" />
+    tools:listitem="@layout/my_order_item"
+    />
