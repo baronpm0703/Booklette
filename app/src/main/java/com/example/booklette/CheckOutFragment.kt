@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.BankCardFragment
+import com.example.booklette.CartFragment
 import com.example.booklette.R
 import com.example.booklette.ShipAddressFragment
 import com.example.booklette.databinding.FragmentCheckOutBinding
@@ -67,6 +68,15 @@ class CheckOutFragment : Fragment() {
         val totalAmount = adapter.calculateTotalAmount()
         val afterFomartedTotalAmount = String.format("%,.0f", totalAmount)
         binding.totalAmount.text = "$afterFomartedTotalAmount VND"
+        binding.totalPayment.text = "$afterFomartedTotalAmount VND"
+        binding.totalPaymentInPaymentDetail.text = "$afterFomartedTotalAmount VND"
+
+        binding.ivBackToPrev.setOnClickListener {
+            val cartFragment = CartFragment()
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.fcvNavigation, cartFragment)
+                ?.commit()
+        }
 
         return view
     }

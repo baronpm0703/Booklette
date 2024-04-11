@@ -56,10 +56,10 @@
     <string name="fragment_home_top_book">Top sách</string>
     <string name="home_fragment_today_recommendation">Gợi ý cho hôm nay</string>
     <string name="cart_fragment_voucher_hint">Nhập voucher của Booklette</string>
-    <string name="cart_fragment_total_amount">Tổng giá trị đơn hàng</string>
+    <string name="cart_fragment_total_amount">Tổng tiền hàng</string>
     <string name="cart_fragment_checkout">Thanh toán</string>
-    <string name="cart_fragment_discount_amount">Số tiền được giảm</string>
-    <string name="cart_fragment_total_payment">Thành tiền</string>
+    <string name="cart_fragment_discount_amount">Tổng cộng Voucher giảm giá</string>
+    <string name="cart_fragment_total_payment">Tổng thanh toán</string>
     <string name="navigation_check_out">Thanh Toán</string>
     <string name="shipping_method_check_out">Phương thức vận chuyển</string>
     <string name="check_out_place_order_button">Đặt hàng</string>
@@ -150,4 +150,5 @@
     <string name="quantity">Số lượng:</string>
     <string name="total">Tổng:</string>
     <string name="details">Chi tiết</string>
+    <string name="payment_detail">Chi tiết thanh toán</string>
 </resources>
