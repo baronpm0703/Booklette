@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,6 +20,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
 import kotlinx.coroutines.launch
@@ -426,6 +428,25 @@ class BookDetailFragment : Fragment() {
         bookDetailYouMayLoveAdapter = bookDetailYouMayLoveAdapter(context, otherBookFromOtherStore, otherBookFromOtherStoreRating)
         binding.rvBookDetailYouMayLove.layoutManager = GridLayoutManager(activity, 2)
         binding.rvBookDetailYouMayLove.adapter = bookDetailYouMayLoveAdapter
+
+        val initValues = InitFilterValuesReviewBookDetail()
+
+        var reviewDialogBookDetail = ReviewDialogBookDetail(initValues)
+        // Open Review dialog
+        binding.btnWriteReviewBookDetail.setOnClickListener{
+            activity?.let {
+//                val newTheme = R.style.BottomSheetSignNightTheme
+//                requireActivity().theme.applyStyle(newTheme, true)
+                reviewDialogBookDetail.show(it){
+                    style(SheetStyle.BOTTOM_SHEET)
+//                    title("Filter")
+//                    titleColor(Color.parseColor("#FF0000"))
+                    onPositive {
+                        this.dismiss()
+                    }
+                }
+            }
+        }
 
         return view
     }

@@ -116,7 +116,7 @@ class ProductList : Fragment() {
 
         binding.gvProductList.adapter = gvProductListAdapter
         binding.gvProductList.visibility = View.GONE
-        binding.unavailbleInfo.visibility = View.GONE
+        binding.notFoundBooks.visibility = View.GONE
 
         // Generate data
         if (!chosenGenre.equals(null)) {
@@ -125,7 +125,7 @@ class ProductList : Fragment() {
             docRef.addOnSuccessListener { result ->
                 lifecycleScope.launch {
                     if (result.isEmpty) {
-                        binding.unavailbleInfo.visibility = View.VISIBLE
+                        binding.notFoundBooks.visibility = View.VISIBLE
                     }
                     val bookIDListToCalc = ArrayList<String>()
                     for (document in result) {
@@ -200,7 +200,7 @@ class ProductList : Fragment() {
             val params = (binding.relativeLayout2.layoutParams as ViewGroup.MarginLayoutParams)
             params.setMargins(0, 230, 0, 0)
 
-            if (searchRes.isEmpty()) { binding.unavailbleInfo.visibility = View.VISIBLE }
+            if (searchRes.isEmpty()) { binding.notFoundBooks.visibility = View.VISIBLE }
             else {
                 searchRes.forEach {bookName ->
                     val docRef = db.collection("books").whereEqualTo("name", bookName).get()
