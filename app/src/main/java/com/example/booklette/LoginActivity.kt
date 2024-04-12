@@ -98,6 +98,9 @@ open class LoginActivity : AppCompatActivity() {
                 override fun onSuccess(loginResult: LoginResult) {
                     Log.d(TAG, "facebook:onSuccess:$loginResult")
                     handleFacebookAccessToken(loginResult.accessToken)
+
+                    finish()
+                    startActivity(Intent(this@LoginActivity, homeActivity::class.java))
                 }
 
                 override fun onCancel() {
@@ -172,6 +175,9 @@ open class LoginActivity : AppCompatActivity() {
                                 ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
 
                             GlobalScope.launch { remember_me_manager.storeUser(binding.cbRememberMe.isChecked, binding.edtEmailSignIn.text.toString()) }
+
+                            finish()
+                            startActivity(Intent(this@LoginActivity, homeActivity::class.java))
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.d("firebase", task.exception.toString())

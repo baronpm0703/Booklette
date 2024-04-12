@@ -348,11 +348,11 @@ class BookDetailFragment : Fragment() {
                 binding.txtNumberOfReview.text = reviewList.size.toString() + " review(s)"
 
                 val raters = intArrayOf(
-                    star_1_count,
-                    star_2_count,
-                    star_3_count,
+                    star_5_count,
                     star_4_count,
-                    star_5_count
+                    star_3_count,
+                    star_2_count,
+                    star_1_count
                 )
 
                 binding.ratingReviews.createRatingBars(maxOf(star_1_count, star_2_count, star_3_count, star_4_count, star_5_count), BarLabels.STYPE5, colors, raters)

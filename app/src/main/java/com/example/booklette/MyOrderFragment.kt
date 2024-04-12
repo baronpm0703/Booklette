@@ -45,7 +45,6 @@ class MyOrderFragment : Fragment() {
             .replace(itemListContainer.id,myOrderItemFragment)
             .commit()
 
-
         processingButton.setOnClickListener {
             resetColorButton()
             if (myOrderItemFragment != null) {

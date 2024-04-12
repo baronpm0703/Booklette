@@ -76,7 +76,10 @@ class homeActivity : AppCompatActivity() {
 
     private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            smoothBottomBarStack.removeAt(smoothBottomBarStack.size - 1)
+
+            if (smoothBottomBarStack.size > 0) {
+                smoothBottomBarStack.removeAt(smoothBottomBarStack.size - 1)
+            }
 
             if (smoothBottomBarStack.size > 0) {
                 binding.smoothBottomBar.itemActiveIndex = smoothBottomBarStack[smoothBottomBarStack.size - 1]
