@@ -4,14 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.Button
 import com.example.booklette.databinding.MyOrderItemListBinding
 
 import com.google.firebase.Firebase
@@ -19,9 +15,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import java.text.SimpleDateFormat
 import java.util.Date
-import kotlin.properties.Delegates
 
 class MyOrderItemFragment : Fragment() {
 
@@ -115,12 +109,21 @@ class MyOrderItemFragment : Fragment() {
         orderItemClickListener = null
     }
 
-    fun filter(query: String) {
+    fun filterStatus(query: String) {
         userOrders.clear()
         if (query.isBlank()) {
             userOrders.addAll(ArrayList(originalValues))  // If the query is empty, show the original list
         } else {
-            userOrders.addAll(ArrayList(originalValues.filter { it.status.contains(query, ignoreCase = false) }))  // Filter by status
+            userOrders.addAll(ArrayList(originalValues.filter { it.status.contains(query, ignoreCase = true) }))  // Filter by status
+        }
+        adapter.notifyDataSetChanged() // Notify the adapter that the data has changed
+    }
+    fun filterName(query: String) {
+        userOrders.clear()
+        if (query.isBlank()) {
+            userOrders.addAll(ArrayList(originalValues))  // If the query is empty, show the original list
+        } else {
+            userOrders.addAll(ArrayList(originalValues.filter { it.trackingNumber.contains(query, ignoreCase = true) }))  // Filter by status
         }
         adapter.notifyDataSetChanged() // Notify the adapter that the data has changed
     }
@@ -134,19 +137,19 @@ class MyOrderItemFragment : Fragment() {
 
 
     fun completedButton(){
-        filter("Thành công")
+        filterStatus("Thành công")
     }
     fun processingButton(){
-        filter("Đang xử lý")
+        filterStatus("Đang xử lý")
     }
     fun cancelledButton(){
-        filter("huỷ")
+        filterStatus("huỷ")
     }
     fun returnedButton(){
-        filter("trả")
+        filterStatus("trả")
     }
     fun unfilter(){
-        filter("")
+        filterStatus("")
     }
 
     companion object {

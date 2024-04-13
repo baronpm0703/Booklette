@@ -134,7 +134,7 @@ class MyOrderFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val searchText = s?.toString() ?: ""
-                //myOrderItemFragment.filter(searchText)
+                myOrderItemFragment.filterName(searchText)
             }
 
             override fun afterTextChanged(s: Editable?) {
