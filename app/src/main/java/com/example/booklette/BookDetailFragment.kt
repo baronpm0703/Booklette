@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.graphics.BitmapFactory
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
@@ -30,6 +31,7 @@ import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -39,7 +41,9 @@ import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import java.util.Collections
 import kotlin.math.round
 
 
@@ -68,6 +72,7 @@ class BookDetailFragment : Fragment() {
     private lateinit var bookDetailUserReviewAdapter: bookDetailUserReviewAdapter
 
     private lateinit var db: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
     private var bookID: String = ""
 
     private var voucherList = ArrayList<VoucherObject>()
@@ -76,10 +81,17 @@ class BookDetailFragment : Fragment() {
     private var otherBookFromOtherStore = ArrayList<BookObject>()
     private var otherBookFromOtherStoreRating = ArrayList<Float>()
 
+    private lateinit var reviewDialogBookDetail: ReviewDialogBookDetail
     private var userReviewList = ArrayList<UserReviewObject>()
+    private var userInfo: UserReviewObject? = null
 
     private lateinit var bookList: Map<String, Any>
     private lateinit var bookDetail: Map<String, Any>
+
+    private var avgRating: Float = 0.0F
+    private var reviewListSize: Int = 0
+    private var starCount = arrayListOf(0, 0, 0, 0, 0)
+
 
     val colors = intArrayOf(
         Color.parseColor("#0e9d58"),
@@ -97,6 +109,7 @@ class BookDetailFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -105,7 +118,20 @@ class BookDetailFragment : Fragment() {
         val view = binding.root
 
         db = Firebase.firestore
+        auth = Firebase.auth
+
         bookID = arguments?.getString("bookID").toString()
+        // Save user Info
+        lifecycleScope.launch {
+            userInfo = auth.uid?.let { getInfoCurrentUser(it) }
+            val initValues = InitFilterValuesReviewBookDetail()
+            if (userInfo != null){
+                initValues.rating = userInfo!!.ratings
+                initValues.text = userInfo!!.description
+            }
+
+            reviewDialogBookDetail = ReviewDialogBookDetail(initValues)
+        }
 
         controlNumberCounter()
         controlBottomMenu()
@@ -317,26 +343,19 @@ class BookDetailFragment : Fragment() {
 
                 val reviewList = document.data.get("review") as ArrayList<Map<Any, Any>>
 
-                var avgRating = 0.0F
-                var star_1_count = 0
-                var star_2_count = 0
-                var star_3_count = 0
-                var star_4_count = 0
-                var star_5_count = 0
-
                 for (review in reviewList)  {
                     avgRating += (review["score"]).toString().toFloat()
 
                     if ((review["score"]).toString().toFloat() > 0 && (review["score"]).toString().toFloat() <= 1)
-                        star_1_count++
+                        starCount[0]++
                     else if ((review["score"]).toString().toFloat() <= 2)
-                        star_2_count++
+                        starCount[1]++
                     else if ((review["score"]).toString().toFloat() <= 3)
-                        star_3_count++
+                        starCount[2]++
                     else if ((review["score"]).toString().toFloat() <= 4)
-                        star_4_count++
+                        starCount[3]++
                     else if ((review["score"]).toString().toFloat() <= 5)
-                        star_5_count++
+                        starCount[4]++
 
                     db.collection("accounts").whereEqualTo("UID", review["UID"].toString()).get().addOnSuccessListener { result ->
                         for (tmp in result) {
@@ -359,24 +378,21 @@ class BookDetailFragment : Fragment() {
                     }
                 }
 
+                reviewListSize = reviewList.size
                 avgRating /= reviewList.size
-                avgRating = round(avgRating * 10) / 10
+//                avgRating = round(avgRating * 10) / 10
 
-                binding.ratingStarBar.rating = avgRating
-                binding.txtAVGrating.text = avgRating.toString()
+                binding.ratingStarBar.rating = round(avgRating * 10) / 10
+                binding.txtAVGrating.text = (round(avgRating * 10) / 10).toString()
 
-                binding.txtRatingBookDetail.text = avgRating.toString()
+                binding.txtRatingBookDetail.text = (round(avgRating * 10) / 10).toString()
                 binding.txtNumberOfReview.text = reviewList.size.toString() + " review(s)"
 
                 val raters = intArrayOf(
-                    star_5_count,
-                    star_4_count,
-                    star_3_count,
-                    star_2_count,
-                    star_1_count
+                    starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]
                 )
 
-                binding.ratingReviews.createRatingBars(maxOf(star_1_count, star_2_count, star_3_count, star_4_count, star_5_count), BarLabels.STYPE5, colors, raters)
+                binding.ratingReviews.createRatingBars(maxOf(starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]), BarLabels.STYPE5, colors, raters)
 
                 Handler().postDelayed({
                     binding.txtBookCategory.visibility = View.VISIBLE
@@ -428,16 +444,15 @@ class BookDetailFragment : Fragment() {
         binding.rvOtherBookFromShopBookDetail.adapter = otherBookFromShopAdapter
         getOtherBook()
 
-        binding.txtBookDetailDescriptionMore.setOnClickListener({
+        binding.txtBookDetailDescriptionMore.setOnClickListener {
             if (binding.txtBookDetailDescriptionMore.text == getString(R.string.bookDetailMore)) {
                 binding.txtDescriptionBookDetail.maxLines = Int.MAX_VALUE
                 binding.txtBookDetailDescriptionMore.text = getString(R.string.bookDetailLess)
-            }
-            else {
+            } else {
                 binding.txtDescriptionBookDetail.maxLines = 10
                 binding.txtBookDetailDescriptionMore.text = getString(R.string.bookDetailMore)
             }
-        })
+        }
 
         bookDetailUserReviewAdapter = bookDetailUserReviewAdapter(context, userReviewList)
         binding.lvUserReviewDetail.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
@@ -448,9 +463,6 @@ class BookDetailFragment : Fragment() {
         binding.rvBookDetailYouMayLove.layoutManager = GridLayoutManager(activity, 2)
         binding.rvBookDetailYouMayLove.adapter = bookDetailYouMayLoveAdapter
 
-        val initValues = InitFilterValuesReviewBookDetail()
-
-        var reviewDialogBookDetail = ReviewDialogBookDetail(initValues)
         // Open Review dialog
         binding.btnWriteReviewBookDetail.setOnClickListener{
             activity?.let {
@@ -458,10 +470,9 @@ class BookDetailFragment : Fragment() {
 //                requireActivity().theme.applyStyle(newTheme, true)
                 reviewDialogBookDetail.show(it){
                     style(SheetStyle.BOTTOM_SHEET)
-//                    title("Filter")
-//                    titleColor(Color.parseColor("#FF0000"))
                     onPositive {
                         this.dismiss()
+                        upLoadComment(getClientRating(), getClientReview()) // Upload Comment
                     }
                 }
             }
@@ -560,6 +571,218 @@ class BookDetailFragment : Fragment() {
         })
     }
 
+    fun updateRatingAndComment(rating: Float, cmt: String) {
+        val docBookRef = db.collection("books").whereEqualTo("bookID", bookID)
+
+        docBookRef.get().addOnSuccessListener { result ->
+            for (document in result){
+                val reviewsArray =
+                    document.get("review") as ArrayList<Map<String, Any>>
+
+                val uid = userInfo!!.userID
+                var rating = userInfo!!.ratings
+                var cmt = userInfo!!.description
+
+                val updatedReview = mapOf(
+                    "UID" to uid,
+                    "image" to "",
+                    "score" to rating.toInt(),
+                    "text" to cmt
+                )
+
+                var reviewUpdated = false
+
+                for ((index, review) in reviewsArray.withIndex()) {
+                    if (review["UID"] == uid) { // Assuming "UID" uniquely identifies each review
+                        reviewsArray[index] = updatedReview
+                        reviewUpdated = true
+                        break // Stop searching once the review is found and updated
+                    }
+                }
+
+                // If the review is not found, add it to the front of the list
+                if (!reviewUpdated) {
+                    reviewsArray.add(0, updatedReview)
+                }
+
+                // Update the array field in the document
+                document.reference.update("review", reviewsArray)
+                    .addOnSuccessListener {
+                        Log.i("update Review", "Success")
+                    }
+                    .addOnFailureListener {
+                        Log.i("update Review", "Failed")
+                    }
+
+            }
+
+        }
+
+    }
+    suspend fun getInfoCurrentUser(UID: String): UserReviewObject? {
+        var res: UserReviewObject? = null
+        try {
+            val docRef = db.collection("accounts").whereEqualTo("UID", UID).get().await()
+
+            for (doc in docRef.documents) {
+                val uid = doc.data?.get("UID").toString()
+                val username = doc.data?.get("fullname").toString()
+                val avatar = doc.data?.get("avt").toString()
+                var rating = 0.0F
+                var cmt = ""
+                val bookRef = db.collection("books").whereEqualTo("bookID", bookID).get().await()
+
+                for (book in bookRef.documents) {
+                    if (book.data?.get("review") != null) {
+
+                        val reviewsArray =
+                            book.data!!.get("review") as ArrayList<Map<String, Any>>
+
+                        if (reviewsArray.isNotEmpty()) {
+                            val reviewOfUser = reviewsArray.single{it -> it.get("UID") == UID}
+                            rating = reviewOfUser.get("score").toString().toFloat()
+                            cmt = reviewOfUser.get("text").toString()
+                        }
+
+                    }
+                }
+
+                res = UserReviewObject(uid, username, avatar, rating, cmt)
+            }
+        } catch (e: Exception){
+            Log.e("Firebase Error", "Can't retrieve data")
+            val docRef = db.collection("accounts").whereEqualTo("UID", UID).get().await()
+
+            for (doc in docRef.documents) {
+                val uid = doc.data?.get("UID").toString()
+                val username = doc.data?.get("fullname").toString()
+                val avatar = doc.data?.get("avt").toString()
+                var rating = 0.0F
+                var cmt = ""
+                res = UserReviewObject(uid, username, avatar, rating, cmt)
+            }
+
+        }
+
+        return res
+    }
+
+
+    fun checkDoesUserReviewExisted(UID: String): Int{
+        if (userReviewList.isNotEmpty())
+        {
+            try {
+                val existReview = userReviewList.single { it.userID == UID }
+                return userReviewList.indexOf(existReview)
+            } catch (e: Exception) {
+                return -1
+            }
+        }
+        return -1
+    }
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
+    fun upLoadComment(rating: Float, cmt: String){
+        userInfo!!.ratings = rating
+        userInfo!!.description = cmt
+
+        // Update or Add new Review
+        updateRatingAndComment(rating, cmt)
+        if (checkDoesUserReviewExisted(userInfo!!.userID) == -1){
+            userReviewList.add(0, userInfo!!)
+
+            // Update new AvgRating
+            var newAvgRating = avgRating * reviewListSize
+            reviewListSize += 1
+            newAvgRating += userInfo!!.ratings
+            avgRating = newAvgRating / reviewListSize
+            // update UI
+            binding.ratingStarBar.rating = round(avgRating * 10) / 10
+            binding.txtAVGrating.text = (round(avgRating * 10) / 10).toString()
+
+            binding.txtRatingBookDetail.text = (round(avgRating * 10) / 10).toString()
+            binding.txtNumberOfReview.text = reviewListSize.toString() + " review(s)"
+
+            // Define star it belong to
+            if (userInfo!!.ratings > 0 && userInfo!!.ratings <= 1)
+                starCount[0]++
+            else if (userInfo!!.ratings <= 2)
+                starCount[1]++
+            else if (userInfo!!.ratings <= 3)
+                starCount[2]++
+            else if (userInfo!!.ratings <= 4)
+                starCount[3]++
+            else if (userInfo!!.ratings <= 5)
+                starCount[4]++
+
+            // Update rating bar chart
+            val raters = intArrayOf(
+                starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]
+            )
+
+            binding.ratingReviews.createRatingBars(maxOf(starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]), BarLabels.STYPE5, colors, raters)
+        }
+        else {
+            // If User has already commented
+            val index = checkDoesUserReviewExisted(userInfo!!.userID)
+
+            val oldRating = userReviewList[index].ratings // Old rating
+            userReviewList[index] = userInfo!! // Now u can update to new rating
+            Collections.swap(userReviewList, index, 0)
+
+            var newAvgRating = avgRating * reviewListSize
+            newAvgRating -= oldRating // Remove old rating
+            newAvgRating += userInfo!!.ratings // Update to new Rating from user
+            avgRating = newAvgRating / reviewListSize // Update avgRating
+
+            // update UI
+            binding.ratingStarBar.rating = round(avgRating * 10) / 10
+            binding.txtAVGrating.text = (round(avgRating * 10) / 10).toString()
+
+            binding.txtRatingBookDetail.text = (round(avgRating * 10) / 10).toString()
+            binding.txtNumberOfReview.text = reviewListSize.toString() + " review(s)"
+
+            // Define star newRating belong to
+            if (userInfo!!.ratings > 0 && userInfo!!.ratings <= 1)
+                starCount[0]++
+            else if (userInfo!!.ratings <= 2)
+                starCount[1]++
+            else if (userInfo!!.ratings <= 3)
+                starCount[2]++
+            else if (userInfo!!.ratings <= 4)
+                starCount[3]++
+            else if (userInfo!!.ratings <= 5)
+                starCount[4]++
+
+            // Remove Old rating belong to
+            if (oldRating > 0 && oldRating <= 1)
+                starCount[0]--
+            else if (oldRating <= 2)
+                starCount[1]--
+            else if (oldRating <= 3)
+                starCount[2]--
+            else if (oldRating <= 4)
+                starCount[3]--
+            else if (oldRating <= 5)
+                starCount[4]--
+
+            // Update rating bar chart
+            val raters = intArrayOf(
+                starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]
+            )
+
+            binding.ratingReviews.createRatingBars(maxOf(starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]), BarLabels.STYPE5, colors, raters)
+
+        }
+        bookDetailUserReviewAdapter.notifyDataSetChanged()
+
+        // Update Review Dialog with existed content
+        val initValues = InitFilterValuesReviewBookDetail()
+        initValues.rating = rating
+        initValues.text = cmt
+        reviewDialogBookDetail.updateinitValue(initValues)
+
+
+    }
     fun getOtherBookFromAllStore() {
             db.collection("books").whereNotEqualTo("bookID", bookID).limit(kotlin.random.Random.nextLong(4, 8 + 1)).get().addOnSuccessListener { result ->
                 lifecycleScope.launch {

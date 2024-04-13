@@ -14,7 +14,7 @@
     <!--        app:layout_constraintTop_toTopOf="parent">-->
     <!--    </ScrollView>-->
     <RelativeLayout
-        android:id="@+id/review_dialog"
+        android:id="@+id/reviewDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#169F9E9E"
@@ -115,6 +115,8 @@
 
             android:ems="10"
             android:gravity="start"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
 
             android:inputType="text"
             android:paddingStart="20dp"
@@ -123,8 +125,8 @@
             android:paddingEnd="20dp"
             android:paddingBottom="10dp"
 
-            android:text="Your review"
-            android:textColor="#9B9B9B"
+            android:hint="Your review"
+            android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold" />
 
