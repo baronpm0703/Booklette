@@ -15,6 +15,8 @@ import com.example.booklette.databinding.MyOrderItemListBinding
 
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -25,6 +27,7 @@ class MyOrderItemFragment : Fragment() {
     private lateinit var adapter: MyOrderItemRecyclerViewAdapter
     private var userOrders = arrayListOf<OrderDataClass>()
     private var originalValues = arrayListOf<OrderDataClass>()
+    private lateinit var db : FirebaseFirestore
     private var _binding: MyOrderItemListBinding? = null
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +44,9 @@ class MyOrderItemFragment : Fragment() {
         _binding = MyOrderItemListBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val db = Firebase.firestore
+        // Authentication and database
+        val auth = Firebase.auth
+        db = Firebase.firestore
 
         // Fetch data from Firestore
         db.collection("orders")

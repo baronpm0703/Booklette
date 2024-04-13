@@ -166,4 +166,5 @@
     <string name="payment_detail">Chi tiết thanh toán</string>
     <string name="book_detail_adding_to_cart">đang thêm...</string>
     <string name="book_detail_update_quantity">Cập nhật</string>
+    <string name="my_order_search_bar_hint_focused">Mã đơn</string>
 </resources>
