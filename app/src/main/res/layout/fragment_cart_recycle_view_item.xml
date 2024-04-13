@@ -29,8 +29,6 @@
             android:layout_margin="6dp"
             android:background="@drawable/round_corner_cart_item">
 
-
-
             <ImageView
                 android:id="@+id/bookCover"
                 android:layout_width="72dp"
@@ -105,9 +103,7 @@
                         android:layout_width="100dp"
                         android:layout_height="70dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
-
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:orientation="horizontal">
 
 
                         <androidx.appcompat.widget.AppCompatButton

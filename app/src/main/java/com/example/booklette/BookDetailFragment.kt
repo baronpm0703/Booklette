@@ -1,5 +1,8 @@
 package com.example.booklette
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
@@ -8,7 +11,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.Toast
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -91,6 +97,9 @@ class BookDetailFragment : Fragment() {
 
         db = Firebase.firestore
         bookID = arguments?.getString("bookID").toString()
+
+        controlNumberCounter()
+        controlBottomMenu()
 
         binding.txtBookCategory.visibility = View.INVISIBLE
         binding.smCategoryBook.visibility = View.VISIBLE
@@ -449,6 +458,50 @@ class BookDetailFragment : Fragment() {
         }
 
         return view
+    }
+
+    fun controlNumberCounter() {
+        binding.btnMinusNumberCount.setOnClickListener({
+            val number = binding.txtNumberCount.text.toString().toInt()
+
+            if (number > 0) {
+                binding.txtNumberCount.text = (number - 1).toString()
+                binding.txtNumberCountBottom.text = (number - 1).toString()
+            }
+        })
+
+        binding.btnPlusNumberCount.setOnClickListener({
+            val number = binding.txtNumberCount.text.toString().toInt()
+            binding.txtNumberCount.text = (number + 1).toString()
+            binding.txtNumberCountBottom.text = (number + 1).toString()
+        })
+    }
+
+    fun controlBottomMenu() {
+        binding.nsvBookDetail.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener{_, _, scrollY, _, oldScrollY ->
+            if (scrollY > oldScrollY && scrollY > 1300) {
+                if (binding.cvBottomMenu.visibility == View.INVISIBLE) {
+                    binding.cvBottomMenu.visibility = View.VISIBLE
+                    val fadeInAnimation = AlphaAnimation(0.0f, 1.0f)
+                    fadeInAnimation.duration = 500 // Adjust the duration as needed
+                    binding.cvBottomMenu.startAnimation(fadeInAnimation)
+                }
+
+            } else if (scrollY < oldScrollY) {
+                if (binding.cvBottomMenu.visibility == View.VISIBLE) {
+                    val fadeOutAnimation = AlphaAnimation(1.0f, 0.0f)
+                    fadeOutAnimation.duration = 500 // Adjust the duration as needed
+                    fadeOutAnimation.setAnimationListener(object : Animation.AnimationListener {
+                        override fun onAnimationStart(animation: Animation?) {}
+                        override fun onAnimationRepeat(animation: Animation?) {}
+                        override fun onAnimationEnd(animation: Animation?) {
+                            binding.cvBottomMenu.visibility = View.INVISIBLE
+                        }
+                    })
+                    binding.cvBottomMenu.startAnimation(fadeOutAnimation)
+                }
+            }
+        })
     }
 
     fun getOtherBookFromAllStore() {

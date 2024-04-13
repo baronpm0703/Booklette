@@ -167,5 +167,4 @@ dependencies {
 
     //loading animation
     implementation ("com.github.Marvel999:Android-Loading-Animation:1.0.0")
-
 }

@@ -8,45 +8,15 @@
     android:layout_height="match_parent"
     tools:context=".BookDetailFragment">
 
-    <LinearLayout
-        android:id="@+id/txtBookDetailButtonBuy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <Button
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add to cart"
-            android:background="@drawable/square_corner_black_stroke_background">
-
-        </Button>
-
-        <Button
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add to cart"
-            android:textColor="@color/white"
-            android:background="@drawable/square_corner_button_solid_color_book_detail_pink">
-
-        </Button>
-
-    </LinearLayout>
-
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsvBookDetail"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/txtBookDetailButtonBuy">
+        app:layout_constraintBottom_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -378,11 +348,55 @@
 
                     </RelativeLayout>
 
+                    <LinearLayout
+                        android:id="@+id/llNumberCounter"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlSalePercent"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnMinusNumberCount"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:text="-"
+                            android:background="@drawable/custombuttonselectsize">
+
+                        </Button>
+
+                        <TextView
+                            android:id="@+id/txtNumberCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:textSize="10pt"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp">
+
+                        </TextView>
+
+                        <Button
+                            android:id="@+id/btnPlusNumberCount"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:text="+"
+                            android:background="@drawable/custombuttonselectsize"
+                            android:backgroundTint="@color/black"
+                            android:textColor="@color/white">
+
+                        </Button>
+
+                    </LinearLayout>
+
                     <Button
                         android:id="@+id/btnAddToCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/rlSalePercent"
+                        android:layout_below="@+id/llNumberCounter"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/round_corner_button_solid_color_book_detail_pink"
                         android:text="@string/book_detail_add_to_cart"
@@ -390,16 +404,16 @@
 
                     </Button>
 
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/btnAddToCard"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/round_corner_button_solid_color_book_detail_black"
-                        android:text="@string/book_detail_add_to_wishlist"
-                        android:textColor="@color/white">
+<!--                    <Button-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_below="@+id/btnAddToCard"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:background="@drawable/round_corner_button_solid_color_book_detail_black"-->
+<!--                        android:text="@string/book_detail_add_to_wishlist"-->
+<!--                        android:textColor="@color/white">-->
 
-                    </Button>
+<!--                    </Button>-->
 
                 </RelativeLayout>
 
@@ -1081,5 +1095,89 @@
 
 
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:visibility="invisible"
+        android:id="@+id/cvBottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:cardCornerRadius="16dp"
+        android:layout_margin="20dp">
+
+        <LinearLayout
+            android:id="@+id/txtBookDetailButtonBuy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:weightSum="2"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/baseline_chat_24"
+                    >
+
+                </ImageView>
+
+                <View
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="#BDBDBD"/>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtNumberCountBottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:textStyle="bold"
+                        android:textColor="#D45555"
+                        android:textSize="8pt"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="item(s)"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Add to cart"
+                android:textColor="@color/white"
+                android:background="@drawable/square_corner_button_solid_color_book_detail_pink">
+
+            </Button>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
