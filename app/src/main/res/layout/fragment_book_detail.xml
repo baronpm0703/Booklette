@@ -398,7 +398,9 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/llNumberCounter"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/round_corner_button_solid_color_book_detail_pink"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/round_corner_button_solid_color_book_detail_pink_loading"
                         android:text="@string/book_detail_add_to_cart"
                         android:textColor="@color/white">
 

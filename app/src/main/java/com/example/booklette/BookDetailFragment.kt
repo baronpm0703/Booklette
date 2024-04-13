@@ -3,6 +3,7 @@ package com.example.booklette
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -22,9 +24,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
 import com.example.booklette.model.BookObject
 import com.example.booklette.model.VoucherObject
+import com.github.razir.progressbutton.attachTextChangeAnimator
+import com.github.razir.progressbutton.bindProgressButton
+import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
@@ -100,6 +108,7 @@ class BookDetailFragment : Fragment() {
 
         controlNumberCounter()
         controlBottomMenu()
+        addToCart()
 
         binding.txtBookCategory.visibility = View.INVISIBLE
         binding.smCategoryBook.visibility = View.VISIBLE
@@ -504,6 +513,48 @@ class BookDetailFragment : Fragment() {
         })
     }
 
+    fun addToCart() {
+        bindProgressButton(binding.btnAddToCard)
+        binding.btnAddToCard.attachTextChangeAnimator()
+        requireActivity().bindProgressButton(binding.btnAddToCard)
+
+        val userID = Firebase.auth.currentUser?.uid
+
+        binding.btnAddToCard.setOnClickListener({
+            binding.btnAddToCard.showProgress {
+                buttonTextRes = R.string.book_detail_adding_to_cart
+                progressColor = Color.WHITE
+            }
+
+            db.collection("accounts").whereEqualTo("UID", userID).get().addOnSuccessListener { result ->
+                for (document in result) {
+                    var cart = (document.data.get("cart") as Map<String, Any>).toMutableMap()
+
+                    lifecycleScope.launch {
+                        val data: MutableMap<Any, Any> = mutableMapOf()
+
+                        val storeID = getBookStoreID(bookID)
+                        val storeUID = getUIDFromBookStoreID(storeID)
+
+
+                        data["quantity"] = binding.txtNumberCount.text.toString().toInt()
+                        data["storeID"] = storeUID
+
+                        cart[bookID] = data
+
+                        db.collection("accounts")
+                            .document(document.id)
+                            .update("cart", cart).addOnCompleteListener {
+                                Handler().postDelayed({
+                                    binding.btnAddToCard.hideProgress(R.string.book_detail_update_quantity)
+                                }, 2000)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
     fun getOtherBookFromAllStore() {
             db.collection("books").whereNotEqualTo("bookID", bookID).limit(kotlin.random.Random.nextLong(4, 8 + 1)).get().addOnSuccessListener { result ->
                 lifecycleScope.launch {
@@ -646,6 +697,40 @@ class BookDetailFragment : Fragment() {
             Log.e("Firestore", "Error getting book price", e)
             // Return a default value in case of failure
             0.0F
+        }
+    }
+
+    suspend fun getBookStoreID(bookID: String): String {
+        return try {
+            val querySnapshot = db.collection("personalStores").whereNotEqualTo("items.$bookID.price", null).get().await()
+            for (document in querySnapshot.documents) {
+                return document.id.toString()
+            }
+            // Return a default value if the book price is not found
+            ""
+        } catch (e: Exception) {
+            // Handle failures
+            Log.e("Firestore", "Error getting store id", e)
+            // Return a default value in case of failure
+            ""
+        }
+    }
+
+    suspend fun getUIDFromBookStoreID(storeID: String): String {
+        val reference = db.collection("personalStores").document("storeID")
+
+        return try {
+            val querySnapshot = db.collection("accounts").whereNotEqualTo("store", reference).get().await()
+            for (document in querySnapshot.documents) {
+                return document.data!!.get("UID").toString()
+            }
+            // Return a default value if the book price is not found
+            ""
+        } catch (e: Exception) {
+            // Handle failures
+            Log.e("Firestore", "Error getting store id", e)
+            // Return a default value in case of failure
+            ""
         }
     }
 

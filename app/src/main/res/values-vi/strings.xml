@@ -164,4 +164,6 @@
     <string name="total">Tổng:</string>
     <string name="details">Chi tiết</string>
     <string name="payment_detail">Chi tiết thanh toán</string>
+    <string name="book_detail_adding_to_cart">đang thêm...</string>
+    <string name="book_detail_update_quantity">Cập nhật</string>
 </resources>
