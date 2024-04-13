@@ -44,176 +44,10 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:gravity="center_vertical"
-            android:background="@drawable/payment_background_tag"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="@string/shippingAddressLabel">
-        </TextView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="104dp"
-                android:layout_margin="6dp"
-                android:background="@color/white">
-
-
-                <LinearLayout
-                    android:id="@+id/linearLayout5"
-                    android:layout_width="match_parent"
-                    android:layout_height="83dp"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="20dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.121"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.523">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/bookTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:text="@string/shippingAddressLabel"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"></TextView>
-
-                        <Button
-                            android:id="@+id/changeAddress"
-                            android:layout_width="wrap_content"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:layout_height="30dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="-7dp"
-                            android:textSize="10dp"
-                            android:layout_marginEnd="16dp"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="10dp"
-                            android:background="@drawable/button_change_card"
-                            android:drawableLeft="@drawable/change_card_icon"
-                            android:text="@string/changeAddressBtn"></Button>
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/sellerName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Kate Racculia"
-                            android:textColor="@color/black"
-                            android:textSize="5pt">
-                        </TextView>
-
-                        <TextView
-                            android:layout_width="178dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_toEndOf="@+id/sellerName"
-                            android:text="09147312123"
-
-                            android:textColor="@color/black"
-                            android:textSize="5pt"></TextView>
-                    </RelativeLayout>
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="123 Tran Hung Dao"
-                        android:textColor="@color/black"
-                        android:textSize="5pt"
-                        >
-
-                    </TextView>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Quan 5, Ho Chi Minh City"
-                        android:textSize="5pt"
-
-                        android:textColor="@color/black">
-
-                    </TextView>
-
-
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            android:layout_width="228dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingTop="5dp"
-            android:paddingEnd="10dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:paddingTop="6dp"
-                android:text="@string/cart_fragment_total_payment"
-                android:textColor="@color/black"
-                android:textStyle="bold"></TextView>
-
-            <TextView
-                android:id="@+id/totalPayment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-
-                android:text="160.000 VND"
-                android:textColor="#D45555"
-                android:textSize="20dp"
-                android:textStyle="bold"></TextView>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/placeOrderBtn"
-            android:layout_width="119dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button_go_to_check_out"
-            android:text="@string/check_out_place_order_button"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"></Button>
-    </LinearLayout>
 
 
     <androidx.core.widget.NestedScrollView
@@ -228,6 +62,126 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:gravity="center_vertical"
+                android:background="@drawable/payment_background_tag"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="@string/shippingAddressLabel">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="104dp"
+                    android:layout_margin="6dp"
+                    android:background="@color/white">
+
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout5"
+                        android:layout_width="match_parent"
+                        android:layout_height="83dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="20dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.121"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.523">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/bookTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:text="@string/shippingAddressLabel"
+                                android:textColor="@color/black"
+                                android:textStyle="bold"></TextView>
+
+                            <Button
+                                android:id="@+id/changeAddress"
+                                android:layout_width="wrap_content"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:layout_height="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="-7dp"
+                                android:textSize="10dp"
+                                android:layout_marginEnd="16dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
+                                android:background="@drawable/button_change_card"
+                                android:drawableLeft="@drawable/change_card_icon"
+                                android:text="@string/changeAddressBtn"></Button>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/sellerName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Kate Racculia"
+                                android:textColor="@color/black"
+                                android:textSize="5pt">
+                            </TextView>
+
+                            <TextView
+                                android:layout_width="178dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_toEndOf="@+id/sellerName"
+                                android:text="09147312123"
+
+                                android:textColor="@color/black"
+                                android:textSize="5pt"></TextView>
+                        </RelativeLayout>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="123 Tran Hung Dao"
+                            android:textColor="@color/black"
+                            android:textSize="5pt"
+                            >
+
+                        </TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Quan 5, Ho Chi Minh City"
+                            android:textSize="5pt"
+
+                            android:textColor="@color/black">
+
+                        </TextView>
+
+
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <!-- Your RecyclerView -->
             <TextView
@@ -294,15 +248,11 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp">
 
                             <RadioButton
                                 android:background="@drawable/custom_radio_selector_payment_method"
-                                android:id="@+id/option1"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/changeCardBtn"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColor="@drawable/custom_radio_text_payment_method"
                                 android:layout_marginStart="16dp"
@@ -310,29 +260,14 @@
                                 android:button="@color/transparent"
                                 android:drawableStart="@drawable/banking_radio_button_image"
                                 android:drawablePadding="30dp"
+                                android:layout_marginBottom="10dp"
                                 android:paddingEnd="10dp"
                                 android:textSize="15dp"
                                 android:textStyle="bold"
                                 android:text="XXXXXXXXX-973" />
 
-                            <Button
-                                android:id="@+id/changeCardBtn"
-                                android:layout_width="wrap_content"
-                                android:textColor="@color/white"
-                                android:textStyle="bold"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginStart="-7dp"
-                                android:layout_marginEnd="16dp"
-                                android:paddingStart="10dp"
-                                android:paddingEnd="10dp"
-                                android:textSize="10dp"
-                                android:background="@drawable/button_change_card"
-                                android:layout_toEndOf="@+id/option1"
-                                android:drawableLeft="@drawable/change_card_icon"
-                                android:text="@string/changeAddressBtn"></Button>
-                        </RelativeLayout>
+
+
 
                         <RadioButton
                             android:background="@drawable/custom_radio_selector_payment_method"
@@ -354,7 +289,7 @@
                         <RadioButton
                             android:background="@drawable/custom_radio_selector_payment_method"
 
-                            android:id="@+id/option3"
+                            android:id="@+id/paypalOption"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:button="@color/transparent"
@@ -373,7 +308,7 @@
                         <RadioButton
                             android:background="@drawable/custom_radio_selector_payment_method"
                             android:layout_marginBottom="20dp"
-                            android:id="@+id/option4"
+                            android:id="@+id/epayOption"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -563,5 +498,53 @@
             </RelativeLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <LinearLayout
+            android:layout_width="228dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingTop="6dp"
+                android:text="@string/cart_fragment_total_payment"
+                android:textColor="@color/black"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:id="@+id/totalPayment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+
+                android:text="160.000 VND"
+                android:textColor="#D45555"
+                android:textSize="20dp"
+                android:textStyle="bold"></TextView>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/placeOrderBtn"
+            android:layout_width="119dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_go_to_check_out"
+            android:text="@string/check_out_place_order_button"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"></Button>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

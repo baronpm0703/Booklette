@@ -36,7 +36,7 @@ class CheckOutRecyclerViewAdapter(
         holder.shopNameTextView.text = currentItem.storeName
         holder.bookTitleTextView.text = currentItem.bookName
         holder.bookOwnerTextView.text = currentItem.author
-        val formattedPrice = String.format("%,.0f", currentItem.price) 
+        val formattedPrice = String.format("%,.0f", currentItem.price)
         holder.bookPriceTextView.text = "$formattedPrice VND"
         Picasso.get()
             .load(currentItem.bookCover)
@@ -46,7 +46,6 @@ class CheckOutRecyclerViewAdapter(
         val bookpricewithquantity = currentItem.price * currentItem.bookQuantity
         val formattedPriceWithQuantity = String.format("%,.0f", bookpricewithquantity)
         holder.BookPriceWithQuantity.text = "$formattedPriceWithQuantity VND"
-
     }
 
 
