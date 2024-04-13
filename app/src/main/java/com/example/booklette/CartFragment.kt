@@ -126,7 +126,7 @@ class CartFragment : Fragment() {
                                                                         for (eachBook in bookDocument) {
                                                                             cartList.add(
                                                                                 CartObject(
-                                                                                    eachBook.data["bokID"].toString(),
+                                                                                    eachBook.data["bookID"].toString(),
                                                                                     storeId.toString(),
                                                                                     storeName.toString(),
                                                                                     eachBook.data["image"].toString(),

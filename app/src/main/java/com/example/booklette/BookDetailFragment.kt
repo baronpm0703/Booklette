@@ -717,10 +717,10 @@ class BookDetailFragment : Fragment() {
     }
 
     suspend fun getUIDFromBookStoreID(storeID: String): String {
-        val reference = db.collection("personalStores").document("storeID")
+        val reference = db.collection("personalStores").document(storeID)
 
         return try {
-            val querySnapshot = db.collection("accounts").whereNotEqualTo("store", reference).get().await()
+            val querySnapshot = db.collection("accounts").whereEqualTo("store", reference).get().await()
             for (document in querySnapshot.documents) {
                 return document.data!!.get("UID").toString()
             }
