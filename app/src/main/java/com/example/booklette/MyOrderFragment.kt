@@ -104,6 +104,10 @@ class MyOrderFragment : Fragment() {
             }
         }
 
+        val backButton = binding.backButton
+        backButton.setOnClickListener{
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
         return view
     }
     override fun onDestroyView() {
