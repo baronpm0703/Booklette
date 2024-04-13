@@ -8,14 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.graphics.Color
-import android.view.WindowManager
-import android.widget.ImageButton
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentMyOrderBinding
-import com.google.firebase.firestore.FirebaseFirestore
 import com.mancj.materialsearchbar.MaterialSearchBar
-import kotlin.properties.Delegates
+import java.util.Objects
 
 
 class MyOrderFragment : Fragment() {
@@ -26,7 +25,7 @@ class MyOrderFragment : Fragment() {
     private lateinit var myOrderItemFragment: MyOrderItemFragment
 
     private lateinit var label: TextView
-    private lateinit var materialSearchBar: MaterialSearchBar
+    private lateinit var searchBar: MaterialSearchBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,9 +126,22 @@ class MyOrderFragment : Fragment() {
 
 
         label = binding.Label
-        materialSearchBar = binding.searchBar
+        searchBar = binding.searchBar
+        searchBar.addTextChangeListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
+            }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchText = s?.toString() ?: ""
+                //myOrderItemFragment.filter(searchText)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
         return view
     }
     override fun onDestroyView() {
