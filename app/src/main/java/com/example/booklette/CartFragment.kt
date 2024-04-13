@@ -60,7 +60,6 @@ class CartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentCartBinding.inflate(inflater, container, false)
         val view = binding.root
         // Add more items as needed
@@ -95,8 +94,91 @@ class CartFragment : Fragment() {
         auth = Firebase.auth
         db = Firebase.firestore
 
+        Handler().postDelayed({
+            if (binding.loadingAnim.visibility == View.VISIBLE) {
+                binding.loadingAnim.visibility = View.GONE
+                binding.noCartItemFound.visibility = View.VISIBLE
+            }
+        }, 7000)
+
         if(cartList.size == 0){
             loadCartData()
+            binding.loadingAnim.visibility = View.VISIBLE
+            binding.rvCart.visibility = View.GONE
+            db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+                .addOnSuccessListener { documents ->
+                    if (documents.size() != 1) return@addOnSuccessListener
+                    for (document in documents) {
+                        // Get avatar and seller's name
+                        if (document.data.get("cart") != null) {
+                            val cartArray = document.data.get("cart") as? Map<String, Any>
+                            cartArray?.let { cartListData ->
+                                for (item in cartListData) {
+                                    val itemId = item.key
+                                    val storeId = (item.value as? Map<String, Any>)?.get("storeID") as? String // Corrected "storeID" to match your data
+                                    val quantity = (item.value as? Map<String, Any>)?.get("quantity") as? Number
+                                    if(itemId != null && storeId != null){
+                                        db.collection("accounts").whereEqualTo("UID", storeId).get()
+                                            .addOnSuccessListener { storeDocument ->
+                                                if (storeDocument != null) {
+                                                    for (eachStore in storeDocument) {
+                                                        eachStore.getDocumentReference("store")!!
+                                                            .get()
+                                                            .addOnSuccessListener { personalStoreDocument ->
+                                                                val itemList =
+                                                                    personalStoreDocument["items"] as? Map<String, Any>
+                                                                val eachItem =
+                                                                    itemList?.get(itemId) as? Map<String, Any>
+                                                                val storeName = personalStoreDocument["storeName"]
+                                                                db.collection("books")
+                                                                    .whereEqualTo("bookID", itemId)
+                                                                    .get()
+                                                                    .addOnSuccessListener { bookDocument ->
+                                                                        for (eachBook in bookDocument) {
+                                                                            cartList.add(
+                                                                                CartObject(
+                                                                                    eachBook.data["bookID"].toString(),
+                                                                                    storeId.toString(),
+                                                                                    storeName.toString(),
+                                                                                    eachBook.data["image"].toString(),
+                                                                                    eachBook.data["name"].toString(),
+                                                                                    eachBook.data["author"].toString(),
+                                                                                    eachItem?.get("price")
+                                                                                        .toString()
+                                                                                        .toFloat(),
+                                                                                    quantity?.toInt()
+                                                                                        ?: 1,
+                                                                                )
+                                                                            )
+                                                                            adapter.notifyDataSetChanged()
+
+                                                                            Handler().postDelayed({
+                                                                                // Code to be executed after the delay
+                                                                                // For example, you can start a new activity or update UI elements
+                                                                                binding.rvCart.visibility =
+                                                                                    View.VISIBLE
+                                                                                binding.loadingAnim.visibility =
+                                                                                    View.GONE
+
+                                                                            }, 2000)
+                                                                        }
+
+                                                                    }
+                                                            }
+                                                    }
+                                                }
+                                            }
+                                            .addOnFailureListener { exception ->
+                                                Log.e("Firestore", "Error getting documents: ", exception)
+                                            }
+
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
         }
         else {
             binding.loadingAnim.visibility = View.GONE
