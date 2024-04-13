@@ -109,6 +109,12 @@ class OrderDetailFragment : Fragment() {
                 }
             }
 
+
+        // back
+        val backButton = binding.backButton
+        backButton.setOnClickListener{
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
         return view
     }
 
