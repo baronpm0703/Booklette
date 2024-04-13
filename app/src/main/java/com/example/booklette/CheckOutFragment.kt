@@ -18,6 +18,8 @@ class CheckOutFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var selectedItems: ArrayList<CartObject>
+
+
     companion object {
         fun passSelectedItemToCheckOut(selectedItems: ArrayList<CartObject>): CheckOutFragment {
             val fragment = CheckOutFragment()
