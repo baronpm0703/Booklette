@@ -8,8 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.graphics.Color
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentMyOrderBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import com.mancj.materialsearchbar.MaterialSearchBar
 
 
 class MyOrderFragment : Fragment() {
@@ -18,6 +22,11 @@ class MyOrderFragment : Fragment() {
 // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var myOrderItemFragment: MyOrderItemFragment
+
+    private lateinit var label: TextView
+    private lateinit var materialSearchBar: MaterialSearchBar
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -31,6 +40,7 @@ class MyOrderFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         _binding = FragmentMyOrderBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -108,6 +118,12 @@ class MyOrderFragment : Fragment() {
         backButton.setOnClickListener{
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+
+
+        label = binding.Label
+        materialSearchBar = binding.searchBar
+
+
         return view
     }
     override fun onDestroyView() {

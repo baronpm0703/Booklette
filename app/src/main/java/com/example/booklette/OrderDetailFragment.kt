@@ -11,6 +11,7 @@ import com.example.booklette.databinding.FragmentMyOrderBinding
 import com.example.booklette.databinding.FragmentOrderDetailBinding
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
@@ -33,6 +34,7 @@ class OrderDetailFragment : Fragment() {
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var db : FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -47,7 +49,7 @@ class OrderDetailFragment : Fragment() {
         _binding = FragmentOrderDetailBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val db = Firebase.firestore
+        db = Firebase.firestore
         val numberField: TextView = binding.orderDetailNumberField
         val dateField = binding.orderDetailDateField
         val trackingNumberField = binding.orderDetailTrackingNumberField
@@ -104,7 +106,6 @@ class OrderDetailFragment : Fragment() {
 
                     discountField.text = "30%"
                     totalField.text = totalMoney.toString()
-
 
                 }
             }
