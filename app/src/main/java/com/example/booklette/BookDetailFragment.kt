@@ -84,6 +84,7 @@ class BookDetailFragment : Fragment() {
     private lateinit var reviewDialogBookDetail: ReviewDialogBookDetail
     private var userReviewList = ArrayList<UserReviewObject>()
     private var userInfo: UserReviewObject? = null
+    private var oldRating: Float = 0.0F
 
     private lateinit var bookList: Map<String, Any>
     private lateinit var bookDetail: Map<String, Any>
@@ -389,7 +390,11 @@ class BookDetailFragment : Fragment() {
                 binding.txtNumberOfReview.text = reviewList.size.toString() + " review(s)"
 
                 val raters = intArrayOf(
-                    starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]
+                    starCount[4],
+                    starCount[3],
+                    starCount[2],
+                    starCount[1],
+                    starCount[0]
                 )
 
                 binding.ratingReviews.createRatingBars(maxOf(starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]), BarLabels.STYPE5, colors, raters)
@@ -682,6 +687,7 @@ class BookDetailFragment : Fragment() {
     }
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     fun upLoadComment(rating: Float, cmt: String){
+        oldRating = userInfo!!.ratings // Save the oldRating
         userInfo!!.ratings = rating
         userInfo!!.description = cmt
 
@@ -716,7 +722,11 @@ class BookDetailFragment : Fragment() {
 
             // Update rating bar chart
             val raters = intArrayOf(
-                starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]
+                starCount[4],
+                starCount[3],
+                starCount[2],
+                starCount[1],
+                starCount[0]
             )
 
             binding.ratingReviews.createRatingBars(maxOf(starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]), BarLabels.STYPE5, colors, raters)
@@ -725,7 +735,7 @@ class BookDetailFragment : Fragment() {
             // If User has already commented
             val index = checkDoesUserReviewExisted(userInfo!!.userID)
 
-            val oldRating = userReviewList[index].ratings // Old rating
+//            val oldRating = userReviewList[index].ratings // Old rating
             userReviewList[index] = userInfo!! // Now u can update to new rating
             Collections.swap(userReviewList, index, 0)
 
@@ -767,7 +777,11 @@ class BookDetailFragment : Fragment() {
 
             // Update rating bar chart
             val raters = intArrayOf(
-                starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]
+                starCount[4],
+                starCount[3],
+                starCount[2],
+                starCount[1],
+                starCount[0]
             )
 
             binding.ratingReviews.createRatingBars(maxOf(starCount[0], starCount[1], starCount[2], starCount[3], starCount[4]), BarLabels.STYPE5, colors, raters)
