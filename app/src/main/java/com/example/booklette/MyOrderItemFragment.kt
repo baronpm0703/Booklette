@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import com.example.booklette.databinding.MyOrderItemListBinding
 
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
 import java.util.Date
+import kotlin.properties.Delegates
 
 class MyOrderItemFragment : Fragment() {
 
@@ -29,9 +31,11 @@ class MyOrderItemFragment : Fragment() {
     private var originalValues = arrayListOf<OrderDataClass>()
     private lateinit var db : FirebaseFirestore
     private var _binding: MyOrderItemListBinding? = null
+
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
         }
@@ -41,7 +45,9 @@ class MyOrderItemFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _binding = MyOrderItemListBinding.inflate(inflater, container, false)
+
         val view = binding.root
 
         // Authentication and database
@@ -123,6 +129,7 @@ class MyOrderItemFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
     }
 
 

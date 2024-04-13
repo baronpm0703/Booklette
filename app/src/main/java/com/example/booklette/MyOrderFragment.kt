@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.graphics.Color
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentMyOrderBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mancj.materialsearchbar.MaterialSearchBar
+import kotlin.properties.Delegates
 
 
 class MyOrderFragment : Fragment() {
@@ -39,6 +41,9 @@ class MyOrderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // not allow soft keyboard push fragment up
+
+
         // Inflate the layout for this fragment
 
         _binding = FragmentMyOrderBinding.inflate(inflater, container, false)
@@ -54,6 +59,7 @@ class MyOrderFragment : Fragment() {
         childFragmentManager.beginTransaction()
             .replace(itemListContainer.id,myOrderItemFragment)
             .commit()
+
 
         processingButton.setOnClickListener {
             resetColorButton()
@@ -129,6 +135,7 @@ class MyOrderFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
     }
 
     private fun resetColorButton(){
