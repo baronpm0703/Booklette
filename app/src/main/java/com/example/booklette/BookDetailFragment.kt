@@ -37,6 +37,7 @@ import com.google.firebase.firestore.firestore
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlin.math.round
@@ -528,7 +529,11 @@ class BookDetailFragment : Fragment() {
 
             db.collection("accounts").whereEqualTo("UID", userID).get().addOnSuccessListener { result ->
                 for (document in result) {
-                    var cart = (document.data.get("cart") as Map<String, Any>).toMutableMap()
+                    var tmp = document.data.get("cart")
+                    var cart = mutableMapOf<String, Any>()
+
+                    if (tmp != null)
+                        cart = (document.data.get("cart") as Map<String, Any>).toMutableMap()
 
                     lifecycleScope.launch {
                         val data: MutableMap<Any, Any> = mutableMapOf()
