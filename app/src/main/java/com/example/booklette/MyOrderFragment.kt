@@ -8,8 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.graphics.Color
-import androidx.recyclerview.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.widget.TextView
 import com.example.booklette.databinding.FragmentMyOrderBinding
+import com.mancj.materialsearchbar.MaterialSearchBar
+import java.util.Objects
 
 
 class MyOrderFragment : Fragment() {
@@ -18,6 +23,11 @@ class MyOrderFragment : Fragment() {
 // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var myOrderItemFragment: MyOrderItemFragment
+
+    private lateinit var label: TextView
+    private lateinit var searchBar: MaterialSearchBar
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -30,7 +40,11 @@ class MyOrderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // not allow soft keyboard push fragment up
+
+
         // Inflate the layout for this fragment
+
         _binding = FragmentMyOrderBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -44,6 +58,7 @@ class MyOrderFragment : Fragment() {
         childFragmentManager.beginTransaction()
             .replace(itemListContainer.id,myOrderItemFragment)
             .commit()
+
 
         processingButton.setOnClickListener {
             resetColorButton()
@@ -104,11 +119,35 @@ class MyOrderFragment : Fragment() {
             }
         }
 
+        val backButton = binding.backButton
+        backButton.setOnClickListener{
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+
+        label = binding.Label
+        searchBar = binding.searchBar
+        searchBar.addTextChangeListener(object: TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchText = s?.toString() ?: ""
+                myOrderItemFragment.filterName(searchText)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
         return view
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
     }
 
     private fun resetColorButton(){
