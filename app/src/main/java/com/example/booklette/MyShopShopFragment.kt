@@ -177,6 +177,24 @@ class MyShopShopFragment : Fragment() {
 			bookPriceText.text = newArrival.shopPrice.toString()
 			bookDiscountText.text = (newArrival.discount * 100).toString() + "%"
 
+			singleFrame.setOnClickListener {
+				if (context is homeActivity) {
+					var bdFragment = BookDetailFragment()
+
+					var bundle = Bundle()
+					bundle.putString("bookID", newArrival.id)
+
+					bdFragment.arguments = bundle
+
+//                Toast.makeText(context, pageTitles[position].bookID.toString(), Toast.LENGTH_SHORT).show()
+
+					(context as homeActivity).changeFragmentContainer(
+						bdFragment,
+						(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+					)
+				}
+			}
+
 			newArrivalsViews.add(singleFrame)
 			content.addView(singleFrame)
 		}
@@ -213,6 +231,24 @@ class MyShopShopFragment : Fragment() {
 			bookPriceText.text = bestSeller.shopPrice.toString()
 			bookDiscountText.text = (bestSeller.discount * 100).toString() + "%"
 
+			singleFrame.setOnClickListener {
+				if (context is homeActivity) {
+					var bdFragment = BookDetailFragment()
+
+					var bundle = Bundle()
+					bundle.putString("bookID", bestSeller.id)
+
+					bdFragment.arguments = bundle
+
+//                Toast.makeText(context, pageTitles[position].bookID.toString(), Toast.LENGTH_SHORT).show()
+
+					(context as homeActivity).changeFragmentContainer(
+						bdFragment,
+						(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+					)
+				}
+			}
+
 			bestSellersViews.add(singleFrame)
 			content.addView(singleFrame)
 		}
@@ -226,7 +262,21 @@ class MyShopShopFragment : Fragment() {
 		var highlyRecommendedAdapter = MyShopHighlyRecommendedAdapter(books)
 		highlyRecommendedAdapter.setOnItemClickListener(object: MyShopHighlyRecommendedAdapter.onItemClickListener {
 			override fun onItemClick(position: Int) {
+				if (context is homeActivity) {
+					var bdFragment = BookDetailFragment()
 
+					var bundle = Bundle()
+					bundle.putString("bookID", books[position].id)
+
+					bdFragment.arguments = bundle
+
+//                Toast.makeText(context, pageTitles[position].bookID.toString(), Toast.LENGTH_SHORT).show()
+
+					(context as homeActivity).changeFragmentContainer(
+						bdFragment,
+						(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+					)
+				}
 			}
 
 		})
