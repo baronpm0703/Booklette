@@ -33,10 +33,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
-                        android:text="Vo Chanh Tin"
                         android:gravity="center_vertical"
+                        android:text="Vo Chanh Tin"
                         android:textColor="#103667"
                         android:textStyle="bold"></TextView>
+
 
                     <Button
                         android:id="@+id/editAddress"
@@ -72,16 +73,39 @@
                     android:textColor="@color/black"
                     android:textSize="5pt"
                     >
-
                 </TextView>
-                <TextView
-                    android:id="@+id/addressZone"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Quan 5, Ho Chi Minh City"
-                    android:textSize="5pt"
-                    android:textColor="@color/black">
-                </TextView>
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/addressProvince"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Quan 5"
+                        android:paddingEnd="8dp"
+                        android:textSize="5pt"
+                        android:textColor="@color/black">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/addressCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="8dp"
+                        android:text="Ho Chi Minh city"
+                        android:textSize="5pt"
+                        android:textColor="@color/black">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/addressWard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ho Chi Minh City"
+                        android:textSize="5pt"
+                        android:textColor="@color/black">
+                    </TextView>
+                </LinearLayout>
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"

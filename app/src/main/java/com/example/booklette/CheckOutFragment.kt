@@ -1,4 +1,5 @@
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +12,34 @@ import com.example.booklette.CartFragment
 import com.example.booklette.R
 import com.example.booklette.ShipAddressFragment
 import com.example.booklette.databinding.FragmentCheckOutBinding
+import com.example.booklette.homeActivity
 import com.example.booklette.model.CartObject
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 class CheckOutFragment : Fragment() {
     private var _binding: FragmentCheckOutBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var selectedItems: ArrayList<CartObject>
+//    private lateinit var defaultAddress: ShipAddressObject
 
-
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
     companion object {
+
+        private const val ARG_SELECTED_ADDRESS = "selected_address"
+
+        fun passSelectedAddressToCheckOut(selectedAddress: ShipAddressObject): CheckOutFragment {
+            val fragment = CheckOutFragment()
+            val args = Bundle()
+            args.putParcelable(ARG_SELECTED_ADDRESS, selectedAddress)
+            fragment.arguments = args
+            return fragment
+        }
         fun passSelectedItemToCheckOut(selectedItems: ArrayList<CartObject>): CheckOutFragment {
             val fragment = CheckOutFragment()
             val args = Bundle()
@@ -49,23 +68,68 @@ class CheckOutFragment : Fragment() {
 
         selectedItems = arguments?.getParcelableArrayList<CartObject>("SELECTED_ITEMS") ?: ArrayList()
 
+        val selectedAddress = arguments?.getParcelable<ShipAddressObject>(ARG_SELECTED_ADDRESS)
+        if (selectedAddress != null) {
+            // Update UI with the selected address information
+            // For example:
+            binding.recieverName.text = selectedAddress.recieverName
+            binding.recieverPhone.text = selectedAddress.recieverPhone
+            binding.addressNumber.text = selectedAddress.addressNumber
+            binding.addressZone.text = selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
+        }
+
+
         val adapter = CheckOutRecyclerViewAdapter(requireContext(), selectedItems)
         binding.rvCheckout.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCheckout.adapter = adapter
 
+        auth = Firebase.auth
+        db = Firebase.firestore
+
+
+//        db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+//            .addOnSuccessListener { documents ->
+//                if (documents.size() != 1) return@addOnSuccessListener
+//                for (document in documents) {
+//                    // Get avatar and seller's name
+//                    if (document.data.get("shippingAddress") != null) {
+//                        val shippingAddressArray = document.data.get("shippingAddress") as? ArrayList<Map<String, Any>>
+//                        shippingAddressArray?.let { shippingAddressArrayData ->
+//                            for (item in shippingAddressArrayData) {
+//                                if(item["isDefault"] == true){
+//                                    val receiverName = item["receiverName"] as? String ?: ""
+//                                    val recieverPhone = item["recieverPhone"] as? String ?: ""
+//                                    val province = item["province"] as? String ?: ""
+//                                    val city = item["city"] as? String ?: ""
+//                                    val ward = item["ward"] as? String ?: ""
+//                                    val addressNumber = item["addressNumber"] as? String ?: ""
+//                                    val shipLabel = item["shipLabel"] as? String ?: ""
+//                                    binding.recieverName.text = receiverName
+//                                    binding.recieverPhone.text = recieverPhone
+//                                    binding.addressNumber.text = addressNumber
+//                                    binding.addressZone.text = province + ", " + city + ", "+ward
+//                                }
+//
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+
         binding.changeAddress.setOnClickListener {
             val shipAddressFragment = ShipAddressFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fcvNavigation, shipAddressFragment)
-                .addToBackStack(null)
-                .commit()
+            val args = Bundle()
+            args.putParcelableArrayList("SELECTED_ITEMS", selectedItems)
+            shipAddressFragment.arguments = args
+            val homeAct = (activity as homeActivity)
+            homeAct.supportFragmentManager.popBackStack()
+            homeAct.changeFragmentContainer(shipAddressFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
         }
+
         binding.changeCardBtn.setOnClickListener {
             val bankCardFragment = BankCardFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fcvNavigation, bankCardFragment)
-                .addToBackStack(null)
-                .commit()
+            val homeAct = (activity as homeActivity)
+            homeAct.changeFragmentContainer(bankCardFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
         }
 
 
@@ -75,6 +139,8 @@ class CheckOutFragment : Fragment() {
         binding.totalPayment.text = "$afterFomartedTotalAmount VND"
         binding.totalPaymentInPaymentDetail.text = "$afterFomartedTotalAmount VND"
 
+
+
 //        binding.ivBackToPrev.setOnClickListener {
 //            val cartFragment = CartFragment()
 //            activity?.supportFragmentManager?.beginTransaction()
@@ -83,7 +149,7 @@ class CheckOutFragment : Fragment() {
 //        }
 
         binding.ivBackToPrev.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         return view
