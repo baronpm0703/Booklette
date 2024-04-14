@@ -27,7 +27,7 @@
             <Button
                     android:text="@string/myprofile_myshop_flavor_text"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp" android:id="@+id/button3"
+                    android:layout_height="25dp" android:id="@+id/myShopBtn"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="103dp" android:background="@drawable/round_corner_100_left_side"
                     android:textAllCaps="false"

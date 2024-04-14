@@ -89,14 +89,19 @@ class MyShopShopFragment : Fragment() {
 									val bookRemain = book["remain"] as Long
 									val bookSold = book["sold"] as Long
 									val bookStatus = book["status"].toString()
-									val bookRating = (info.get("review") as ArrayList<Float>).toFloatArray().average().toFloat()
-									val bookRatingCnt = (info.get("review") as ArrayList<Float>).size
+									val bookRatings = info.get("review") as ArrayList<Map<String, Any>>
+									var bookRatingScore: Float = 0F
+									bookRatings.forEach {
+										bookRatingScore += (it.get("score") as Long).toFloat()
+									}
+									val bookRatingCnt = bookRatings.size
+									bookRatingScore /= bookRatingCnt
 
 									val newBookObject = MyShopBookObject(
 										bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice, bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate
 									)
 									val newRecommendedBookObject = HRecommendedBookObject(
-										bookId, bookImg, bookRating, bookRatingCnt.toLong(), bookName, bookPrice
+										bookId, bookImg, bookRatingScore, bookRatingCnt.toLong(), bookName, bookPrice
 									)
 
 									val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
@@ -108,7 +113,7 @@ class MyShopShopFragment : Fragment() {
 									if (bestSellers.size == 0 || bestSellers[0].sold >= bookSold)
 										bestSellers.add(newBookObject)
 									else bestSellers.add(0, newBookObject)
-									if (highlyRecommended.size == 0 || highlyRecommended[0].rating >= bookRating)
+									if (highlyRecommended.size == 0 || highlyRecommended[0].rating >= bookRatingScore)
 										highlyRecommended.add(0, newRecommendedBookObject)
 									else highlyRecommended.add(newRecommendedBookObject)
 								}
