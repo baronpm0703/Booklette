@@ -672,7 +672,6 @@ class BookDetailFragment : Fragment() {
         return res
     }
 
-
     fun checkDoesUserReviewExisted(UID: String): Int{
         if (userReviewList.isNotEmpty())
         {

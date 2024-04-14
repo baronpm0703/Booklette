@@ -37,6 +37,7 @@ data class ShipAddressObject(
         return 0
     }
 
+
     companion object CREATOR : Parcelable.Creator<ShipAddressObject> {
         override fun createFromParcel(parcel: Parcel): ShipAddressObject {
             return ShipAddressObject(parcel)
