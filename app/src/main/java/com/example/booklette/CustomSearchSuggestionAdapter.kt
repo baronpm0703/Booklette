@@ -52,6 +52,7 @@ class CustomSuggestionAdapter(
         return 50
     }
 
+
     override fun onBindSuggestionHolder(
         suggestion: String?,
         holder: SuggestionViewHolder?,
@@ -69,7 +70,7 @@ class CustomSuggestionAdapter(
                 Log.i("Item Click", suggestion)
                 // Handle click event here, for example:
                 searchbar.hideSuggestionsList()
-                searchbar.setText(suggestion)
+                searchbar.text = suggestion
             }
         }
     }

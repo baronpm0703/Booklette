@@ -2,16 +2,22 @@ package com.example.booklette
 
 import CategoryFragmentGridViewAdapter
 import CustomSuggestionAdapter
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentCategoryBinding
@@ -26,6 +32,7 @@ import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
 import com.maxkeppeler.sheets.core.SheetStyle
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import java.util.Locale
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -49,6 +56,8 @@ class CategoryFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+
+    private val REQ_CODE_SPEECH_INPUT = 100
 
     private var fuzzySearchArraySample = ArrayList<Map<String, String>>()
 
@@ -113,6 +122,7 @@ class CategoryFragment : Fragment() {
                 suggestions = getBookNamesAlongSetupDataArraySample()
             }
         }
+
 //        val suggestions = listOf("Apple", "Banana", "Orange", "Mango", "Potato", "Melon", "Dragon Fruit", "Pineapple", "Chilly")
         if (customSuggestionAdapter != null) {
             customSuggestionAdapter.suggestions = suggestions
@@ -122,6 +132,7 @@ class CategoryFragment : Fragment() {
             binding.searchBar.lastSuggestions = suggestions
         }
 
+        binding.searchBar.setSpeechMode(true)
         binding.searchBar.setOnSearchActionListener(object: MaterialSearchBar.OnSearchActionListener{
             override fun onSearchStateChanged(enabled: Boolean) {
                 Log.i("State", enabled.toString())
@@ -179,7 +190,17 @@ class CategoryFragment : Fragment() {
             }
 
             override fun onButtonClicked(buttonCode: Int) {
-                Log.i("Click","Search Click")
+                when (buttonCode) {
+                    MaterialSearchBar.BUTTON_NAVIGATION -> {
+                        // Handle navigation button click
+                        // For example, open a drawer
+                        // drawerLayout.openDrawer(GravityCompat.START)
+                    }
+                    MaterialSearchBar.BUTTON_SPEECH -> {
+                        // Handle speech button click
+                        promptSpeechInput()
+                    }
+                }
             }
         })
 
@@ -195,7 +216,6 @@ class CategoryFragment : Fragment() {
             }
             override fun afterTextChanged(editable: Editable) {}
         })
-
 
         val filterDialogSearch = FilterDialogSearch()
         binding.filterCategorySearchPage.setOnClickListener{
@@ -219,6 +239,42 @@ class CategoryFragment : Fragment() {
         return view
     }
 
+    private fun promptSpeechInput() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        intent.putExtra(
+            RecognizerIntent.EXTRA_PROMPT,
+            getString(R.string.speech_prompt)
+        )
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT)
+        } catch (a: ActivityNotFoundException) {
+            Toast.makeText(
+                requireActivity().applicationContext,
+                getString(R.string.speech_not_supported),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REQ_CODE_SPEECH_INPUT -> {
+                if (resultCode == AppCompatActivity.RESULT_OK && null != data) {
+                    val result = data
+                        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                    Toast.makeText(requireActivity(), result!![0], Toast.LENGTH_SHORT).show()
+                    binding.searchBar.setPlaceHolder(result[0])
+                    binding.searchBar.text = result[0]
+                }
+            }
+        }
+    }
     private suspend fun getBookNamesAlongSetupDataArraySample(): ArrayList<String>{
         val res = ArrayList<String>()
         val docRef = db.collection("books").get().await()
@@ -236,6 +292,8 @@ class CategoryFragment : Fragment() {
         }
         return res
     }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

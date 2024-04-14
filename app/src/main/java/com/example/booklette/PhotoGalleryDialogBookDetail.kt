@@ -97,7 +97,6 @@ class PhotoGalleryDialogBookDetail(
             positiveListener?.invoke()
         }
 
-
         this.displayButtonsView(false)
 //        setButtonPositiveListener {  } If you want to override the default positive click listener
 //        displayButtonsView() If you want to change the visibility of the buttons view
