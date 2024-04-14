@@ -29,8 +29,7 @@ class homeActivity : AppCompatActivity() {
         val productList = ProductList()
         val cartFragment = CartFragment()
         val bookDetailFragment = BookDetailFragment()
-        // (Khoa) tui gán này là để test My Shop thôi nha (do chưa có My Profile mà My Shop phải đi từ đó vào). Khi nào có My Profile thì đổi
-        val profileFragment = MyShopFragment()
+        val profileFragment = MyProfileFragment()
 
         // (Hải) t gán để test cái MyOrder
         val myOrderFragment = MyOrderFragment()

@@ -1,12 +1,19 @@
 package com.example.booklette
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentMyprofileBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
+import com.squareup.picasso.Picasso
 
 class MyProfileFragment : Fragment() {
 	private var _binding: FragmentMyprofileBinding? = null
@@ -20,6 +27,9 @@ class MyProfileFragment : Fragment() {
 		_binding = FragmentMyprofileBinding.inflate(inflater, container, false)
 		val view = binding.root
 
+		val auth = Firebase.auth
+		val db = Firebase.firestore
+
 		// Toggle navigation to My Shop
 		view.findViewById<Button>(R.id.myShopBtn).setOnClickListener {
 			if (context is homeActivity) {
@@ -31,6 +41,46 @@ class MyProfileFragment : Fragment() {
 				)
 			}
 		}
+
+		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+			.addOnSuccessListener { documents ->
+//				Log.i("haimen", documents.size().toString())
+				if (documents.size() != 1) return@addOnSuccessListener    // Failsafe
+
+				for (document in documents) {
+					// Get avatar and seller's name
+					val usrAvtIV = view.findViewById<ImageView>(R.id.usrAvt)
+					Picasso.get()
+						.load(document.getString("avt"))
+						.into(usrAvtIV)
+					val sellerNameTV = view.findViewById<TextView>(R.id.sellerName)
+					sellerNameTV.text = document.getString("fullname")
+
+					Handler().postDelayed({
+						usrAvtIV.visibility = View.VISIBLE
+						sellerNameTV.visibility = View.VISIBLE
+					}, 2000)
+
+					document.getDocumentReference("store")!!.get().addOnSuccessListener { storeSnapshot ->
+						// Get shop's follow counts and average rating score
+						val followerTV = view.findViewById<TextView>(R.id.followerCnt)
+						followerTV.text = storeSnapshot.get("followers").toString()
+						val followingTV = view.findViewById<TextView>(R.id.followingCnt)
+						followingTV.text = storeSnapshot.get("following").toString()
+						val shopRatingTV = view.findViewById<TextView>(R.id.shopRating)
+						shopRatingTV.text = String.format(
+							"%.1f",
+							(storeSnapshot.get("rating") as ArrayList<Float>).toFloatArray().average()
+						)
+
+						Handler().postDelayed({
+							followerTV.visibility = View.VISIBLE
+							followingTV.visibility = View.VISIBLE
+							followingTV.visibility = View.VISIBLE
+						}, 2000)
+					}
+				}
+			}
 
 		return view
 	}
