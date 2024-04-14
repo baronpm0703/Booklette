@@ -61,11 +61,14 @@ class ShipAddressFragmentRecycleViewAdapter(
             if (isChecked) {
                 // If this address is selected, clear all previous selections and mark this address as selected
                 addressSelections.clear()
+                addressInfo.isDefault = true
                 addressSelections[position] = true
                 notifyDataSetChanged() // Notify the adapter of the change to update UI
             } else {
                 // If this address is deselected, remove it from the selections
                 addressSelections.remove(position)
+                addressInfo.isDefault = false
+
             }
         }
     }

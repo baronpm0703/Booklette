@@ -9,6 +9,7 @@ data class ShipAddressObject(
     val ward: String?,
     val addressNumber: String?,
     val shipLabel: String,
+    var isDefault: Boolean
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -17,7 +18,8 @@ data class ShipAddressObject(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString() ?: ""
+        parcel.readString() ?: "",
+        parcel.readByte() != 0.toByte()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -28,6 +30,7 @@ data class ShipAddressObject(
         parcel.writeString(ward)
         parcel.writeString(addressNumber)
         parcel.writeString(shipLabel)
+        parcel.writeByte(if (isDefault) 1 else 0)
     }
 
     override fun describeContents(): Int {

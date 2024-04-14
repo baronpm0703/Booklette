@@ -116,10 +116,8 @@ class CartFragment : Fragment() {
             // Create a new instance of CheckOutFragment and pass the selectedItems
             val checkOutFragment = CheckOutFragment.passSelectedItemToCheckOut(adapter.getSelectedItems())
             // Navigate to the CheckOutFragment
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fcvNavigation, checkOutFragment)
-                .addToBackStack(null)
-                .commit()
+            val homeAct = (activity as homeActivity)
+            homeAct.changeFragmentContainer(checkOutFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
         }
 
         binding.cartSwipeRefresh.setOnRefreshListener {

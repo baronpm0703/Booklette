@@ -74,7 +74,7 @@ class ShipAddressFragment : Fragment(){
         }
 
         binding.ivBackToPrev.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         binding.saveAddressToCheckOut.setOnClickListener {
@@ -83,10 +83,9 @@ class ShipAddressFragment : Fragment(){
                 // Pass both the selected address and the cart data to the CheckOutFragment
                 val checkOutFragment = CheckOutFragment.passSelectedAddressToCheckOut(selectedAddress)
                 checkOutFragment.arguments?.putParcelableArrayList("SELECTED_ITEMS", selectedItems)
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fcvNavigation, checkOutFragment)
-                    .addToBackStack(null) // Add to back stack to retain state
-                    .commit()
+                val homeAct = (activity as homeActivity)
+                homeAct.supportFragmentManager.popBackStack()
+                homeAct.changeFragmentContainer(checkOutFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
             } else {
                 // Handle the case where no address is selected
             }
@@ -98,7 +97,7 @@ class ShipAddressFragment : Fragment(){
         }
 
         binding.ivBackToPrev.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         return view
@@ -134,7 +133,8 @@ class ShipAddressFragment : Fragment(){
                                         city,
                                         ward,
                                         addressNumber,
-                                        shipLabel
+                                        shipLabel,
+                                        false
                                         )
                                 )
                             }
