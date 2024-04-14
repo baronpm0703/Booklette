@@ -139,7 +139,7 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/sellerName"
+                                android:id="@+id/recieverName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Kate Racculia"
@@ -148,10 +148,11 @@
                             </TextView>
 
                             <TextView
+                                android:id="@+id/recieverPhone"
                                 android:layout_width="178dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
-                                android:layout_toEndOf="@+id/sellerName"
+                                android:layout_toEndOf="@+id/recieverName"
                                 android:text="09147312123"
 
                                 android:textColor="@color/black"
@@ -160,6 +161,7 @@
 
 
                         <TextView
+                            android:id="@+id/addressNumber"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="123 Tran Hung Dao"
@@ -169,13 +171,12 @@
 
                         </TextView>
                         <TextView
+                            android:id="@+id/addressZone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Quan 5, Ho Chi Minh City"
                             android:textSize="5pt"
-
                             android:textColor="@color/black">
-
                         </TextView>
 
 

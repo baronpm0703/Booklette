@@ -21,6 +21,16 @@ class CheckOutFragment : Fragment() {
 
 
     companion object {
+
+        private const val ARG_SELECTED_ADDRESS = "selected_address"
+
+        fun passSelectedAddressToCheckOut(selectedAddress: ShipAddressObject): CheckOutFragment {
+            val fragment = CheckOutFragment()
+            val args = Bundle()
+            args.putParcelable(ARG_SELECTED_ADDRESS, selectedAddress)
+            fragment.arguments = args
+            return fragment
+        }
         fun passSelectedItemToCheckOut(selectedItems: ArrayList<CartObject>): CheckOutFragment {
             val fragment = CheckOutFragment()
             val args = Bundle()
@@ -49,17 +59,31 @@ class CheckOutFragment : Fragment() {
 
         selectedItems = arguments?.getParcelableArrayList<CartObject>("SELECTED_ITEMS") ?: ArrayList()
 
+        val selectedAddress = arguments?.getParcelable<ShipAddressObject>(ARG_SELECTED_ADDRESS)
+        if (selectedAddress != null) {
+            // Update UI with the selected address information
+            // For example:
+            binding.recieverName.text = selectedAddress.recieverName
+            binding.recieverPhone.text = selectedAddress.recieverPhone
+            binding.addressNumber.text = selectedAddress.addressNumber
+            binding.addressZone.text = selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
+        }
+
         val adapter = CheckOutRecyclerViewAdapter(requireContext(), selectedItems)
         binding.rvCheckout.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCheckout.adapter = adapter
 
         binding.changeAddress.setOnClickListener {
             val shipAddressFragment = ShipAddressFragment()
+            val args = Bundle()
+            args.putParcelableArrayList("SELECTED_ITEMS", selectedItems)
+            shipAddressFragment.arguments = args
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fcvNavigation, shipAddressFragment)
                 .addToBackStack(null)
                 .commit()
         }
+
         binding.changeCardBtn.setOnClickListener {
             val bankCardFragment = BankCardFragment()
             parentFragmentManager.beginTransaction()
