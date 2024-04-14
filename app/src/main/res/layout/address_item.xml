@@ -38,6 +38,23 @@
                         android:textColor="#103667"
                         android:textStyle="bold"></TextView>
 
+                    <Button
+                        android:id="@+id/shipLabel"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="-7dp"
+                        android:textSize="10dp"
+                        android:layout_marginEnd="16dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:background="@drawable/ship_adddress_label"
+                        android:drawableLeft="@drawable/ship_address_home_label"
+                        android:text="Home"></Button>
+
 
                     <Button
                         android:id="@+id/editAddress"

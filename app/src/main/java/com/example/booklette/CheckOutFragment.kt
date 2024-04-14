@@ -72,8 +72,8 @@ class CheckOutFragment : Fragment() {
         if (selectedAddress != null) {
             // Update UI with the selected address information
             // For example:
-            binding.recieverName.text = selectedAddress.recieverName
-            binding.recieverPhone.text = selectedAddress.recieverPhone
+            binding.recieverName.text = selectedAddress.receiverName
+            binding.recieverPhone.text = selectedAddress.receiverPhone
             binding.addressNumber.text = selectedAddress.addressNumber
             binding.addressZone.text = selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
         }
@@ -86,35 +86,6 @@ class CheckOutFragment : Fragment() {
         auth = Firebase.auth
         db = Firebase.firestore
 
-
-//        db.collection("accounts").whereEqualTo("UID", auth.uid).get()
-//            .addOnSuccessListener { documents ->
-//                if (documents.size() != 1) return@addOnSuccessListener
-//                for (document in documents) {
-//                    // Get avatar and seller's name
-//                    if (document.data.get("shippingAddress") != null) {
-//                        val shippingAddressArray = document.data.get("shippingAddress") as? ArrayList<Map<String, Any>>
-//                        shippingAddressArray?.let { shippingAddressArrayData ->
-//                            for (item in shippingAddressArrayData) {
-//                                if(item["isDefault"] == true){
-//                                    val receiverName = item["receiverName"] as? String ?: ""
-//                                    val recieverPhone = item["recieverPhone"] as? String ?: ""
-//                                    val province = item["province"] as? String ?: ""
-//                                    val city = item["city"] as? String ?: ""
-//                                    val ward = item["ward"] as? String ?: ""
-//                                    val addressNumber = item["addressNumber"] as? String ?: ""
-//                                    val shipLabel = item["shipLabel"] as? String ?: ""
-//                                    binding.recieverName.text = receiverName
-//                                    binding.recieverPhone.text = recieverPhone
-//                                    binding.addressNumber.text = addressNumber
-//                                    binding.addressZone.text = province + ", " + city + ", "+ward
-//                                }
-//
-//                            }
-//                        }
-//                    }
-//                }
-//            }
 
         binding.changeAddress.setOnClickListener {
             val shipAddressFragment = ShipAddressFragment()

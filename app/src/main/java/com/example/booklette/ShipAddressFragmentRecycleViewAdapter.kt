@@ -48,8 +48,8 @@ class ShipAddressFragmentRecycleViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val addressInfo = addressList[position]
-        holder.buyerName.text = addressInfo.recieverName
-        holder.phoneNum.text = addressInfo.recieverPhone
+        holder.buyerName.text = addressInfo.receiverName
+        holder.phoneNum.text = addressInfo.receiverPhone
         holder.addressDetail.text = addressInfo.addressNumber
         holder.addressProvince.text = addressInfo.province
         holder.addressCity.text = addressInfo.city

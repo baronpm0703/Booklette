@@ -2,13 +2,13 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class ShipAddressObject(
-    val recieverName: String?,
-    val recieverPhone: String?,
+    val receiverName: String?,
+    val receiverPhone: String?,
     val province: String?,
     val city: String?,
     val ward: String?,
     val addressNumber: String?,
-    val shipLabel: String,
+    val shipLabel: String?,
     var isDefault: Boolean
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -18,13 +18,13 @@ data class ShipAddressObject(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString() ?: "",
+        parcel.readString(),
         parcel.readByte() != 0.toByte()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(recieverName)
-        parcel.writeString(recieverPhone)
+        parcel.writeString(receiverName)
+        parcel.writeString(receiverPhone)
         parcel.writeString(province)
         parcel.writeString(city)
         parcel.writeString(ward)

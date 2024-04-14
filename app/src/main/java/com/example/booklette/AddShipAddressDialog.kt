@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import com.example.booklette.databinding.AddShipAddressBinding
+import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -49,6 +50,8 @@ class AddShipAddressDialog: Sheet() {
         binding.btnAddNewShipAddress.setOnClickListener {
             saveAddressToFirebase()
         }
+
+
 //        setButtonPositiveListener {  } If you want to override the default positive click listener
 //        displayButtonsView() If you want to change the visibility of the buttons view
 //        displayButtonPositive() Hiding the positive button will prevent clicks
@@ -62,12 +65,19 @@ class AddShipAddressDialog: Sheet() {
         val city = binding.addCity.text.toString()
         val ward = binding.addWard.text.toString()
         val addressNumber = binding.addAddressNumber.text.toString()
+        var chipText = "fd" // Define chipText outside of the setOnCheckedChangeListener
+
 
         // Validate input fields
         if (receiverName.isEmpty() || receiverPhone.isEmpty() || province.isEmpty() ||
             city.isEmpty() || ward.isEmpty() || addressNumber.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
+        }
+
+        binding.labelGroup.setOnCheckedChangeListener { group, checkedId ->
+            val selectedChip = group.findViewById<Chip>(checkedId)
+            val chipText = selectedChip?.text?.toString() ?: ""
         }
 
         val docAddressRef = db.collection("accounts").whereEqualTo("UID", auth.uid)
@@ -78,12 +88,12 @@ class AddShipAddressDialog: Sheet() {
                 // Create a new ShipAddressObject for the new address
                 val address = mapOf(
                     "receiverName" to receiverName,
-                    "recieverPhone" to receiverPhone,
+                    "receiverPhone" to receiverPhone,
                     "province" to province,
                     "city" to city,
                     "ward" to ward,
                     "addressNumber" to addressNumber,
-                    "shipLabel" to "work",
+                    "shipLabel" to chipText,
                     "isDefault" to false
                 )
 

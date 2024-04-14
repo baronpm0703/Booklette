@@ -254,18 +254,19 @@
                             app:layout_constraintStart_toStartOf="parent">
 
                             <com.google.android.material.chip.ChipGroup
+                                android:id="@+id/labelGroup"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:singleSelection="true">
                                 <com.google.android.material.chip.Chip
-                                    android:id="@+id/freeShip30k"
+                                    android:id="@+id/workLabel"
                                     style="@style/Color_Label_As_Ship_Address.MaterialComponents.Chip.Entry"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/addressWorkType"/>
 
                                 <com.google.android.material.chip.Chip
-                                    android:id="@+id/freeShip15k"
+                                    android:id="@+id/homeLabel"
                                     style="@style/Color_Label_As_Ship_Address.MaterialComponents.Chip.Entry"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"

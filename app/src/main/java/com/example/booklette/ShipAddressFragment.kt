@@ -119,7 +119,7 @@ class ShipAddressFragment : Fragment(){
                         shippingAddressArray?.let { shippingAddressArrayData ->
                             for (item in shippingAddressArrayData) {
                                 val receiverName = item["receiverName"] as? String ?: ""
-                                val recieverPhone = item["recieverPhone"] as? String ?: ""
+                                val receiverPhone = item["receiverPhone"] as? String ?: ""
                                 val province = item["province"] as? String ?: ""
                                 val city = item["city"] as? String ?: ""
                                 val ward = item["ward"] as? String ?: ""
@@ -128,7 +128,7 @@ class ShipAddressFragment : Fragment(){
                                 shipAddressList.add(
                                     ShipAddressObject(
                                         receiverName,
-                                        recieverPhone,
+                                        receiverPhone,
                                         province,
                                         city,
                                         ward,
