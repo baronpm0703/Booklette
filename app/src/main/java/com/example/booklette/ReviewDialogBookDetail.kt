@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import com.example.booklette.databinding.ReviewDialogBookDetailBinding
 import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
+import com.maxkeppeler.sheets.core.SheetStyle
 import java.util.Locale
 
 
@@ -28,6 +29,7 @@ class ReviewDialogBookDetail(
     private lateinit var binding: ReviewDialogBookDetailBinding
     private var client_review: String = ""
     private var client_rating: Float = 0.0F
+    private lateinit var photoGalleryDialogBookDetail: PhotoGalleryDialogBookDetail
 
     fun getClientReview(): String {
         return client_review
@@ -94,6 +96,19 @@ class ReviewDialogBookDetail(
             positiveListener?.invoke()
         }
 
+        val initValues = InitFilterValuesReviewBookDetail()
+        photoGalleryDialogBookDetail = PhotoGalleryDialogBookDetail(initValue)
+        binding.notFoundBooks.setOnClickListener {
+            activity?.let {
+                photoGalleryDialogBookDetail.show(it){
+                    style(SheetStyle.DIALOG)
+                    onPositive {
+                        this.dismiss()
+                    }
+                }
+            }
+
+        }
 
         this.displayButtonsView(false)
 //        setButtonPositiveListener {  } If you want to override the default positive click listener

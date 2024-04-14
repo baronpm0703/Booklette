@@ -141,7 +141,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/not_found_books"
+                android:id="@+id/notFoundBooks"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
