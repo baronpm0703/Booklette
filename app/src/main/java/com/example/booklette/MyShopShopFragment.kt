@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
+import kotlin.math.abs
 
 /**
  * A simple [Fragment] subclass.
@@ -84,8 +85,6 @@ class MyShopShopFragment : Fragment() {
 									val bookAuthor = info.get("author").toString()
 									val bookReleaseDate = info.get("releaseDate") as Timestamp
 									val bookPrice = book["price"] as Long
-//									val bookDiscount = info.get("best-deal-sale") as Float
-									val bookDiscount = 0.5F
 									val bookRemain = book["remain"] as Long
 									val bookSold = book["sold"] as Long
 									val bookStatus = book["status"].toString()
@@ -96,26 +95,34 @@ class MyShopShopFragment : Fragment() {
 									}
 									val bookRatingCnt = bookRatings.size
 									bookRatingScore /= bookRatingCnt
+									// Get a book's discount info
+									val bookDiscountId = book["discount"] as String
+									var bookDiscount = 0F
+									db.collection("discounts").whereEqualTo("discountID", bookDiscountId).get().addOnSuccessListener {
+										Log.i("MyShop", bookName + " - " + it.documents.size.toString())
+										if (it.documents.size > 0)
+											bookDiscount = (it.documents[0].get("percent") as Long).toFloat() / 100
 
-									val newBookObject = MyShopBookObject(
-										bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice, bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate
-									)
-									val newRecommendedBookObject = HRecommendedBookObject(
-										bookId, bookImg, bookRatingScore, bookRatingCnt.toLong(), bookName, bookPrice
-									)
+										val newBookObject = MyShopBookObject(
+											bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice, bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate
+										)
+										val newRecommendedBookObject = HRecommendedBookObject(
+											bookId, bookImg, bookRatingScore, bookRatingCnt.toLong(), bookName, bookPrice
+										)
 
-									val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
-									val dateTo = Calendar.getInstance().apply { time = bookReleaseDate.toDate() }
-									val period = Math.abs(dateTo.get(Calendar.MONTH) - dateFrom.get(Calendar.MONTH))
-									if (period >= 1) {
-										newArrivals.add(newBookObject)
+										val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
+										val dateTo = Calendar.getInstance().apply { time = bookReleaseDate.toDate() }
+										val period = abs(dateTo.get(Calendar.MONTH) - dateFrom.get(Calendar.MONTH))
+										if (period >= 1) {
+											newArrivals.add(newBookObject)
+										}
+										if (bestSellers.size == 0 || bestSellers[0].sold >= bookSold)
+											bestSellers.add(newBookObject)
+										else bestSellers.add(0, newBookObject)
+										if (highlyRecommended.size == 0 || highlyRecommended[0].rating >= bookRatingScore)
+											highlyRecommended.add(0, newRecommendedBookObject)
+										else highlyRecommended.add(newRecommendedBookObject)
 									}
-									if (bestSellers.size == 0 || bestSellers[0].sold >= bookSold)
-										bestSellers.add(newBookObject)
-									else bestSellers.add(0, newBookObject)
-									if (highlyRecommended.size == 0 || highlyRecommended[0].rating >= bookRatingScore)
-										highlyRecommended.add(0, newRecommendedBookObject)
-									else highlyRecommended.add(newRecommendedBookObject)
 								}
 							}
 						}
