@@ -56,11 +56,8 @@ class MyShopShopFragment : Fragment() {
 //		discountHScrollView = view.findViewById(R.id.discountHScroll)
 //		newArrivalsHScrollView = view.findViewById(R.id.newArrivalsScrollView)
 
-		// Discount scroll view
-		var discounts = arrayListOf(Triple(10, 100, 30), Triple(20, 150, 20), Triple(30, 120, 50))
-		setDiscountItemViews(view, discounts)
-
 		// Data arrays
+		val discounts = arrayListOf<Triple<Long, Long, Long>>()
 		val newArrivals = arrayListOf<MyShopBookObject>()
 		val bestSellers = arrayListOf<MyShopBookObject>()
 		val highlyRecommended = arrayListOf<HRecommendedBookObject>()
@@ -70,6 +67,23 @@ class MyShopShopFragment : Fragment() {
 
 				for (document in documents) {
 					document.getDocumentReference("store")!!.get().addOnSuccessListener { storeSnapshot ->
+						val shopVouchers = storeSnapshot.get("shopVouchers") as ArrayList<String>
+						shopVouchers.forEach {voucher ->
+							db.collection("discounts").whereEqualTo("discountID", voucher).get().addOnSuccessListener {
+								val documents = it.documents
+
+								if (documents.size == 0) return@addOnSuccessListener
+								val voucherExpire = documents[0].get("endDate") as Timestamp
+								val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
+								val dateTo = Calendar.getInstance().apply { time = voucherExpire.toDate() }
+								val voucherPeriod = abs(dateTo.get(Calendar.DAY_OF_YEAR) - dateFrom.get(Calendar.DAY_OF_YEAR)).toLong()
+								val voucherPercent = documents[0].get("percent") as Long
+								val voucherMinimum = documents[0].get("minimumOrder") as Long
+
+								discounts.add(Triple(voucherPercent, voucherMinimum, voucherPeriod))
+							}
+						}
+
 						val books = storeSnapshot.get("items") as Map<String, Map<String, Any>>
 						books.map { entry ->
 							val book = entry.value.toMutableMap()
@@ -113,7 +127,7 @@ class MyShopShopFragment : Fragment() {
 										val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
 										val dateTo = Calendar.getInstance().apply { time = bookReleaseDate.toDate() }
 										val period = abs(dateTo.get(Calendar.MONTH) - dateFrom.get(Calendar.MONTH))
-										if (period >= 1) {
+										if (period <= 1) {
 											newArrivals.add(newBookObject)
 										}
 										if (bestSellers.size == 0 || bestSellers[0].sold >= bookSold)
@@ -128,6 +142,8 @@ class MyShopShopFragment : Fragment() {
 						}
 
 						Handler().postDelayed({
+							// Discount scroll view
+							setDiscountItemViews(view, discounts)
 							// New Arrivals scroll view
 							setNewArrivalsItemViews(view, newArrivals)
 							// Best Sellers scroll view
@@ -142,7 +158,7 @@ class MyShopShopFragment : Fragment() {
 		return view
 	}
 
-	private fun setDiscountItemViews(view: View, discounts: ArrayList<Triple<Int, Int, Int>>) {
+	private fun setDiscountItemViews(view: View, discounts: ArrayList<Triple<Long, Long, Long>>) {
 		val content = view.findViewById<LinearLayout>(R.id.discountHScrollContent)
 
 		for (discount in discounts) {
@@ -159,6 +175,8 @@ class MyShopShopFragment : Fragment() {
 			discountViews.add(singleFrame)
 			content.addView(singleFrame)
 		}
+
+		content.visibility = View.VISIBLE
 	}
 
 	private fun setNewArrivalsItemViews(view: View, newArrivals: ArrayList<MyShopBookObject>) {
