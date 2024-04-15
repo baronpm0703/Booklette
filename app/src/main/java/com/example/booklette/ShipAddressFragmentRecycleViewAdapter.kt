@@ -32,6 +32,7 @@ class ShipAddressFragmentRecycleViewAdapter(
         val addressCity: TextView = itemView.findViewById(R.id.addressCity)
         val addressWard: TextView = itemView.findViewById(R.id.addressWard)
         val chooseAddressButton: RadioButton = itemView.findViewById(R.id.chooseAddressButton)
+        val shipLabel: Button = itemView.findViewById(R.id.shipLabel)
 
     }
 
@@ -55,6 +56,17 @@ class ShipAddressFragmentRecycleViewAdapter(
         holder.addressCity.text = addressInfo.city
         holder.addressWard.text = addressInfo.ward
         holder.chooseAddressButton.isChecked = addressSelections.containsKey(position)
+        holder.shipLabel.text = addressInfo.shipLabel
+        if(addressInfo.shipLabel == "work"){
+            holder.shipLabel.setBackgroundResource(R.drawable.bank_card_gradient)
+            holder.shipLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ship_address_work_label, 0, 0, 0);
+        }
+        else if(addressInfo.shipLabel == "home"){
+            holder.shipLabel.setBackgroundResource(R.drawable.bank_card_gradient_visa_card)
+            holder.shipLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ship_address_home_label, 0, 0, 0);
+
+
+        }
 
         // Set click listener to handle selection/deselection of the address
         holder.chooseAddressButton.setOnCheckedChangeListener { _, isChecked ->

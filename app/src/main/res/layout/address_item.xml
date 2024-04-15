@@ -30,7 +30,7 @@
 
                     <TextView
                         android:id="@+id/buyerName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="172dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:gravity="center_vertical"
@@ -41,24 +41,24 @@
                     <Button
                         android:id="@+id/shipLabel"
                         android:layout_width="wrap_content"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
                         android:layout_height="30dp"
                         android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginStart="-7dp"
-                        android:textSize="10dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="17dp"
+                        android:layout_toStartOf="@+id/editAddress"
+                        android:background="@drawable/bank_card_gradient"
+                        android:drawableLeft="@drawable/ship_address_home_label"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:background="@drawable/ship_adddress_label"
-                        android:drawableLeft="@drawable/ship_address_home_label"
-                        android:text="Home"></Button>
+                        android:text="Home"
+                        android:textColor="@color/white"
+                        android:textSize="10dp"
+                        android:textStyle="bold"></Button>
 
 
                     <Button
                         android:id="@+id/editAddress"
-                        android:layout_width="wrap_content"
+                        android:layout_width="60dp"
                         android:textColor="#103667"
                         android:textStyle="bold"
                         android:layout_height="30dp"
