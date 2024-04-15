@@ -19,135 +19,119 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:paddingStart="20dp"
                 android:background="@color/white"
                 >
-
-                <RelativeLayout
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/buyerName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center_vertical"
-                        android:text="Vo Chanh Tin"
-                        android:textColor="#103667"
-                        android:textStyle="bold"></TextView>
-
-                    <Button
-                        android:id="@+id/shipLabel"
-                        android:layout_width="wrap_content"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:layout_height="30dp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginStart="-7dp"
-                        android:textSize="10dp"
-                        android:layout_marginEnd="16dp"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:background="@drawable/ship_adddress_label"
-                        android:drawableLeft="@drawable/ship_address_home_label"
-                        android:text="Home"></Button>
-
-
-                    <Button
-                        android:id="@+id/editAddress"
-                        android:layout_width="wrap_content"
-                        android:textColor="#103667"
-                        android:textStyle="bold"
-                        android:layout_height="30dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="-7dp"
-                        android:textSize="10dp"
-                        android:layout_marginEnd="16dp"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:background="@drawable/button_edit_address"
-                        android:drawableLeft="@drawable/edit_address_icon"
-                        android:text="@string/editAddressBtn"></Button>
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/phoneNum"
-                    android:layout_width="178dp"
-                    android:layout_height="wrap_content"
-                    android:text="09147312123"
-                    android:textColor="@color/black"
-                    android:textSize="5pt"></TextView>
-
-                <TextView
-                    android:id="@+id/addressDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="123 Tran Hung Dao"
-                    android:textColor="@color/black"
-                    android:textSize="5pt"
-                    >
-                </TextView>
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="5dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/addressProvince"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Quan 5"
-                        android:paddingEnd="8dp"
-                        android:textSize="5pt"
-                        android:textColor="@color/black">
-                    </TextView>
-                    <TextView
-                        android:id="@+id/addressCity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingEnd="8dp"
-                        android:text="Ho Chi Minh city"
-                        android:textSize="5pt"
-                        android:textColor="@color/black">
-                    </TextView>
-                    <TextView
-                        android:id="@+id/addressWard"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ho Chi Minh City"
-                        android:textSize="5pt"
-                        android:textColor="@color/black">
-                    </TextView>
-                </LinearLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
                     <RadioButton
                         android:id="@+id/chooseAddressButton"
                         android:layout_width="wrap_content"
+                        android:layout_height="42dp"
+                        android:paddingEnd="5dp"
+                        android:buttonTint="#004AAD"
+                        ></RadioButton>
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"></RadioButton>
+                        android:orientation="vertical">
+                        <RelativeLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="323dp"
-                        android:layout_height="wrap_content" 
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="7dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_toEndOf="@+id/chooseAddressButton"
-                        android:gravity="center_vertical"
-                        android:text="@string/chooseAsShipAddressDefault"
-                        android:textColor="#103667"
-                        android:textStyle="bold"></TextView>
-                </RelativeLayout>
+                            <TextView
+                                android:id="@+id/buyerName"
+                                android:layout_width="119dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:gravity="center_vertical"
+                                android:text="Vo Chanh Tin"
+                                android:textColor="#000099"
+                                android:textStyle="bold"
+                                ></TextView>
+
+                            <Button
+                                android:id="@+id/shipLabel"
+                                android:layout_width="70dp"
+                                android:layout_height="25dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginEnd="17dp"
+                                android:layout_toStartOf="@+id/editAddress"
+                                android:background="@drawable/bank_card_gradient"
+                                android:drawableLeft="@drawable/ship_address_home_label"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
+                                android:scrollbarSize="20dp"
+                                android:text="Home"
+                                android:textColor="@color/white"
+                                android:textSize="8dp"
+                                android:textStyle="bold" />
+
+
+                            <Button
+                                android:id="@+id/editAddress"
+                                android:layout_width="34dp"
+                                android:textColor="#103667"
+                                android:textStyle="bold"
+                                android:layout_height="25dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="-7dp"
+                                android:textSize="8dp"
+                                android:layout_marginEnd="16dp"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
+                                android:background="@drawable/button_edit_address"
+                                android:drawableLeft="@drawable/edit_address_icon"></Button>
+                        </RelativeLayout>
+                        <TextView
+                            android:id="@+id/phoneNum"
+                            android:layout_width="178dp"
+                            android:layout_height="wrap_content"
+                            android:text="09147312123"
+                            android:textColor="@color/black"
+                            android:textSize="5pt"></TextView>
+
+                        <TextView
+                            android:id="@+id/addressDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="123 Tran Hung Dao"
+                            android:textColor="@color/black"
+                            android:textSize="5pt"
+                            >
+                        </TextView>
+                        <TextView
+                            android:id="@+id/addressZone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="123 Tran Hung Dao"
+                            android:textColor="@color/black"
+                            android:textSize="5pt"
+                            android:paddingBottom="10dp"
+
+                            >
+                        </TextView>
+
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+
+
+
+
+
 
             </LinearLayout>
 

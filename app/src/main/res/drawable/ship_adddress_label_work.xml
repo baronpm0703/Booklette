@@ -3,5 +3,5 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners android:radius="8dp" /> <!-- Adjust the radius to control the roundness -->
-    <solid android:color="#D45555" /> <!-- Set the button color -->
+    <solid android:color="#008080" /> <!-- Set the button color -->
 </shape>

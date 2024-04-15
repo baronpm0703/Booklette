@@ -65,7 +65,7 @@ class AddShipAddressDialog: Sheet() {
         val city = binding.addCity.text.toString()
         val ward = binding.addWard.text.toString()
         val addressNumber = binding.addAddressNumber.text.toString()
-        var chipText = "fd" // Define chipText outside of the setOnCheckedChangeListener
+        var chipText = "Home"
 
 
         // Validate input fields
@@ -75,10 +75,9 @@ class AddShipAddressDialog: Sheet() {
             return
         }
 
-        binding.labelGroup.setOnCheckedChangeListener { group, checkedId ->
-            val selectedChip = group.findViewById<Chip>(checkedId)
-            val chipText = selectedChip?.text?.toString() ?: ""
-        }
+        val selectedChipId = binding.labelGroup.checkedChipId
+        val selectedChip = binding.labelGroup.findViewById<Chip>(selectedChipId)
+        chipText = selectedChip?.text?.toString() ?: "Default Text"
 
         val docAddressRef = db.collection("accounts").whereEqualTo("UID", auth.uid)
         docAddressRef.get().addOnSuccessListener { accountList ->
