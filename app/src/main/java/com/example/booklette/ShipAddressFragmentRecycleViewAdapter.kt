@@ -28,11 +28,9 @@ class ShipAddressFragmentRecycleViewAdapter(
         val editAddress: Button = itemView.findViewById(R.id.editAddress)
         val phoneNum: TextView = itemView.findViewById(R.id.phoneNum)
         val addressDetail: TextView = itemView.findViewById(R.id.addressDetail)
-        val addressProvince: TextView = itemView.findViewById(R.id.addressProvince)
-        val addressCity: TextView = itemView.findViewById(R.id.addressCity)
-        val addressWard: TextView = itemView.findViewById(R.id.addressWard)
         val chooseAddressButton: RadioButton = itemView.findViewById(R.id.chooseAddressButton)
         val shipLabel: Button = itemView.findViewById(R.id.shipLabel)
+        val addressZone: TextView = itemView.findViewById(R.id.addressZone)
 
     }
 
@@ -52,16 +50,16 @@ class ShipAddressFragmentRecycleViewAdapter(
         holder.buyerName.text = addressInfo.receiverName
         holder.phoneNum.text = addressInfo.receiverPhone
         holder.addressDetail.text = addressInfo.addressNumber
-        holder.addressProvince.text = addressInfo.province
-        holder.addressCity.text = addressInfo.city
-        holder.addressWard.text = addressInfo.ward
         holder.chooseAddressButton.isChecked = addressSelections.containsKey(position)
         holder.shipLabel.text = addressInfo.shipLabel
-        if(addressInfo.shipLabel == "work"){
+        holder.addressZone.text = addressInfo.ward  + ", "+ addressInfo.city + ", " + addressInfo.province
+
+
+        if(addressInfo.shipLabel == "Work"){
             holder.shipLabel.setBackgroundResource(R.drawable.bank_card_gradient)
             holder.shipLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ship_address_work_label, 0, 0, 0);
         }
-        else if(addressInfo.shipLabel == "home"){
+        else if(addressInfo.shipLabel == "Home"){
             holder.shipLabel.setBackgroundResource(R.drawable.bank_card_gradient_visa_card)
             holder.shipLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ship_address_home_label, 0, 0, 0);
 
