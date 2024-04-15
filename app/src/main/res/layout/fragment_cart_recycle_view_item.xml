@@ -26,7 +26,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="130dp"
-            android:layout_margin="6dp"
+            android:layout_margin="10dp"
             android:background="@drawable/round_corner_cart_item">
 
             <ImageView
@@ -37,6 +37,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="10dp"
                 app:layout_constraintVertical_bias="0.619">
 
             </ImageView>
@@ -62,20 +63,20 @@
 
                     <TextView
                         android:id="@+id/bookTitle"
-                        android:layout_width="156dp"
+                        android:layout_width="192dp"
                         android:layout_height="wrap_content"
-                        android:text="Tuesday Mooney Talks to Ghosts"
+                        android:text="Tuesday Mooney "
                         android:textColor="@color/black"
-                        android:textSize="6pt"
+                        android:textSize="7pt"
                         android:textStyle="bold"></TextView>
 
                     <RadioButton
                         android:id="@+id/btnSelectItem"
-                        android:layout_width="113dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="50dp"
                         android:layout_gravity="center_vertical"
-                        android:textColor="@color/black"
+                        android:backgroundTint="@color/white"
+                        android:buttonTint="#D45555"
                         android:textSize="6pt" />
                 </LinearLayout>
 
@@ -84,7 +85,6 @@
                     android:id="@+id/bookOwner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="Kate Racculia"
                     android:textColor="@color/black"
@@ -122,6 +122,7 @@
                             android:id="@+id/quantity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/black"
                             android:padding="10dp"
                             android:text="01" />
 
@@ -145,11 +146,11 @@
                         android:id="@+id/bookPrice"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="53dp"
                         android:gravity="right"
                         android:text="$33.00"
                         android:textColor="@color/black"
-                        android:textSize="7pt"
+                        android:textSize="9pt"
                         android:textStyle="bold"></TextView>
                 </LinearLayout>
 

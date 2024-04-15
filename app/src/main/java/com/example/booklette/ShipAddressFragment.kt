@@ -87,7 +87,6 @@ class ShipAddressFragment : Fragment(){
                 homeAct.supportFragmentManager.popBackStack()
                 homeAct.changeFragmentContainer(checkOutFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
             } else {
-                // Handle the case where no address is selected
             }
         }
 

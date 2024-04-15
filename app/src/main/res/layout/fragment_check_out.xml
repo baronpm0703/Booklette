@@ -78,14 +78,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="110dp"
+                android:background="@drawable/ship_block"
+                android:layout_margin="10dp"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="104dp"
                     android:layout_margin="6dp"
-                    android:background="@color/white">
+                    >
 
 
                     <LinearLayout
@@ -256,8 +258,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColor="@drawable/custom_radio_text_payment_method"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginEnd="16dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
                                 android:button="@color/transparent"
                                 android:drawableStart="@drawable/banking_radio_button_image"
                                 android:drawablePadding="30dp"
@@ -275,14 +277,13 @@
                             android:id="@+id/option2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
                             android:textColor="@drawable/custom_radio_text_payment_method"
                             android:button="@color/transparent"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
                             android:layout_marginBottom="10dp"
                             android:drawableLeft="@drawable/paypal_radio_button_image"
                             android:drawablePadding="30dp"
-
                             android:textSize="15dp"
                             android:textStyle="bold"
                             android:text="@string/payOnDelivery" />
@@ -295,9 +296,8 @@
                             android:layout_height="wrap_content"
                             android:button="@color/transparent"
                             android:textColor="@drawable/custom_radio_text_payment_method"
-
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
                             android:layout_marginBottom="10dp"
                             android:drawableStart="@drawable/epay_radio_button_image"
                             android:drawablePadding="30dp"
@@ -316,8 +316,8 @@
                             android:layout_alignParentRight="true"
                             android:button="@color/transparent"
                             android:textColor="@drawable/custom_radio_text_payment_method"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
                             android:textSize="15dp"
                             android:textStyle="bold"
                             android:drawableStart="@drawable/pay_on_delelivery_radio_button_image"
