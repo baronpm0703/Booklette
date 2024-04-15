@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:text="Sale up to 50%"
+            android:text="@string/shop_sale_voucher_book_detail_item"
             android:textColor="#B50000"
             android:textStyle="bold"
             android:textSize="10pt">
@@ -31,7 +31,7 @@
             android:layout_marginBottom="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minimum order 100k"
+            android:text="@string/shop_min_order_voucher_book_detail_item"
             android:textSize="5pt"
             android:textColor="#B50000">
 
@@ -41,7 +41,7 @@
             android:id="@+id/txtVoucherRemainingTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Expiring soon: 1 day(s) left"
+            android:text="@string/shop_expire_voucher_book_detail_item"
             android:textSize="4pt"
             android:textColor="#6E6E6E">
 
@@ -58,7 +58,7 @@
         android:textColor="@color/white"
         android:minHeight="30dp"
         android:minWidth="50dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/round_corner_button_solid_color_book_detail_pink"
         android:layout_gravity="center">
 

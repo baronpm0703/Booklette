@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/baseline_arrow_back_ios_new_24"></ImageView>
+            android:src="@drawable/baseline_arrow_back_ios_new_24"/>
 
         <TextView
             android:id="@+id/wrapper"
@@ -32,7 +32,7 @@
             android:text="@string/navigation_payment_card"
             android:textColor="@color/black"
             android:textSize="21dp"
-            android:textStyle="bold"></TextView>
+            android:textStyle="bold"/>
 
 
         <ImageView
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/search"></ImageView>
+            android:src="@drawable/search"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -97,7 +97,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardHeading"
                 app:layout_constraintVertical_bias="0.042"
                 tools:itemCount="1"
-                tools:listitem="@layout/bank_card_recycler_view_layout"></androidx.recyclerview.widget.RecyclerView>
+                tools:listitem="@layout/bank_card_recycler_view_layout"/>
 
 
 
@@ -116,7 +116,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/add_address_background"
-                    android:src="@drawable/add_address_icon" />
+                    android:src="@drawable/add_address_icon"
+                    android:contentDescription="Add Cart" />
             </RelativeLayout>
         </LinearLayout>
 

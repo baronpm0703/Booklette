@@ -17,12 +17,12 @@
         android:id="@+id/txtCategoryNameItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Non-fiction"
+        android:text="@string/filter_category_gv_default_item"
         android:textColor="#E9FFFFFF"
         android:gravity="center"
         android:textSize="11pt"
-        android:layout_alignRight="@id/ivCategoryItem"
-        android:layout_alignLeft="@+id/ivCategoryItem"
+        android:layout_alignEnd="@id/ivCategoryItem"
+        android:layout_alignStart="@+id/ivCategoryItem"
         android:layout_alignTop="@id/ivCategoryItem"
         android:layout_alignBottom="@id/ivCategoryItem">
 

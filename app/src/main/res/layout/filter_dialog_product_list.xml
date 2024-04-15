@@ -32,10 +32,11 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/helvetica_regular"
                 android:paddingStart="10dp"
-                android:text="Price Range"
+                android:text="@string/filter_dialog_product_list_price_range"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:id="@+id/moneyRange"
@@ -48,7 +49,7 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/helvetica_regular"
                 android:paddingEnd="10dp"
-                android:text="0-100.000 VND"
+                android:text="@string/basic_money_range"
                 android:textColor="@color/black"
                 android:textSize="17sp" />
 
@@ -78,10 +79,11 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/helvetica_regular"
                 android:paddingStart="10dp"
-                android:text="Categories"
+                android:text="@string/filter_dialog_product_list_categories"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
 
             <GridView
                 android:id="@+id/filterCategoryDialogGV"
@@ -91,7 +93,8 @@
                 android:horizontalSpacing="5dp"
                 android:numColumns="4"
                 android:padding="10dp"
-                android:verticalSpacing="5dp"></GridView>
+                android:verticalSpacing="5dp"
+                tools:ignore="NestedScrolling"/>
 
             <View
                 android:layout_below="@+id/filterCategoryDialogGV"
@@ -105,13 +108,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/filterCategoryDialogGV"
                 android:layout_alignParentStart="true"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:fontFamily="@font/helvetica_regular"
                 android:paddingStart="10dp"
-                android:text="Type"
+                android:text="@string/filter_dialog_product_list_type"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
 
             <GridView
                 android:id="@+id/filterTypeDialogGV"
@@ -139,7 +146,7 @@
                 android:layout_margin="10dp"
                 android:fontFamily="@font/helvetica_regular"
                 android:paddingStart="10dp"
-                android:text="Age"
+                android:text="@string/filter_dialog_product_list_age"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />

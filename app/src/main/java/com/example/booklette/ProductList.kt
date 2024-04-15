@@ -105,10 +105,7 @@ class ProductList : Fragment() {
 
         // Set up back btn
         binding.ivBackToPrev.setOnClickListener {
-            val categoryFragment = CategoryFragment()
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fcvNavigation, categoryFragment)
-                ?.commit()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         // Product List Grid view
