@@ -27,10 +27,16 @@ class CheckOutRecyclerViewAdapter(
 ) :
     RecyclerView.Adapter<CheckOutRecyclerViewAdapter.ViewHolder>() {
 
+    interface VoucherItemClickListener {
+        fun onVoucherItemClick(percentage: Float)
+    }
+
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
     private lateinit var shopVoucherAdapter: bookDetailShopVoucherRVAdapter
+    private var voucherPercentage: Float = 0f // Store the voucher percentage
+
 
     fun calculateTotalAmount(): Float {
         var total = 0f
@@ -38,6 +44,10 @@ class CheckOutRecyclerViewAdapter(
             total += item.price * item.bookQuantity
         }
         return total
+    }
+
+    private fun calculateVoucherShop(): Float {
+        return calculateTotalAmount() * (voucherPercentage / 100)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -68,6 +78,13 @@ class CheckOutRecyclerViewAdapter(
         val shopVoucherAdapter = bookDetailShopVoucherRVAdapter(context, shopVoucherList)
         holder.rvShopVoucherAdapter.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         holder.rvShopVoucherAdapter.adapter = shopVoucherAdapter
+
+
+        val discountItem = calculateVoucherShop()
+        val formattedDiscountItem = String.format("%,.0f", discountItem)
+
+        holder.voucherShop.text = "$formattedDiscountItem VND"
+
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
@@ -113,8 +130,15 @@ class CheckOutRecyclerViewAdapter(
                         }
                 }
             }
-    }
 
+        shopVoucherAdapter.itemClickListener = object : bookDetailShopVoucherRVAdapter.VoucherItemClickListener {
+            override fun onVoucherItemClick(percentage: Float) {
+                voucherPercentage = percentage
+                notifyDataSetChanged() // Update the voucher shop value
+            }
+        }
+
+    }
 
 
 
@@ -132,6 +156,8 @@ class CheckOutRecyclerViewAdapter(
         val bookCover: ImageView = itemView.findViewById(R.id.bookCover)
         val BookPriceWithQuantity: TextView = itemView.findViewById(R.id.BookPriceWithQuantity)
         val rvShopVoucherAdapter: RecyclerView = itemView.findViewById(R.id.rvBookDetailShopVoucher)
+        val voucherShop: TextView = itemView.findViewById(R.id.voucherShop)
+
     }
 }
 

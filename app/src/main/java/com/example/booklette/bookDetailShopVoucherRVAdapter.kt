@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.model.VoucherObject
 import java.time.Instant
@@ -12,6 +13,15 @@ import java.time.Instant
 class bookDetailShopVoucherRVAdapter(var context: android.content.Context?, var data: ArrayList<VoucherObject>) :
     RecyclerView.Adapter<bookDetailShopVoucherRVAdapter.ViewHolder>() {
 
+    interface VoucherItemClickListener {
+        fun onVoucherItemClick(percentage: Float)
+    }
+
+    var itemClickListener: VoucherItemClickListener? = null
+
+    interface OnItemClickListener {
+        fun onItemClick(percentage: Float)
+    }
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view
@@ -41,7 +51,19 @@ class bookDetailShopVoucherRVAdapter(var context: android.content.Context?, var 
         val txtDesciptionVoucher: TextView = itemView.findViewById(R.id.txtDesciptionVoucher)
         val txtVoucherRemainingTime: TextView = itemView.findViewById(R.id.txtVoucherRemainingTime)
         val btnSaveVoucher: Button = itemView.findViewById(R.id.btnSaveVoucher)
+
+        init {
+            btnSaveVoucher.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val voucher = data[position]
+                    val percentage = voucher.percent
+                    itemClickListener?.onVoucherItemClick(percentage)
+                }
+            }
+        }
     }
+
 
     private fun calculateRemainingDays(currentTimestamp: Long, variableUnixTimestamp: Long): Long {
         val differenceSeconds = variableUnixTimestamp - currentTimestamp
