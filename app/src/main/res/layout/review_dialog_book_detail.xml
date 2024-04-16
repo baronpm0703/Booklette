@@ -26,7 +26,7 @@
         <View
             android:id="@+id/slideDownTab"
             android:layout_width="110dp"
-            android:layout_height="10dp"
+            android:layout_height="5dp"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/slide_down_tab" />
@@ -45,7 +45,7 @@
             android:fontFamily="@font/helvetica_regular"
 
             android:paddingStart="10dp"
-            android:text="@string/'review_statement_dialog_book_detail'"
+            android:text="@string/review_statement_dialog_book_detail"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -63,7 +63,7 @@
             <per.wsj.library.AndRatingBar
                 android:id="@+id/ratingStarBar"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
