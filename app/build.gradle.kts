@@ -112,9 +112,6 @@ dependencies {
     //Progress Button
     implementation ("com.github.razir.progressbutton:progressbutton:2.1.0")
 
-    // Preferences DataStore
-    implementation ("androidx.datastore:datastore-preferences:1.0.0-alpha01")
-
     // Lifecycle components
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
@@ -170,4 +167,13 @@ dependencies {
 
     //pull to refresh
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
+    //volley
+    implementation("com.android.volley:volley:1.2.0")
+
+    //paypal native
+    implementation("com.paypal.android:paypal-native-payments:1.3.0")
+
+    // Preferences DataStore
+    implementation ("androidx.datastore:datastore-preferences:1.0.0-alpha01")
 }

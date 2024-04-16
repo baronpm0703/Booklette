@@ -1,9 +1,13 @@
+import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.RadioButton
+import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +23,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.rpc.context.AttributeContext.Resource
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 
 class CheckOutFragment : Fragment() {
     private var _binding: FragmentCheckOutBinding? = null
@@ -29,6 +36,8 @@ class CheckOutFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+
+    private lateinit var radioButtonClicked: RadioButton
     companion object {
 
         private const val ARG_SELECTED_ADDRESS = "selected_address"
@@ -109,6 +118,28 @@ class CheckOutFragment : Fragment() {
         binding.totalAmount.text = "$afterFomartedTotalAmount VND"
         binding.totalPayment.text = "$afterFomartedTotalAmount VND"
         binding.totalPaymentInPaymentDetail.text = "$afterFomartedTotalAmount VND"
+
+        binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            radioButtonClicked = view.findViewById<RadioButton>(checkedId)
+        }
+
+        binding.placeOrderBtn.setOnClickListener({
+            if (::radioButtonClicked.isInitialized) {
+                if (radioButtonClicked.text == getString(R.string.paypalMethod)) {
+//                    Toast.makeText(context, totalAmount.toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+            else {
+                MotionToast.createColorToast(
+                    context as Activity,
+                    getString(R.string.failed),
+                    getString(R.string.haveNotPickPaymentMethodError),
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.SHORT_DURATION,
+                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+            }
+        })
 
 
 

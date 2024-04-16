@@ -295,7 +295,7 @@ class BookDetailFragment : Fragment() {
                                             result.documents[0].data?.get("discountFilter").toString(),
                                             result.documents[0].data?.get("discountID").toString(),
                                             result.documents[0].data?.get("discountName").toString(),
-                                            result.documents[0].data?.get("discountType").toString().toInt(),
+                                            result.documents[0].data?.get("discountType").toString(),
                                             result.documents[0].data?.get("endDate") as Timestamp,
                                             result.documents[0].data?.get("percent").toString().toFloat(),
                                             result.documents[0].data?.get("startDate") as Timestamp
