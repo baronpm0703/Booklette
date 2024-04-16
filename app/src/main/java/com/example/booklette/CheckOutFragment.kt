@@ -25,8 +25,10 @@ import com.example.booklette.databinding.FragmentCheckOutBinding
 import com.example.booklette.homeActivity
 import com.example.booklette.model.CartObject
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.rpc.context.AttributeContext.Resource
@@ -47,6 +49,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
+import java.util.Date
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -122,14 +125,12 @@ class CheckOutFragment : Fragment() {
             binding.addressZone.text = selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
         }
 
-
         val adapter = CheckOutRecyclerViewAdapter(requireContext(), selectedItems)
         binding.rvCheckout.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCheckout.adapter = adapter
 
         auth = Firebase.auth
         db = Firebase.firestore
-
 
         binding.changeAddress.setOnClickListener {
             val shipAddressFragment = ShipAddressFragment()
@@ -146,7 +147,6 @@ class CheckOutFragment : Fragment() {
             val homeAct = (activity as homeActivity)
             homeAct.changeFragmentContainer(bankCardFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
         }
-
 
         val totalAmount = adapter.calculateTotalAmount()
         val afterFomartedTotalAmount = String.format("%,.0f", totalAmount)
@@ -171,6 +171,74 @@ class CheckOutFragment : Fragment() {
                             // Handle exceptions
                             e.printStackTrace()
                         }
+                    }
+                }
+                else if (radioButtonClicked.text == getString(R.string.payOnDelivery)) {
+                    val selectedItemsMap: MutableMap<Any, HashMap<Any, Any>> = mutableMapOf()
+                    var totalAmount = 0.0F
+
+                    for (cartObject in selectedItems) {
+                        // Calculate total sum
+                        val totalSum = cartObject.price * cartObject.bookQuantity
+                        totalAmount += totalSum
+
+                        // Create HashMap with quantity and totalSum
+                        val itemData = hashMapOf<Any, Any>(
+                            "quantity" to cartObject.bookQuantity,
+                            "totalSum" to totalSum
+                        )
+
+                        // Add to selectedItemsMap with bookID as key
+                        selectedItemsMap[cartObject.bookID.toString()] = itemData
+                    }
+
+                    val data: HashMap<Any, Any> = hashMapOf(
+                        "creationDate" to Timestamp(Date()),
+                        "customerID" to auth.currentUser!!.uid.toString(),
+                        "items" to selectedItemsMap,
+                        "paymentMethod" to hashMapOf<Any, Any>(
+                            "Type" to "COD",
+                            "cardHolder" to "",
+                            "cardNumber" to "",
+                            "expiryDate" to ""
+                        ),
+                        "status" to "Đang xử lý",
+                        "totalSum" to totalAmount
+                    )
+
+                    db.collection("orders").add(data).addOnCompleteListener{documentReference ->
+//                            for (cartObject in selectedItems) {
+//                                val fieldMap = hashMapOf<Any, Any>(
+//                                    cartObject.bookID.toString() to FieldValue.delete()
+//                                )
+//                            }
+                        db.collection("accounts")
+                            .whereEqualTo("UID", auth.currentUser!!.uid.toString())
+                            .get().addOnSuccessListener { documents ->
+                                for (document in documents) {
+
+
+                                    for (cartObject in selectedItems) {
+//                                            val fieldMap = hashMapOf<Any, Any>(
+//                                                cartObject.bookID.toString() to FieldValue.delete()
+//                                            )
+                                        db.collection("accounts").document(document.id).update("cart.${cartObject.bookID}", FieldValue.delete()).addOnSuccessListener { result ->
+
+                                        }
+                                    }
+                                }
+
+                                MotionToast.createColorToast(
+                                    context as Activity,
+                                    getString(R.string.successfully),
+                                    getString(R.string.paymentSuccessfully),
+                                    MotionToastStyle.SUCCESS,
+                                    MotionToast.GRAVITY_CENTER,
+                                    MotionToast.SHORT_DURATION,
+                                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+
+                                requireActivity().onBackPressedDispatcher.onBackPressed()
+                            }
                     }
                 }
             }
@@ -297,7 +365,76 @@ class CheckOutFragment : Fragment() {
                 GlobalScope.launch {
                     try {
                         val tmp = capturePayPalOrder(token, orderId)
-                        Toast.makeText(activity, tmp.toString(), Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(activity, tmp.toString(), Toast.LENGTH_SHORT).show()
+
+                        val selectedItemsMap: MutableMap<Any, HashMap<Any, Any>> = mutableMapOf()
+                        var totalAmount = 0.0F
+
+                        for (cartObject in selectedItems) {
+                            // Calculate total sum
+                            val totalSum = cartObject.price * cartObject.bookQuantity
+                            totalAmount += totalSum
+
+                            // Create HashMap with quantity and totalSum
+                            val itemData = hashMapOf<Any, Any>(
+                                "quantity" to cartObject.bookQuantity,
+                                "totalSum" to totalSum
+                            )
+
+                            // Add to selectedItemsMap with bookID as key
+                            selectedItemsMap[cartObject.bookID.toString()] = itemData
+                        }
+
+                        val data: HashMap<Any, Any> = hashMapOf(
+                            "creationDate" to Timestamp(Date()),
+                            "customerID" to auth.currentUser!!.uid.toString(),
+                            "items" to selectedItemsMap,
+                            "paymentMethod" to hashMapOf<Any, Any>(
+                                "Type" to "Paypal",
+                                "cardHolder" to "",
+                                "cardNumber" to "",
+                                "expiryDate" to ""
+                            ),
+                            "status" to "Thành công",
+                            "totalSum" to totalAmount
+                            )
+
+                        db.collection("orders").add(data).addOnCompleteListener{documentReference ->
+//                            for (cartObject in selectedItems) {
+//                                val fieldMap = hashMapOf<Any, Any>(
+//                                    cartObject.bookID.toString() to FieldValue.delete()
+//                                )
+//                            }
+                            db.collection("accounts")
+                                .whereEqualTo("UID", auth.currentUser!!.uid.toString())
+                                .get().addOnSuccessListener { documents ->
+                                    for (document in documents) {
+
+
+                                        for (cartObject in selectedItems) {
+//                                            val fieldMap = hashMapOf<Any, Any>(
+//                                                cartObject.bookID.toString() to FieldValue.delete()
+//                                            )
+                                            db.collection("accounts").document(document.id).update("cart.${cartObject.bookID}", FieldValue.delete()).addOnSuccessListener { result ->
+
+                                            }
+                                        }
+                                    }
+
+                                    MotionToast.createColorToast(
+                                        context as Activity,
+                                        getString(R.string.successfully),
+                                        getString(R.string.paymentSuccessfully),
+                                        MotionToastStyle.SUCCESS,
+                                        MotionToast.GRAVITY_CENTER,
+                                        MotionToast.SHORT_DURATION,
+                                        ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+
+                                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                                }
+                        }
+
+
                     } catch (e: Exception) {
                         // Handle exceptions
                         e.printStackTrace()
@@ -307,12 +444,27 @@ class CheckOutFragment : Fragment() {
 
             override fun onPayPalCheckoutFailure(error: PayPalSDKError) {
                 // handle the error
-                Toast.makeText(activity, "FAILED", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(activity, "FAILED", Toast.LENGTH_SHORT).show()
+                MotionToast.createColorToast(
+                    context as Activity,
+                    getString(R.string.failed),
+                    getString(R.string.paymentFailed),
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.SHORT_DURATION,
+                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
             }
 
             override fun onPayPalCheckoutCanceled() {
                 // the user canceled the flow
-                Toast.makeText(activity, "CANCELED", Toast.LENGTH_SHORT).show()
+                MotionToast.createColorToast(
+                    context as Activity,
+                    getString(R.string.canceled),
+                    getString(R.string.paymentCanceled),
+                    MotionToastStyle.ERROR,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.SHORT_DURATION,
+                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
             }
         }
 
