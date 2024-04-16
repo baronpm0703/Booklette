@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.squareup.picasso.Picasso
 class HomeFragmentNewArrivaltemAdapter(private val context: Context, private val pageTitles: ArrayList<BookObject>,
                                        private val sales: ArrayList<Float>) : PagerAdapter() {
 
+    @SuppressLint("SetTextI18n")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.home_fragment_new_arrival_item, container, false)
@@ -31,11 +33,17 @@ class HomeFragmentNewArrivaltemAdapter(private val context: Context, private val
         txtGenre.text = pageTitles[position].genre
         txtName.text = pageTitles[position].name
         txtAuthor.text = pageTitles[position].author
-        txtPrice.text = (pageTitles[position].price * 100).toString() + "$"
+
 
         if (sales[position] != 0F)
+        {
+            val price = pageTitles[position].price
+            txtPrice.text = (price - sales[position] * price).toString() + "VND"
             txtSale.text = (sales[position] * 100).toString() + "%"
+        }
         else {
+            val price = pageTitles[position].price
+            txtPrice.text = (price - sales[position] * price).toString() + "VND"
             rlSaleContainer.visibility = View.INVISIBLE
             txtSale.visibility = View.INVISIBLE
         }
@@ -46,20 +54,23 @@ class HomeFragmentNewArrivaltemAdapter(private val context: Context, private val
 
         container.addView(view)
 
-        view.setOnClickListener({
+        view.setOnClickListener {
             if (context is homeActivity) {
-                var bdFragment = BookDetailFragment()
+                val bdFragment = BookDetailFragment()
 
-                var bundle = Bundle()
+                val bundle = Bundle()
                 bundle.putString("bookID", pageTitles[position].bookID)
 
                 bdFragment.arguments = bundle
 
 //                Toast.makeText(context, pageTitles[position].bookID.toString(), Toast.LENGTH_SHORT).show()
 
-                context.changeFragmentContainer(bdFragment, context.smoothBottomBarStack[context.smoothBottomBarStack.size - 1])
+                context.changeFragmentContainer(
+                    bdFragment,
+                    context.smoothBottomBarStack[context.smoothBottomBarStack.size - 1]
+                )
             }
-        })
+        }
 
         return view
     }

@@ -1,27 +1,37 @@
 package com.example.booklette
 
+import CustomSuggestionAdapter
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.speech.RecognizerIntent
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentHomeBinding
 import com.example.booklette.model.BookObject
+import com.example.booklette.model.SimpleFuzzySearch
 import com.google.android.material.chip.Chip
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.mancj.materialsearchbar.MaterialSearchBar
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +44,6 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
@@ -54,6 +63,10 @@ class HomeFragment : Fragment() {
     lateinit var topBookAdapter: TopBookHomeFragmentAdapter
     lateinit var RCDAdapter: HomeFragmentTodayRCDTypeAdapter
     lateinit var RCDBookAdapter: TopBookHomeFragmentAdapter
+
+    private var suggestions = ArrayList<String>()
+    private var fuzzySearchArraySample = ArrayList<Map<String, String>>()
+    private val REQ_CODE_SPEECH_INPUT = 100
 
     private var selectedChip: String = ""
 
@@ -77,7 +90,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -99,6 +112,8 @@ class HomeFragment : Fragment() {
 
         newArrivalInitalize()
 
+        addLogicToSearchBar(inflater)
+
         if (auth.currentUser != null) {
             binding.txtWelcomeBack.text = "Welcome back, " + auth.currentUser!!.email.toString()
         }
@@ -111,6 +126,157 @@ class HomeFragment : Fragment() {
         return view
     }
 
+    private suspend fun getBookNamesAlongSetupDataArraySample(): ArrayList<String>{
+        val res = ArrayList<String>()
+        val docRef = db.collection("books").get().await()
+        docRef.documents.forEach{ doc ->
+            val name = doc.data?.get("name").toString()
+            val genre = doc.data?.get("genre").toString()
+            val author = doc.data?.get("author").toString()
+            res.add(name)
+
+            fuzzySearchArraySample.add(mapOf(
+                "bookName" to name,
+                "genre" to genre,
+                "author" to author
+            ))
+        }
+        return res
+    }
+    private fun addLogicToSearchBar(inflater: LayoutInflater) {
+        val customSuggestionAdapter = activity?.let {
+            CustomSuggestionAdapter(it, inflater, binding.searchBar)
+        }
+
+        if (suggestions.isEmpty()) {
+            runBlocking {
+                suggestions = getBookNamesAlongSetupDataArraySample()
+            }
+        }
+
+        if (customSuggestionAdapter != null) {
+            customSuggestionAdapter.suggestions = suggestions
+
+            binding.searchBar.setCustomSuggestionAdapter(customSuggestionAdapter)
+        } else {
+            binding.searchBar.lastSuggestions = suggestions
+        }
+
+        binding.searchBar.setSpeechMode(true)
+        binding.searchBar.setOnSearchActionListener(object: MaterialSearchBar.OnSearchActionListener{
+            override fun onSearchStateChanged(enabled: Boolean) {
+                Log.i("State", enabled.toString())
+            }
+
+            override fun onSearchConfirmed(text: CharSequence?) {
+                Log.i("Confirm", text.toString())
+                val wordToSearch = text.toString() // Client input
+
+                // Define the available sample to search, and attribute to which we want our client input compare
+                val sfs = SimpleFuzzySearch(fuzzySearchArraySample, arrayListOf("bookName", "genre", "author"))
+                // Line break and debug for more result
+                val resultFromFuzzySearch = sfs.search(wordToSearch) as ArrayList // Implement my smart search algorithms
+                // Define prospect fragment
+                val productList = ProductList()
+                val args = Bundle()
+
+                // Conditions to define attribute to which client input belong
+                // Usually, if the user enter genre keyword, the first array's item have the "genre" attribute type
+                if (resultFromFuzzySearch.isNotEmpty() && resultFromFuzzySearch[0][1] == "genre") {
+                    // The "resultFromFuzzySearch" return an Array contain possible/available result relate to client input
+                    val obj = resultFromFuzzySearch[0][0] as Map<String, String>
+                    args.putString("Genre", obj["genre"])
+                } else { // Other case, which have bookName or author of book relate to input
+                    val listOfBookName = ArrayList<String>() // Just focus on the BookName cause productList about books..
+                    resultFromFuzzySearch.forEach { item ->
+                        // Place a line break here to watch the structure of the item
+                        val obj = item[0] as Map<String, String>
+                        val bookName = obj["bookName"].toString()
+
+                        listOfBookName.add(bookName)
+                    }
+                    args.putString("WordToSearch", wordToSearch)
+                    args.putStringArrayList("SearchResult", listOfBookName)
+                }
+
+                // Add args to fragment we 'bout change to
+                productList.arguments = args
+                // Have to cast homePage to "activity as HomePage", otherwise the supportFragment can recognize the host
+                val homeAct = (activity as homeActivity)
+                homeAct.changeFragmentContainer(productList, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
+            }
+
+            override fun onButtonClicked(buttonCode: Int) {
+                when (buttonCode) {
+                    MaterialSearchBar.BUTTON_NAVIGATION -> {
+                        // Handle navigation button click
+                        // For example, open a drawer
+                        // drawerLayout.openDrawer(GravityCompat.START)
+                    }
+                    MaterialSearchBar.BUTTON_SPEECH -> {
+                        // Handle speech button click
+                        promptSpeechInput()
+                    }
+                }
+            }
+        })
+
+        // Handle behavior of the search bar, may fit with adding effect
+        binding.searchBar.addTextChangeListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                Log.d("LOG_TAG", javaClass.simpleName + " text changed " + binding.searchBar.getText())
+                // send the entered text to our filter and let it manage everything
+                if (customSuggestionAdapter != null) {
+                    customSuggestionAdapter.getFilter().filter(binding.searchBar.getText())
+                }
+            }
+            override fun afterTextChanged(editable: Editable) {}
+        })
+    }
+    private fun promptSpeechInput() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+        intent.putExtra(
+            RecognizerIntent.EXTRA_PROMPT,
+            getString(R.string.speech_prompt)
+        )
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT)
+        } catch (a: ActivityNotFoundException) {
+            Toast.makeText(
+                requireActivity().applicationContext,
+                getString(R.string.speech_not_supported),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REQ_CODE_SPEECH_INPUT -> {
+                if (resultCode == AppCompatActivity.RESULT_OK && null != data) {
+                    val result = data
+                        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                    Toast.makeText(requireActivity(), result!![0], Toast.LENGTH_SHORT).show()
+                    binding.searchBar.setPlaceHolder(result[0])
+                    binding.searchBar.text = result[0]
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.searchBar.closeSearch()
+        binding.searchBar.clearSuggestions()
+        binding.searchBar.lastSuggestions = suggestions
+    }
     private fun handleChipSelected() {
         for (i in 0 until binding.homeFragmentCGTopBook.childCount) {
             val view = binding.homeFragmentCGTopBook.getChildAt(i)
@@ -650,11 +816,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-//        _binding = null
     }
 
     companion object {

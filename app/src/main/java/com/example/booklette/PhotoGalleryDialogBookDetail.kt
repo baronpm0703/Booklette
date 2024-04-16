@@ -44,6 +44,9 @@ class PhotoGalleryDialogBookDetail(
     private var adapter: reviewBookDetailPhotoGalleryGridAdapter? = null
     private val IMAGE_REQUEST_CODE = 1
 
+    fun getChosenPhoto(): ArrayList<Photo> {
+        return dataPhoto.filter { it.isSelected } as ArrayList<Photo>
+    }
     fun onPositive(positiveListener: PositiveListener) {
         this.positiveListener = positiveListener
     }
@@ -87,6 +90,7 @@ class PhotoGalleryDialogBookDetail(
         binding.gallery.adapter = adapter
         binding.gallery.setOnItemClickListener { adapterView, view, i, l ->
 
+            dataPhoto[i].isSelected = !dataPhoto[i].isSelected
             Toast.makeText(requireActivity(), " Selected Photo is "+ dataPhoto.get(i).nameFile ,
                 Toast.LENGTH_SHORT).show()
 
