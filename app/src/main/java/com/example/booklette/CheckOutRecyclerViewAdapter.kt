@@ -46,6 +46,8 @@ class CheckOutRecyclerViewAdapter(
         val bookpricewithquantity = currentItem.price * currentItem.bookQuantity
         val formattedPriceWithQuantity = String.format("%,.0f", bookpricewithquantity)
         holder.BookPriceWithQuantity.text = "$formattedPriceWithQuantity VND"
+
+
     }
 
 
