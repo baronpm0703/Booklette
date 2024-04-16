@@ -274,8 +274,8 @@ class BookDetailFragment : Fragment() {
                             }, 3000)
                         }
 
-                        var bookVoucher = bookDetail["discounts"] as ArrayList<String>
-                        if (bookVoucher.size == 0) {
+                        var bookVoucher = bookDetail["discount"] as String
+                        if (bookVoucher == "") {
                             Handler().postDelayed({
                                 binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
                                 binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
@@ -283,34 +283,26 @@ class BookDetailFragment : Fragment() {
                             }, 3000)
                         }
                         else {
-                            for (vch in bookVoucher) {
-                                db.collection("discounts").whereEqualTo("discountID", vch).get().addOnSuccessListener { result ->
-                                    if (result.documents.size == 0) {
-                                        binding.rvBookDetailShopVoucher.visibility = View.GONE
-                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                        binding.smBookDetailShopVoucher.stopShimmer()
-                                    }
-                                    else {
-                                        voucherList.add(
-                                            VoucherObject(
-                                                result.documents[0].data?.get("discountFilter").toString(),
-                                                result.documents[0].data?.get("discountID").toString(),
-                                                result.documents[0].data?.get("discountName").toString(),
-                                                result.documents[0].data?.get("discountType").toString().toInt(),
-                                                result.documents[0].data?.get("endDate") as Timestamp,
-                                                result.documents[0].data?.get("percent").toString().toFloat(),
-                                                result.documents[0].data?.get("startDate") as Timestamp
-                                            )
+                            db.collection("discounts").whereEqualTo("discountID", bookVoucher).get().addOnSuccessListener { result ->
+                                if (result.documents.size == 0) {
+                                    binding.rvBookDetailShopVoucher.visibility = View.GONE
+                                    binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                    binding.smBookDetailShopVoucher.stopShimmer()
+                                }
+                                else {
+                                    voucherList.add(
+                                        VoucherObject(
+                                            result.documents[0].data?.get("discountFilter").toString(),
+                                            result.documents[0].data?.get("discountID").toString(),
+                                            result.documents[0].data?.get("discountName").toString(),
+                                            result.documents[0].data?.get("discountType").toString().toInt(),
+                                            result.documents[0].data?.get("endDate") as Timestamp,
+                                            result.documents[0].data?.get("percent").toString().toFloat(),
+                                            result.documents[0].data?.get("startDate") as Timestamp
                                         )
+                                    )
 
-                                        shopVoucherAdapter.notifyDataSetChanged()
-                                    }
-
-                                    Handler().postDelayed({
-                                        binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
-                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                        binding.smBookDetailShopVoucher.stopShimmer()
-                                    }, 3000)
+                                    shopVoucherAdapter.notifyDataSetChanged()
                                 }
 
                                 Handler().postDelayed({
@@ -319,6 +311,12 @@ class BookDetailFragment : Fragment() {
                                     binding.smBookDetailShopVoucher.stopShimmer()
                                 }, 3000)
                             }
+
+                            Handler().postDelayed({
+                                binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                binding.smBookDetailShopVoucher.stopShimmer()
+                            }, 3000)
                         }
                     }
 
