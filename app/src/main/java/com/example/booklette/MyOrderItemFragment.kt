@@ -57,14 +57,15 @@ class MyOrderItemFragment : Fragment() {
                     val orderData = document.data
                     val timeStamp = orderData?.get("creationDate") as Timestamp
                     val date: Date? = timeStamp?.toDate()
-                    val trackingNumber: String = orderData?.get("orderID") as String
+                    val trackingNumber: String = orderID
+                    val orderName = ""
                     val itemsMap = orderData?.get("items") as? Map<String, Any>
                     var totalQuantity: Long = 0
                     itemsMap?.forEach { (_, itemData) ->
                         val itemMap = itemData as? Map<String, Any>
                         totalQuantity += itemMap?.get("quantity") as Long
                     }
-                    val totalMoney = (orderData?.get("totalSum") as Long).toFloat()
+                    val totalMoney = (orderData?.get("totalSum") as? Number)?.toFloat() ?: 0.0f
                     val status = orderData?.get("status") as String
                     val newOrder = date?.let {
                         OrderDataClass(orderID,

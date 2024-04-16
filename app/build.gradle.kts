@@ -97,6 +97,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
 
     // FaceBook
     implementation("com.facebook.android:facebook-android-sdk:[8,9)")

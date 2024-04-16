@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.MyOrderItemBinding
 import com.example.booklette.placeholder.PlaceholderContent.PlaceholderItem
 import java.util.Date
-import java.util.Locale
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
  * TODO: Replace the implementation with code for your data type.
  */
-data class OrderDataClass (val ID: String,val creationDate: Date, val trackingNumber: String, val quantity: Long, val total: Float, val status: String)
+data class OrderDataClass(
+    val ID: String,
+    val creationDate: Date, val trackingNumber: String, val quantity: Long, val total: Float, val status: String)
 class MyOrderItemRecyclerViewAdapter(
     private var values: List<OrderDataClass>
 ) : RecyclerView.Adapter<MyOrderItemRecyclerViewAdapter.ViewHolder>() {
