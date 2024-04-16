@@ -169,6 +169,21 @@
 
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="invisible"
+            android:id="@+id/chosenPhoto"
+            android:layout_width="300dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/reviewText"
+
+            android:background="@drawable/recyler_view_round_corner"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="5dp"
+
+            android:paddingVertical="5dp"
+            android:layout_toEndOf="@+id/add_photo_ln" />
+
         <TextView
             android:id="@+id/sendReviewBtn"
 

@@ -235,4 +235,8 @@
     <string name="shop_min_order_voucher_book_detail_item">Minimum order 100k</string>
     <string name="shop_expire_voucher_book_detail_item">Expiring soon: 1 day(s) left</string>
     <string name="haveNotPickPaymentMethodError">You haven\'t picked a payment method!</string>
+    <string name="paymentFailed">Payment failed!</string>
+    <string name="canceled">Cancel transaction</string>
+    <string name="paymentCanceled">Payment canceled!</string>
+    <string name="paymentSuccessfully">Payment successfully!</string>
 </resources>
