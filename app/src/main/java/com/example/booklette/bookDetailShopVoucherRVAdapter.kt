@@ -16,7 +16,6 @@ class bookDetailShopVoucherRVAdapter(var context: android.content.Context?, var 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view
         val view = LayoutInflater.from(parent.context).inflate(R.layout.shop_voucher_book_detail_item, parent, false)
-
         return ViewHolder(view)
     }
 
