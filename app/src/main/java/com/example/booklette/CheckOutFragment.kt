@@ -203,7 +203,11 @@ class CheckOutFragment : Fragment() {
                             "expiryDate" to ""
                         ),
                         "status" to "Đang xử lý",
-                        "totalSum" to totalAmount
+                        "totalSum" to totalAmount,
+                        "shippingAddress" to (binding.recieverName.text.toString() + " - " +
+                                binding.recieverPhone.text.toString() + " - " +
+                                binding.addressNumber.text.toString() + " " +
+                                binding.addressZone.text.toString())
                     )
 
                     db.collection("orders").add(data).addOnCompleteListener{documentReference ->
@@ -233,7 +237,7 @@ class CheckOutFragment : Fragment() {
                                     getString(R.string.successfully),
                                     getString(R.string.paymentSuccessfully),
                                     MotionToastStyle.SUCCESS,
-                                    MotionToast.GRAVITY_CENTER,
+                                    MotionToast.GRAVITY_BOTTOM,
                                     MotionToast.SHORT_DURATION,
                                     ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
 
@@ -396,7 +400,11 @@ class CheckOutFragment : Fragment() {
                                 "expiryDate" to ""
                             ),
                             "status" to "Thành công",
-                            "totalSum" to totalAmount
+                            "totalSum" to totalAmount,
+                            "shippingAddress" to (binding.recieverName.text.toString() + " - " +
+                                                    binding.recieverPhone.text.toString() + " - " +
+                                                    binding.addressNumber.text.toString() + " " +
+                                                binding.addressZone.text.toString())
                             )
 
                         db.collection("orders").add(data).addOnCompleteListener{documentReference ->
@@ -426,7 +434,7 @@ class CheckOutFragment : Fragment() {
                                         getString(R.string.successfully),
                                         getString(R.string.paymentSuccessfully),
                                         MotionToastStyle.SUCCESS,
-                                        MotionToast.GRAVITY_CENTER,
+                                        MotionToast.GRAVITY_BOTTOM,
                                         MotionToast.SHORT_DURATION,
                                         ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
 
