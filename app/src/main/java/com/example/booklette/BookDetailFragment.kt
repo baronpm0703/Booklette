@@ -1,9 +1,5 @@
 package com.example.booklette
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
-import android.graphics.BitmapFactory
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Paint
@@ -15,8 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -34,14 +28,11 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import java.util.Collections
 import kotlin.math.round
