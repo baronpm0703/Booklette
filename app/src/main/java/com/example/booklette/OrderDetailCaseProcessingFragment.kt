@@ -152,6 +152,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                         DialogInterface.BUTTON_POSITIVE -> {
                             val docRef = orderID?.let { it1 -> db.collection("orders").document(it1) }
                             docRef?.update("status","Bị huỷ")?.addOnSuccessListener {
+                                // will change to motion toast later
                                 Toast.makeText(context,R.string.orderDetailCancelArgument, Toast.LENGTH_SHORT).show()
                                 requireActivity().onBackPressedDispatcher.onBackPressed()
                             }?.addOnFailureListener{

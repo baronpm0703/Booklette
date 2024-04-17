@@ -203,6 +203,9 @@
     <string name="no">Không</string>
     <string name="orderDetailCancelArgument">Đơn hàng huỷ thành công.</string>
     <string name="orderDetailFailedArgument">Đơn hàng huỷ không thành công. Vui lòng thử lại!</string>
+    <string name="orderDetailConfirmSuccessfulArgument">Đơn hàng xác nhận mua thành công.</string>
     <string name="returnAndExchange">Đổi/Trả</string>
     <string name="orderReceived">Đã nhận hàng</string>
+    <string name="orderDetailConfirmFailedArgument">Đơn hàng xác nhận không thành công.</string>
+    <string name="orderDetailConfirmlabel">Xác nhận nhận hàng? Bạn sẽ không thể trả hàng nếu xác nhận!</string>
 </resources>

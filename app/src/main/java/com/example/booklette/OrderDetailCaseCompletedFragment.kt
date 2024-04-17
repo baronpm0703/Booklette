@@ -138,36 +138,40 @@ class OrderDetailCaseCompletedFragment : Fragment() {
         backButton.setOnClickListener{
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-        // return order
-        val returnOrder = binding.orderDetailReturnButton
-        returnOrder.setOnClickListener {
+        // confirm order
+        val confirmButton = binding.orderDetailConfirmButton
+        confirmButton.setOnClickListener {
             val dialogClickListener =
                 DialogInterface.OnClickListener { dialog, which ->
                     when (which) {
-                        DialogInterface.BUTTON_POSITIVE -> {
+                        // !!will change to motion toast later!!
+                        DialogInterface.BUTTON_POSITIVE -> { // Chỗ này bị cấn ở UI vì cái status chỉ có hoàn thành, thiếu giao hàng, làm sao để xác nhận là hoàn thành?
                             val docRef = orderID?.let { it1 -> db.collection("orders").document(it1) }
-                            docRef?.update("status","Bị huỷ")?.addOnSuccessListener {
+                            docRef?.update("status","Hoàn thành")?.addOnSuccessListener {
                                 Toast.makeText(
                                     context,
-                                    R.string.orderDetailCancelArgument,
+                                    R.string.orderDetailConfirmSuccessfulArgument,
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 requireActivity().onBackPressedDispatcher.onBackPressed()
                             }?.addOnFailureListener{
                                 Toast.makeText(
                                     context,
-                                    R.string.orderDetailFailedArgument,
+                                    R.string.orderDetailConfirmFailedArgument,
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
-                        DialogInterface.BUTTON_NEGATIVE -> {}
+                        DialogInterface.BUTTON_NEGATIVE ->
+                            {
+
+                        }
                     }
                 }
 
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
 
-            builder.setMessage(R.string.orderDetailProcessingCancelLabel).setPositiveButton(R.string.yes, dialogClickListener)
+            builder.setMessage(R.string.orderDetailConfirmlabel).setPositiveButton(R.string.yes, dialogClickListener)
                 .setNegativeButton(R.string.no, dialogClickListener).show()
         }
         return view

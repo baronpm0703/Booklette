@@ -245,6 +245,9 @@
     <string name="no">No</string>
     <string name="orderDetailCancelArgument">Order cancelled successfully.</string>
     <string name="orderDetailFailedArgument">Order cancelled failed.</string>
+    <string name="orderDetailConfirmSuccessfulArgument">Order received successfully.</string>
+    <string name="orderDetailConfirmFailedArgument">Order received failed.</string>
+    <string name="orderDetailConfirmlabel">Confirm receiving order? You cannot return products after confirming!</string>
     <string name="returnAndExchange">Return/Exchange</string>
     <string name="orderReceived">Order received</string>
 </resources>
