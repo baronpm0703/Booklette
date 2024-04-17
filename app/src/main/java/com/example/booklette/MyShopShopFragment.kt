@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,6 +57,12 @@ class MyShopShopFragment : Fragment() {
 
 //		discountHScrollView = view.findViewById(R.id.discountHScroll)
 //		newArrivalsHScrollView = view.findViewById(R.id.newArrivalsScrollView)
+		val noBookView = view.findViewById<View>(R.id.noBookView1)
+		val newArrivalsFlavorText = view.findViewById<TextView>(R.id.newFlavorText)
+		val newArrivalsBtn = view.findViewById<Button>(R.id.newMoreBtn)
+		val bestSellersFlavorText = view.findViewById<TextView>(R.id.bestFlavorText)
+		val bestSellersBtn = view.findViewById<Button>(R.id.bestMoreBtn)
+		val highlyRecommendedFlavorText = view.findViewById<RelativeLayout>(R.id.recommendedFlavorText)
 
 		// Data arrays
 		val discounts = arrayListOf<Triple<Long, Long, Long>>()
@@ -85,60 +93,69 @@ class MyShopShopFragment : Fragment() {
 						}
 
 						val books = storeSnapshot.get("items") as Map<String, Map<String, Any>>
-						books.map { entry ->
-							val book = entry.value.toMutableMap()
+						if (books.size > 0)
+							books.map { entry ->
+								val book = entry.value.toMutableMap()
 
-							db.collection("books").whereEqualTo("bookID", entry.key).get().addOnSuccessListener {bookQuery ->
-								if (bookQuery.size() != 1) return@addOnSuccessListener   // Failsafe
+								db.collection("books").whereEqualTo("bookID", entry.key).get().addOnSuccessListener {bookQuery ->
+									if (bookQuery.size() != 1) return@addOnSuccessListener   // Failsafe
 
-								for (info in bookQuery) {
-									val bookId = info.get("bookID").toString()
-									val bookImg = info.get("image").toString()
-									val bookName = info.get("name").toString()
-									val bookGenre = info.get("genre").toString()
-									val bookAuthor = info.get("author").toString()
-									val bookReleaseDate = info.get("releaseDate") as Timestamp
-									val bookPrice = book["price"] as Long
-									val bookRemain = book["remain"] as Long
-									val bookSold = book["sold"] as Long
-									val bookStatus = book["status"].toString()
-									val bookRatings = info.get("review") as ArrayList<Map<String, Any>>
-									var bookRatingScore: Float = 0F
-									bookRatings.forEach {
-										bookRatingScore += (it.get("score") as Long).toFloat()
-									}
-									val bookRatingCnt = bookRatings.size
-									bookRatingScore /= bookRatingCnt
-									// Get a book's discount info
-									val bookDiscountId = book["discount"] as String
-									var bookDiscount = 0F
-									db.collection("discounts").whereEqualTo("discountID", bookDiscountId).get().addOnSuccessListener {
-										Log.i("MyShop", bookName + " - " + it.documents.size.toString())
-										if (it.documents.size > 0)
-											bookDiscount = (it.documents[0].get("percent") as Long).toFloat() / 100
-
-										val newBookObject = MyShopBookObject(
-											bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice, bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate
-										)
-										val newRecommendedBookObject = HRecommendedBookObject(
-											bookId, bookImg, bookRatingScore, bookRatingCnt.toLong(), bookName, bookPrice
-										)
-
-										val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
-										val dateTo = Calendar.getInstance().apply { time = bookReleaseDate.toDate() }
-										val period = abs(dateTo.get(Calendar.MONTH) - dateFrom.get(Calendar.MONTH))
-										if (period <= 1) {
-											newArrivals.add(newBookObject)
+									for (info in bookQuery) {
+										val bookId = info.get("bookID").toString()
+										val bookImg = info.get("image").toString()
+										val bookName = info.get("name").toString()
+										val bookGenre = info.get("genre").toString()
+										val bookAuthor = info.get("author").toString()
+										val bookReleaseDate = info.get("releaseDate") as Timestamp
+										val bookPrice = book["price"] as Long
+										val bookRemain = book["remain"] as Long
+										val bookSold = book["sold"] as Long
+										val bookStatus = book["status"].toString()
+										val bookRatings = info.get("review") as ArrayList<Map<String, Any>>
+										var bookRatingScore: Float = 0F
+										bookRatings.forEach {
+											bookRatingScore += (it.get("score") as Long).toFloat()
 										}
-										if (bestSellers.size == 0 || bestSellers[0].sold >= bookSold)
-											bestSellers.add(newBookObject)
-										else bestSellers.add(0, newBookObject)
-										if (highlyRecommended.size == 0 || highlyRecommended[0].rating >= bookRatingScore)
-											highlyRecommended.add(0, newRecommendedBookObject)
-										else highlyRecommended.add(newRecommendedBookObject)
+										val bookRatingCnt = bookRatings.size
+										bookRatingScore /= bookRatingCnt
+										// Get a book's discount info
+										val bookDiscountId = book["discount"] as String
+										var bookDiscount = 0F
+										db.collection("discounts").whereEqualTo("discountID", bookDiscountId).get().addOnSuccessListener {
+											Log.i("MyShop", bookName + " - " + it.documents.size.toString())
+											if (it.documents.size > 0)
+												bookDiscount = (it.documents[0].get("percent") as Long).toFloat() / 100
+
+											val newBookObject = MyShopBookObject(
+												bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice, bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate
+											)
+											val newRecommendedBookObject = HRecommendedBookObject(
+												bookId, bookImg, bookRatingScore, bookRatingCnt.toLong(), bookName, bookPrice
+											)
+
+											val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
+											val dateTo = Calendar.getInstance().apply { time = bookReleaseDate.toDate() }
+											val period = abs(dateTo.get(Calendar.MONTH) - dateFrom.get(Calendar.MONTH))
+											if (period <= 1) {
+												newArrivals.add(newBookObject)
+											}
+											if (bestSellers.size == 0 || bestSellers[0].sold >= bookSold)
+												bestSellers.add(newBookObject)
+											else bestSellers.add(0, newBookObject)
+											if (highlyRecommended.size == 0 || highlyRecommended[0].rating >= bookRatingScore)
+												highlyRecommended.add(0, newRecommendedBookObject)
+											else highlyRecommended.add(newRecommendedBookObject)
+										}
 									}
 								}
 							}
+						else {
+							noBookView.visibility = View.VISIBLE
+							newArrivalsFlavorText.visibility = View.GONE
+							newArrivalsBtn.visibility = View.GONE
+							bestSellersFlavorText.visibility = View.GONE
+							bestSellersBtn.visibility = View.GONE
+							highlyRecommendedFlavorText.visibility = View.GONE
 						}
 
 						Handler().postDelayed({
