@@ -56,6 +56,7 @@ class CheckOutRecyclerViewAdapter(
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private var selectedChip: String = ""
 
 
     fun calculateTotalAmount(): Float {
@@ -88,7 +89,6 @@ class CheckOutRecyclerViewAdapter(
         val formattedPriceWithQuantity = String.format("%,.0f", bookpricewithquantity)
         holder.BookPriceWithQuantity.text = "$formattedPriceWithQuantity VND"
 
-        val shopVoucherList: ArrayList<VoucherObject> = ArrayList()
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
@@ -106,74 +106,83 @@ class CheckOutRecyclerViewAdapter(
                         .addOnSuccessListener { personalStoreDocument ->
                             val voucherList =
                                 personalStoreDocument["shopVouchers"] as? ArrayList<String>
-                            voucherList?.let { itemDisCountData ->
-                                for (itemDiscount in itemDisCountData) {
+                            voucherList?.let { itemDiscountData ->
+                                for (voucherItem in itemDiscountData) {
                                     db.collection("discounts")
-                                        .whereEqualTo("discountID", itemDiscount)
+                                        .whereEqualTo("discountID", voucherItem)
                                         .get()
                                         .addOnSuccessListener { discountDocument ->
-                                            for (eachDiscountDocument in discountDocument) {
-                                                shopVoucherList.add(
-                                                    VoucherObject(
-                                                        eachDiscountDocument.data.get("discountFilter")
-                                                            .toString(),
-                                                        eachDiscountDocument.data.get("discountID")
-                                                            .toString(),
-                                                        eachDiscountDocument.data.get("discountName")
-                                                            .toString(),
-                                                        eachDiscountDocument.data.get("discountType")
-                                                            .toString(),
-                                                        eachDiscountDocument.data.get("endDate") as Timestamp,
-                                                        eachDiscountDocument.data.get("percent")
-                                                            .toString().toFloat(),
-                                                        eachDiscountDocument.data.get("startDate") as Timestamp
-                                                    )
-                                                )
-//                                                shopVoucherAdapter.notifyDataSetChanged()
-                                            }
-                                            currentItem.discountList = shopVoucherList
-                                            var discountVoucher = 0f
+                                            for (eachDiscount in discountDocument) {
+                                                val percentVoucher = eachDiscount.get("percent") as Number
+                                                val percentFloat = percentVoucher.toFloat()
 
-                                            if( shopVoucherList.size != 0) {
-                                                for (voucherItem in shopVoucherList) {
-                                                    val chip = LayoutInflater.from(context).inflate(R.layout.home_fragment_chip_top_book, holder.homeFragmentCGTopBook, false) as Chip
-                                                    chip.text = "Voucher " + voucherItem.percent.toString() + " %" // Set the text to the appropriate value from your data
-                                                    holder.homeFragmentCGTopBook.addView(chip)
-
-                                                    chip.setOnClickListener {
-                                                        val isSelected = chipSelectionMap.getOrDefault(chip, false)
-                                                        chipSelectionMap[chip] = !isSelected
-                                                        if (!isSelected) {
-                                                            discountVoucher = bookpricewithquantity * voucherItem.percent / 100
-                                                            val afterFormatDiscountVoucher = String.format("%,.0f", discountVoucher)
-                                                            holder.voucherShop.text = "$afterFormatDiscountVoucher VND"
-                                                        } else {
-                                                            discountVoucher = 0f
-                                                            holder.voucherShop.text = "0 VND"
-                                                        }
-                                                        currentItem.voucherShopDiscount = discountVoucher
-
-                                                        Log.d("Voucher Discount", "apdapter: $currentItem.voucherShopDiscount")
-
-                                                        val afterUseVoucher = bookpricewithquantity-discountVoucher
-                                                        val formattedAfterUserVoucher = String.format("%,.0f", afterUseVoucher)
-                                                        holder.priceAfterUseVoucher.text = "$formattedAfterUserVoucher VND"
-
-                                                        calculateTotalVoucherSum()
-
-                                                    }
-                                                }
+                                                val chip = LayoutInflater.from(context).inflate(
+                                                    R.layout.home_fragment_chip_top_book,
+                                                    holder.homeFragmentCGTopBook,
+                                                    false
+                                                ) as Chip
+                                                chip.text =
+                                                    "$percentVoucher% Off"
+                                                holder.homeFragmentCGTopBook.addView(chip)
                                             }
                                         }
+
                                 }
                             }
                         }
                 }
             }
+
+//        handle chip selected
+        for (i in 0 until holder.homeFragmentCGTopBook.childCount) {
+            val view = holder.homeFragmentCGTopBook.getChildAt(i)
+            if (view is Chip) {
+                val chip = view as Chip
+                if (chip.text == selectedChip) {
+                    chip.isChecked = true
+                }
+            }
+        }
+
+        var discountVoucher = 0f
+
+        holder.homeFragmentCGTopBook.setOnCheckedStateChangeListener { group, checkedIds ->
+            Log.d("CheckedIds", "CheckedIds size: ${checkedIds.size}")
+            if (checkedIds.size > 0) {
+                val chip: Chip? = group.findViewById(checkedIds[0])
+                if (chip != null && chip.isChecked) {
+                    Log.d("chip", chip.text.toString())
+                    selectedChip = chip.text.toString()
+                    val percentValue = chip.text.split("%")[0].trim().toIntOrNull()
+                    if (percentValue != null) {
+                        discountVoucher = bookpricewithquantity * (percentValue.toFloat() / 100f)
+                        val afterFormatDiscountVoucher = String.format("%,.0f", discountVoucher)
+                        holder.voucherShop.text = "$afterFormatDiscountVoucher VND"
+                    } else {
+                        Log.e("Error", "Failed to convert percent value to Int.")
+                    }
+                } else {
+                    discountVoucher = 0f
+                    holder.voucherShop.text = "0 VND"
+                }
+                currentItem.voucherShopDiscount = discountVoucher
+                val afterUseVoucher = bookpricewithquantity - discountVoucher
+                val formattedAfterUserVoucher = String.format("%,.0f", afterUseVoucher)
+                holder.priceAfterUseVoucher.text = "$formattedAfterUserVoucher VND"
+
+                calculateTotalVoucherSum()
+            } else {
+                Log.d("unchip", "unchip")
+                discountVoucher = 0f
+                holder.voucherShop.text = "0 VND"
+                currentItem.voucherShopDiscount = discountVoucher
+                val afterUseVoucher = bookpricewithquantity - discountVoucher
+                val formattedAfterUserVoucher = String.format("%,.0f", afterUseVoucher)
+                holder.priceAfterUseVoucher.text = "$formattedAfterUserVoucher VND"
+                calculateTotalVoucherSum()
+            }
+        }
     }
-
-
-
 
     override fun getItemCount(): Int {
         return selectedItems.size
