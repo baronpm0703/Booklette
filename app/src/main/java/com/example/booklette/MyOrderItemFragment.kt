@@ -64,7 +64,7 @@ class MyOrderItemFragment : Fragment() {
         // Fetch data from Firestore
         db.collection("orders")
             // remove this line if want to test all ID
-            //.whereEqualTo("customerID",userID)
+            .whereEqualTo("customerID",userID)
             .orderBy("creationDate", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { querySnapshot ->
