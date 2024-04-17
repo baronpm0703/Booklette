@@ -178,20 +178,51 @@
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvBookDetailShopVoucher"
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rvBookDetailShopVoucher"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="4dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginRight="7dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/txtOtherBookBookDetail"-->
+<!--            tools:itemCount="1"-->
+<!--            tools:listitem="@layout/shop_voucher_book_detail_item">-->
+
+<!--        </androidx.recyclerview.widget.RecyclerView>-->
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="7dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtOtherBookBookDetail"
-            tools:itemCount="1"
-            tools:listitem="@layout/shop_voucher_book_detail_item">
+            android:scrollbars="none">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/homeFragmentCGTopBook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:singleSelection="true">
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/discount50"-->
+<!--                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Sale 50%" />-->
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/discount30"-->
+<!--                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Sale 30%" />-->
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/discount20"-->
+<!--                    style="@style/Color_Booklette_Discount_Choice.MaterialComponents.Chip.Entry"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Sale 20%" />-->
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -203,7 +234,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="11dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -246,8 +277,7 @@
                     android:layout_alignParentRight="true"
                     android:paddingEnd="25dp"
                     android:text="120.000VND"
-                    android:textColor="@color/black"
-                    ></TextView>
+                    android:textColor="@color/black"></TextView>
             </RelativeLayout>
 
             <RelativeLayout
@@ -265,6 +295,7 @@
                     android:textColor="@color/black"></TextView>
 
                 <TextView
+                    android:id="@+id/priceAfterUseVoucher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"

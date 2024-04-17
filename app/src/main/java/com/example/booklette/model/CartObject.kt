@@ -12,7 +12,8 @@ data class CartObject(
     val author: String?,
     val price: Float,
     var bookQuantity: Int,
-    var discountList : ArrayList<VoucherObject>
+    var voucherShopDiscount: Float,
+    var discountList: ArrayList<VoucherObject> = ArrayList(),
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -23,10 +24,12 @@ data class CartObject(
         parcel.readString(),
         parcel.readFloat(),
         parcel.readInt(),
+        parcel.readFloat(),
         ArrayList<VoucherObject>().apply {
             parcel.readList(this, VoucherObject::class.java.classLoader)
         }
-    )
+
+        )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(bookID)
@@ -37,6 +40,7 @@ data class CartObject(
         parcel.writeString(author)
         parcel.writeFloat(price)
         parcel.writeInt(bookQuantity)
+        parcel.writeFloat(voucherShopDiscount)
         parcel.writeList(discountList)
 
     }

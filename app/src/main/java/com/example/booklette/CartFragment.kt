@@ -56,6 +56,7 @@ class CartFragment : Fragment() {
     private var isFailedQuery: Boolean = false
     private var cartList: ArrayList<CartObject> = ArrayList()
     private var shopVoucherList: ArrayList<VoucherObject> = ArrayList()
+
 //    private lateinit var shopVoucherAdapter: bookDetailShopVoucherRVAdapter
 
 
@@ -69,9 +70,6 @@ class CartFragment : Fragment() {
         val view = binding.root
         // Add more items as needed
 
-//        shopVoucherAdapter = bookDetailShopVoucherRVAdapter(context, shopVoucherList)
-//        binding.rvBookDetailShopVoucher.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-//        binding.rvBookDetailShopVoucher.adapter = shopVoucherAdapter
 
         adapter = CartFragmentRecyclerViewAdapter(requireContext(), cartList)
         binding.rvCart.adapter = adapter
@@ -170,29 +168,6 @@ class CartFragment : Fragment() {
                                                                 personalStoreDocument["items"] as? Map<String, Any>
                                                             val eachItem =
                                                                 itemList?.get(itemId) as? Map<String, Any>
-//                                                            val itemDisCountList = personalStoreDocument["shopVouchers"] as ArrayList<String>
-//
-//                                                            itemDisCountList?.let { itemDisCountData ->
-//                                                                for(itemDiscount in itemDisCountData){
-//                                                                    db.collection("discounts").whereEqualTo("discountID",itemDiscount)
-//                                                                        .get()
-//                                                                        .addOnSuccessListener { discountDocument ->
-//                                                                        for(eachDiscountDocument in discountDocument){
-//                                                                            shopVoucherList.add(
-//                                                                                VoucherObject(
-//                                                                                    eachDiscountDocument.data.get("discountFilter").toString(),
-//                                                                                    eachDiscountDocument.data.get("discountID").toString(),
-//                                                                                    eachDiscountDocument.data.get("discountName").toString(),
-//                                                                                    eachDiscountDocument.data.get("discountType").toString(),
-//                                                                                    eachDiscountDocument.data.get("endDate") as Timestamp,
-//                                                                                    eachDiscountDocument.data.get("percent").toString().toFloat(),
-//                                                                                    eachDiscountDocument.data.get("startDate") as Timestamp
-//                                                                                )
-//                                                                            )
-//                                                                        }
-//                                                                        }
-//                                                                }
-//                                                            }
 
                                                             val storeName = personalStoreDocument["storeName"]
 
@@ -214,6 +189,7 @@ class CartFragment : Fragment() {
                                                                                     .toFloat(),
                                                                                 quantity?.toInt()
                                                                                     ?: 1,
+                                                                                0f,
                                                                                 shopVoucherList
                                                                             )
                                                                         )

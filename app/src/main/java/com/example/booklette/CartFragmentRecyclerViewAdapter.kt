@@ -53,8 +53,6 @@ class CartFragmentRecyclerViewAdapter(
         val quantity: TextView = itemView.findViewById(R.id.quantity)
         val btnCartItemAdd: AppCompatButton  = itemView.findViewById(R.id.btnCartItemAdd)
         val btnSelectItem: RadioButton = itemView.findViewById(R.id.btnSelectItem)
-
-
         init {
             btnSelectItem.setOnClickListener {
                 val position = adapterPosition

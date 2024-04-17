@@ -21,6 +21,7 @@ import com.example.booklette.BankCardFragment
 import com.example.booklette.CartFragment
 import com.example.booklette.R
 import com.example.booklette.ShipAddressFragment
+import com.example.booklette.bookDetailShopVoucherRVAdapter
 import com.example.booklette.databinding.FragmentCheckOutBinding
 import com.example.booklette.homeActivity
 import com.example.booklette.model.CartObject
@@ -55,6 +56,10 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class CheckOutFragment : Fragment() {
+
+    interface VoucherSumListener {
+        fun onVoucherSumCalculated(sum: Float)
+    }
     private var _binding: FragmentCheckOutBinding? = null
     private val binding get() = _binding!!
 
@@ -73,6 +78,7 @@ class CheckOutFragment : Fragment() {
     var token = "Bearer "
     val clientId = "AZY4SgNyOhRXLoVpTswQxyd_cku-w428NGNf_OFr2Tor4t1bCeN4ngxQQIpT6bBAo5_8FPOcXXyKSXDm"
     val clientSecret = "EGNxh5iA4Hzk7G3eSbbTBg4QNmFHp2_SMHla2vxjfM6-B4S7bPPxToYtiFohePAOTfU5VlJVu7uceY_v"
+
 
     companion object {
 
@@ -129,6 +135,8 @@ class CheckOutFragment : Fragment() {
         binding.rvCheckout.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCheckout.adapter = adapter
 
+
+
         auth = Firebase.auth
         db = Firebase.firestore
 
@@ -148,15 +156,33 @@ class CheckOutFragment : Fragment() {
             homeAct.changeFragmentContainer(bankCardFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
         }
 
-        val totalAmount = adapter.calculateTotalAmount()
+
+        val totalAmount = calculateTotalAmount()
+        Log.d("totalamount", "Voucher Discount: $totalAmount")
+
+
         val afterFomartedTotalAmount = String.format("%,.0f", totalAmount)
         binding.totalAmount.text = "$afterFomartedTotalAmount VND"
+
         binding.totalPayment.text = "$afterFomartedTotalAmount VND"
         binding.totalPaymentInPaymentDetail.text = "$afterFomartedTotalAmount VND"
+
+
 
         binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             radioButtonClicked = view.findViewById<RadioButton>(checkedId)
         }
+
+        adapter.setVoucherSumListener(object : CheckOutRecyclerViewAdapter.VoucherSumListener {
+            override fun onVoucherSumCalculated(sum: Float) {
+                val afterFomartedTotalDiscountAmount = String.format("%,.0f", sum)
+                binding.totalDiscount.text = "$afterFomartedTotalDiscountAmount VND"
+                val afterCalculateWithVoucher = totalAmount-sum
+                val formattedAfterCalculateWithVoucher = String.format("%,.0f", afterCalculateWithVoucher)
+                binding.totalPaymentInPaymentDetail.text = "$formattedAfterCalculateWithVoucher VND"
+                binding.totalPayment.text = "$formattedAfterCalculateWithVoucher VND"
+            }
+        })
 
         binding.placeOrderBtn.setOnClickListener({
             if (::radioButtonClicked.isInitialized) {
@@ -535,4 +561,13 @@ class CheckOutFragment : Fragment() {
         }
         return total
     }
+
+    private fun calculateTotalVoucherShopDiscount(): Float {
+        var totalVoucherShopDiscount = 0f
+        for (item in selectedItems) {
+            totalVoucherShopDiscount += item.voucherShopDiscount
+        }
+        return totalVoucherShopDiscount
+    }
+
 }

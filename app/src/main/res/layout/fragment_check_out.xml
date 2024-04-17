@@ -455,11 +455,12 @@
                 </TextView>
 
                 <TextView
+                    android:id="@+id/totalDiscount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:text="120.000VND"
+                    android:text="0 VND"
                     android:layout_alignParentRight="true"
                     android:paddingEnd="25dp">
                 </TextView>

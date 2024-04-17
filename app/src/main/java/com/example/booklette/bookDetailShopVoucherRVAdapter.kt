@@ -19,9 +19,6 @@ class bookDetailShopVoucherRVAdapter(var context: android.content.Context?, var 
 
     var itemClickListener: VoucherItemClickListener? = null
 
-    interface OnItemClickListener {
-        fun onItemClick(percentage: Float)
-    }
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view
@@ -40,6 +37,11 @@ class bookDetailShopVoucherRVAdapter(var context: android.content.Context?, var 
         holder.txtVoucherCode.text = data[position].discountID
         holder.txtDesciptionVoucher.text = data[position].discountName
         holder.txtVoucherRemainingTime.text = calculateRemainingDays(Instant.now().epochSecond, data[position].endDate.seconds).toString() + " day(s) left"
+
+        holder.btnSaveVoucher.setOnClickListener {
+            val percentage = data[position].percent
+            itemClickListener?.onVoucherItemClick(percentage)
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -51,19 +53,7 @@ class bookDetailShopVoucherRVAdapter(var context: android.content.Context?, var 
         val txtDesciptionVoucher: TextView = itemView.findViewById(R.id.txtDesciptionVoucher)
         val txtVoucherRemainingTime: TextView = itemView.findViewById(R.id.txtVoucherRemainingTime)
         val btnSaveVoucher: Button = itemView.findViewById(R.id.btnSaveVoucher)
-
-        init {
-            btnSaveVoucher.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val voucher = data[position]
-                    val percentage = voucher.percent
-                    itemClickListener?.onVoucherItemClick(percentage)
-                }
-            }
-        }
     }
-
 
     private fun calculateRemainingDays(currentTimestamp: Long, variableUnixTimestamp: Long): Long {
         val differenceSeconds = variableUnixTimestamp - currentTimestamp
