@@ -245,4 +245,6 @@
     <string name="no">No</string>
     <string name="orderDetailCancelArgument">Order cancelled successfully.</string>
     <string name="orderDetailFailedArgument">Order cancelled failed.</string>
+    <string name="returnAndExchange">Return/Exchange</string>
+    <string name="orderReceived">Order received</string>
 </resources>

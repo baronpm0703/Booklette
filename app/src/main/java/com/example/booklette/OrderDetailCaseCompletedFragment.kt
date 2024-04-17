@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.booklette.databinding.FragmentOrderDetailProcessingBinding
+import com.example.booklette.databinding.FragmentOrderDetailCompletedBinding
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
@@ -18,21 +18,16 @@ import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
 import java.util.Date
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ORDERID_PARAM = "param1"
-private const val ORDERNAME_PARAM = "param2"
-
 /**
  * A simple [Fragment] subclass.
- * Use the [OrderDetailCaseProcessingFragment.newInstance] factory method to
+ * Use the [OrderDetailCaseCompletedFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class OrderDetailCaseProcessingFragment : Fragment() {
+private const val ORDERID_PARAM = "param1"
+class OrderDetailCaseCompletedFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
-    private var _binding: FragmentOrderDetailProcessingBinding? = null
+    private var _binding: FragmentOrderDetailCompletedBinding? = null
 
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -49,7 +44,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentOrderDetailProcessingBinding.inflate(inflater, container, false)
+        _binding = FragmentOrderDetailCompletedBinding.inflate(inflater, container, false)
         val view = binding.root
 
         db = Firebase.firestore
@@ -92,7 +87,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                         val paymentMethodType = paymentMethod?.get("Type")
                         val shippingAddress = orderData?.get("shippingAddress") as String
                         // setup recycler view for books
-                        val itemsFragment = OrderDetailItemListFragment.newInstance(1,itemsMap!!)
+                        val itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!)
                         childFragmentManager.beginTransaction()
                             .replace(orderItemLayout.id,itemsFragment)
                             .commit()
@@ -143,19 +138,27 @@ class OrderDetailCaseProcessingFragment : Fragment() {
         backButton.setOnClickListener{
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-        // cancel order
-        val cancelButton = binding.orderDetailCancelOrderButton
-        cancelButton.setOnClickListener {
+        // return order
+        val returnOrder = binding.orderDetailReturnButton
+        returnOrder.setOnClickListener {
             val dialogClickListener =
                 DialogInterface.OnClickListener { dialog, which ->
                     when (which) {
                         DialogInterface.BUTTON_POSITIVE -> {
                             val docRef = orderID?.let { it1 -> db.collection("orders").document(it1) }
                             docRef?.update("status","Bị huỷ")?.addOnSuccessListener {
-                                Toast.makeText(context,R.string.orderDetailCancelArgument, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    R.string.orderDetailCancelArgument,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 requireActivity().onBackPressedDispatcher.onBackPressed()
                             }?.addOnFailureListener{
-                                Toast.makeText(context,R.string.orderDetailFailedArgument, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    R.string.orderDetailFailedArgument,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                         DialogInterface.BUTTON_NEGATIVE -> {}
@@ -182,7 +185,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
-            OrderDetailCaseProcessingFragment().apply {
+            OrderDetailCaseCompletedFragment().apply {
                 arguments = Bundle().apply {
                     putString(ORDERID_PARAM, orderID)
                 }
