@@ -240,4 +240,9 @@
     <string name="paymentCanceled">Payment canceled!</string>
     <string name="paymentSuccessfully">Payment successfully!</string>
     <string name="orderDetailStatus">Status:</string>
+    <string name="orderDetailProcessingCancelLabel">Are you sure cancel this order?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="orderDetailCancelArgument">Order cancelled successfully.</string>
+    <string name="orderDetailFailedArgument">Order cancelled failed.</string>
 </resources>

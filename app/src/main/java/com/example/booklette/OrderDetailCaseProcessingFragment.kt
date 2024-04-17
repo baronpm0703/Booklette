@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentOrderDetailBinding
 import com.google.android.gms.tasks.Tasks
@@ -148,14 +149,23 @@ class OrderDetailCaseProcessingFragment : Fragment() {
             val dialogClickListener =
                 DialogInterface.OnClickListener { dialog, which ->
                     when (which) {
-                        DialogInterface.BUTTON_POSITIVE -> {}
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            val docRef = orderID?.let { it1 -> db.collection("orders").document(it1) }
+                            docRef?.update("status","Bị huỷ")?.addOnSuccessListener {
+                                Toast.makeText(context,R.string.orderDetailCancelArgument, Toast.LENGTH_SHORT).show()
+                                requireActivity().onBackPressedDispatcher.onBackPressed()
+                            }?.addOnFailureListener{
+                                Toast.makeText(context,R.string.orderDetailFailedArgument, Toast.LENGTH_SHORT).show()
+                            }
+                        }
                         DialogInterface.BUTTON_NEGATIVE -> {}
                     }
                 }
 
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-            builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show()
+
+            builder.setMessage(R.string.orderDetailProcessingCancelLabel).setPositiveButton(R.string.yes, dialogClickListener)
+                .setNegativeButton(R.string.no, dialogClickListener).show()
         }
         return view
     }

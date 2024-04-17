@@ -198,4 +198,9 @@
     <string name="paymentCanceled">Thanh toán đã bị huỷ!</string>
     <string name="paymentSuccessfully">Thanh toán thành công!</string>
     <string name="orderDetailStatus">Trạng thái:</string>
+    <string name="orderDetailProcessingCancelLabel">Bạn có chắc chắn muốn huỷ đơn hàng này?</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="orderDetailCancelArgument">Đơn hàng huỷ thành công.</string>
+    <string name="orderDetailFailedArgument">Đơn hàng huỷ không thành công. Vui lòng thử lại!</string>
 </resources>
