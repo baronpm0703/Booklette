@@ -197,4 +197,5 @@
     <string name="canceled">Huỷ giao dịch</string>
     <string name="paymentCanceled">Thanh toán đã bị huỷ!</string>
     <string name="paymentSuccessfully">Thanh toán thành công!</string>
+    <string name="orderDetailStatus">Trạng thái:</string>
 </resources>

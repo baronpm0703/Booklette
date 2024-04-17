@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.example.booklette.databinding.FragmentMyOrderBinding
 import com.example.booklette.databinding.FragmentOrderDetailBinding
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,6 +21,7 @@ import java.util.Date
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ORDERID_PARAM = "param1"
+private const val ORDERNAME_PARAM = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -87,25 +89,50 @@ class OrderDetailFragment : Fragment() {
 
                     val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
                     val paymentMethodType = paymentMethod?.get("Type")
-
+                    val shippingAddress = orderData?.get("shippingAddress") as String
                     // setup recycler view for books
                     val itemsFragment = OrderDetailItemListFragment.newInstance(1,itemsMap!!)
                     childFragmentManager.beginTransaction()
                         .replace(orderItemLayout.id,itemsFragment)
                         .commit()
                     // assign to field in view
-                    numberField.text = orderID
-                    val sdf = SimpleDateFormat("dd-MM-yyyy")
-                    dateField.text = sdf.format(date)
+                    var orderName = ""
+                    val fetchBookNamesTasks = itemsMap?.map { (itemID, _) ->
+                        db.collection("books")
+                            .whereEqualTo("bookID", itemID)
+                            .get()
+                            .addOnSuccessListener { bookSnapshot ->
+                                for (book in bookSnapshot.documents) {
+                                    val bookData = book.data
+                                    val bookName = bookData?.get("name") as? String
+                                    if (!bookName.isNullOrEmpty()) {
+                                        orderName += "$bookName, "
+                                    }
+                                }
+                            }
+                    }
+                    Tasks.whenAllComplete(fetchBookNamesTasks!!)
+                        .addOnSuccessListener {
+                            if (orderName.length >= 2) {
+                                orderName = orderName.dropLast(2)
+                            }
+                            if (orderName.length > 20) {
+                                orderName = orderName.substring(0, 20) + "..."
+                            }
+                            numberField.text = orderName
+                            val sdf = SimpleDateFormat("dd-MM-yyyy")
+                            dateField.text = sdf.format(date)
 
-                    trackingNumberField.text = orderID
-                    statusField.text = status
-                    shippingAddressField.text = "227 Nguyễn Văn Cừ, P4, Quận 5, Tp HCM."
-                    paymentMethodField.text = paymentMethodType.toString()
-                    deliveryMethodField.text = "Giao Hàng Nhanh"
+                            trackingNumberField.text = orderID
+                            statusField.text = status
+                            shippingAddressField.text = shippingAddress
+                            paymentMethodField.text = paymentMethodType.toString()
+                            deliveryMethodField.text = "Giao Hàng Nhanh (test)"
 
-                    discountField.text = "30%"
-                    totalField.text = totalMoney.toString()
+                            discountField.text = "30%"
+                            totalField.text = totalMoney.toString()
+                        }
+
 
                 }
             }
@@ -125,6 +152,7 @@ class OrderDetailFragment : Fragment() {
          * this fragment using the provided parameters.
          *
          * @param orderID Parameter 1.
+         * @param orderFullName Parameter 2.
          * @return A new instance of fragment OrderDetailFragment.
          */
         // TODO: Rename and change types and number of parameters

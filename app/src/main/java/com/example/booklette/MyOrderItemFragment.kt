@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.booklette.databinding.MyOrderItemListBinding
+import com.google.android.gms.tasks.Tasks
 
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
@@ -25,7 +26,7 @@ class MyOrderItemFragment : Fragment() {
     private var originalValues = arrayListOf<OrderDataClass>()
     private lateinit var db : FirebaseFirestore
     private var _binding: MyOrderItemListBinding? = null
-
+    private var fullItemNames = arrayListOf<String>()
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,33 +59,66 @@ class MyOrderItemFragment : Fragment() {
                     val timeStamp = orderData?.get("creationDate") as Timestamp
                     val date: Date? = timeStamp?.toDate()
                     val trackingNumber: String = orderID
-                    val orderName = ""
+                    var orderName = ""
                     val itemsMap = orderData?.get("items") as? Map<String, Any>
                     var totalQuantity: Long = 0
-                    itemsMap?.forEach { (_, itemData) ->
+                    val fetchBookNamesTasks = itemsMap?.map { (itemID, itemData) ->
                         val itemMap = itemData as? Map<String, Any>
                         totalQuantity += itemMap?.get("quantity") as Long
-                    }
-                    val totalMoney = (orderData?.get("totalSum") as? Number)?.toFloat() ?: 0.0f
-                    val status = orderData?.get("status") as String
-                    val newOrder = date?.let {
-                        OrderDataClass(orderID,
-                            it, trackingNumber, totalQuantity, totalMoney, status)
-                    }
-                    if (newOrder != null) {
-                        userOrders.add(newOrder)
 
+                        db.collection("books")
+                            .whereEqualTo("bookID", itemID)
+                            .get()
+                            .addOnSuccessListener { bookSnapshot ->
+                                for (book in bookSnapshot.documents) {
+                                    val bookData = book.data
+                                    val bookName = bookData?.get("name") as? String
+                                    if (!bookName.isNullOrEmpty()) {
+                                        orderName += "$bookName, "
+                                    }
+                                }
+                            }
                     }
+
+                    Tasks.whenAllComplete(fetchBookNamesTasks!!)
+                        .addOnSuccessListener {
+                            // Remove the last comma and space from orderName
+                            if (orderName.length >= 2) {
+                                orderName = orderName.dropLast(2)
+                                val copiedName = orderName
+                                fullItemNames.add(copiedName)
+                            }
+
+                            // Truncate orderName if it exceeds 15 characters
+                            if (orderName.length > 15) {
+                                orderName = orderName.substring(0, 15) + "..."
+                            }
+
+                            // Create OrderDataClass instance
+                            val totalMoney = (orderData?.get("totalSum") as? Number)?.toFloat() ?: 0.0f
+                            val status = orderData?.get("status") as String
+                            val newOrder = date?.let {
+                                OrderDataClass(orderName, it, trackingNumber, totalQuantity, totalMoney, status)
+                            }
+
+                            // Add newOrder to userOrders list
+                            if (newOrder != null) {
+                                userOrders.add(newOrder)
+                            }
+
+                            // Update adapter and layout manager
+                            originalValues = ArrayList(userOrders)
+                            adapter.notifyDataSetChanged()
+                            if (adapter.onButtonClick == null) {
+                                adapter.onButtonClick = orderItemClickListener
+                            }
+                            view.adapter = adapter
+                            view.layoutManager = LinearLayoutManager(context)
+                        }
+
                     originalValues = ArrayList(userOrders)
                 }
-                adapter.notifyDataSetChanged()
-                // Check if the listener is already set before assigning it
-                if (adapter.onButtonClick == null) {
-                    adapter.onButtonClick = orderItemClickListener
-                }
 
-                view.adapter = adapter
-                view.layoutManager = LinearLayoutManager(context)
             }
             .addOnFailureListener { exception ->
                 Log.w("CanhBao", "Error getting documents.", exception)

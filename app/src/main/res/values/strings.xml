@@ -239,4 +239,5 @@
     <string name="canceled">Cancel transaction</string>
     <string name="paymentCanceled">Payment canceled!</string>
     <string name="paymentSuccessfully">Payment successfully!</string>
+    <string name="orderDetailStatus">Status:</string>
 </resources>

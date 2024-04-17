@@ -38,7 +38,7 @@
             android:id="@+id/textView43"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="16dp"
             android:text="@string/order_item_order"
             android:textSize="20sp"
@@ -51,12 +51,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:ellipsize="middle"
+            android:maxLines="1"
             android:text=""
             android:textColor="#D45555"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView43"
-            app:layout_constraintTop_toTopOf="@+id/textView43" />
+            app:layout_constraintTop_toTopOf="@+id/textView43"
+            tools:text="hehehehehe" />
 
         <TextView
             android:id="@+id/orderDetailDateField"
@@ -65,15 +69,19 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text=""
-            app:layout_constraintBottom_toBottomOf="@+id/orderDetailNumberField"
+            app:layout_constraintBottom_toBottomOf="@+id/orderDetailStatusField"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView42" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/textView42"
+            tools:text="01-01-2003" />
 
         <TextView
             android:id="@+id/textView47"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="middle"
+            android:maxLines="1"
             android:text="@string/order_item_tracking_number"
             app:layout_constraintStart_toStartOf="@+id/textView43"
             app:layout_constraintTop_toBottomOf="@+id/textView43" />
@@ -84,6 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text=""
+            tools:text="6PTKfOZN1ohAZjLtbd5i"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView47"
             app:layout_constraintTop_toTopOf="@+id/textView47" />
@@ -92,11 +101,13 @@
             android:id="@+id/orderDetailStatusField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text=""
             android:textColor="#0078CF"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/orderDetailDateField"
-            app:layout_constraintTop_toTopOf="@+id/orderDetailTrackingNumberField" />
+            app:layout_constraintStart_toEndOf="@+id/textView22"
+            app:layout_constraintTop_toTopOf="@+id/textView22"
+            tools:text="Hoàn trả thành công" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/orderDetailProductsFragmentFrameLayout"
@@ -106,7 +117,7 @@
             android:background="@drawable/round_corner_order_item_white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderDetailTrackingNumberField">
+            app:layout_constraintTop_toBottomOf="@+id/orderDetailStatusField">
 
         </androidx.fragment.app.FragmentContainerView>
 
@@ -235,6 +246,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/orderDetailDiscountField"
                 app:layout_constraintTop_toTopOf="@+id/textView56" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
@@ -249,6 +261,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderInformationFrameLayout" />
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/orderDetailStatus"
+            app:layout_constraintStart_toStartOf="@+id/textView47"
+            app:layout_constraintTop_toBottomOf="@+id/textView47" />
 
         <!-- Your existing layout content here -->
 

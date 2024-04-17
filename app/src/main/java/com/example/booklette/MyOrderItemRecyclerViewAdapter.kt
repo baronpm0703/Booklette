@@ -36,7 +36,7 @@ class MyOrderItemRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
         val sdf = SimpleDateFormat("dd-MM-yyyy")
-        holder.orderNumber.text  = item.trackingNumber
+        holder.orderNumber.text  = item.ID
         holder.dateOrder.text = sdf.format(item.creationDate)
         holder.trackingNumber.text = "  " + item.trackingNumber
 
