@@ -15,6 +15,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import java.util.Date
 
@@ -47,10 +48,24 @@ class MyOrderItemFragment : Fragment() {
 
         // Authentication and database
         val auth = Firebase.auth
+        // Get the current user
+        val currentUser = auth.currentUser
+
+        var userID = ""
+        // Check if a user is signed in
+        if (currentUser != null) {
+            // User is signed in, you can access the user's UID
+            userID = currentUser.uid
+            // Now userID contains the current user's ID
+        }
         db = Firebase.firestore
+
         adapter = MyOrderItemRecyclerViewAdapter(userOrders)
         // Fetch data from Firestore
         db.collection("orders")
+            // remove this line if want to test all ID
+            .whereEqualTo("customerID",userID)
+            .orderBy("creationDate", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { querySnapshot ->
                 for (document in querySnapshot.documents) {

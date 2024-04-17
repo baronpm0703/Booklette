@@ -129,10 +129,9 @@ class OrderDetailFragment : Fragment() {
                             paymentMethodField.text = paymentMethodType.toString()
                             deliveryMethodField.text = "Giao Hàng Nhanh (test)"
 
-                            discountField.text = "30%"
+                            discountField.text = "30% (test)"
                             totalField.text = totalMoney.toString()
                         }
-
 
                 }
             }
