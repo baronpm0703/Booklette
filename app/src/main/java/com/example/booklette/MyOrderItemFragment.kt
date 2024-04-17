@@ -47,7 +47,7 @@ class MyOrderItemFragment : Fragment() {
         // Authentication and database
         val auth = Firebase.auth
         db = Firebase.firestore
-
+        adapter = MyOrderItemRecyclerViewAdapter(userOrders)
         // Fetch data from Firestore
         db.collection("orders")
             .get()
@@ -77,8 +77,7 @@ class MyOrderItemFragment : Fragment() {
                     }
                     originalValues = ArrayList(userOrders)
                 }
-                adapter = MyOrderItemRecyclerViewAdapter(userOrders)
-
+                adapter.notifyDataSetChanged()
                 // Check if the listener is already set before assigning it
                 if (adapter.onButtonClick == null) {
                     adapter.onButtonClick = orderItemClickListener
@@ -100,7 +99,7 @@ class MyOrderItemFragment : Fragment() {
         if (context is homeActivity) {
             orderItemClickListener = { orderItem ->
                 val detailFragment = OrderDetailFragment.newInstance(orderItem.trackingNumber)
-                (context ).changeFragmentContainer(detailFragment, (context ).smoothBottomBarStack[(context ).smoothBottomBarStack.size - 1])
+                (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
             }
         }
     }
