@@ -1,10 +1,7 @@
 package com.example.booklette
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
-import android.graphics.BitmapFactory
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
@@ -15,8 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
 import com.example.booklette.model.BookObject
+import com.example.booklette.model.Photo
 import com.example.booklette.model.VoucherObject
 import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
@@ -34,15 +30,15 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.storage
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import java.io.ByteArrayOutputStream
 import java.util.Collections
 import kotlin.math.round
 
@@ -73,6 +69,7 @@ class BookDetailFragment : Fragment() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    private lateinit var storage: FirebaseStorage
     private var bookID: String = ""
 
     private var voucherList = ArrayList<VoucherObject>()
@@ -120,6 +117,7 @@ class BookDetailFragment : Fragment() {
 
         db = Firebase.firestore
         auth = Firebase.auth
+        storage = Firebase.storage("gs://book-store-3ed32.appspot.com")
 
         bookID = arguments?.getString("bookID").toString()
         // Save user Info
@@ -274,8 +272,8 @@ class BookDetailFragment : Fragment() {
                             }, 3000)
                         }
 
-                        var bookVoucher = bookDetail["discounts"] as ArrayList<String>
-                        if (bookVoucher.size == 0) {
+                        var bookVoucher = bookDetail["discount"] as String
+                        if (bookVoucher == "") {
                             Handler().postDelayed({
                                 binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
                                 binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
@@ -283,34 +281,26 @@ class BookDetailFragment : Fragment() {
                             }, 3000)
                         }
                         else {
-                            for (vch in bookVoucher) {
-                                db.collection("discounts").whereEqualTo("discountID", vch).get().addOnSuccessListener { result ->
-                                    if (result.documents.size == 0) {
-                                        binding.rvBookDetailShopVoucher.visibility = View.GONE
-                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                        binding.smBookDetailShopVoucher.stopShimmer()
-                                    }
-                                    else {
-                                        voucherList.add(
-                                            VoucherObject(
-                                                result.documents[0].data?.get("discountFilter").toString(),
-                                                result.documents[0].data?.get("discountID").toString(),
-                                                result.documents[0].data?.get("discountName").toString(),
-                                                result.documents[0].data?.get("discountType").toString().toInt(),
-                                                result.documents[0].data?.get("endDate") as Timestamp,
-                                                result.documents[0].data?.get("percent").toString().toFloat(),
-                                                result.documents[0].data?.get("startDate") as Timestamp
-                                            )
+                            db.collection("discounts").whereEqualTo("discountID", bookVoucher).get().addOnSuccessListener { result ->
+                                if (result.documents.size == 0) {
+                                    binding.rvBookDetailShopVoucher.visibility = View.GONE
+                                    binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                    binding.smBookDetailShopVoucher.stopShimmer()
+                                }
+                                else {
+                                    voucherList.add(
+                                        VoucherObject(
+                                            result.documents[0].data?.get("discountFilter").toString(),
+                                            result.documents[0].data?.get("discountID").toString(),
+                                            result.documents[0].data?.get("discountName").toString(),
+                                            result.documents[0].data?.get("discountType").toString(),
+                                            result.documents[0].data?.get("endDate") as Timestamp,
+                                            result.documents[0].data?.get("percent").toString().toFloat(),
+                                            result.documents[0].data?.get("startDate") as Timestamp
                                         )
+                                    )
 
-                                        shopVoucherAdapter.notifyDataSetChanged()
-                                    }
-
-                                    Handler().postDelayed({
-                                        binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
-                                        binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
-                                        binding.smBookDetailShopVoucher.stopShimmer()
-                                    }, 3000)
+                                    shopVoucherAdapter.notifyDataSetChanged()
                                 }
 
                                 Handler().postDelayed({
@@ -319,6 +309,12 @@ class BookDetailFragment : Fragment() {
                                     binding.smBookDetailShopVoucher.stopShimmer()
                                 }, 3000)
                             }
+
+                            Handler().postDelayed({
+                                binding.rvBookDetailShopVoucher.visibility = View.VISIBLE
+                                binding.smBookDetailShopVoucher.visibility = View.INVISIBLE
+                                binding.smBookDetailShopVoucher.stopShimmer()
+                            }, 3000)
                         }
                     }
 
@@ -477,7 +473,7 @@ class BookDetailFragment : Fragment() {
                     style(SheetStyle.BOTTOM_SHEET)
                     onPositive {
                         this.dismiss()
-                        upLoadComment(getClientRating(), getClientReview()) // Upload Comment
+                        upLoadComment(getClientRating(), getClientReview(), getImage()) // Upload Comment
                     }
                 }
             }
@@ -576,9 +572,10 @@ class BookDetailFragment : Fragment() {
         })
     }
 
-    fun updateRatingAndComment(rating: Float, cmt: String) {
+    fun updateRatingAndComment(rating: Float, cmt: String, images: ArrayList<Photo>) {
         val docBookRef = db.collection("books").whereEqualTo("bookID", bookID)
 
+        val storageRef = storage.reference
         docBookRef.get().addOnSuccessListener { result ->
             for (document in result){
                 val reviewsArray =
@@ -588,9 +585,39 @@ class BookDetailFragment : Fragment() {
                 var rating = userInfo!!.ratings
                 var cmt = userInfo!!.description
 
+                // Each file added to storage
+                for (image in images) {
+                    val path = image.nameFile
+                    val fileName = path?.substringAfterLast("/")
+                    val reviewEachImageRef = storageRef.child("reviewImages/${userInfo!!.userID}/${fileName}")
+
+                    val bitmap = image.image
+                    val baos = ByteArrayOutputStream()
+                    if (bitmap != null) {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                    }
+
+                    val data = baos.toByteArray()
+                    var uploadTask = reviewEachImageRef.putBytes(data)
+
+                    uploadTask.addOnFailureListener { exception ->
+                        Log.e("Upload Failure", "Failed to upload image: $exception")
+                    }.addOnSuccessListener { taskSnapshot ->
+                        Log.i("Upload Success", "Image uploaded successfully")
+                        // You can also log or extract metadata if needed
+                        val downloadUrl = taskSnapshot.storage.downloadUrl
+                        Log.i("Download URL", "Download URL: $downloadUrl")
+                    }
+
+                }
+
+                // update the path to user review uploaded image folder
+                val folderImageRef = storageRef.child("reviewImages/${userInfo!!.userID}")
+                val link = folderImageRef.toString()
+
                 val updatedReview = mapOf(
                     "UID" to uid,
-                    "image" to "",
+                    "image" to link,
                     "score" to rating.toInt(),
                     "text" to cmt
                 )
@@ -685,13 +712,13 @@ class BookDetailFragment : Fragment() {
         return -1
     }
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
-    fun upLoadComment(rating: Float, cmt: String){
+    fun upLoadComment(rating: Float, cmt: String, images: ArrayList<Photo>){
         oldRating = userInfo!!.ratings // Save the oldRating
         userInfo!!.ratings = rating
         userInfo!!.description = cmt
 
         // Update or Add new Review
-        updateRatingAndComment(rating, cmt)
+        updateRatingAndComment(rating, cmt, images)
         if (checkDoesUserReviewExisted(userInfo!!.userID) == -1){
             userReviewList.add(0, userInfo!!)
 
@@ -995,3 +1022,35 @@ class BookDetailFragment : Fragment() {
             }
     }
 }
+
+// Sample download files
+//val folderPath = "reviewImages/awpku0XpjfWlZ1lhjBOaPf4oJCZ2" // The path to the folder in Firebase Storage
+//
+//// Create a reference to the folder in Firebase Storage
+//val folderRef = storage.getReferenceFromUrl("gs://book-store-3ed32.appspot.com/$folderPath")
+//
+//// List all items (files) within the folder
+//folderRef.listAll().addOnSuccessListener { listResult ->
+//    // Iterate through the items (files) in the folder
+//    for (item in listResult.items) {
+//        // Get the download URL for the file
+//        item.downloadUrl.addOnSuccessListener { url ->
+//            // Download the file using the download URL
+//            val fileName = item.name
+//            val localFile = File("/path/to/local/directory/$fileName") // Provide the path where you want to save the file locally
+//            item.getFile(localFile).addOnSuccessListener {
+//                // File downloaded successfully
+//                Log.i("Download", "File downloaded successfully: $localFile")
+//            }.addOnFailureListener { exception ->
+//                // Handle failure to download the file
+//                Log.e("Download", "Failed to download file $fileName: ${exception.message}")
+//            }
+//        }.addOnFailureListener { exception ->
+//            // Handle failure to get the download URL for the file
+//            Log.e("Download", "Failed to get download URL for file: ${exception.message}")
+//        }
+//    }
+//}.addOnFailureListener { exception ->
+//    // Handle failure to list items in the folder
+//    Log.e("Download", "Failed to list items in folder: ${exception.message}")
+//}

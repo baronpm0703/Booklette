@@ -26,7 +26,7 @@
         <View
             android:id="@+id/slideDownTab"
             android:layout_width="110dp"
-            android:layout_height="10dp"
+            android:layout_height="5dp"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/slide_down_tab" />
@@ -43,13 +43,11 @@
             android:paddingEnd="10dp"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/helvetica_regular"
-
             android:paddingStart="10dp"
-            android:text="What is your rate?"
+            android:text="@string/review_statement_dialog_book_detail"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
-
             />
 
         <LinearLayout
@@ -63,8 +61,8 @@
             <per.wsj.library.AndRatingBar
                 android:id="@+id/ratingStarBar"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="5dp"
                 android:rating="4.7"
@@ -95,12 +93,12 @@
 
             android:lineHeight="30dp"
 
-
             android:paddingStart="10dp"
-            android:text="Please share your opinion about the product"
+            android:text="@string/review_notice_dialog_book_detail"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
 
         <EditText
             android:id="@+id/reviewText"
@@ -125,7 +123,7 @@
             android:paddingEnd="20dp"
             android:paddingBottom="10dp"
 
-            android:hint="Your review"
+            android:hint="@string/review_hint_dialog_book_detail"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -156,8 +154,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_centerHorizontal="true"
-
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
@@ -165,12 +161,28 @@
                 android:fontFamily="@font/helvetica_regular"
 
                 android:paddingStart="10dp"
-                android:text="Add your photos"
+                android:text="@string/review_add_photo_dialog_book_detail"
                 android:textColor="@color/black"
                 android:textSize="11sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="invisible"
+            android:id="@+id/chosenPhoto"
+            android:layout_width="300dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/reviewText"
+
+            android:background="@drawable/recyler_view_round_corner"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="5dp"
+
+            android:paddingVertical="5dp"
+            android:layout_toEndOf="@+id/add_photo_ln" />
 
         <TextView
             android:id="@+id/sendReviewBtn"
@@ -189,7 +201,7 @@
 
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="SEND REVIEW"
+            android:text="@string/review_send_dialog_book_detail"
 
             android:textColor="@color/white"
             android:textSize="17sp"

@@ -6,7 +6,7 @@ class VoucherObject {
     var discountFilter: String
     var discountID: String
     var discountName: String
-    var discountType: Int
+    var discountType: String
     var endDate: Timestamp
     var percent: Float
     var startDate: Timestamp
@@ -15,7 +15,7 @@ class VoucherObject {
         discountFilter: String,
         discountID: String,
         discountName: String,
-        discountType: Int,
+        discountType: String,
         endDate: Timestamp,
         percent: Float,
         startDate: Timestamp

@@ -33,7 +33,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import rememberMeManager
+//import rememberMeManager
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 
@@ -44,7 +44,7 @@ open class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
     var callbackManager = CallbackManager.Factory.create()
-    lateinit var remember_me_manager: rememberMeManager
+//    lateinit var remember_me_manager: rememberMeManager
 
     var TAG = ""
 
@@ -69,17 +69,17 @@ open class LoginActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        remember_me_manager = rememberMeManager(this)
+//        remember_me_manager = rememberMeManager(this)
 
-        this.remember_me_manager.rmFlow.asLiveData().observe(this) {
-            binding.cbRememberMe.isChecked = it
-            if (it) {
-                this.remember_me_manager.emailFlow.asLiveData().observe(this) {
-                    binding.edtEmailSignIn.setText(it)
-//                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+//        this.remember_me_manager.rmFlow.asLiveData().observe(this) {
+//            binding.cbRememberMe.isChecked = it
+//            if (it) {
+//                this.remember_me_manager.emailFlow.asLiveData().observe(this) {
+//                    binding.edtEmailSignIn.setText(it)
+////                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//        }
 
         bindProgressButton(binding.btnLogIn)
         binding.btnLogIn.attachTextChangeAnimator()
@@ -174,7 +174,7 @@ open class LoginActivity : AppCompatActivity() {
                                 MotionToast.SHORT_DURATION,
                                 ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
 
-                            GlobalScope.launch { remember_me_manager.storeUser(binding.cbRememberMe.isChecked, binding.edtEmailSignIn.text.toString()) }
+//                            GlobalScope.launch { remember_me_manager.storeUser(binding.cbRememberMe.isChecked, binding.edtEmailSignIn.text.toString()) }
 
                             finish()
                             startActivity(Intent(this@LoginActivity, homeActivity::class.java))

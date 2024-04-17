@@ -69,6 +69,13 @@ class CategoryFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.searchBar.closeSearch()
+        binding.searchBar.clearSuggestions()
+        binding.searchBar.lastSuggestions = suggestions
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -111,9 +118,7 @@ class CategoryFragment : Fragment() {
             homeAct.changeFragmentContainer(productList, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
         }
 
-
-        val inflater = LayoutInflater.from(activity)
-        var customSuggestionAdapter = activity?.let {
+        val customSuggestionAdapter = activity?.let {
             CustomSuggestionAdapter(it, inflater, binding.searchBar)
         }
 
@@ -139,14 +144,14 @@ class CategoryFragment : Fragment() {
 
                 if (enabled) {
                     binding.relativeLayout.visibility = View.GONE
-                    binding.filterCategorySearchPage.visibility = View.GONE
+//                    binding.filterCategorySearchPage.visibility = View.GONE
                     binding.TopSearchLayout.visibility = View.VISIBLE
                     binding.searchBar.setPadding(0, binding.relativeLayout.height / 2, 0,  0)
 
                 } else {
                     binding.searchBar.setPadding(0)
                     binding.relativeLayout.visibility = View.VISIBLE
-                    binding.filterCategorySearchPage.visibility = View.VISIBLE
+//                    binding.filterCategorySearchPage.visibility = View.VISIBLE
                     binding.TopSearchLayout.visibility = View.GONE
                 }
             }
@@ -206,7 +211,8 @@ class CategoryFragment : Fragment() {
 
         // Handle behavior of the search bar, may fit with adding effect
         binding.searchBar.addTextChangeListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+            }
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 Log.d("LOG_TAG", javaClass.simpleName + " text changed " + binding.searchBar.getText())
                 // send the entered text to our filter and let it manage everything
@@ -234,7 +240,6 @@ class CategoryFragment : Fragment() {
         binding.topSearchGV.setOnItemClickListener { parent, view, position, id ->
             Log.i("Top Search", topSearch[position])
         }
-
 
         return view
     }

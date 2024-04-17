@@ -25,6 +25,8 @@ import com.google.firebase.firestore.firestore
 import android.util.Log
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.booklette.model.CartObject
+import com.example.booklette.model.VoucherObject
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -53,6 +55,10 @@ class CartFragment : Fragment() {
 
     private var isFailedQuery: Boolean = false
     private var cartList: ArrayList<CartObject> = ArrayList()
+    private var shopVoucherList: ArrayList<VoucherObject> = ArrayList()
+
+//    private lateinit var shopVoucherAdapter: bookDetailShopVoucherRVAdapter
+
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -94,12 +100,12 @@ class CartFragment : Fragment() {
         auth = Firebase.auth
         db = Firebase.firestore
 
-        Handler().postDelayed({
-            if (binding.loadingAnim.visibility == View.VISIBLE) {
-                binding.loadingAnim.visibility = View.GONE
-                binding.noCartItemFound.visibility = View.VISIBLE
-            }
-        }, 10000)
+//        Handler().postDelayed({
+//            if (binding.loadingAnim.visibility == View.VISIBLE) {
+//                binding.loadingAnim.visibility = View.GONE
+//                binding.noCartItemFound.visibility = View.VISIBLE
+//            }
+//        }, 10000)
 
         if(cartList.size == 0){
             loadCartData()
@@ -107,7 +113,7 @@ class CartFragment : Fragment() {
         else {
             binding.loadingAnim.visibility = View.GONE
             binding.rvCart.visibility = View.VISIBLE
-            binding.noCartItemFound.visibility = View.GONE
+//            binding.noCartItemFound.visibility = View.GONE
         }
 
         binding.totalAmount.text = "0 VND"
@@ -125,6 +131,9 @@ class CartFragment : Fragment() {
             binding.cartSwipeRefresh.isRefreshing = false;
         }
 
+
+
+
         return view
     }
 
@@ -133,7 +142,7 @@ class CartFragment : Fragment() {
 
         binding.loadingAnim.visibility = View.VISIBLE
         binding.rvCart.visibility = View.GONE
-        binding.noCartItemFound.visibility = View.GONE
+//        binding.noCartItemFound.visibility = View.GONE
 
         db.collection("accounts").whereEqualTo("UID", auth.uid).get()
             .addOnSuccessListener { documents ->
@@ -159,7 +168,9 @@ class CartFragment : Fragment() {
                                                                 personalStoreDocument["items"] as? Map<String, Any>
                                                             val eachItem =
                                                                 itemList?.get(itemId) as? Map<String, Any>
+
                                                             val storeName = personalStoreDocument["storeName"]
+
                                                             db.collection("books")
                                                                 .whereEqualTo("bookID", itemId)
                                                                 .get()
@@ -178,6 +189,8 @@ class CartFragment : Fragment() {
                                                                                     .toFloat(),
                                                                                 quantity?.toInt()
                                                                                     ?: 1,
+                                                                                0f,
+                                                                                shopVoucherList
                                                                             )
                                                                         )
                                                                         adapter.notifyDataSetChanged()
@@ -189,8 +202,8 @@ class CartFragment : Fragment() {
                                                                                 View.VISIBLE
                                                                             binding.loadingAnim.visibility =
                                                                                 View.GONE
-                                                                            binding.noCartItemFound.visibility =
-                                                                                View.GONE
+//                                                                            binding.noCartItemFound.visibility =
+//                                                                                View.GONE
                                                                         }, 2000)
                                                                     }
 
@@ -246,7 +259,6 @@ class CartFragment : Fragment() {
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-
         val clampedDX = if (Math.abs(dX) > 200) {
             if (dX > 0) 200.toFloat() else -200.toFloat()
         } else {

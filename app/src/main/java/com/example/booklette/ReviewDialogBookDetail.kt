@@ -14,7 +14,11 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.ReviewDialogBookDetailBinding
+import com.example.booklette.model.Photo
 import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
 import com.maxkeppeler.sheets.core.SheetStyle
@@ -29,7 +33,9 @@ class ReviewDialogBookDetail(
     private lateinit var binding: ReviewDialogBookDetailBinding
     private var client_review: String = ""
     private var client_rating: Float = 0.0F
+    private lateinit var dataPhoto : ArrayList<Photo>
     private lateinit var photoGalleryDialogBookDetail: PhotoGalleryDialogBookDetail
+    private lateinit var chosenPhotoAdapter: ChosenReviewPhotoBookDetailRVAdapter
 
     fun getClientReview(): String {
         return client_review
@@ -38,6 +44,9 @@ class ReviewDialogBookDetail(
         return client_rating
     }
 
+    fun getImage(): ArrayList<Photo> {
+        return dataPhoto
+    }
     fun onPositive(positiveListener: PositiveListener) {
         this.positiveListener = positiveListener
     }
@@ -96,14 +105,33 @@ class ReviewDialogBookDetail(
             positiveListener?.invoke()
         }
 
+
+        // Init data Photo
+        dataPhoto = ArrayList()
+        chosenPhotoAdapter = activity?.let { ChosenReviewPhotoBookDetailRVAdapter(it, dataPhoto) }!!
+        binding.chosenPhoto.adapter = chosenPhotoAdapter
+
+        //Set Up horizontal layout
+        val h_linerLayout = activity?.let {LinearLayoutManager(it)}
+        if (h_linerLayout != null) {
+            h_linerLayout.orientation = LinearLayoutManager.HORIZONTAL
+        }
+        binding.chosenPhoto.layoutManager = h_linerLayout
+
+//        val itemDecoration: RecyclerView.ItemDecoration = DividerItemDecoration(
+//            activity,
+//            DividerItemDecoration.HORIZONTAL)
+//        binding.chosenPhoto.addItemDecoration(itemDecoration)
+
         val initValues = InitFilterValuesReviewBookDetail()
-        photoGalleryDialogBookDetail = PhotoGalleryDialogBookDetail(initValue)
+        photoGalleryDialogBookDetail = PhotoGalleryDialogBookDetail(initValues)
         binding.notFoundBooks.setOnClickListener {
             activity?.let {
                 photoGalleryDialogBookDetail.show(it){
                     style(SheetStyle.DIALOG)
                     onPositive {
                         this.dismiss()
+                        updateChosenPhoto(getChosenPhoto())
                     }
                 }
             }
@@ -118,7 +146,13 @@ class ReviewDialogBookDetail(
     }
 
 
-
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateChosenPhoto(dataPhoto: ArrayList<Photo>){
+        this.dataPhoto = dataPhoto
+        chosenPhotoAdapter.updateDataPhoto(this.dataPhoto)
+        chosenPhotoAdapter.notifyDataSetChanged()
+        binding.chosenPhoto.visibility = View.VISIBLE
+    }
     fun build(ctx: Context, width: Int? = null, func: ReviewDialogBookDetail.() -> Unit): ReviewDialogBookDetail {
         this.windowContext = ctx
         this.width = width

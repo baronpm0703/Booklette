@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.model.VoucherObject
 import java.time.Instant
@@ -12,11 +13,16 @@ import java.time.Instant
 class bookDetailShopVoucherRVAdapter(var context: android.content.Context?, var data: ArrayList<VoucherObject>) :
     RecyclerView.Adapter<bookDetailShopVoucherRVAdapter.ViewHolder>() {
 
+    interface VoucherItemClickListener {
+        fun onVoucherItemClick(percentage: Float)
+    }
+
+    var itemClickListener: VoucherItemClickListener? = null
+
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view
         val view = LayoutInflater.from(parent.context).inflate(R.layout.shop_voucher_book_detail_item, parent, false)
-
         return ViewHolder(view)
     }
 
@@ -31,6 +37,11 @@ class bookDetailShopVoucherRVAdapter(var context: android.content.Context?, var 
         holder.txtVoucherCode.text = data[position].discountID
         holder.txtDesciptionVoucher.text = data[position].discountName
         holder.txtVoucherRemainingTime.text = calculateRemainingDays(Instant.now().epochSecond, data[position].endDate.seconds).toString() + " day(s) left"
+
+        holder.btnSaveVoucher.setOnClickListener {
+            val percentage = data[position].percent
+            itemClickListener?.onVoucherItemClick(percentage)
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

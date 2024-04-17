@@ -121,7 +121,7 @@
     <string name="bookDetailImage">with photo</string>
     <string name="bookDetailYouMayLoveToBuy">You may love to buy</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="cardHolder">Card Holder</string>
     <string name="cardExpire">Expire</string>
     <string name="fillCardInfor">Card Information</string>
@@ -171,11 +171,13 @@
     <string name="myprofile_blacklist">Blacklist</string>
     <string name="myprofile_help_center">Help Center</string>
     <string name="bookDetailLess">less ></string>
+
     <string name="my_order_label">My Order</string>
     <string name="my_order_completed_button">Completed</string>
     <string name="my_order_cancelled_button">Cancelled</string>
     <string name="my_order_processing_button">Processing</string>
     <string name="my_order_returned_button">Returned</string>
+
     <string name="order_item_order">Order №</string>
     <string name="order_item_tracking_number">Tracking number:</string>
     <string name="order_item_quantity">Quantity:</string>
@@ -203,4 +205,38 @@
     <string name="speech_prompt">Say something…</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
     <string name="tap_on_mic">Tap on mic to speak</string>
+    <string name="filter_category_gv_default_item" translatable="false">Non-Fiction</string>
+    <string name="filter_dialog_product_list_price_range">Price Range</string>
+    <string name="basic_money_range" translatable="false">0-100.000 VND</string>
+    <string name="filter_dialog_product_list_categories">Categories</string>
+    <string name="filter_dialog_product_list_type">Type</string>
+    <string name="filter_dialog_product_list_age">Age</string>
+    <string name="fragment_category_top_search">Top Search</string>
+    <string name="fragment_product_list_classic_category">Classic</string>
+    <string name="fragment_product_list_category_fantasy">Fantasy</string>
+    <string name="fragment_product_list_category_young_adult">Young Adult</string>
+    <string name="fragment_product_list_category_crime">Crime</string>
+    <string name="fragment_product_list_category_horror">Horror</string>
+    <string name="fragment_product_list_category_sci_fi" translatable="false">Sci-fi</string>
+    <string name="fragment_product_list_category_drama" translatable="false">Drama</string>
+    <string name="fragment_product_list_filter_title">Filter</string>
+    <string name="fragment_product_list_default_sort_item">Price: lowest to high</string>
+    <string name="fragmen_product_list_unable_to_found_book">Your result is currently unavailable. Try again ?</string>
+    <string name="default_book_name_fragment_product_list_item" translatable="false">Tuesday Mooney Talks to Ghosts</string>
+    <string name="default_owner_fragment_product_list_item" translatable="false">Kate Racculia</string>
+    <string name="default_money_fragment_product_list_item" translatable="false">150.000 VND</string>
+    <string name="review_statement_dialog_book_detail">What is your rate?</string>
+    <string name="review_notice_dialog_book_detail">Please share your opinion about the product</string>
+    <string name="review_hint_dialog_book_detail">Your review</string>
+    <string name="review_add_photo_dialog_book_detail">Add your photos</string>
+    <string name="review_send_dialog_book_detail">SEND REVIEW</string>
+    <string name="review_btn_gallery_book_detail">Apply</string>
+    <string name="shop_sale_voucher_book_detail_item">Sale up to 50%</string>
+    <string name="shop_min_order_voucher_book_detail_item">Minimum order 100k</string>
+    <string name="shop_expire_voucher_book_detail_item">Expiring soon: 1 day(s) left</string>
+    <string name="haveNotPickPaymentMethodError">You haven\'t picked a payment method!</string>
+    <string name="paymentFailed">Payment failed!</string>
+    <string name="canceled">Cancel transaction</string>
+    <string name="paymentCanceled">Payment canceled!</string>
+    <string name="paymentSuccessfully">Payment successfully!</string>
 </resources>

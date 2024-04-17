@@ -34,7 +34,7 @@
         android:gravity="center"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:text="Apply"
+        android:text="@string/review_btn_gallery_book_detail"
         android:textColor="@color/white"
 
         android:textSize="17sp"

@@ -105,10 +105,7 @@ class ProductList : Fragment() {
 
         // Set up back btn
         binding.ivBackToPrev.setOnClickListener {
-            val categoryFragment = CategoryFragment()
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fcvNavigation, categoryFragment)
-                ?.commit()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         // Product List Grid view
@@ -275,6 +272,7 @@ class ProductList : Fragment() {
                 }
             }
         }
+
         // Set up the select dialog when click the sort
         binding.tvSort.setOnClickListener{
 //            binding.linearLayout.visibility = View.VISIBLE
@@ -367,6 +365,10 @@ class ProductList : Fragment() {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        bookList.clear()
+    }
     suspend fun getBookQuantity(bookID: String): Int {
         var res = 0
         return try {
