@@ -151,6 +151,10 @@ class MyOrderItemFragment : Fragment() {
                     val detailFragment = OrderDetailCaseProcessingFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
                 }
+                else{
+                    val detailFragment = OrderDetailCaseProcessingFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+                }
             }
         }
     }
