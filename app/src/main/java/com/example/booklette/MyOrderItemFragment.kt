@@ -64,7 +64,7 @@ class MyOrderItemFragment : Fragment() {
         // Fetch data from Firestore
         db.collection("orders")
             // remove this line if want to test all ID
-            .whereEqualTo("customerID",userID)
+            //.whereEqualTo("customerID",userID)
             .orderBy("creationDate", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { querySnapshot ->
@@ -147,8 +147,10 @@ class MyOrderItemFragment : Fragment() {
         super.onAttach(context)
         if (context is homeActivity) {
             orderItemClickListener = { orderItem ->
-                val detailFragment = OrderDetailFragment.newInstance(orderItem.trackingNumber)
-                (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+                if (orderItem.status.contains("xử lý",ignoreCase = true)){
+                    val detailFragment = OrderDetailCaseProcessingFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+                }
             }
         }
     }
