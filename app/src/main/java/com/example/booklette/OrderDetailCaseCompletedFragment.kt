@@ -29,6 +29,7 @@ class OrderDetailCaseCompletedFragment : Fragment() {
     private var orderID: String? = null
     private var _binding: FragmentOrderDetailCompletedBinding? = null
 
+
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
@@ -160,6 +161,7 @@ class OrderDetailCaseCompletedFragment : Fragment() {
                                     R.string.orderDetailConfirmFailedArgument,
                                     Toast.LENGTH_SHORT
                                 ).show()
+
                             }
                         }
                         DialogInterface.BUTTON_NEGATIVE ->
@@ -173,6 +175,16 @@ class OrderDetailCaseCompletedFragment : Fragment() {
 
             builder.setMessage(R.string.orderDetailConfirmlabel).setPositiveButton(R.string.yes, dialogClickListener)
                 .setNegativeButton(R.string.no, dialogClickListener).show()
+        }
+        // return order
+        val returnButton = binding.orderDetailReturnButton
+        returnButton.setOnClickListener {
+            val returnFragment = orderID?.let { it1 -> OrderDetailCaseReturnFragment.newInstance(it1) }
+            if (context is homeActivity){
+                if (returnFragment != null) {
+                    (context as homeActivity).changeFragmentContainer(returnFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1])
+                }
+            }
         }
         return view
     }

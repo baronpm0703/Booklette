@@ -250,4 +250,8 @@
     <string name="orderDetailConfirmlabel">Confirm receiving order? You cannot return products after confirming!</string>
     <string name="returnAndExchange">Return/Exchange</string>
     <string name="orderReceived">Order received</string>
+    <string name="reasonLabel">Reason</string>
+    <string name="reasonInstruction">Please upload clear image of product and/or chat to illustrate the product condition</string>
+    <string name="returnReasonLabel">Return reason</string>
+    <string name="descriptionHint">Description</string>
 </resources>
