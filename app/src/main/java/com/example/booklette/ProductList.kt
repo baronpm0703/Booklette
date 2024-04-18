@@ -350,8 +350,6 @@ class ProductList : Fragment() {
 //                requireActivity().theme.applyStyle(newTheme, true)
                 filterDialogProductList.show(it){
                     style(SheetStyle.BOTTOM_SHEET)
-                    title("Filter")
-                    titleColor(Color.parseColor("#FF0000"))
                     onPositive {
                         Toast.makeText(activity, "Is triggered", Toast.LENGTH_SHORT).show()
                         this.dismiss()
