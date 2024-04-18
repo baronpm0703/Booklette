@@ -26,7 +26,7 @@
         <View
             android:id="@+id/slideDownTab"
             android:layout_width="110dp"
-            android:layout_height="5dp"
+            android:layout_height="4dp"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/slide_down_tab" />
@@ -130,7 +130,7 @@
 
         <LinearLayout
             android:id="@+id/add_photo_ln"
-            android:layout_width="120dp"
+            android:layout_width="110dp"
             android:layout_height="120dp"
             android:layout_below="@+id/reviewText"
             android:layout_marginStart="30dp"
@@ -154,13 +154,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_marginStart="10dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
-                android:fontFamily="@font/helvetica_regular"
 
-                android:paddingStart="10dp"
+                android:fontFamily="@font/helvetica_regular"
                 android:text="@string/review_add_photo_dialog_book_detail"
                 android:textColor="@color/black"
                 android:textSize="11sp"
@@ -179,8 +179,9 @@
             android:background="@drawable/recyler_view_round_corner"
             android:layout_marginStart="5dp"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="30dp"
 
+            android:paddingHorizontal="10dp"
             android:paddingVertical="5dp"
             android:layout_toEndOf="@+id/add_photo_ln" />
 

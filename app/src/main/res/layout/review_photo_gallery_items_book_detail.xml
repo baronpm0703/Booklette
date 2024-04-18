@@ -5,15 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:id="@+id/photoImg"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="110dp"
 
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-
-        android:padding="1dp"
-
-        app:layout_constraintDimensionRatio="w,1:1"
+        android:adjustViewBounds="true"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
