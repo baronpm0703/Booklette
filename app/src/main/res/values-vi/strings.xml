@@ -136,6 +136,7 @@
     <string name="myprofile_settings">Cài đặt</string>
     <string name="myprofile_settings_flavor">Thông báo, Mật khẩu</string>
     <string name="myprofile_language">Ngôn ngữ</string>
+    <string name="myprofile_change_language">Vui lòng chọn ngôn ngữ của bạn</string>
     <string name="myprofile_favorites">Danh sách yêu thích</string>
     <string name="myprofile_blacklist">Danh sách đen</string>
     <string name="myprofile_help_center">Trung tâm hỗ trợ</string>
