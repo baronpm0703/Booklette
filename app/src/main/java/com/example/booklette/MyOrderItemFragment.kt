@@ -49,15 +49,8 @@ class MyOrderItemFragment : Fragment() {
         // Authentication and database
         val auth = Firebase.auth
         // Get the current user
-        val currentUser = auth.currentUser
+        val userID = auth.uid
 
-        var userID = ""
-        // Check if a user is signed in
-        if (currentUser != null) {
-            // User is signed in, you can access the user's UID
-            userID = currentUser.uid
-            // Now userID contains the current user's ID
-        }
         db = Firebase.firestore
 
         adapter = MyOrderItemRecyclerViewAdapter(userOrders)
@@ -129,14 +122,15 @@ class MyOrderItemFragment : Fragment() {
                             }
                             view.adapter = adapter
                             view.layoutManager = LinearLayoutManager(context)
+
                         }
 
-                    originalValues = ArrayList(userOrders)
+
                 }
 
             }
             .addOnFailureListener { exception ->
-                Log.w("CanhBao", "Error getting documents.", exception)
+                Log.e("CanhBao", "Error getting documents.", exception)
             }
 
         return view
