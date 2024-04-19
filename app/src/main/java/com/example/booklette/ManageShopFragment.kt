@@ -47,6 +47,31 @@ class ManageShopFragment : Fragment() {
 		// Inflate the layout for this fragment
 		_binding = FragmentManageshopBinding.inflate(inflater, container, false)
 		val view = binding.root
+
+		val auth = Firebase.auth
+		val db = Firebase.firestore
+
+		// Shop info
+		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+			.addOnSuccessListener { documents ->
+//				Log.i("haimen", documents.size().toString())
+				if (documents.size() != 1) return@addOnSuccessListener	// Failsafe
+
+				for (document in documents) {
+					// Get avatar and seller's name
+					val usrAvtIV = view.findViewById<ImageView>(R.id.usrAvt)
+					Picasso.get()
+						.load(document.getString("avt"))
+						.into(usrAvtIV)
+					val sellerNameTV = view.findViewById<TextView>(R.id.sellerName)
+					sellerNameTV.text = document.getString("fullname")
+
+					Handler().postDelayed({
+						usrAvtIV.visibility = View.VISIBLE
+						sellerNameTV.visibility = View.VISIBLE
+					}, 2000)
+				}
+			}
 		return view
 	}
 
