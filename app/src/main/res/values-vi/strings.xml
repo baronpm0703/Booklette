@@ -80,6 +80,10 @@
     <string name="myshop_best_sellers">Sách bán chạy</string>
     <string name="myshop_highly_recommended">Sách hay</string>
     <string name="myshop_more">Xem thêm ></string>
+    <string name="manageshop_mybooks">Sách của tôi</string>
+    <string name="manageshop_program">Chương trình giảm giá</string>
+    <string name="manageshop_finance">Quản lý tài chính</string>
+    <string name="manageshop_helpcenter">Trung tâm hỗ trợ</string>
     <string name="book_detail_add_to_cart">Thêm vào giỏ hàng</string>
     <string name="book_detail_add_to_wishlist">Thêm vào wishlist</string>
     <string name="book_detail_voucher">Mã giảm giá</string>

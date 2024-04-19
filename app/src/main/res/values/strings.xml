@@ -103,6 +103,10 @@
     <string name="myshop_best_sellers">Best Sellers</string>
     <string name="myshop_highly_recommended">Highly Recommended</string>
     <string name="myshop_more">More ></string>
+    <string name="manageshop_mybooks">My Books</string>
+    <string name="manageshop_program">Program</string>
+    <string name="manageshop_finance">Finance</string>
+    <string name="manageshop_helpcenter">Help Center</string>
     <string name="book_detail_add_to_cart">Add to cart</string>
     <string name="book_detail_add_to_wishlist">Add to wishlist</string>
     <string name="book_detail_voucher">Vouchers</string>
