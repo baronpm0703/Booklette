@@ -90,9 +90,9 @@
                 android:id="@+id/constraintLayout3" app:layout_constraintBottom_toBottomOf="parent">
             <Button
                     android:text="@string/manageshop_mybooks"
-                    android:layout_width="180dp" android:background="@drawable/myshop_book_info_card"
+                    android:layout_width="180dp" android:background="@drawable/manageshop_mybooks_btn"
                     android:layout_height="90dp" android:id="@+id/myBookBtn"
-                    android:textSize="20sp"
+                    android:textSize="30sp"
                     android:textAllCaps="true"
                     android:elevation="10dp"
                     app:layout_constraintTop_toTopOf="parent"
@@ -103,9 +103,10 @@
                     android:layout_marginEnd="10dp"/>
             <Button
                     android:text="@string/manageshop_finance"
-                    android:layout_width="180dp" android:background="@drawable/myshop_book_info_card"
+                    android:layout_width="180dp" android:background="@drawable/manageshop_finance_btn"
                     android:layout_height="140dp" android:id="@+id/financeBtn"
-                    android:textSize="20sp"
+                    android:textSize="30sp"
+                    android:textColor="#F1DECE"
                     android:textAllCaps="true"
                     android:elevation="10dp"
                     android:layout_marginTop="10dp"
@@ -115,9 +116,10 @@
                     app:layout_constraintEnd_toEndOf="@+id/myBookBtn"/>
             <Button
                     android:text="@string/manageshop_program"
-                    android:layout_width="180dp" android:background="@drawable/myshop_book_info_card"
+                    android:layout_width="180dp" android:background="@drawable/manageshop_program_btn"
                     android:layout_height="140dp" android:id="@+id/programBtn"
-                    android:textSize="20sp"
+                    android:textSize="30sp"
+                    android:textColor="#F3E3D3"
                     android:textAllCaps="true"
                     android:elevation="10dp"
                     android:layout_marginEnd="16dp"
@@ -127,9 +129,10 @@
                     app:layout_constraintStart_toEndOf="@+id/myBookBtn"/>
             <Button
                     android:text="@string/manageshop_helpcenter"
-                    android:layout_width="180dp" android:background="@drawable/myshop_book_info_card"
+                    android:layout_width="180dp" android:background="@drawable/manageshop_helpcenter_btn"
                     android:layout_height="90dp" android:id="@+id/helpCenterBtn"
-                    android:textSize="20sp"
+                    android:textSize="30sp"
+                    android:textColor="#B43446"
                     android:textAllCaps="true"
                     android:elevation="10dp"
                     android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/programBtn"
