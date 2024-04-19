@@ -53,6 +53,12 @@ class MyShopFragment : Fragment() {
 		val auth = Firebase.auth
 		val db = Firebase.firestore
 
+		val manageShopFragment = ManageShopFragment()
+		val manageShopBtn = view.findViewById<Button>(R.id.manageShopBtn)
+		manageShopBtn.setOnClickListener {
+			changeFragmentContainer(manageShopFragment)
+		}
+
 		// Shop info
 		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
 			.addOnSuccessListener { documents ->
@@ -143,23 +149,7 @@ class MyShopFragment : Fragment() {
 		_binding = null
 	}
 
-//	companion object {
-//		/**
-//		 * Use this factory method to create a new instance of
-//		 * this fragment using the provided parameters.
-//		 *
-//		 * @param param1 Parameter 1.
-//		 * @param param2 Parameter 2.
-//		 * @return A new instance of fragment MyShopFragment.
-//		 */
-//		// TODO: Rename and change types and number of parameters
-//		@JvmStatic
-//		fun newInstance(param1: String, param2: String) =
-//			MyShopFragment().apply {
-//				arguments = Bundle().apply {
-//					putString(ARG_PARAM1, param1)
-//					putString(ARG_PARAM2, param2)
-//				}
-//			}
-//	}
+	fun changeFragmentContainer(fragment: Fragment) {
+		parentFragmentManager.beginTransaction().replace(R.id.fcvNavigation, fragment).addToBackStack(null).commit()
+	}
 }

@@ -65,7 +65,7 @@
             <Button
                     android:text="@string/myshop_manage_shop"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp" android:id="@+id/button3"
+                    android:layout_height="25dp" android:id="@+id/manageShopBtn"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="68dp" android:background="@drawable/round_corner_100_right_side"
