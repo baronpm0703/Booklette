@@ -103,6 +103,10 @@ class ManageShopBooksFragment : Fragment() {
 						store.update("items", bookList)
 					}
 				}
+
+			Handler().postDelayed({
+				
+			}, 2000)
 		}
 	}
 
