@@ -54,48 +54,50 @@ class ChannelChatActivity : AppCompatActivity() {
             .build()
 
         db.collection("accounts").whereEqualTo("UID", auth.currentUser!!.uid).get().addOnSuccessListener { result ->
-            val document = result.documents[0]
+            if (result.documents.size > 0) {
+                val document = result.documents[0]
 
-            val user = User(
-                id = auth.currentUser!!.uid,
-                name = document.data!!.get("fullname").toString(),
-                image = document.data!!.get("avt").toString()
-            )
+                val user = User(
+                    id = auth.currentUser!!.uid,
+                    name = document.data!!.get("fullname").toString(),
+                    image = document.data!!.get("avt").toString()
+                )
 
-            client.connectUser(
-                user = user,
-                token = client.devToken(user.id)
-            ).enqueue {
-                if (it.isSuccess) {
-                    val filter = Filters.and(
-                        Filters.eq("type", "messaging"),
-                        Filters.`in`("members", listOf(user.id))
-                    )
-                    val viewModelFactory =
-                        ChannelListViewModelFactory(filter, ChannelListViewModel.DEFAULT_SORT)
-                    val viewModel: ChannelListViewModel by viewModels { viewModelFactory }
+                client.connectUser(
+                    user = user,
+                    token = client.devToken(user.id)
+                ).enqueue {
+                    if (it.isSuccess) {
+                        val filter = Filters.and(
+                            Filters.eq("type", "messaging"),
+                            Filters.`in`("members", listOf(user.id))
+                        )
+                        val viewModelFactory =
+                            ChannelListViewModelFactory(filter, ChannelListViewModel.DEFAULT_SORT)
+                        val viewModel: ChannelListViewModel by viewModels { viewModelFactory }
 
-                    viewModel.bindView(binding.channelListView, this)
-                    binding.channelListView.setChannelItemClickListener { channel ->
-                        startActivity(ChannelMessageActivity.newIntent(this, channel))
-                    }
+                        viewModel.bindView(binding.channelListView, this)
+                        binding.channelListView.setChannelItemClickListener { channel ->
+                            startActivity(ChannelMessageActivity.newIntent(this, channel))
+                        }
 
-                    if (storeUID != null && storeUID != "") {
-                        client.createChannel(
-                            channelType = "messaging",
-                            channelId = "",
-                            memberIds = listOf(auth.currentUser!!.uid.toString(), storeUID),
-                            extraData = emptyMap()
-                        ).enqueue { result ->
-                            if (result.isSuccess) {
-                            } else {
-                                Log.e("channelError", result.toString())
+                        if (storeUID != null && storeUID != "") {
+                            client.createChannel(
+                                channelType = "messaging",
+                                channelId = "",
+                                memberIds = listOf(auth.currentUser!!.uid.toString(), storeUID),
+                                extraData = emptyMap()
+                            ).enqueue { result ->
+                                if (result.isSuccess) {
+                                } else {
+                                    Log.e("channelError", result.toString())
+                                }
                             }
                         }
+                    } else {
+                        Toast.makeText(this, "something went wrong!", Toast.LENGTH_SHORT).show()
+                        Log.e("chat", it.toString())
                     }
-                } else {
-                    Toast.makeText(this, "something went wrong!", Toast.LENGTH_SHORT).show()
-                    Log.e("chat", it.toString())
                 }
             }
         }
