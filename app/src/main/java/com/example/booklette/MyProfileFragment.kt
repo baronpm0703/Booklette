@@ -42,6 +42,12 @@ class MyProfileFragment : Fragment() {
 			}
 		}
 
+		binding.favorites.setOnClickListener {
+			val userFavoritesBookFragment = UserFavoritesBookFragment()
+			val homeAct = (activity as homeActivity)
+			homeAct.changeFragmentContainer(userFavoritesBookFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+		}
+
 		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
 			.addOnSuccessListener { documents ->
 //				Log.i("haimen", documents.size().toString())

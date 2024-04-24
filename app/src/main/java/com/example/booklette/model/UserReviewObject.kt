@@ -1,4 +1,4 @@
-package com.example.booklette
+package com.example.booklette.model
 
 class UserReviewObject {
     var userID: String
