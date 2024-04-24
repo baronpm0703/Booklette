@@ -211,7 +211,8 @@
     <string name="my_order_processing_button">Processing</string>
     <string name="my_order_returned_button">Returned</string>
     <string name="my_order_delivered_button">Delivered</string>
-
+    <string name="my_order_detail_item_return_success">Return successfully</string>
+    <string name="my_order_detail_item_return_failed">Return failed</string>
     <string name="order_item_order">Order №</string>
     <string name="order_item_tracking_number">Tracking number:</string>
     <string name="order_item_quantity">Quantity:</string>

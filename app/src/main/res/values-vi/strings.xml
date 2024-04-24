@@ -178,6 +178,8 @@
     <string name="my_order_completed_button">Đã hoàn thành</string>
     <string name="my_order_cancelled_button">Đã huỷ</string>
     <string name="my_order_returned_button">Trả lại</string>
+    <string name="my_order_detail_item_return_success">Hoàn trả thành công</string>
+    <string name="my_order_detail_item_return_failed">Hoàn trả thất bại</string>
     <string name="order_item_order">Đơn hàng №</string>
     <string name="order_item_tracking_number">Mã đơn:</string>
     <string name="order_item_quantity">Số lượng:</string>

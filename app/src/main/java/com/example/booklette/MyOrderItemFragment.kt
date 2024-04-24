@@ -53,7 +53,7 @@ class MyOrderItemFragment : Fragment() {
 
         db = Firebase.firestore
 
-        adapter = MyOrderItemRecyclerViewAdapter(userOrders)
+        adapter = MyOrderItemRecyclerViewAdapter(requireContext(),userOrders)
         // Fetch data from Firestore
         db.collection("orders")
             // remove this line if want to test all ID

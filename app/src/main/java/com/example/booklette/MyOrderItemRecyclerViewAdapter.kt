@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ data class OrderDataClass(
     val ID: String,
     val creationDate: Date, val trackingNumber: String, val quantity: Long, val total: Float, val status: String)
 class MyOrderItemRecyclerViewAdapter(
+    private var context: Context,
     private var values: List<OrderDataClass>
 ) : RecyclerView.Adapter<MyOrderItemRecyclerViewAdapter.ViewHolder>() {
     var onButtonClick: ((OrderDataClass) -> Unit)? = null
@@ -42,8 +44,25 @@ class MyOrderItemRecyclerViewAdapter(
 
         holder.quantityLabel.text = "  " + item.quantity.toString()
         holder.totalLabel.text = "  " + item.total.toString()
-        holder.statusField.text = item.status
 
+        if (item.status.contains("xử lý", true)){
+            holder.statusField.text = context.getString(R.string.my_order_processing_button)
+        }
+        else if (item.status.contains("huỷ",true)){
+            holder.statusField.text = context.getString(R.string.my_order_cancelled_button)
+        }
+        else if (item.status.contains("trả thành công", true)){
+            holder.statusField.text = context.getString(R.string.my_order_detail_item_return_success)
+        }
+        else if (item.status.contains("trả thất bại", true)){
+            holder.statusField.text = context.getString(R.string.my_order_detail_item_return_failed)
+        }
+        else if (item.status.contains("thành công", true)){
+            holder.statusField.text = context.getString(R.string.my_order_completed_button)
+        }
+        else if (item.status.contains("đã giao",true)){
+            holder.statusField.text = context.getString(R.string.my_order_delivered_button)
+        }
     }
 
     override fun getItemCount(): Int = values.size
