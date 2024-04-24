@@ -281,7 +281,20 @@ open class LoginActivity : AppCompatActivity() {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithCredential:success")
                                         val user = auth.currentUser
-                                        startActivity(Intent(this, homeActivity::class.java))
+
+                                        val StreamUser = User(
+                                            id = user!!.uid
+                                        )
+                                        val client = ChatClient.Builder("egx6qn892ejq", applicationContext)
+                                            .logLevel(ChatLogLevel.ALL)
+                                            .build()
+
+                                        lifecycleScope.launch {
+                                            client.connectUser(user = StreamUser, token = client.devToken(StreamUser.id)).enqueue()
+
+                                            finish()
+                                            startActivity(Intent(this@LoginActivity, homeActivity::class.java))
+                                        }
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "signInWithCredential:failure", task.exception)

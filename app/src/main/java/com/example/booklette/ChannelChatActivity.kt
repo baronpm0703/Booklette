@@ -88,9 +88,7 @@ class ChannelChatActivity : AppCompatActivity() {
                             extraData = emptyMap()
                         ).enqueue { result ->
                             if (result.isSuccess) {
-                                Toast.makeText(this@ChannelChatActivity, "SUCCESSFULLY!", Toast.LENGTH_SHORT).show()
                             } else {
-                                Toast.makeText(this@ChannelChatActivity, "FAILED!", Toast.LENGTH_SHORT).show()
                                 Log.e("channelError", result.toString())
                             }
                         }
@@ -101,5 +99,9 @@ class ChannelChatActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.ivChatActivityBackButton.setOnClickListener({
+            finish()
+        })
     }
 }
