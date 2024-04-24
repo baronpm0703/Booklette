@@ -10,10 +10,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.compose.ui.text.intl.Locale
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -91,7 +89,6 @@ class ManageShopBooksFragment : Fragment() {
 										val bookDiscountId = book["discount"] as String
 										var bookDiscount = 0F
 										db.collection("discounts").whereEqualTo("discountID", bookDiscountId).get().addOnSuccessListener {
-											Log.i("MyShop", bookName + " - " + it.documents.size.toString())
 											if (it.documents.size > 0)
 												bookDiscount = (it.documents[0].get("percent") as Long).toFloat() / 100
 
@@ -123,10 +120,33 @@ class ManageShopBooksFragment : Fragment() {
 					style(SheetStyle.BOTTOM_SHEET)
 					onPositive {
 						val data = addBookDialog.getBookObject()
-						val dataObj = ManageShopNewBookObject(data["name"].toString(), data["genre"].toString(), data["author"].toString(), data["releaseDate"] as Timestamp, data["image"].toString(), data["price"].toString().toFloat(), data["desc"].toString(), "This decade", data["type"].toString(), data["quantity"].toString().toLong())
-						addNewBook(dataObj)
+						val bookName = data["name"].toString()
+						val bookGenre = data["genre"].toString()
+						val bookAuthor = data["author"].toString()
+						val bookReleaseDate = data["releaseDate"]
+						val bookImage = data["image"].toString()
+						val bookPrice = data["price"].toString()
+						val bookDesc = data["desc"].toString()
+						val bookType = data["type"].toString()
+						val bookQuantity = data["quantity"].toString()
+						if (bookName.isEmpty() || bookGenre.isEmpty() || bookAuthor.isEmpty() || bookImage.isEmpty() || bookPrice.isEmpty() || bookDesc.isEmpty() || bookType.isEmpty() || bookQuantity.isEmpty()) {
+							if (Locale.current.language == "en")
+								Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
+							else
+								Toast.makeText(context, "Các trường không được phép bỏ trống", Toast.LENGTH_SHORT).show()
+						}
+						else if (bookPrice.toFloatOrNull() == null || bookQuantity.toLongOrNull() == null)
+							if (Locale.current.language == "en")
+								Toast.makeText(context, "Price and quantity must be numbers", Toast.LENGTH_SHORT).show()
+							else
+								Toast.makeText(context, "Giá và số lượng tồn phải là số", Toast.LENGTH_SHORT).show()
+						else {
+							val dataObj = ManageShopNewBookObject(data["name"].toString(), data["genre"].toString(), data["author"].toString(), data["releaseDate"] as Timestamp, data["image"].toString(), data["price"].toString().toFloat(), data["desc"].toString(), "This decade", data["type"].toString(), data["quantity"].toString().toLong())
 
-						this.dismiss()
+							addNewBook(dataObj)
+
+							this.dismiss()
+						}
 					}
 				}
 			}
@@ -190,7 +210,7 @@ class ManageShopBooksFragment : Fragment() {
 
 			Handler().postDelayed({
 
-			}, 2000)
+			}, 1000)
 		}
 	}
 
