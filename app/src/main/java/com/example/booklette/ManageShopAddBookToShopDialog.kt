@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booklette.databinding.AddBookToShopDialogBinding
 import com.example.booklette.databinding.ReviewDialogBookDetailBinding
 import com.example.booklette.model.Photo
 import com.maxkeppeler.sheets.core.PositiveListener
@@ -26,11 +27,11 @@ import java.util.Locale
 
 
 class AddBookToShopDialog(
-    private var initValue: InitFilterValuesReviewBookDetail
+    private var initValue: AddBookToShopDialogInitFilterValues
 ): Sheet() {
-    override val dialogTag = "ReviewSheet"
+    override val dialogTag = "AddBook"
 
-    private lateinit var binding: ReviewDialogBookDetailBinding
+    private lateinit var binding: AddBookToShopDialogBinding
     private var client_review: String = ""
     private var client_rating: Float = 0.0F
     private lateinit var dataPhoto : ArrayList<Photo>
@@ -61,12 +62,12 @@ class AddBookToShopDialog(
         this.positiveListener = positiveListener
     }
 
-    fun updateinitValue(initValue: InitFilterValuesReviewBookDetail){
+    fun updateinitValue(initValue: AddBookToShopDialogInitFilterValues){
         this.initValue = initValue
     }
 
     override fun onCreateLayoutView(): View {
-        return ReviewDialogBookDetailBinding.inflate(LayoutInflater.from(activity))
+        return AddBookToShopDialogBinding.inflate(LayoutInflater.from(activity))
             .also { binding = it }.root
     }
 
