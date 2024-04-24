@@ -177,4 +177,9 @@ dependencies {
 
     // Preferences DataStore
     implementation ("androidx.datastore:datastore-preferences:1.0.0-alpha01")
+
+    //Stream chat sdk
+    implementation("io.getstream:stream-chat-android-ui-components:6.0.2")
+    implementation("io.getstream:stream-chat-android-offline:6.0.2")
+    implementation("io.coil-kt:coil:2.4.0")
 }
