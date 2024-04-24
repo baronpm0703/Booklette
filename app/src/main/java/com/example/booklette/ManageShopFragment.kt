@@ -72,6 +72,12 @@ class ManageShopFragment : Fragment() {
 					}, 2000)
 				}
 			}
+
+		val bookFragment = ManageShopBooksFragment()
+		view.findViewById<Button>(R.id.myBookBtn).setOnClickListener {
+			changeFragmentContainer(bookFragment)
+		}
+
 		return view
 	}
 

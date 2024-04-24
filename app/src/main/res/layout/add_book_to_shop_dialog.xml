@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   tools:context=".FilterDialogProductList"
+>
+
+    <!--    <ScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="300dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
+    <!--    </ScrollView>-->
+    <RelativeLayout
+            android:id="@+id/addBookDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#169F9E9E"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <View
+                android:id="@+id/slideDownTab"
+                android:layout_width="110dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/slide_down_tab"/>
+
+        <TextView
+                android:id="@+id/review_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/slideDownTab"
+
+                android:layout_centerHorizontal="true"
+
+                android:layout_marginTop="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/helvetica_regular"
+                android:paddingStart="10dp"
+                android:text="@string/manageshop_mybooks_add"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+        />
+
+        <LinearLayout
+                android:id="@+id/add_photo_ln"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/review_title"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/review_text_editor_round_corner"
+                android:orientation="vertical">
+
+            <ImageView
+                    android:id="@+id/notFoundBooks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="17dp"
+                    android:adjustViewBounds="true"
+
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/managebook_addbookimg_icon"/>
+
+        </LinearLayout>
+
+        <EditText
+                android:id="@+id/bookNameET"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/add_photo_ln"
+
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+
+                android:background="@drawable/review_text_editor_round_corner"
+
+                android:ems="10"
+                android:gravity="start|center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:inputType="text"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/manageshop_mybooks_add_name"
+                android:textColorHint="#9B9B9B"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:id="@+id/bookAuthorET"
+                android:layout_width="380dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/bookNameET"
+
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+
+                android:background="@drawable/review_text_editor_round_corner"
+
+                android:ems="10"
+                android:gravity="start|center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:inputType="text"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/manageshop_mybooks_add_author"
+                android:textColorHint="#9B9B9B"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:id="@+id/bookCategoryET"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/bookAuthorET"
+
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+
+                android:background="@drawable/review_text_editor_round_corner"
+
+                android:ems="10"
+                android:gravity="start|center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:inputType="text"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/manageshop_mybooks_add_category"
+                android:textColorHint="#9B9B9B"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/bookTypeET"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/bookAuthorET"
+
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+
+            android:background="@drawable/review_text_editor_round_corner"
+
+            android:ems="10"
+            android:gravity="start|center_vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+
+            android:inputType="text"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+
+            android:hint="@string/manageshop_mybooks_add_category"
+            android:textColorHint="#9B9B9B"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_toEndOf="@+id/bookCategoryET"/>
+
+        <EditText
+                android:id="@+id/bookDescET"
+                android:layout_width="380dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/bookTypeET"
+
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+
+                android:background="@drawable/review_text_editor_round_corner"
+
+                android:ems="10"
+                android:gravity="start|center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:inputType="text"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/manageshop_mybooks_add_desc"
+                android:textColorHint="#9B9B9B"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:id="@+id/bookPriceET"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/bookDescET"
+
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+
+                android:background="@drawable/review_text_editor_round_corner"
+
+                android:ems="10"
+                android:gravity="start|center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:inputType="text"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/manageshop_mybooks_add_price"
+                android:textColorHint="#9B9B9B"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+        <EditText
+                android:id="@+id/bookQuantityET"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/bookDescET"
+
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+
+                android:background="@drawable/review_text_editor_round_corner"
+
+                android:ems="10"
+                android:gravity="start|center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+
+                android:inputType="text"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
+
+                android:hint="@string/manageshop_mybooks_add_quantity"
+                android:textColorHint="#9B9B9B"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_toEndOf="@+id/bookPriceET"/>
+
+        <TextView
+                android:id="@+id/addBtn"
+
+                android:layout_width="370dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/bookPriceET"
+
+                android:layout_centerHorizontal="true"
+
+                android:layout_centerVertical="true"
+                android:layout_marginTop="80dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/manageshop_bottom_btn"
+                android:gravity="center"
+
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/manageshop_mybooks_add_btn"
+
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
