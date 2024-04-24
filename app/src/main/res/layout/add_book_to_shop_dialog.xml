@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FilterDialogProductList">
+
+    <!--    <ScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="300dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
+    <!--    </ScrollView>-->
+    <RelativeLayout
+        android:id="@+id/reviewDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#169F9E9E"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/slideDownTab"
+            android:layout_width="110dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/slide_down_tab" />
+
+        <TextView
+            android:id="@+id/review_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/slideDownTab"
+
+            android:layout_centerHorizontal="true"
+
+            android:layout_marginTop="10dp"
+            android:paddingEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/helvetica_regular"
+            android:paddingStart="10dp"
+            android:text="@string/review_statement_dialog_book_detail"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+        <LinearLayout
+            android:id="@+id/llRatingStarBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/review_title"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <per.wsj.library.AndRatingBar
+                android:id="@+id/ratingStarBar"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:rating="4.7"
+
+                app:bgColor="#6E6E6E"
+
+                app:bgDrawable="@drawable/star"
+                app:starColor="#FFBA49"
+                app:starDrawable="@drawable/star_filled"
+                app:starSpacing="10dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/comment_title"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llRatingStarBook"
+            android:layout_centerHorizontal="true"
+
+            android:layout_marginStart="10dp"
+
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/helvetica_regular"
+            android:gravity="center"
+
+            android:lineHeight="30dp"
+
+            android:paddingStart="10dp"
+            android:text="@string/review_notice_dialog_book_detail"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+        <EditText
+            android:id="@+id/reviewText"
+            android:layout_width="350dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/comment_title"
+
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+
+            android:background="@drawable/review_text_editor_round_corner"
+
+            android:ems="10"
+            android:gravity="start"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+
+            android:inputType="text"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+
+            android:paddingEnd="20dp"
+            android:paddingBottom="10dp"
+
+            android:hint="@string/review_hint_dialog_book_detail"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/add_photo_ln"
+            android:layout_width="110dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/reviewText"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/review_text_editor_round_corner"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/notFoundBooks"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="17dp"
+                android:adjustViewBounds="true"
+
+                android:scaleType="centerCrop"
+                android:src="@drawable/camera_photo" />
+
+            <TextView
+                android:id="@+id/add_photo_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="10dp"
+
+                android:fontFamily="@font/helvetica_regular"
+                android:text="@string/review_add_photo_dialog_book_detail"
+                android:textColor="@color/black"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="invisible"
+            android:id="@+id/chosenPhoto"
+            android:layout_width="300dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/reviewText"
+
+            android:background="@drawable/recyler_view_round_corner"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="30dp"
+
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:layout_toEndOf="@+id/add_photo_ln" />
+
+        <TextView
+            android:id="@+id/sendReviewBtn"
+
+            android:layout_width="370dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/add_photo_ln"
+
+            android:layout_centerHorizontal="true"
+
+            android:layout_centerVertical="true"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/apply_btn_round_corner"
+            android:gravity="center"
+
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="@string/review_send_dialog_book_detail"
+
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
