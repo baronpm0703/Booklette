@@ -59,9 +59,9 @@ class MyShopShopFragment : Fragment() {
 //		newArrivalsHScrollView = view.findViewById(R.id.newArrivalsScrollView)
 		val noBookView = view.findViewById<View>(R.id.noBookView1)
 		val newArrivalsFlavorText = view.findViewById<TextView>(R.id.newFlavorText)
-		val newArrivalsBtn = view.findViewById<Button>(R.id.newMoreBtn)
+		val newArrivalsBtn = view.findViewById<TextView>(R.id.newMoreBtn)
 		val bestSellersFlavorText = view.findViewById<TextView>(R.id.bestFlavorText)
-		val bestSellersBtn = view.findViewById<Button>(R.id.bestMoreBtn)
+		val bestSellersBtn = view.findViewById<TextView>(R.id.bestMoreBtn)
 		val highlyRecommendedFlavorText = view.findViewById<RelativeLayout>(R.id.recommendedFlavorText)
 
 		// Data arrays
@@ -78,22 +78,25 @@ class MyShopShopFragment : Fragment() {
 						val shopVouchers = storeSnapshot.get("shopVouchers") as ArrayList<String>
 						shopVouchers.forEach {voucher ->
 							db.collection("discounts").whereEqualTo("discountID", voucher).get().addOnSuccessListener {
-								val documents = it.documents
+								val vouchers = it.documents
 
-								if (documents.size == 0) return@addOnSuccessListener
-								val voucherExpire = documents[0].get("endDate") as Timestamp
-								val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
-								val dateTo = Calendar.getInstance().apply { time = voucherExpire.toDate() }
-								val voucherPeriod = abs(dateTo.get(Calendar.DAY_OF_YEAR) - dateFrom.get(Calendar.DAY_OF_YEAR)).toLong()
-								val voucherPercent = documents[0].get("percent") as Long
-								val voucherMinimum = documents[0].get("minimumOrder") as Long
+								for (voucher in vouchers) {
+									if (voucher.getString("discountType") != "shop") continue
 
-								discounts.add(Triple(voucherPercent, voucherMinimum, voucherPeriod))
+									val voucherExpire = voucher.get("endDate") as Timestamp
+									val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
+									val dateTo = Calendar.getInstance().apply { time = voucherExpire.toDate() }
+									val voucherPeriod = abs(dateTo.get(Calendar.DAY_OF_YEAR) - dateFrom.get(Calendar.DAY_OF_YEAR)).toLong()
+									val voucherPercent = voucher.get("percent") as Long
+									val voucherMinimum = voucher.get("minimumOrder") as Long
+
+									discounts.add(Triple(voucherPercent, voucherMinimum, voucherPeriod))
+								}
 							}
 						}
 
 						val books = storeSnapshot.get("items") as Map<String, Map<String, Any>>
-						if (books.size > 0)
+						if (books.size > 0) {
 							books.map { entry ->
 								val book = entry.value.toMutableMap()
 
@@ -149,6 +152,8 @@ class MyShopShopFragment : Fragment() {
 									}
 								}
 							}
+							noBookView.visibility = View.GONE
+						}
 						else {
 							noBookView.visibility = View.VISIBLE
 							newArrivalsFlavorText.visibility = View.GONE
@@ -167,7 +172,7 @@ class MyShopShopFragment : Fragment() {
 							setBestSellersItemViews(view, bestSellers)
 							// Highly Recommended scroll view
 							setHighlyRecommendedItemViews(view, highlyRecommended)
-						}, 2000)
+						}, 200)
 					}
 				}
 			}
