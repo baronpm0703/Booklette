@@ -1,6 +1,6 @@
 package com.example.booklette
 
-class AddBookToShopDialogInitFilterValues {
+class ManageShopAddBookToShopDialogInitFilterValues {
     var rating: Float = 0.0F
     var text: String = ""
 }

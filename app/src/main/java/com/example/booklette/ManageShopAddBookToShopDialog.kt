@@ -2,32 +2,26 @@ package com.example.booklette
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.AddBookToShopDialogBinding
-import com.example.booklette.databinding.ReviewDialogBookDetailBinding
+import com.example.booklette.model.ManageShopNewBookObject
 import com.example.booklette.model.Photo
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
 import com.maxkeppeler.sheets.core.SheetStyle
-import java.util.Locale
 
 
-class AddBookToShopDialog(
-    private var initValue: AddBookToShopDialogInitFilterValues
+class ManageShopAddBookToShopDialog(
+    private var initValue: ManageShopAddBookToShopDialogInitFilterValues
 ): Sheet() {
     override val dialogTag = "AddBook"
 
@@ -62,7 +56,7 @@ class AddBookToShopDialog(
         this.positiveListener = positiveListener
     }
 
-    fun updateinitValue(initValue: AddBookToShopDialogInitFilterValues){
+    fun updateinitValue(initValue: ManageShopAddBookToShopDialogInitFilterValues){
         this.initValue = initValue
     }
 
@@ -154,15 +148,74 @@ class AddBookToShopDialog(
         chosenPhotoAdapter.notifyDataSetChanged()
         binding.chosenPhoto.visibility = View.VISIBLE
     }
-    fun build(ctx: Context, width: Int? = null, func: AddBookToShopDialog.() -> Unit): AddBookToShopDialog {
+
+    private fun addNewBook(view: View, newBook: ManageShopNewBookObject) {
+        val auth = Firebase.auth
+        val db = Firebase.firestore
+
+        val bookColl = db.collection("books")
+        bookColl.get().addOnSuccessListener {
+            val documents = it.documents
+            var max: Long = 0
+            for (document in documents) {
+                val id = document.get("bookID").toString().filter { it.isDigit() }.toLong()
+
+                if (id > max) max = id
+            }
+            val newBookID = "BK" + (max + 1)
+            val newBookMap = hashMapOf(
+                "author" to newBook.author,
+                "best-deal-sale" to 0.0,
+                "bookID" to newBookID,
+                "description" to newBook.description,
+                "genre" to newBook.genre,
+                "image" to newBook.image,
+                "name" to newBook.name,
+                "releaseDate" to newBook.releaseDate,
+                "review" to emptyArray<Any>(),
+                "top-book" to newBook.topBook,
+                "type" to newBook.type
+            )
+
+            bookColl.add(newBookMap)
+
+            db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+                .addOnSuccessListener { documents ->
+                    if (documents.size() != 1) return@addOnSuccessListener	// Failsafe
+
+                    val document = documents.documents[0]
+                    val store = document.getDocumentReference("store")
+                    store!!.get().addOnSuccessListener { storeSnapshot ->
+                        val bookList = storeSnapshot.get("items") as HashMap<String, Map<String, Any>>
+
+                        val newStoreBookMap = hashMapOf(
+                            "discount" to "",
+                            "price" to newBook.price,
+                            "remain" to newBook.quantity,
+                            "sold" to newBook.quantity,
+                            "status" to ""
+                        )
+
+                        bookList[newBookID] = newStoreBookMap
+
+                        store.update("items", bookList)
+                    }
+                }
+
+            Handler().postDelayed({
+
+            }, 2000)
+        }
+    }
+    fun build(ctx: Context, width: Int? = null, func: ManageShopAddBookToShopDialog.() -> Unit): ManageShopAddBookToShopDialog {
         this.windowContext = ctx
         this.width = width
         this.func()
         return this
     }
 
-    /** Build and show [AddBookToShopDialog] directly. */
-    fun show(ctx: Context, width: Int? = null, func: AddBookToShopDialog.() -> Unit): AddBookToShopDialog {
+    /** Build and show [ManageShopAddBookToShopDialog] directly. */
+    fun show(ctx: Context, width: Int? = null, func: ManageShopAddBookToShopDialog.() -> Unit): ManageShopAddBookToShopDialog {
         this.windowContext = ctx
         this.width = width
         this.func()
