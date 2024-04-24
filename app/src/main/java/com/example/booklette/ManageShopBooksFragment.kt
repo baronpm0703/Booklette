@@ -26,6 +26,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
 import kotlin.math.abs
 import kotlin.math.round
@@ -107,12 +108,90 @@ class ManageShopBooksFragment : Fragment() {
 						Handler().postDelayed({
 							// Book list scroll view
 							setBookListViews(view, bookList)
-						}, 200)
+						}, 1000)
 					}
 				}
 			}
 
+
+		val addBookBtn = view.findViewById<Button>(R.id.addBookBtn)
+		val addBookInitValues = ManageShopAddBookToShopDialogInitFilterValues()
+		val addBookDialog = ManageShopAddBookToShopDialog(addBookInitValues)
+		addBookBtn.setOnClickListener {
+			activity?.let {
+				addBookDialog.show(it) {
+					style(SheetStyle.BOTTOM_SHEET)
+					onPositive {
+						val data = addBookDialog.getBookObject()
+						val dataObj = ManageShopNewBookObject(data["name"].toString(), data["genre"].toString(), data["author"].toString(), data["releaseDate"] as Timestamp, data["image"].toString(), data["price"].toString().toFloat(), data["desc"].toString(), "This decade", data["type"].toString(), data["quantity"].toString().toLong())
+						addNewBook(dataObj)
+
+						this.dismiss()
+					}
+				}
+			}
+		}
+
 		return view
+	}
+
+	private fun addNewBook(newBook: ManageShopNewBookObject) {
+		val auth = Firebase.auth
+		val db = Firebase.firestore
+
+		val bookColl = db.collection("books")
+		bookColl.get().addOnSuccessListener {
+			val documents = it.documents
+			var max: Long = 0
+			for (document in documents) {
+				val id = document.get("bookID").toString().filter { it.isDigit() }.toLong()
+
+				if (id > max) max = id
+			}
+			val newBookID = "BK" + (max + 1)
+			val newBookMap = hashMapOf(
+				"author" to newBook.author,
+				"best-deal-sale" to 0.0,
+				"bookID" to newBookID,
+				"description" to newBook.description,
+				"genre" to newBook.genre,
+				"image" to newBook.image,
+				"name" to newBook.name,
+				"releaseDate" to newBook.releaseDate,
+				"review" to emptyList<Any>(),
+				"top-book" to newBook.topBook,
+				"type" to newBook.type
+			)
+
+			bookColl.add(newBookMap)
+
+			db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+				.addOnSuccessListener { documents ->
+					if (documents.size() != 1) return@addOnSuccessListener	// Failsafe
+
+					val document = documents.documents[0]
+					val store = document.getDocumentReference("store")
+					store!!.get().addOnSuccessListener { storeSnapshot ->
+						val bookList = storeSnapshot.get("items") as HashMap<String, Map<String, Any>>
+
+						val newStoreBookMap = hashMapOf(
+							"discount" to "",
+							"price" to newBook.price,
+							"remain" to newBook.quantity,
+							"sold" to newBook.quantity,
+							"status" to ""
+						)
+
+						bookList[newBookID] = newStoreBookMap
+
+						store.update("items", bookList)
+					}
+				}
+
+			Handler().postDelayed({
+
+			}, 2000)
+		}
 	}
 
 	private fun setBookListViews(view: View, bookList: ArrayList<MyShopBookObject>) {

@@ -1,11 +1,12 @@
 package com.example.booklette.model
 
+import com.google.firebase.Timestamp
+
 class ManageShopNewBookObject {
-	var bookID: String
 	var name: String
 	var genre: String
 	var author: String
-	var releaseDate: String
+	var releaseDate: Timestamp
 	var image: String
 	var price: Float
 	var description: String
@@ -14,11 +15,10 @@ class ManageShopNewBookObject {
 	var quantity: Long
 
 	constructor(
-		bookID: String,
 		name: String,
 		genre: String,
 		author: String,
-		releaseDate: String,
+		releaseDate: Timestamp,
 		image: String,
 		price: Float,
 		description: String,
@@ -26,7 +26,6 @@ class ManageShopNewBookObject {
 		type: String,
 		quantity: Long
 	) {
-		this.bookID = bookID
 		this.name = name
 		this.genre = genre
 		this.author = author

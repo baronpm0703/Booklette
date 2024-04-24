@@ -13,6 +13,7 @@ import com.example.booklette.databinding.AddBookToShopDialogBinding
 import com.example.booklette.model.ManageShopNewBookObject
 import com.example.booklette.model.Photo
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.maxkeppeler.sheets.core.PositiveListener
@@ -26,22 +27,57 @@ class ManageShopAddBookToShopDialog(
     override val dialogTag = "AddBook"
 
     private lateinit var binding: AddBookToShopDialogBinding
-    private var client_review: String = ""
-    private var client_rating: Float = 0.0F
+    private var bookName: String = ""
+    private var bookAuthor: String = ""
+    private var bookCategory: String = ""
+    private var bookType: String = ""
+    private var bookDesc: String = ""
+    private var bookPrice: String = ""
+    private var bookQuantity: String = ""
     private lateinit var dataPhoto : ArrayList<Photo>
     private lateinit var photoGalleryDialogBookDetail: PhotoGalleryDialogBookDetail
     private lateinit var chosenPhotoAdapter: ChosenReviewPhotoBookDetailRVAdapter
 
-    fun getClientReview(): String {
-        return client_review
+    fun getBookName(): String {
+        return bookName
     }
-    fun getClientRating(): Float {
-        return client_rating
+    fun getBookAuthor(): String {
+        return bookAuthor
+    }
+    fun getBookCategory(): String {
+        return bookCategory
+    }
+    fun getBookType(): String {
+        return bookType
+    }
+    fun getBookDesc(): String {
+        return bookDesc
+    }
+    fun getBookPrice(): String {
+        return bookPrice
+    }
+    fun getBookQuantity(): String {
+        return bookQuantity
     }
 
     fun getImage(): ArrayList<Photo> {
         return dataPhoto
     }
+
+    fun getBookObject(): HashMap<String, Any> {
+        return hashMapOf(
+            "name" to bookName,
+            "author" to bookAuthor,
+            "genre" to "Genre X",
+            "releaseDate" to Timestamp.now(),
+            "category" to bookCategory,
+            "type" to bookType,
+            "desc" to bookDesc,
+            "price" to bookPrice,
+            "quantity" to bookQuantity
+        )
+    }
+
     fun onPositive(positiveListener: PositiveListener) {
         this.positiveListener = positiveListener
     }
@@ -69,34 +105,104 @@ class ManageShopAddBookToShopDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Rating bar
-        client_rating = initValue.rating
-        binding.ratingStarBar.rating = initValue.rating
-        binding.ratingStarBar.setOnRatingChangeListener { ratingBar, rating, fromUser ->
-            client_rating = rating
-        }
+        bookName = initValue.name
+        binding.bookNameET.setText(bookName)
+        bookAuthor = initValue.name
+        binding.bookAuthorET.setText(bookAuthor)
+        bookCategory = initValue.name
+        binding.bookCategoryET.setText(bookCategory)
+        bookType = initValue.name
+        binding.bookTypeET.setText(bookType)
+        bookDesc = initValue.name
+        binding.bookDescET.setText(bookDesc)
+        bookPrice = initValue.name
+        binding.bookPriceET.setText(bookPrice)
+        bookQuantity = initValue.name
+        binding.bookQuantityET.setText(bookQuantity)
 
-        if (initValue.text.isNotEmpty()){
-            client_review = initValue.text
-            binding.reviewText.setText(initValue.text)
-        }
         // Click out editext
-        binding.reviewDialog.setOnClickListener {
-            binding.reviewText.clearFocus()
+        binding.addBookDialog.setOnClickListener {
+            binding.bookNameET.clearFocus()
+            binding.bookAuthorET.clearFocus()
+            binding.bookCategoryET.clearFocus()
+            binding.bookTypeET.clearFocus()
+            binding.bookDescET.clearFocus()
+            binding.bookPriceET.clearFocus()
+            binding.bookQuantityET.clearFocus()
         }
-        binding.reviewText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        binding.bookNameET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             // If EditText loses focus
             if (!hasFocus) {
-                client_review = binding.reviewText.text.toString()
+                bookName = binding.bookNameET.text.toString()
                 // Hide the keyboard if it's currently showing
                 val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(binding.reviewText.windowToken, 0)
+                imm.hideSoftInputFromWindow(binding.bookNameET.windowToken, 0)
+            }
+        }
+        binding.bookAuthorET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            // If EditText loses focus
+            if (!hasFocus) {
+                bookAuthor = binding.bookAuthorET.text.toString()
+                // Hide the keyboard if it's currently showing
+                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.bookAuthorET.windowToken, 0)
+            }
+        }
+        binding.bookCategoryET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            // If EditText loses focus
+            if (!hasFocus) {
+                bookCategory = binding.bookCategoryET.text.toString()
+                // Hide the keyboard if it's currently showing
+                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.bookCategoryET.windowToken, 0)
+            }
+        }
+        binding.bookTypeET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            // If EditText loses focus
+            if (!hasFocus) {
+                bookType = binding.bookTypeET.text.toString()
+                // Hide the keyboard if it's currently showing
+                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.bookTypeET.windowToken, 0)
+            }
+        }
+        binding.bookDescET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            // If EditText loses focus
+            if (!hasFocus) {
+                bookDesc = binding.bookDescET.text.toString()
+                // Hide the keyboard if it's currently showing
+                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.bookDescET.windowToken, 0)
+            }
+        }
+        binding.bookPriceET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            // If EditText loses focus
+            if (!hasFocus) {
+                bookPrice = binding.bookPriceET.text.toString()
+                // Hide the keyboard if it's currently showing
+                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.bookPriceET.windowToken, 0)
+            }
+        }
+        binding.bookQuantityET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            // If EditText loses focus
+            if (!hasFocus) {
+                bookQuantity = binding.bookQuantityET.text.toString()
+                // Hide the keyboard if it's currently showing
+                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.bookQuantityET.windowToken, 0)
             }
         }
 
         //Apply
-        binding.sendReviewBtn.setOnClickListener {
-            client_review = binding.reviewText.text.toString()
+        binding.addBtn.setOnClickListener {
+            bookName = binding.bookNameET.text.toString()
+            bookAuthor = binding.bookAuthorET.text.toString()
+            bookCategory = binding.bookCategoryET.text.toString()
+            bookType = binding.bookTypeET.text.toString()
+            bookDesc = binding.bookDescET.text.toString()
+            bookPrice = binding.bookPriceET.text.toString()
+            bookQuantity = binding.bookQuantityET.text.toString()
             positiveListener?.invoke()
         }
 
@@ -104,14 +210,14 @@ class ManageShopAddBookToShopDialog(
         // Init data Photo
         dataPhoto = ArrayList()
         chosenPhotoAdapter = activity?.let { ChosenReviewPhotoBookDetailRVAdapter(it, dataPhoto) }!!
-        binding.chosenPhoto.adapter = chosenPhotoAdapter
+//        binding.chosenPhoto.adapter = chosenPhotoAdapter
 
         //Set Up horizontal layout
         val h_linerLayout = activity?.let {LinearLayoutManager(it)}
         if (h_linerLayout != null) {
             h_linerLayout.orientation = LinearLayoutManager.HORIZONTAL
         }
-        binding.chosenPhoto.layoutManager = h_linerLayout
+//        binding.chosenPhoto.layoutManager = h_linerLayout
 
 //        val itemDecoration: RecyclerView.ItemDecoration = DividerItemDecoration(
 //            activity,
@@ -126,7 +232,7 @@ class ManageShopAddBookToShopDialog(
                     style(SheetStyle.DIALOG)
                     onPositive {
                         this.dismiss()
-                        updateChosenPhoto(getChosenPhoto())
+//                        updateChosenPhoto(getChosenPhoto())
                     }
                 }
             }
@@ -141,72 +247,14 @@ class ManageShopAddBookToShopDialog(
     }
 
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateChosenPhoto(dataPhoto: ArrayList<Photo>){
-        this.dataPhoto = dataPhoto
-        chosenPhotoAdapter.updateDataPhoto(this.dataPhoto)
-        chosenPhotoAdapter.notifyDataSetChanged()
-        binding.chosenPhoto.visibility = View.VISIBLE
-    }
+//    @SuppressLint("NotifyDataSetChanged")
+//    fun updateChosenPhoto(dataPhoto: ArrayList<Photo>){
+//        this.dataPhoto = dataPhoto
+//        chosenPhotoAdapter.updateDataPhoto(this.dataPhoto)
+//        chosenPhotoAdapter.notifyDataSetChanged()
+//        binding.chosenPhoto.visibility = View.VISIBLE
+//    }
 
-    private fun addNewBook(view: View, newBook: ManageShopNewBookObject) {
-        val auth = Firebase.auth
-        val db = Firebase.firestore
-
-        val bookColl = db.collection("books")
-        bookColl.get().addOnSuccessListener {
-            val documents = it.documents
-            var max: Long = 0
-            for (document in documents) {
-                val id = document.get("bookID").toString().filter { it.isDigit() }.toLong()
-
-                if (id > max) max = id
-            }
-            val newBookID = "BK" + (max + 1)
-            val newBookMap = hashMapOf(
-                "author" to newBook.author,
-                "best-deal-sale" to 0.0,
-                "bookID" to newBookID,
-                "description" to newBook.description,
-                "genre" to newBook.genre,
-                "image" to newBook.image,
-                "name" to newBook.name,
-                "releaseDate" to newBook.releaseDate,
-                "review" to emptyArray<Any>(),
-                "top-book" to newBook.topBook,
-                "type" to newBook.type
-            )
-
-            bookColl.add(newBookMap)
-
-            db.collection("accounts").whereEqualTo("UID", auth.uid).get()
-                .addOnSuccessListener { documents ->
-                    if (documents.size() != 1) return@addOnSuccessListener	// Failsafe
-
-                    val document = documents.documents[0]
-                    val store = document.getDocumentReference("store")
-                    store!!.get().addOnSuccessListener { storeSnapshot ->
-                        val bookList = storeSnapshot.get("items") as HashMap<String, Map<String, Any>>
-
-                        val newStoreBookMap = hashMapOf(
-                            "discount" to "",
-                            "price" to newBook.price,
-                            "remain" to newBook.quantity,
-                            "sold" to newBook.quantity,
-                            "status" to ""
-                        )
-
-                        bookList[newBookID] = newStoreBookMap
-
-                        store.update("items", bookList)
-                    }
-                }
-
-            Handler().postDelayed({
-
-            }, 2000)
-        }
-    }
     fun build(ctx: Context, width: Int? = null, func: ManageShopAddBookToShopDialog.() -> Unit): ManageShopAddBookToShopDialog {
         this.windowContext = ctx
         this.width = width

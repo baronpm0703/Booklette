@@ -1,6 +1,11 @@
 package com.example.booklette
 
 class ManageShopAddBookToShopDialogInitFilterValues {
-    var rating: Float = 0.0F
-    var text: String = ""
+    var name: String = ""
+    var author: String = ""
+    var category: String = ""
+    var type: String = ""
+    var desc: String = ""
+    var price: String = ""
+    var quantity: String = ""
 }
