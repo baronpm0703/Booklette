@@ -246,4 +246,5 @@
     <string name="returnReasonLabel">Lí do đổi</string>
     <string name="descriptionHint">Mô tả</string>
     <string name="chatActivityConversation">Cuộc trò chuyện</string>
+    <string name="my_order_delivered_button">Đã giao hàng</string>
 </resources>

@@ -210,6 +210,7 @@
     <string name="my_order_cancelled_button">Cancelled</string>
     <string name="my_order_processing_button">Processing</string>
     <string name="my_order_returned_button">Returned</string>
+    <string name="my_order_delivered_button">Delivered</string>
 
     <string name="order_item_order">Order №</string>
     <string name="order_item_tracking_number">Tracking number:</string>
@@ -288,5 +289,10 @@
     <string name="returnReasonLabel">Return reason</string>
     <string name="descriptionHint">Description</string>
     <string name="filter_title_dialog_product_list">Filter</string>
+<<<<<<< HEAD
     <string name="chatActivityConversation">Conversations</string>
+=======
+
+
+>>>>>>> origin/main
 </resources>

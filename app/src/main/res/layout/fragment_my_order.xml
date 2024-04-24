@@ -47,62 +47,84 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/Label" />
 
-        <Button
-            android:id="@+id/processingButton"
-            android:layout_width="0dp"
+        <HorizontalScrollView
+            android:id="@+id/buttonScrollView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/button_my_order"
-            android:backgroundTint="@color/white"
-            android:text="@string/my_order_processing_button"
-            app:layout_constraintVertical_bias="0.0"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@id/completedButton"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="@+id/backButton"
-            app:layout_constraintTop_toBottomOf="@+id/searchBar" />
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchBar">
 
-        <Button
-            android:id="@+id/completedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/button_my_order"
-            android:backgroundTint="@color/white"
-            android:text="@string/my_order_completed_button"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@id/cancelledButton"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toEndOf="@id/processingButton"
-            app:layout_constraintTop_toTopOf="@+id/processingButton" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/buttonScrollViewLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/cancelledButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/button_my_order"
-            android:backgroundTint="@color/white"
-            android:text="@string/my_order_cancelled_button"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@id/returnedButton"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toEndOf="@id/completedButton"
-            app:layout_constraintTop_toTopOf="@+id/completedButton" />
+                <Button
+                    android:id="@+id/processingButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_my_order"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/my_order_processing_button"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/returnedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_my_order"
-            android:backgroundTint="@color/white"
-            android:text="@string/my_order_returned_button"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toEndOf="@id/cancelledButton"
-            app:layout_constraintTop_toTopOf="@+id/cancelledButton" />
+                <Button
+                    android:id="@+id/deliveredButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_my_order"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/my_order_delivered_button"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/processingButton"
+                    app:layout_constraintTop_toTopOf="@+id/processingButton" />
+
+                <Button
+                    android:id="@+id/completedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_my_order"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/my_order_completed_button"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/deliveredButton"
+                    app:layout_constraintTop_toTopOf="@+id/deliveredButton" />
+
+                <Button
+                    android:id="@+id/cancelledButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_my_order"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/my_order_cancelled_button"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/completedButton"
+                    app:layout_constraintTop_toTopOf="@+id/completedButton" />
+
+                <Button
+                    android:id="@+id/returnedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_my_order"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/my_order_returned_button"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/cancelledButton"
+                    app:layout_constraintTop_toTopOf="@+id/cancelledButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </HorizontalScrollView>
+
+
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/itemsRecyclerView"
@@ -116,7 +138,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/processingButton" />
+            app:layout_constraintTop_toBottomOf="@+id/buttonScrollView" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
