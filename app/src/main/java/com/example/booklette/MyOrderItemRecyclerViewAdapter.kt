@@ -61,9 +61,13 @@ class MyOrderItemRecyclerViewAdapter(
 //        }
         init {
             detailButton.setOnClickListener {
-                onButtonClick?.invoke(values[adapterPosition])
+                val position = bindingAdapterPosition // or absoluteAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onButtonClick?.invoke(values[position])
+                }
             }
         }
+
     }
 
 }
