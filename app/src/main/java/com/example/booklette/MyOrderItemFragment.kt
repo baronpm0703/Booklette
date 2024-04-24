@@ -141,14 +141,21 @@ class MyOrderItemFragment : Fragment() {
         super.onAttach(context)
         if (context is homeActivity) {
             orderItemClickListener = { orderItem ->
+                // đang xử lý => huỷ đơn,
                 if (orderItem.status.contains("xử lý",ignoreCase = true)){
                     val detailFragment = OrderDetailCaseProcessingFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
                 }
+                // đã giao => trả hoặc xác nhận nhận hàng (không cho huỷ)
+
+
+
+                // thành công => viết review
                 else if (orderItem.status.contains("Thành công")){
                     val detailFragment = OrderDetailCaseCompletedFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
                 }
+                // đơn bị huỷ thành công (ko thành công) => viết review
                 else{
 
                 }
@@ -199,6 +206,9 @@ class MyOrderItemFragment : Fragment() {
     }
     fun returnedButton(){
         filterStatus("trả")
+    }
+    fun deliveredButton(){
+        filterStatus("đã giao")
     }
     fun unfilter(){
         filterStatus("")

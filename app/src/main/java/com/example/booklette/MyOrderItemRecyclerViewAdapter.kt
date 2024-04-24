@@ -63,6 +63,7 @@ class MyOrderItemRecyclerViewAdapter(
         else if (item.status.contains("đã giao",true)){
             holder.statusField.text = context.getString(R.string.my_order_delivered_button)
         }
+        
     }
 
     override fun getItemCount(): Int = values.size

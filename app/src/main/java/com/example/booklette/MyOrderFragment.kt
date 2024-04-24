@@ -49,6 +49,7 @@ class MyOrderFragment : Fragment() {
         val view = binding.root
 
         val processingButton : Button = binding.processingButton
+        val deliveredButton : Button = binding.deliveredButton
         val completedButton : Button = binding.completedButton
         val cancelledButton: Button = binding.cancelledButton
         val returnedButton: Button = binding.returnedButton
@@ -71,6 +72,20 @@ class MyOrderFragment : Fragment() {
                     lastPressedButton = processingButton
                     processingButton.backgroundTintList = null
                     myOrderItemFragment.processingButton()
+                }
+            }
+        }
+        deliveredButton.setOnClickListener {
+            resetColorButton()
+            if (myOrderItemFragment != null) {
+                if (lastPressedButton == deliveredButton){
+                    lastPressedButton = null
+                    myOrderItemFragment.unfilter()
+                }
+                else{
+                    lastPressedButton = deliveredButton
+                    deliveredButton.backgroundTintList = null
+                    myOrderItemFragment.deliveredButton()
                 }
             }
         }
