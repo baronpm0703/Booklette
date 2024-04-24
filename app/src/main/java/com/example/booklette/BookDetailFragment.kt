@@ -1,6 +1,7 @@
 package com.example.booklette
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +38,11 @@ import com.google.firebase.storage.storage
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.client.logger.ChatLogLevel
+import io.getstream.chat.android.offline.plugin.factory.StreamOfflinePluginFactory
+import io.getstream.chat.android.state.plugin.config.StatePluginConfig
+import io.getstream.chat.android.state.plugin.factory.StreamStatePluginFactory
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
@@ -478,6 +485,20 @@ class BookDetailFragment : Fragment() {
                 }
             }
         }
+
+        binding.imgOpenChatBookDetail.setOnClickListener({
+            lifecycleScope.launch {
+                val storeID = getBookStoreID(bookID)
+                val storeUID = getUIDFromBookStoreID(storeID)
+
+                val intent = Intent(context, ChannelChatActivity::class.java)
+                intent.putExtra("storeUID", storeUID)
+
+                Toast.makeText(activity, storeUID, Toast.LENGTH_SHORT).show()
+
+                startActivity(intent)
+            }
+        })
 
         return view
     }

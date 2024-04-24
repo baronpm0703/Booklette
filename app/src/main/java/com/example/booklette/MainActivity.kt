@@ -32,8 +32,7 @@ class MainActivity : ComponentActivity() {
         val user = auth.currentUser
 
         if (user != null) {
-//            startActivity(Intent(this@MainActivity, homeActivity::class.java))
-            startActivity(Intent(this@MainActivity, ChannelChatActivity::class.java))
+            startActivity(Intent(this@MainActivity, homeActivity::class.java))
             finish()
         }
 

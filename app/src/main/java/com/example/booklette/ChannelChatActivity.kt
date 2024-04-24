@@ -27,11 +27,14 @@ class ChannelChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChannelChatBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private var storeUID = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityChannelChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        storeUID = intent.getStringExtra("storeUID").toString()
 
         auth = Firebase.auth
         db = Firebase.firestore
@@ -45,7 +48,7 @@ class ChannelChatActivity : AppCompatActivity() {
             appContext = this,
         )
 
-        val client = ChatClient.Builder("4e3q9vg5y84v", applicationContext)
+        val client = ChatClient.Builder("egx6qn892ejq", applicationContext)
             .withPlugins(offlinePluginFactory, statePluginFactory)
             .logLevel(ChatLogLevel.ALL)
             .build()
@@ -77,19 +80,21 @@ class ChannelChatActivity : AppCompatActivity() {
                         startActivity(ChannelMessageActivity.newIntent(this, channel))
                     }
 
-//                    client.createChannel(
-//                        channelType = "messaging",
-//                        channelId = "",
-//                        memberIds = listOf(auth.currentUser!!.uid.toString(), "ct390"),
-//                        extraData = emptyMap()
-//                    ).enqueue { result ->
-//                        if (result.isSuccess) {
-//                            Toast.makeText(this@ChannelChatActivity, "SUCCESSFULLY!", Toast.LENGTH_SHORT).show()
-//                        } else {
-//                            Toast.makeText(this@ChannelChatActivity, "FAILED!", Toast.LENGTH_SHORT).show()
-//                            Log.e("channelError", result.toString())
-//                        }
-//                    }
+                    if (storeUID != null && storeUID != "") {
+                        client.createChannel(
+                            channelType = "messaging",
+                            channelId = "",
+                            memberIds = listOf(auth.currentUser!!.uid.toString(), storeUID),
+                            extraData = emptyMap()
+                        ).enqueue { result ->
+                            if (result.isSuccess) {
+                                Toast.makeText(this@ChannelChatActivity, "SUCCESSFULLY!", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(this@ChannelChatActivity, "FAILED!", Toast.LENGTH_SHORT).show()
+                                Log.e("channelError", result.toString())
+                            }
+                        }
+                    }
                 } else {
                     Toast.makeText(this, "something went wrong!", Toast.LENGTH_SHORT).show()
                     Log.e("chat", it.toString())

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import com.example.booklette.databinding.ActivityLoginBinding
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -31,6 +32,12 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.client.logger.ChatLogLevel
+import io.getstream.chat.android.models.User
+import io.getstream.chat.android.offline.plugin.factory.StreamOfflinePluginFactory
+import io.getstream.chat.android.state.plugin.config.StatePluginConfig
+import io.getstream.chat.android.state.plugin.factory.StreamStatePluginFactory
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 //import rememberMeManager
@@ -176,8 +183,20 @@ open class LoginActivity : AppCompatActivity() {
 
 //                            GlobalScope.launch { remember_me_manager.storeUser(binding.cbRememberMe.isChecked, binding.edtEmailSignIn.text.toString()) }
 
-                            finish()
-                            startActivity(Intent(this@LoginActivity, homeActivity::class.java))
+
+                            val StreamUser = User(
+                                id = user!!.uid
+                            )
+                            val client = ChatClient.Builder("egx6qn892ejq", applicationContext)
+                                .logLevel(ChatLogLevel.ALL)
+                                .build()
+
+                            lifecycleScope.launch {
+                                client.connectUser(user = StreamUser, token = client.devToken(StreamUser.id)).enqueue()
+
+                                finish()
+                                startActivity(Intent(this@LoginActivity, homeActivity::class.java))
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.d("firebase", task.exception.toString())
