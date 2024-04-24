@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
 import com.example.booklette.model.BookObject
 import com.example.booklette.model.Photo
+import com.example.booklette.model.UserReviewObject
 import com.example.booklette.model.VoucherObject
 import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
@@ -362,13 +363,15 @@ class BookDetailFragment : Fragment() {
                             val rating = review["score"].toString().toFloat()
                             val description = review["text"].toString()
 
-                            userReviewList.add(UserReviewObject(
+                            userReviewList.add(
+                                UserReviewObject(
                                 uid,
                                 username,
                                 avatar,
                                 rating,
                                 description
-                            ))
+                            )
+                            )
 
                             bookDetailUserReviewAdapter.notifyDataSetChanged()
                         }

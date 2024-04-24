@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booklette.model.UserReviewObject
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import per.wsj.library.AndRatingBar
