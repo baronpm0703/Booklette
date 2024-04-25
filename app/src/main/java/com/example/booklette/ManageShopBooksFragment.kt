@@ -11,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.compose.ui.text.intl.Locale
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +25,8 @@ import com.example.booklette.model.MyShopBookObject
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
@@ -35,8 +39,7 @@ import kotlin.math.round
  * create an instance of this fragment.
  */
 class ManageShopBooksFragment : Fragment() {
-//	private var discountHScrollView: HorizontalScrollView? = null
-//	private var newArrivalsHScrollView: HorizontalScrollView? = null
+	private lateinit var storeRef: DocumentReference
 
 	private var _binding: FragmentManageshopBooksBinding? = null
 	private val binding get() = _binding!!
@@ -58,7 +61,8 @@ class ManageShopBooksFragment : Fragment() {
 				if (documents.size() != 1) return@addOnSuccessListener	// Failsafe
 
 				for (document in documents) {
-					document.getDocumentReference("store")!!.get().addOnSuccessListener { storeSnapshot ->
+					storeRef = document.getDocumentReference("store")!!
+					storeRef.get().addOnSuccessListener { storeSnapshot ->
 						val books = storeSnapshot.get("items") as Map<String, Map<String, Any>>
 						if (books.size > 0) {
 							books.map { entry ->
@@ -214,6 +218,32 @@ class ManageShopBooksFragment : Fragment() {
 		}
 	}
 
+	private fun deleteBookDialog(bookId: String) {
+		Log.i("test", view.toString())
+		val layoutInflater = LayoutInflater.from(requireContext())
+		val view = layoutInflater.inflate(R.layout.manageshop_delete_dialog, null)
+		val builder = AlertDialog.Builder(requireContext())
+		builder.setView(view)
+		val dialog = builder.create()
+
+		view.findViewById<Button>(R.id.deleteYesBtn).setOnClickListener {
+			storeRef.get().addOnSuccessListener {
+				val deleteBook = hashMapOf(
+					"items." + bookId to FieldValue.delete()
+				)
+
+				storeRef.update(deleteBook as Map<String, Any>).addOnSuccessListener {
+					
+				}
+			}
+		}
+		view.findViewById<Button>(R.id.deleteNoBtn).setOnClickListener {
+			dialog.dismiss()
+		}
+
+		dialog.show()
+	}
+
 	private fun setBookListViews(view: View, bookList: ArrayList<MyShopBookObject>) {
 		val content = view.findViewById<LinearLayout>(R.id.bookListScrollViewContent)
 
@@ -226,6 +256,7 @@ class ManageShopBooksFragment : Fragment() {
 			val bookNameText = singleFrame.findViewById<TextView>(R.id.bookNameText)
 			val bookAuthorText = singleFrame.findViewById<TextView>(R.id.bookAuthorText)
 			val bookPriceText = singleFrame.findViewById<TextView>(R.id.bookPriceText)
+			val deleteBtn = singleFrame.findViewById<Button>(R.id.deleteBookBtn)
 
 			Picasso.get()
 				.load(book.image)
@@ -234,6 +265,12 @@ class ManageShopBooksFragment : Fragment() {
 			bookNameText.text = book.name
 			bookAuthorText.text = book.author
 			bookPriceText.text = book.shopPrice.toString()
+
+			deleteBtn.setOnClickListener {
+				val delete = deleteBookDialog(book.id)
+				if (!delete)
+					Toast.makeText(context, "fsafds", Toast.LENGTH_SHORT).show()
+			}
 
 			singleFrame.setOnClickListener {
 				if (context is homeActivity) {
