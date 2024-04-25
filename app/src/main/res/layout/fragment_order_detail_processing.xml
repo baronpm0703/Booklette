@@ -188,7 +188,19 @@
                 android:text="@string/total_amount"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView55"
-                app:layout_constraintTop_toBottomOf="@+id/textView55" />
+                app:layout_constraintTop_toBottomOf="@+id/textView55"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/viewInvoice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="View E-Invoice"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView56"
+                app:layout_constraintTop_toBottomOf="@+id/textView56" />
 
             <TextView
                 android:id="@+id/orderDetailShippingAddressField"
@@ -238,14 +250,15 @@
             <TextView
                 android:id="@+id/orderDetailTotalField"
                 android:layout_width="wrap_content"
-                app:layout_constrainedWidth="true"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text=""
                 android:textStyle="bold"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/orderDetailDiscountField"
-                app:layout_constraintTop_toTopOf="@+id/textView56" />
+                app:layout_constraintTop_toTopOf="@+id/textView56"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -270,6 +283,8 @@
             android:text="@string/orderDetailStatus"
             app:layout_constraintStart_toStartOf="@+id/textView47"
             app:layout_constraintTop_toBottomOf="@+id/textView47" />
+
+
 
         <!-- Your existing layout content here -->
 

@@ -232,7 +232,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Discount"
+                    android:text="Tax"
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:textStyle="bold"></TextView>
@@ -252,16 +252,15 @@
                 android:background="@drawable/invoice_line">
             </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEinvoiceItem"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                tools:listitem="@layout/einvoice_book_item">
             </androidx.recyclerview.widget.RecyclerView>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp">
-
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
