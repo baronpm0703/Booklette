@@ -352,10 +352,10 @@
                 <LinearLayout
                     android:id="@+id/linearLayout9"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:orientation="vertical"
-                    android:paddingEnd="50dp">
+                    >
 
 
                     <TextView
@@ -367,18 +367,17 @@
                         android:textStyle="bold"></TextView>
 
                     <TextView
-                        android:layout_width="150dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:textSize="10dp"
                         android:text="Confirmed goods are intact, no other problems"
-                        android:textColor="@color/black"></TextView>
+                        android:textColor="@color/black"
+                        android:textSize="10dp"></TextView>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:paddingEnd="50dp"
                     android:orientation="vertical">
 
                     <TextView

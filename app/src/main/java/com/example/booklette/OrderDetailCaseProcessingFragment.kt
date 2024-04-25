@@ -33,6 +33,8 @@ class OrderDetailCaseProcessingFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
     private var _binding: FragmentOrderDetailProcessingBinding? = null
+    private var itemsMap: Map<String, Any>? = null
+
 
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -62,8 +64,11 @@ class OrderDetailCaseProcessingFragment : Fragment() {
         val deliveryMethodField = binding.orderDetailDeliveryMethodField
         val discountField = binding.orderDetailDiscountField
         val totalField = binding.orderDetailTotalField
+        val viewInvoice = binding.viewInvoice
+
 
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
+
 
         var tempTotalOrgMoney: Float = 0.0F
         orderID?.let {
@@ -75,7 +80,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                         val timeStamp = orderData?.get("creationDate") as Timestamp
 
                         val date: Date? = timeStamp?.toDate()
-                        val itemsMap = orderData?.get("items") as? Map<String, Any>
+                        itemsMap = orderData?.get("items") as? Map<String, Any>
                         var totalQuantity: Long = 0
                         itemsMap?.forEach { (itemID, itemData) ->
 
@@ -143,6 +148,16 @@ class OrderDetailCaseProcessingFragment : Fragment() {
         backButton.setOnClickListener{
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+
+
+        viewInvoice.setOnClickListener {
+            val eInvoiceFragment = EInvoiceFragment.newInstance(itemsMap!!)
+            val args = Bundle()
+            eInvoiceFragment.arguments = args
+            val homeAct = (activity as homeActivity)
+            homeAct.changeFragmentContainer(eInvoiceFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+        }
+
         // cancel order
         val cancelButton = binding.orderDetailCancelOrderButton
         cancelButton.setOnClickListener {
