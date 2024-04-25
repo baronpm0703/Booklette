@@ -291,5 +291,6 @@
     <string name="descriptionHint">Description</string>
     <string name="filter_title_dialog_product_list">Filter</string>
     <string name="chatActivityConversation">Conversations</string>
+    <string name="e_invoice">E-Invoice</string>
 
 </resources>
