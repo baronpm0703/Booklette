@@ -17,6 +17,8 @@ class MyShopBookObject {
     var status: String
     var image: String
     var releaseDate: Timestamp
+    var description: String
+    var type: String
 
     constructor(
         id: String, 
@@ -29,7 +31,9 @@ class MyShopBookObject {
         remain: Long,
         sold: Long,
         status: String,
-        releaseDate: Timestamp
+        releaseDate: Timestamp,
+        description: String,
+        type: String
     ) {
         this.id = id
         this.name = name
@@ -42,5 +46,7 @@ class MyShopBookObject {
         this.status = status
         this.image = image
         this.releaseDate = releaseDate
+        this.description = description
+        this.type = type
     }
 }

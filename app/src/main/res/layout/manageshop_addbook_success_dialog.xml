@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:background="@drawable/myshop_book_info_card"
+>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="330dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="0dp"
+            android:elevation="5dp"
+            android:layout_marginEnd="0dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="0dp"
+    >
+
+
+        <ImageView
+                android:layout_width="113dp"
+                android:layout_height="113dp" app:srcCompat="@drawable/manageshop_addbook_success_icon"
+                android:id="@+id/imageView9"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="35dp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="65dp"
+                android:layout_marginEnd="62dp" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/addSuccessTv"/>
+        <TextView
+                android:text="@string/manageshop_mybooks_add_success"
+                android:layout_width="120dp"
+                android:layout_height="31dp" android:id="@+id/addSuccessTv"
+                android:gravity="center"
+                android:textColor="#040404" android:textStyle="bold" android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="60dp"
+                android:layout_marginEnd="60dp" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toBottomOf="@+id/imageView9"
+                app:layout_constraintBottom_toTopOf="@+id/addSuccess2Tv"/>
+        <TextView
+                android:text="@string/manageshop_mybooks_add_success2"
+                android:layout_width="120dp"
+                android:layout_height="46dp" android:id="@+id/addSuccess2Tv"
+                android:gravity="center"
+                android:textColor="#040404" android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="60dp"
+                android:layout_marginEnd="60dp" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintTop_toBottomOf="@+id/addSuccessTv" android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/dismissBtn"/>
+        <Button
+                android:text="@string/manageshop_mybooks_add_back"
+                android:layout_width="160dp"
+                android:layout_height="45dp" android:id="@+id/dismissBtn"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/manageshop_addbook_success_back_btn"
+                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="32dp"
+                android:layout_marginTop="3dp"
+                app:layout_constraintTop_toBottomOf="@+id/addSuccess2Tv" android:layout_marginEnd="40dp"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="40dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

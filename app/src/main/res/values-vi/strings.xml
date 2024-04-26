@@ -92,6 +92,8 @@
     <string name="manageshop_mybooks_violation">Vi phạm</string>
     <string name="manageshop_mybooks_boost">Đẩy sách</string>
     <string name="manageshop_mybooks_edit">Sửa</string>
+    <string name="manageshop_mybooks_edit_flavor_text">Chỉnh sửa thông tin sách</string>
+    <string name="manageshop_mybooks_edit_confirm">Lưu thay đổi</string>
     <string name="manageshop_mybooks_delete">Xoá</string>
     <string name="manageshop_mybooks_delete_confirm">Bạn có chắc muốn xoá cuốn sách này?</string>
     <string name="manageshop_mybooks_delete_yes">Xoá</string>

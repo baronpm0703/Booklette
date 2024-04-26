@@ -45,7 +45,7 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/helvetica_regular"
                 android:paddingStart="10dp"
-                android:text="@string/manageshop_mybooks_add"
+                android:text="@string/manageshop_mybooks_edit_flavor_text"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -219,9 +219,7 @@
                 android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:singleLine="false"
-                android:scrollHorizontally="false"
-                android:minLines="2"/>
+                android:breakStrategy="high_quality"/>
 
         <EditText
                 android:id="@+id/bookPriceET"
@@ -299,7 +297,7 @@
 
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/manageshop_mybooks_add_btn"
+                android:text="@string/manageshop_mybooks_edit_confirm"
 
                 android:textColor="@color/white"
                 android:textSize="17sp"

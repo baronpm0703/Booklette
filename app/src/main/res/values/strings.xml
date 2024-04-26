@@ -116,6 +116,8 @@
     <string name="manageshop_mybooks_violation">Violation</string>
     <string name="manageshop_mybooks_boost">Boost</string>
     <string name="manageshop_mybooks_edit">Edit</string>
+    <string name="manageshop_mybooks_edit_flavor_text">Edit book</string>
+    <string name="manageshop_mybooks_edit_confirm">Save change</string>
     <string name="manageshop_mybooks_delete">Delete</string>
     <string name="manageshop_mybooks_delete_confirm">Are you sure to delete this item?</string>
     <string name="manageshop_mybooks_delete_yes">Yes</string>

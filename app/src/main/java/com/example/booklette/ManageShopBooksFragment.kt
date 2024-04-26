@@ -17,6 +17,7 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.booklette.databinding.EditBookInShopDialogBinding
 import com.example.booklette.databinding.FragmentManageshopBooksBinding
 import com.example.booklette.databinding.FragmentMyshopBinding
 import com.example.booklette.model.HRecommendedBookObject
@@ -42,6 +43,7 @@ class ManageShopBooksFragment : Fragment() {
 	private lateinit var storeRef: DocumentReference
 
 	private var _binding: FragmentManageshopBooksBinding? = null
+
 	private val binding get() = _binding!!
 
 	override fun onCreateView(
@@ -78,10 +80,12 @@ class ManageShopBooksFragment : Fragment() {
 										val bookGenre = info.get("genre").toString()
 										val bookAuthor = info.get("author").toString()
 										val bookReleaseDate = info.get("releaseDate") as Timestamp
-										val bookPrice = book["price"] as Long
-										val bookRemain = book["remain"] as Long
-										val bookSold = book["sold"] as Long
+										val bookPrice = book["price"] as Number
+										val bookRemain = book["remain"].toString().toLong()
+										val bookSold = book["sold"].toString().toLong()
 										val bookStatus = book["status"].toString()
+										val bookDescription = info.get("description").toString()
+										val bookType = info.get("type").toString()
 										val bookRatings = info.get("review") as ArrayList<Map<String, Any>>
 										var bookRatingScore: Float = 0F
 										bookRatings.forEach {
@@ -97,7 +101,7 @@ class ManageShopBooksFragment : Fragment() {
 												bookDiscount = (it.documents[0].get("percent") as Long).toFloat() / 100
 
 											val newBookObject = MyShopBookObject(
-												bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice, bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate
+												bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice.toLong(), bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate, bookDescription, bookType
 											)
 											bookList.add(newBookObject)
 										}
@@ -114,47 +118,7 @@ class ManageShopBooksFragment : Fragment() {
 				}
 			}
 
-
-		val addBookBtn = view.findViewById<Button>(R.id.addBookBtn)
-		val addBookInitValues = ManageShopAddBookToShopDialogInitFilterValues()
-		val addBookDialog = ManageShopAddBookToShopDialog(addBookInitValues)
-		addBookBtn.setOnClickListener {
-			activity?.let {
-				addBookDialog.show(it) {
-					style(SheetStyle.BOTTOM_SHEET)
-					onPositive {
-						val data = addBookDialog.getBookObject()
-						val bookName = data["name"].toString()
-						val bookGenre = data["genre"].toString()
-						val bookAuthor = data["author"].toString()
-						val bookReleaseDate = data["releaseDate"]
-						val bookImage = data["image"].toString()
-						val bookPrice = data["price"].toString()
-						val bookDesc = data["desc"].toString()
-						val bookType = data["type"].toString()
-						val bookQuantity = data["quantity"].toString()
-						if (bookName.isEmpty() || bookGenre.isEmpty() || bookAuthor.isEmpty() || bookImage.isEmpty() || bookPrice.isEmpty() || bookDesc.isEmpty() || bookType.isEmpty() || bookQuantity.isEmpty()) {
-							if (Locale.current.language == "en")
-								Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
-							else
-								Toast.makeText(context, "Các trường không được phép bỏ trống", Toast.LENGTH_SHORT).show()
-						}
-						else if (bookPrice.toFloatOrNull() == null || bookQuantity.toLongOrNull() == null)
-							if (Locale.current.language == "en")
-								Toast.makeText(context, "Price and quantity must be numbers", Toast.LENGTH_SHORT).show()
-							else
-								Toast.makeText(context, "Giá và số lượng tồn phải là số", Toast.LENGTH_SHORT).show()
-						else {
-							val dataObj = ManageShopNewBookObject(data["name"].toString(), data["genre"].toString(), data["author"].toString(), data["releaseDate"] as Timestamp, data["image"].toString(), data["price"].toString().toFloat(), data["desc"].toString(), "This decade", data["type"].toString(), data["quantity"].toString().toLong())
-
-							addNewBook(dataObj)
-
-							this.dismiss()
-						}
-					}
-				}
-			}
-		}
+		addBookDialog(view)
 
 		return view
 	}
@@ -208,7 +172,9 @@ class ManageShopBooksFragment : Fragment() {
 
 						bookList[newBookID] = newStoreBookMap
 
-						store.update("items", bookList)
+						store.update("items", bookList).addOnSuccessListener {
+							addBookSuccessDialog()
+						}
 					}
 				}
 
@@ -218,8 +184,137 @@ class ManageShopBooksFragment : Fragment() {
 		}
 	}
 
+	private fun addBookDialog(view: View) {
+		val addBookBtn = view.findViewById<Button>(R.id.addBookBtn)
+		val addBookInitValues = ManageShopAddBookToShopDialogInitFilterValues()
+		val addBookDialog = ManageShopAddBookToShopDialog(addBookInitValues)
+		addBookBtn.setOnClickListener {
+			activity?.let {
+				addBookDialog.show(it) {
+					style(SheetStyle.BOTTOM_SHEET)
+					onPositive {
+						val data = addBookDialog.getBookObject()
+						val bookName = data["name"].toString()
+						val bookGenre = data["genre"].toString()
+						val bookAuthor = data["author"].toString()
+						val bookReleaseDate = data["releaseDate"]
+						val bookImage = data["image"].toString()
+						val bookPrice = data["price"].toString()
+						val bookDesc = data["desc"].toString()
+						val bookType = data["type"].toString()
+						val bookQuantity = data["quantity"].toString()
+						if (bookName.isEmpty() || bookGenre.isEmpty() || bookAuthor.isEmpty() || bookImage.isEmpty() || bookPrice.isEmpty() || bookDesc.isEmpty() || bookType.isEmpty() || bookQuantity.isEmpty()) {
+							if (Locale.current.language == "en")
+								Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
+							else
+								Toast.makeText(context, "Các trường không được phép bỏ trống", Toast.LENGTH_SHORT).show()
+						}
+						else if (bookPrice.toFloatOrNull() == null || bookQuantity.toLongOrNull() == null)
+							if (Locale.current.language == "en")
+								Toast.makeText(context, "Price and quantity must be numbers", Toast.LENGTH_SHORT).show()
+							else
+								Toast.makeText(context, "Giá và số lượng tồn phải là số", Toast.LENGTH_SHORT).show()
+						else {
+							val dataObj = ManageShopNewBookObject(bookName, bookGenre, bookAuthor, data["releaseDate"] as Timestamp, bookImage, bookPrice.toFloat(), bookDesc, "This decade", bookType, bookQuantity.toLong())
+
+							addNewBook(dataObj)
+
+							this.dismiss()
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private fun addBookSuccessDialog() {
+		val layoutInflater = LayoutInflater.from(requireContext())
+		val view = layoutInflater.inflate(R.layout.manageshop_addbook_success_dialog, null)
+		val builder = AlertDialog.Builder(requireContext())
+		builder.setView(view)
+		val dialog = builder.create()
+
+		view.findViewById<Button>(R.id.dismissBtn).setOnClickListener {
+			dialog.dismiss()
+		}
+
+		dialog.show()
+	}
+
+	private fun editBook(bookId: String, bookDetail: ManageShopNewBookObject) {
+		val db = Firebase.firestore
+
+		val updatedBookDetail = hashMapOf(
+			"name" to bookDetail.name,
+			"description" to bookDetail.description,
+			"genre" to bookDetail.genre,
+			"type" to bookDetail.type,
+			"author" to bookDetail.author,
+			"image" to bookDetail.image,
+			"releaseDate" to bookDetail.releaseDate
+		)
+		val updatedShopBookDetail = hashMapOf(
+			"items.${bookId}.price" to bookDetail.price,
+			"items.${bookId}.remain" to bookDetail.quantity
+		)
+
+		val bookColl = db.collection("books")
+		bookColl.whereEqualTo("bookID", bookId).get().addOnSuccessListener {
+			val documentId = it.documents[0].id
+			bookColl.document(documentId).update(updatedBookDetail as Map<String, Any>)
+		}
+
+		storeRef.update(updatedShopBookDetail as Map<String, Any>)
+	}
+
+	private fun editBookDialog(bookDetail: MyShopBookObject) {
+		val editBookInitValues = ManageShopAddBookToShopDialogInitFilterValues()
+		editBookInitValues.name = bookDetail.name
+		editBookInitValues.category = bookDetail.genre
+		editBookInitValues.author = bookDetail.author
+		editBookInitValues.price = bookDetail.shopPrice.toString()
+		editBookInitValues.desc = bookDetail.description
+		editBookInitValues.type = bookDetail.type
+		editBookInitValues.quantity = bookDetail.remain.toString()
+
+
+		val editBookDialog = ManageShopEditBookInShopDialog(editBookInitValues)
+		editBookDialog.show(requireContext()) {
+			style(SheetStyle.BOTTOM_SHEET)
+			onPositive {
+				val data = editBookDialog.getBookObject()
+				val bookName = data["name"].toString()
+				val bookGenre = data["genre"].toString()
+				val bookAuthor = data["author"].toString()
+				val bookReleaseDate = data["releaseDate"]
+				val bookImage = data["image"].toString()
+				val bookPrice = data["price"].toString()
+				val bookDesc = data["desc"].toString()
+				val bookType = data["type"].toString()
+				val bookQuantity = data["quantity"].toString()
+				if (bookName.isEmpty() || bookGenre.isEmpty() || bookAuthor.isEmpty() || bookImage.isEmpty() || bookPrice.isEmpty() || bookDesc.isEmpty() || bookType.isEmpty() || bookQuantity.isEmpty()) {
+					if (Locale.current.language == "en")
+						Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
+					else
+						Toast.makeText(context, "Các trường không được phép bỏ trống", Toast.LENGTH_SHORT).show()
+				}
+				else if (bookPrice.toFloatOrNull() == null || bookQuantity.toLongOrNull() == null)
+					if (Locale.current.language == "en")
+						Toast.makeText(context, "Price and quantity must be numbers", Toast.LENGTH_SHORT).show()
+					else
+						Toast.makeText(context, "Giá và số lượng tồn phải là số", Toast.LENGTH_SHORT).show()
+				else {
+					val dataObj = ManageShopNewBookObject(bookName, bookGenre, bookAuthor, data["releaseDate"] as Timestamp, bookImage, bookPrice.toFloat(), bookDesc, "This decade", bookType, bookQuantity.toLong())
+
+					editBook(bookDetail.id, dataObj)
+
+					this.dismiss()
+				}
+			}
+		}
+	}
+
 	private fun deleteBookDialog(bookId: String) {
-		Log.i("test", view.toString())
 		val layoutInflater = LayoutInflater.from(requireContext())
 		val view = layoutInflater.inflate(R.layout.manageshop_delete_dialog, null)
 		val builder = AlertDialog.Builder(requireContext())
@@ -233,7 +328,7 @@ class ManageShopBooksFragment : Fragment() {
 				)
 
 				storeRef.update(deleteBook as Map<String, Any>).addOnSuccessListener {
-					
+					dialog.dismiss()
 				}
 			}
 		}
@@ -256,6 +351,7 @@ class ManageShopBooksFragment : Fragment() {
 			val bookNameText = singleFrame.findViewById<TextView>(R.id.bookNameText)
 			val bookAuthorText = singleFrame.findViewById<TextView>(R.id.bookAuthorText)
 			val bookPriceText = singleFrame.findViewById<TextView>(R.id.bookPriceText)
+			val editBtn = singleFrame.findViewById<Button>(R.id.editBookBtn)
 			val deleteBtn = singleFrame.findViewById<Button>(R.id.deleteBookBtn)
 
 			Picasso.get()
@@ -266,10 +362,12 @@ class ManageShopBooksFragment : Fragment() {
 			bookAuthorText.text = book.author
 			bookPriceText.text = book.shopPrice.toString()
 
+			editBtn.setOnClickListener {
+				editBookDialog(book)
+			}
+
 			deleteBtn.setOnClickListener {
-				val delete = deleteBookDialog(book.id) as Boolean
-				if (!delete)
-					Toast.makeText(context, "fsafds", Toast.LENGTH_SHORT).show()
+				deleteBookDialog(book.id)
 			}
 
 			singleFrame.setOnClickListener {
