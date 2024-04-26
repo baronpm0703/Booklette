@@ -80,10 +80,12 @@ class ManageShopBooksFragment : Fragment() {
 										val bookGenre = info.get("genre").toString()
 										val bookAuthor = info.get("author").toString()
 										val bookReleaseDate = info.get("releaseDate") as Timestamp
-										val bookPrice = book["price"] as Long
-										val bookRemain = book["remain"] as Long
-										val bookSold = book["sold"] as Long
+										val bookPrice = book["price"] as Number
+										val bookRemain = book["remain"].toString().toLong()
+										val bookSold = book["sold"].toString().toLong()
 										val bookStatus = book["status"].toString()
+										val bookDescription = info.get("description").toString()
+										val bookType = info.get("type").toString()
 										val bookRatings = info.get("review") as ArrayList<Map<String, Any>>
 										var bookRatingScore: Float = 0F
 										bookRatings.forEach {
@@ -99,7 +101,7 @@ class ManageShopBooksFragment : Fragment() {
 												bookDiscount = (it.documents[0].get("percent") as Long).toFloat() / 100
 
 											val newBookObject = MyShopBookObject(
-												bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice, bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate
+												bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice.toLong(), bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate, bookDescription, bookType
 											)
 											bookList.add(newBookObject)
 										}
@@ -213,7 +215,7 @@ class ManageShopBooksFragment : Fragment() {
 							else
 								Toast.makeText(context, "Giá và số lượng tồn phải là số", Toast.LENGTH_SHORT).show()
 						else {
-							val dataObj = ManageShopNewBookObject(data["name"].toString(), data["genre"].toString(), data["author"].toString(), data["releaseDate"] as Timestamp, data["image"].toString(), data["price"].toString().toFloat(), data["desc"].toString(), "This decade", data["type"].toString(), data["quantity"].toString().toLong())
+							val dataObj = ManageShopNewBookObject(bookName, bookGenre, bookAuthor, data["releaseDate"] as Timestamp, bookImage, bookPrice.toFloat(), bookDesc, "This decade", bookType, bookQuantity.toLong())
 
 							addNewBook(dataObj)
 
@@ -239,13 +241,40 @@ class ManageShopBooksFragment : Fragment() {
 		dialog.show()
 	}
 
-	private fun editBookDialog(view: View, bookDetail: MyShopBookObject) {
+	private fun editBook(bookId: String, bookDetail: ManageShopNewBookObject) {
+		val db = Firebase.firestore
+
+		val updatedBookDetail = hashMapOf(
+			"name" to bookDetail.name,
+			"description" to bookDetail.description,
+			"genre" to bookDetail.genre,
+			"type" to bookDetail.type,
+			"author" to bookDetail.author,
+			"image" to bookDetail.image,
+			"releaseDate" to bookDetail.releaseDate
+		)
+		val updatedShopBookDetail = hashMapOf(
+			"items.${bookId}.price" to bookDetail.price,
+			"items.${bookId}.remain" to bookDetail.quantity
+		)
+
+		val bookColl = db.collection("books")
+		bookColl.whereEqualTo("bookID", bookId).get().addOnSuccessListener {
+			val documentId = it.documents[0].id
+			bookColl.document(documentId).update(updatedBookDetail as Map<String, Any>)
+		}
+
+		storeRef.update(updatedShopBookDetail as Map<String, Any>)
+	}
+
+	private fun editBookDialog(bookDetail: MyShopBookObject) {
 		val editBookInitValues = ManageShopAddBookToShopDialogInitFilterValues()
 		editBookInitValues.name = bookDetail.name
 		editBookInitValues.category = bookDetail.genre
 		editBookInitValues.author = bookDetail.author
 		editBookInitValues.price = bookDetail.shopPrice.toString()
-		editBookInitValues.type = ""
+		editBookInitValues.desc = bookDetail.description
+		editBookInitValues.type = bookDetail.type
 		editBookInitValues.quantity = bookDetail.remain.toString()
 
 
@@ -275,9 +304,9 @@ class ManageShopBooksFragment : Fragment() {
 					else
 						Toast.makeText(context, "Giá và số lượng tồn phải là số", Toast.LENGTH_SHORT).show()
 				else {
-					val dataObj = ManageShopNewBookObject(data["name"].toString(), data["genre"].toString(), data["author"].toString(), data["releaseDate"] as Timestamp, data["image"].toString(), data["price"].toString().toFloat(), data["desc"].toString(), "This decade", data["type"].toString(), data["quantity"].toString().toLong())
+					val dataObj = ManageShopNewBookObject(bookName, bookGenre, bookAuthor, data["releaseDate"] as Timestamp, bookImage, bookPrice.toFloat(), bookDesc, "This decade", bookType, bookQuantity.toLong())
 
-					addNewBook(dataObj)
+					editBook(bookDetail.id, dataObj)
 
 					this.dismiss()
 				}
@@ -334,7 +363,7 @@ class ManageShopBooksFragment : Fragment() {
 			bookPriceText.text = book.shopPrice.toString()
 
 			editBtn.setOnClickListener {
-				editBookDialog(view, book)
+				editBookDialog(book)
 			}
 
 			deleteBtn.setOnClickListener {

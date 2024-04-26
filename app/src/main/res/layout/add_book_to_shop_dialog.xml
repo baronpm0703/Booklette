@@ -218,7 +218,10 @@
                 android:textColorHint="#9B9B9B"
                 android:textColor="#000000"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:singleLine="false"
+                android:scrollHorizontally="false"
+                android:minLines="2"/>
 
         <EditText
                 android:id="@+id/bookPriceET"

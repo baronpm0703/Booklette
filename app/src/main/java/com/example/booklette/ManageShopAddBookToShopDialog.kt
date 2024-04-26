@@ -68,9 +68,8 @@ class ManageShopAddBookToShopDialog(
         return hashMapOf(
             "name" to bookName,
             "author" to bookAuthor,
-            "genre" to "Genre X",
+            "genre" to bookCategory,
             "releaseDate" to Timestamp.now(),
-            "category" to bookCategory,
             "type" to bookType,
             "desc" to bookDesc,
             "price" to bookPrice,

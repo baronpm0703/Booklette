@@ -110,10 +110,12 @@ class MyShopShopFragment : Fragment() {
 										val bookGenre = info.get("genre").toString()
 										val bookAuthor = info.get("author").toString()
 										val bookReleaseDate = info.get("releaseDate") as Timestamp
-										val bookPrice = book["price"] as Long
-										val bookRemain = book["remain"] as Long
-										val bookSold = book["sold"] as Long
+										val bookPrice = book["price"] as Number
+										val bookRemain = book["remain"].toString().toLong()
+										val bookSold = book["sold"].toString().toLong()
 										val bookStatus = book["status"].toString()
+										val bookDescription = info.get("description").toString()
+										val bookType = info.get("type").toString()
 										val bookRatings = info.get("review") as ArrayList<Map<String, Any>>
 										var bookRatingScore: Float = 0F
 										bookRatings.forEach {
@@ -130,10 +132,10 @@ class MyShopShopFragment : Fragment() {
 												bookDiscount = (it.documents[0].get("percent") as Long).toFloat() / 100
 
 											val newBookObject = MyShopBookObject(
-												bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice, bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate
+												bookId, bookName, bookGenre, bookAuthor, bookImg, bookPrice.toLong(), bookDiscount, bookRemain, bookSold, bookStatus, bookReleaseDate, bookDescription, bookType
 											)
 											val newRecommendedBookObject = HRecommendedBookObject(
-												bookId, bookImg, bookRatingScore, bookRatingCnt.toLong(), bookName, bookPrice
+												bookId, bookImg, bookRatingScore, bookRatingCnt.toLong(), bookName, bookPrice.toLong()
 											)
 
 											val dateFrom = Calendar.getInstance().apply { time = Timestamp.now().toDate() }
