@@ -267,7 +267,7 @@ class ManageShopBooksFragment : Fragment() {
 			bookPriceText.text = book.shopPrice.toString()
 
 			deleteBtn.setOnClickListener {
-				val delete = deleteBookDialog(book.id)
+				val delete = deleteBookDialog(book.id) as Boolean
 				if (!delete)
 					Toast.makeText(context, "fsafds", Toast.LENGTH_SHORT).show()
 			}

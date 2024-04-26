@@ -50,7 +50,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/sendReviewBtn"
+        android:id="@+id/deleteAllBtn"
 
         android:layout_width="370dp"
         android:layout_height="50dp"

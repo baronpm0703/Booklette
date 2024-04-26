@@ -16,6 +16,8 @@ import android.view.animation.Animation
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,14 +38,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
+
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
 import com.taufiqrahman.reviewratings.BarLabels
-import io.getstream.chat.android.client.ChatClient
-import io.getstream.chat.android.client.logger.ChatLogLevel
-import io.getstream.chat.android.offline.plugin.factory.StreamOfflinePluginFactory
-import io.getstream.chat.android.state.plugin.config.StatePluginConfig
-import io.getstream.chat.android.state.plugin.factory.StreamStatePluginFactory
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
@@ -90,6 +89,8 @@ class BookDetailFragment : Fragment() {
     private var userReviewList = ArrayList<UserReviewObject>()
     private var userInfo: UserReviewObject? = null
     private var oldRating: Float = 0.0F
+    private var isFollowed: MutableLiveData<Boolean> = MutableLiveData(false)
+
 
     private lateinit var bookList: Map<String, Any>
     private lateinit var bookDetail: Map<String, Any>
@@ -135,6 +136,10 @@ class BookDetailFragment : Fragment() {
             if (userInfo != null){
                 initValues.rating = userInfo!!.ratings
                 initValues.text = userInfo!!.description
+                val index = userInfo!!.wishListObject.indexOf(bookID)
+                if (index != -1)
+                    isFollowed.value = true
+                else isFollowed.value = false
             }
 
             reviewDialogBookDetail = ReviewDialogBookDetail(initValues)
@@ -503,6 +508,17 @@ class BookDetailFragment : Fragment() {
             }
         })
 
+        // Add to wishlist
+        isFollowed.observe(viewLifecycleOwner) {
+            binding.addToWishList.isChecked = it
+        }
+        binding.addToWishList.setOnClickListener{
+            val item = binding.addToWishList
+            item.isChecked = !item.isChecked
+            if (item.isChecked) item.playAnimation()
+        }
+
+
         return view
     }
 
@@ -675,6 +691,43 @@ class BookDetailFragment : Fragment() {
         }
 
     }
+
+    override fun onPause() {
+        super.onPause()
+        val item = binding.addToWishList
+
+        val docAccountRef = db.collection("accounts").whereEqualTo("UID", userInfo?.userID)
+
+        docAccountRef.get().addOnSuccessListener {
+            for (document in it) {
+                val userWishList = userInfo?.wishListObject
+
+                // Check is item existed in list
+                if (item.isChecked) {
+                    val index = userWishList?.indexOf(bookID) ?: -2
+                    if (index == -1){
+                        userWishList?.add(bookID)
+                    }
+                }
+                else {
+                    val index = userWishList?.indexOf(bookID) ?: -2
+                    if (index != -1){
+                        userWishList?.remove(bookID)
+                    }
+                }
+
+                if (userWishList != null)
+                    document.reference.update("wishlist", userWishList)
+                        .addOnSuccessListener {
+                            Log.i("update Wish List", "Success")
+                        }
+                        .addOnFailureListener {
+                            Log.i("update Wish List", "Failed")
+                        }
+            }
+        }
+
+    }
     suspend fun getInfoCurrentUser(UID: String): UserReviewObject? {
         var res: UserReviewObject? = null
         try {
@@ -684,6 +737,8 @@ class BookDetailFragment : Fragment() {
                 val uid = doc.data?.get("UID").toString()
                 val username = doc.data?.get("fullname").toString()
                 val avatar = doc.data?.get("avt").toString()
+                val wishListBookID = doc.data?.get("wishlist") as ArrayList<*>?
+
                 var rating = 0.0F
                 var cmt = ""
                 val bookRef = db.collection("books").whereEqualTo("bookID", bookID).get().await()
@@ -704,6 +759,9 @@ class BookDetailFragment : Fragment() {
                 }
 
                 res = UserReviewObject(uid, username, avatar, rating, cmt)
+                if (wishListBookID != null) {
+                    res.wishListObject = wishListBookID as ArrayList<String>
+                }
             }
         } catch (e: Exception){
             Log.e("Firebase Error", "Can't retrieve data")
@@ -723,7 +781,7 @@ class BookDetailFragment : Fragment() {
         return res
     }
 
-    fun checkDoesUserReviewExisted(UID: String): Int{
+    fun checkDoesUserReviewExist(UID: String): Int{
         if (userReviewList.isNotEmpty())
         {
             try {
@@ -743,7 +801,7 @@ class BookDetailFragment : Fragment() {
 
         // Update or Add new Review
         updateRatingAndComment(rating, cmt, images)
-        if (checkDoesUserReviewExisted(userInfo!!.userID) == -1){
+        if (checkDoesUserReviewExist(userInfo!!.userID) == -1){
             userReviewList.add(0, userInfo!!)
 
             // Update new AvgRating
@@ -783,7 +841,7 @@ class BookDetailFragment : Fragment() {
         }
         else {
             // If User has already commented
-            val index = checkDoesUserReviewExisted(userInfo!!.userID)
+            val index = checkDoesUserReviewExist(userInfo!!.userID)
 
 //            val oldRating = userReviewList[index].ratings // Old rating
             userReviewList[index] = userInfo!! // Now u can update to new rating

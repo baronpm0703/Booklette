@@ -6,6 +6,7 @@ class UserReviewObject {
     var avatar: String
     var ratings: Float
     var description: String
+    var wishListObject: ArrayList<String> = ArrayList()
 
     constructor(
         userID: String,
