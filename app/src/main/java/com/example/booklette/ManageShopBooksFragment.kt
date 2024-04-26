@@ -208,7 +208,9 @@ class ManageShopBooksFragment : Fragment() {
 
 						bookList[newBookID] = newStoreBookMap
 
-						store.update("items", bookList)
+						store.update("items", bookList).addOnSuccessListener {
+							addBookSuccessDialog()
+						}
 					}
 				}
 
@@ -218,8 +220,21 @@ class ManageShopBooksFragment : Fragment() {
 		}
 	}
 
+	private fun addBookSuccessDialog() {
+		val layoutInflater = LayoutInflater.from(requireContext())
+		val view = layoutInflater.inflate(R.layout.manageshop_addbook_success_dialog, null)
+		val builder = AlertDialog.Builder(requireContext())
+		builder.setView(view)
+		val dialog = builder.create()
+
+		view.findViewById<Button>(R.id.dismissBtn).setOnClickListener {
+			dialog.dismiss()
+		}
+
+		dialog.show()
+	}
+
 	private fun deleteBookDialog(bookId: String) {
-		Log.i("test", view.toString())
 		val layoutInflater = LayoutInflater.from(requireContext())
 		val view = layoutInflater.inflate(R.layout.manageshop_delete_dialog, null)
 		val builder = AlertDialog.Builder(requireContext())
@@ -233,7 +248,7 @@ class ManageShopBooksFragment : Fragment() {
 				)
 
 				storeRef.update(deleteBook as Map<String, Any>).addOnSuccessListener {
-					
+					dialog.dismiss()
 				}
 			}
 		}
@@ -267,9 +282,7 @@ class ManageShopBooksFragment : Fragment() {
 			bookPriceText.text = book.shopPrice.toString()
 
 			deleteBtn.setOnClickListener {
-				val delete = deleteBookDialog(book.id)
-				if (!delete)
-					Toast.makeText(context, "fsafds", Toast.LENGTH_SHORT).show()
+				deleteBookDialog(book.id)
 			}
 
 			singleFrame.setOnClickListener {
