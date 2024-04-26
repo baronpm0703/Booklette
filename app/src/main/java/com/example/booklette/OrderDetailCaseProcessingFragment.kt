@@ -3,6 +3,7 @@ package com.example.booklette
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -151,10 +152,17 @@ class OrderDetailCaseProcessingFragment : Fragment() {
 
 
         viewInvoice.setOnClickListener {
-            val eInvoiceFragment = EInvoiceFragment.newInstance(itemsMap!!)
+            // Tạo một instance mới của EInvoiceFragment
+            val eInvoiceFragment = EInvoiceFragment()
+            // Tạo Bundle để chứa orderId
             val args = Bundle()
+            // Đặt orderId vào Bundle
+            args.putString(ORDERID_PARAM, orderID)
+            // Đặt Bundle vào fragment
             eInvoiceFragment.arguments = args
+            // Lấy instance của homeActivity
             val homeAct = (activity as homeActivity)
+            // Chuyển đổi sang EInvoiceFragment và truyền stack hiện tại
             homeAct.changeFragmentContainer(eInvoiceFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
         }
 

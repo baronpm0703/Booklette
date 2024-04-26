@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -52,6 +53,7 @@ class UserFavoritesBookFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,8 +76,34 @@ class UserFavoritesBookFragment : Fragment() {
 
         binding.rvWishList.adapter = rvUserFavoritesBookAdapter
         binding.rvWishList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+
+        binding.deleteAllBtn.setOnClickListener {
+            wishList.clear()
+            rvUserFavoritesBookAdapter.updateWishList(wishList)
+            rvUserFavoritesBookAdapter.notifyDataSetChanged()
+            empTyWishList() // Update database
+        }
+
+
         // Inflate the layout for this fragment
         return view
+    }
+
+    fun empTyWishList(){
+        val docAccountRef = db.collection("accounts").whereEqualTo("UID", userInfo?.userID)
+
+        docAccountRef.get().addOnSuccessListener {
+            for (document in it) {
+                val item = ArrayList<String>()
+                document.reference.update("wishlist", item)
+                    .addOnSuccessListener {
+                        Log.i("update Wish List", "Success")
+                    }
+                    .addOnFailureListener {
+                        Log.i("update Wish List", "Failed")
+                    }
+            }
+        }
     }
 
     suspend fun getBookPrice1(bookID: String): Float {

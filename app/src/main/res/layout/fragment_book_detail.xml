@@ -126,6 +126,23 @@
 
                         </TextView>
 
+                        <com.varunest.sparkbutton.SparkButton
+                            android:id="@+id/addToWishList"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            app:sparkbutton_activeImage="@drawable/ic_heart_active"
+                            app:sparkbutton_inActiveImage="@drawable/ic_heart_inactive"
+
+                            app:sparkbutton_animationSpeed="1.5"
+
+                            app:sparkbutton_iconSize="20dp"
+                            android:layout_marginLeft="5dp"
+
+                            android:layout_marginBottom="5dp"
+
+                            app:sparkbutton_primaryColor="@color/chip_stroke_color_discount_booklette"
+                            app:sparkbutton_secondaryColor="@color/primary_blue" />
+
                     </LinearLayout>
 
                 </LinearLayout>

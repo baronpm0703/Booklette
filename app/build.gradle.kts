@@ -1,3 +1,5 @@
+import java.util.regex.Pattern.compile
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -182,4 +184,7 @@ dependencies {
     implementation("io.getstream:stream-chat-android-ui-components:6.0.2")
     implementation("io.getstream:stream-chat-android-offline:6.0.2")
     implementation("io.coil-kt:coil:2.4.0")
+
+    // Like button animation
+    implementation("com.github.varunest:sparkbutton:1.0.6")
 }
