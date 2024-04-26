@@ -147,17 +147,21 @@ class MyOrderItemFragment : Fragment() {
                     (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
                 }
                 // đã giao => trả hoặc xác nhận nhận hàng (không cho huỷ)
-
+                else if (orderItem.status.contains("đã giao",true)){
+                    val detailFragment = OrderDetailCaseDeliveredFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+                }
 
 
                 // thành công => viết review
-                else if (orderItem.status.contains("Thành công")){
-                    val detailFragment = OrderDetailCaseCompletedFragment.newInstance(orderItem.trackingNumber)
-                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
-                }
+//                else if (orderItem.status.contains("Thành công")){
+//                    val detailFragment = OrderDetailCaseDeliveredFragment.newInstance(orderItem.trackingNumber)
+//                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+//                }
                 // đơn bị huỷ thành công (ko thành công) => viết review
                 else{
-
+                    val detailFragment = OrderDetailCaseReviewFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
                 }
             }
         }

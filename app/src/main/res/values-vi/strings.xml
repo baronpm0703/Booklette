@@ -250,4 +250,5 @@
     <string name="chatActivityConversation">Cuộc trò chuyện</string>
     <string name="my_order_delivered_button">Đã giao hàng</string>
     <string name="e_invoice">Hóa đơn điện tử</string>
+    <string name="review">Nhận xét</string>
 </resources>

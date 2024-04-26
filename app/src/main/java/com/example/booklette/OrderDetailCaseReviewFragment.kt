@@ -1,15 +1,12 @@
 package com.example.booklette
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.booklette.databinding.FragmentOrderDetailCompletedBinding
+import com.example.booklette.databinding.FragmentOrderDetailReviewBinding
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
@@ -18,16 +15,11 @@ import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
 import java.util.Date
 
-/**
- * A simple [Fragment] subclass.
- * Use the [OrderDetailCaseCompletedFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 private const val ORDERID_PARAM = "param1"
-class OrderDetailCaseCompletedFragment : Fragment() {
+class OrderDetailCaseReviewFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
-    private var _binding: FragmentOrderDetailCompletedBinding? = null
+    private var _binding: FragmentOrderDetailReviewBinding? = null
 
 
     // This property is only valid between onCreateView and
@@ -45,7 +37,7 @@ class OrderDetailCaseCompletedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentOrderDetailCompletedBinding.inflate(inflater, container, false)
+        _binding = FragmentOrderDetailReviewBinding.inflate(inflater, container, false)
         val view = binding.root
 
         db = Firebase.firestore
@@ -139,52 +131,17 @@ class OrderDetailCaseCompletedFragment : Fragment() {
         backButton.setOnClickListener{
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-        // confirm order
-        val confirmButton = binding.orderDetailConfirmButton
-        confirmButton.setOnClickListener {
-            val dialogClickListener =
-                DialogInterface.OnClickListener { dialog, which ->
-                    when (which) {
-                        // !!will change to motion toast later!!
-                        DialogInterface.BUTTON_POSITIVE -> { // Chỗ này bị cấn ở UI vì cái status chỉ có hoàn thành, thiếu giao hàng, làm sao để xác nhận là hoàn thành?
-                            val docRef = orderID?.let { it1 -> db.collection("orders").document(it1) }
-                            docRef?.update("status","Hoàn thành")?.addOnSuccessListener {
-                                Toast.makeText(
-                                    context,
-                                    R.string.orderDetailConfirmSuccessfulArgument,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                requireActivity().onBackPressedDispatcher.onBackPressed()
-                            }?.addOnFailureListener{
-                                Toast.makeText(
-                                    context,
-                                    R.string.orderDetailConfirmFailedArgument,
-                                    Toast.LENGTH_SHORT
-                                ).show()
 
-                            }
-                        }
-                        DialogInterface.BUTTON_NEGATIVE ->
-                            {
+        // review order
+        val reviewButton = binding.orderDetailReviewButton
+        reviewButton.setOnClickListener {
 
-                        }
-                    }
-                }
-
-            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-
-            builder.setMessage(R.string.orderDetailConfirmlabel).setPositiveButton(R.string.yes, dialogClickListener)
-                .setNegativeButton(R.string.no, dialogClickListener).show()
-        }
-        // return order
-        val returnButton = binding.orderDetailReturnButton
-        returnButton.setOnClickListener {
-            val returnFragment = orderID?.let { it1 -> OrderDetailCaseReturnFragment.newInstance(it1) }
-            if (context is homeActivity){
-                if (returnFragment != null) {
-                    (context as homeActivity).changeFragmentContainer(returnFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1])
-                }
-            }
+//            val returnFragment = orderID?.let { it1 -> OrderDetailCaseReturnFragment.newInstance(it1) }
+//            if (context is homeActivity){
+//                if (returnFragment != null) {
+//                    (context as homeActivity).changeFragmentContainer(returnFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1])
+//                }
+//            }
         }
         return view
     }
@@ -201,7 +158,7 @@ class OrderDetailCaseCompletedFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
-            OrderDetailCaseCompletedFragment().apply {
+            OrderDetailCaseReviewFragment().apply {
                 arguments = Bundle().apply {
                     putString(ORDERID_PARAM, orderID)
                 }
