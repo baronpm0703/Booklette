@@ -86,11 +86,22 @@
 
             <ImageView
                 android:id="@+id/imagePicker"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="16dp"
                 android:src="@drawable/baseline_add_circle_outline_24"
                 app:layout_constraintStart_toStartOf="@+id/returnReasonLabel"
+                app:layout_constraintTop_toBottomOf="@+id/returnReasonLabel" />
+
+            <ImageView
+                android:id="@+id/imagePicker2"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                android:src="@drawable/baseline_add_circle_outline_24"
+                app:layout_constraintStart_toEndOf="@+id/imagePicker"
                 app:layout_constraintTop_toBottomOf="@+id/returnReasonLabel" />
 
 

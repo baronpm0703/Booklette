@@ -255,5 +255,5 @@
     <string name="e_invoice">Hóa đơn điện tử</string>
     <string name="review">Nhận xét</string>
     <string name="please_select_product_to_return">Hãy chọn sách bạn muốn trả</string>
-    <string name="write_your_review_here">Viết nhận xét của bạn tại đây</string>
+    <string name="write_your_review_here">Hãy chọn sách bạn muốn nhận xét</string>
 </resources>

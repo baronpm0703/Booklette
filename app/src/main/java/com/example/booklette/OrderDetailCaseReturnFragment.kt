@@ -1,23 +1,24 @@
 package com.example.booklette
 
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.booklette.databinding.FragmentOrderDetailProcessingBinding
 import com.example.booklette.databinding.FragmentOrderDetailReturnBinding
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import java.text.SimpleDateFormat
-import java.util.Date
+import com.squareup.picasso.Picasso
+
 
 /**
  * A simple [Fragment] subclass.
@@ -27,9 +28,12 @@ import java.util.Date
  */
 private const val ORDERID_PARAM = "param1"
 class OrderDetailCaseReturnFragment : Fragment() {
+    private var selectedImageUri: Uri? = null
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
     private var _binding: FragmentOrderDetailReturnBinding? = null
+    private lateinit var imagePicker: ImageView
+    private lateinit var imagePicker2: ImageView
 
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -83,12 +87,22 @@ class OrderDetailCaseReturnFragment : Fragment() {
                 }
         }
 
-
         // back
         val backButton = binding.backButton
         backButton.setOnClickListener{
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+        imagePicker = binding.imagePicker
+        imagePicker2 = binding.imagePicker2
+        imagePicker.setOnClickListener{
+            val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST)
+        }
+        imagePicker2.setOnClickListener{
+            val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST)
+        }
+
         // return button
         val returnButton = binding.returnButton
         returnButton.setOnClickListener {
@@ -123,6 +137,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
 //
 //            builder.setMessage(R.string.orderDetailProcessingCancelLabel).setPositiveButton(R.string.yes, dialogClickListener)
 //                .setNegativeButton(R.string.no, dialogClickListener).show()
+
         }
         return view
     }
@@ -136,6 +151,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
          * @param orderFullName Parameter 2.
          * @return A new instance of fragment OrderDetailFragment.
          */
+        private const val PICK_IMAGE_REQUEST = 1335
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
@@ -145,6 +161,23 @@ class OrderDetailCaseReturnFragment : Fragment() {
                 }
             }
     }
+    private fun setImageToImageView() {
+        selectedImageUri?.let { uri ->
+            Picasso.get().load(uri).into(imagePicker)
+        }
+        imagePicker2.visibility = View.VISIBLE
+    }
+    // Lấy ảnh từ user (Hai?)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1335 && resultCode == Activity.RESULT_OK && data != null) {
+            selectedImageUri = data.data
+            setImageToImageView()
+        }
+        Toast.makeText(context,selectedImageUri.toString(),Toast.LENGTH_SHORT).show()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

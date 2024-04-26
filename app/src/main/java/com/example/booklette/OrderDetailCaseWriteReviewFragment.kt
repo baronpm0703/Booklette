@@ -1,19 +1,30 @@
 package com.example.booklette
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentOrderDetailWriteReviewBinding
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.squareup.picasso.Picasso
+
 private const val ORDERID_PARAM = "param1"
 class OrderDetailCaseWriteReviewFragment : Fragment() {
+    private var selectedImageUri: Uri? = null
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
     private var _binding: FragmentOrderDetailWriteReviewBinding? = null
+    private lateinit var imagePicker: ImageView
+    private lateinit var imagePicker2: ImageView
 
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -67,7 +78,18 @@ class OrderDetailCaseWriteReviewFragment : Fragment() {
                 }
         }
 
-
+        imagePicker = binding.imagePicker
+        imagePicker2 = binding.imagePicker2
+        imagePicker.setOnClickListener{
+            val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(pickImageIntent,PICK_IMAGE_REQUEST
+            )
+        }
+        imagePicker2.setOnClickListener{
+            val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST
+            )
+        }
         // back
         val backButton = binding.backButton
         backButton.setOnClickListener{
@@ -119,7 +141,10 @@ class OrderDetailCaseWriteReviewFragment : Fragment() {
          * @param orderID Parameter 1.
          * @param orderFullName Parameter 2.
          * @return A new instance of fragment OrderDetailFragment.
+         *
          */
+
+        private const val PICK_IMAGE_REQUEST = 1335
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
@@ -128,6 +153,22 @@ class OrderDetailCaseWriteReviewFragment : Fragment() {
                     putString(ORDERID_PARAM, orderID)
                 }
             }
+    }
+    private fun setImageToImageView() {
+        selectedImageUri?.let { uri ->
+            Picasso.get().load(uri).into(imagePicker)
+        }
+        imagePicker2.visibility = View.VISIBLE
+    }
+    // Lấy ảnh từ user (Hai?)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1335 && resultCode == Activity.RESULT_OK && data != null) {
+            selectedImageUri = data.data
+            setImageToImageView()
+        }
+        Toast.makeText(context,selectedImageUri.toString(), Toast.LENGTH_SHORT).show()
     }
     override fun onDestroyView() {
         super.onDestroyView()

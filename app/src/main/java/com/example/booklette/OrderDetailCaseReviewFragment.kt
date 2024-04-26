@@ -142,6 +142,16 @@ class OrderDetailCaseReviewFragment : Fragment() {
 //                    (context as homeActivity).changeFragmentContainer(returnFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1])
 //                }
 //            }
+            var bdFragment = BookDetailFragment()
+
+            var bundle = Bundle()
+            //waiting for judgment
+//            bundle.putString("bookID", this.bookID)
+//
+//            bdFragment.arguments = bundle
+//
+//            val homeAct = (context as homeActivity)
+//            homeAct.changeFragmentContainer(bdFragment, context.smoothBottomBarStack[context.smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
         }
         return view
     }
