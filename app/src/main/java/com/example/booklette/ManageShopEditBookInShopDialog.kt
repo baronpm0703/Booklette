@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.AddBookToShopDialogBinding
+import com.example.booklette.databinding.EditBookInShopDialogBinding
 import com.example.booklette.model.ManageShopNewBookObject
 import com.example.booklette.model.Photo
 import com.google.firebase.Firebase
@@ -21,12 +22,12 @@ import com.maxkeppeler.sheets.core.Sheet
 import com.maxkeppeler.sheets.core.SheetStyle
 
 
-class ManageShopAddBookToShopDialog(
+class ManageShopEditBookInShopDialog(
     private var initValue: ManageShopAddBookToShopDialogInitFilterValues
 ): Sheet() {
     override val dialogTag = "AddBook"
 
-    private lateinit var binding: AddBookToShopDialogBinding
+    private lateinit var binding: EditBookInShopDialogBinding
     private var bookName: String = ""
     private var bookAuthor: String = ""
     private var bookCategory: String = ""
@@ -97,7 +98,7 @@ class ManageShopAddBookToShopDialog(
     }
 
     override fun onCreateLayoutView(): View {
-        return AddBookToShopDialogBinding.inflate(LayoutInflater.from(activity))
+        return EditBookInShopDialogBinding.inflate(LayoutInflater.from(activity))
             .also { binding = it }.root
     }
 
@@ -255,15 +256,15 @@ class ManageShopAddBookToShopDialog(
 //        binding.chosenPhoto.visibility = View.VISIBLE
 //    }
 
-    fun build(ctx: Context, width: Int? = null, func: ManageShopAddBookToShopDialog.() -> Unit): ManageShopAddBookToShopDialog {
+    fun build(ctx: Context, width: Int? = null, func: ManageShopEditBookInShopDialog.() -> Unit): ManageShopEditBookInShopDialog {
         this.windowContext = ctx
         this.width = width
         this.func()
         return this
     }
 
-    /** Build and show [ManageShopAddBookToShopDialog] directly. */
-    fun show(ctx: Context, width: Int? = null, func: ManageShopAddBookToShopDialog.() -> Unit): ManageShopAddBookToShopDialog {
+    /** Build and show [ManageShopEditBookInShopDialog] directly. */
+    fun show(ctx: Context, width: Int? = null, func: ManageShopEditBookInShopDialog.() -> Unit): ManageShopEditBookInShopDialog {
         this.windowContext = ctx
         this.width = width
         this.func()
