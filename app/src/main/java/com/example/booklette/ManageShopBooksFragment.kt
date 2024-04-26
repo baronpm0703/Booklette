@@ -266,11 +266,11 @@ class ManageShopBooksFragment : Fragment() {
 			bookAuthorText.text = book.author
 			bookPriceText.text = book.shopPrice.toString()
 
-//			deleteBtn.setOnClickListener {
-//				val delete = deleteBookDialog(book.id)
-//				if (!delete)
-//					Toast.makeText(context, "fsafds", Toast.LENGTH_SHORT).show()
-//			}
+			deleteBtn.setOnClickListener {
+				val delete = deleteBookDialog(book.id) as Boolean
+				if (!delete)
+					Toast.makeText(context, "fsafds", Toast.LENGTH_SHORT).show()
+			}
 
 			singleFrame.setOnClickListener {
 				if (context is homeActivity) {
