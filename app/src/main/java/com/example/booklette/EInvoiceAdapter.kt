@@ -1,19 +1,22 @@
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.R
+import DetailInvoiceItem
 
-class EInvoiceAdapter(private val itemsMap: Map<String, Any>?) :
-    RecyclerView.Adapter<EInvoiceAdapter.ViewHolder>() {
+class EInvoiceAdapter(
+    private val context: Context,
+    private var itemList: ArrayList<DetailInvoiceItem> = ArrayList()
+) : RecyclerView.Adapter<EInvoiceAdapter.ViewHolder>() {
     // ViewHolder để giữ các thành phần view trong mỗi mục của RecyclerView
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val itemName: TextView = view.findViewById(R.id.orderDetailItemName)
-        val itemAmount: TextView = view.findViewById(R.id.orderDetailItemAmount)
-        val itemPrice: TextView = view.findViewById(R.id.orderDetailItemPrice)
-        val tax: TextView = view.findViewById(R.id.tax)
-        val totalAmount: TextView = view.findViewById(R.id.totalAmount)
+        val itemName: TextView = view.findViewById(R.id.orderItemName)
+        val itemQuantity: TextView = view.findViewById(R.id.orderItemQuantity)
+        val itemPrice: TextView = view.findViewById(R.id.orderItemPrice)
+        val totalAmount: TextView = view.findViewById(R.id.orderItemAmount)
     }
     // onCreateViewHolder - Tạo ViewHolder mới khi RecyclerView cần một item view mới
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,17 +27,15 @@ class EInvoiceAdapter(private val itemsMap: Map<String, Any>?) :
 
     // onBindViewHolder - Gắn dữ liệu vào ViewHolder
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        itemsMap?.let { map ->
-            val itemID = map.keys.elementAt(position)
-            val itemData = map[itemID] as? Map<String, Any>
-
-            holder.itemName.text = itemData?.get("name").toString()
-            holder.itemAmount.text = itemData?.get("quantity").toString()
-            holder.itemPrice.text = itemData?.get("price").toString()
-            // Tùy chỉnh cho các TextView khác nếu cần
-        }
+        val item = itemList[position]
+        holder.itemName.text = item.name
+        holder.itemQuantity.text = item.quantity.toString()
+        holder.itemPrice.text = item.price.toString()
+        holder.totalAmount.text = item.totalSum.toString()
     }
-    override fun getItemCount(): Int {
-        return itemsMap?.size ?: 0
+    override fun getItemCount(): Int = itemList.size
+    fun getItemInfo(position: Int): DetailInvoiceItem {
+        // Trả về thông tin của item tại vị trí được chỉ định
+        return itemList[position]
     }
 }

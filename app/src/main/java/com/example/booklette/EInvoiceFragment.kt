@@ -1,9 +1,13 @@
 package com.example.booklette
 
+import DetailInvoiceItem
 import EInvoiceAdapter
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +16,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentEInvoiceBinding
-import com.example.booklette.databinding.FragmentOrderDetailProcessingBinding
+import com.example.booklette.model.CartObject
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.io.Serializable
@@ -35,23 +41,17 @@ private const val ORDERNAME_PARAM = "param2"
  */
 class EInvoiceFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var orderID: String? = null
     private var _binding: FragmentEInvoiceBinding? = null
-    private var itemsMap: Map<String, Any>? = null
-
-
-    // This property is only valid between onCreateView and
-// onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var db : FirebaseFirestore
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            itemsMap = it.getSerializable("itemsMap") as? Map<String, Any>
-        }
-    }
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+    private var itemList: ArrayList<DetailInvoiceItem> = ArrayList()
+    private lateinit var adapter: EInvoiceAdapter
+
+    var orderID = arguments?.getString(ORDERID_PARAM)
 
     // Trong phương thức companion object newInstance, nhận thêm một tham số để truyền dữ liệu
+    @SuppressLint("NotifyDataSetChanged")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,40 +60,93 @@ class EInvoiceFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentEInvoiceBinding.inflate(inflater, container, false)
         val view = binding.root
+        adapter = EInvoiceAdapter(requireContext(), itemList)
 
         db = Firebase.firestore
+        auth = Firebase.auth
 
-        itemsMap = arguments?.getSerializable("itemsMap") as? Map<String, Any>
+        orderID = arguments?.getString(ORDERID_PARAM)
 
-        val recyclerView = binding.rvEinvoiceItem
-        val adapter = EInvoiceAdapter(itemsMap)
-        recyclerView.adapter = adapter
+        Log.d("orderid", orderID.toString())
 
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // back
-        val backButton = binding.ivBackToPrev
-        backButton.setOnClickListener{
+        binding.rvEinvoiceItem.adapter = adapter
+        binding.rvEinvoiceItem.layoutManager = LinearLayoutManager(requireContext())
+        if(itemList.size == 0){
+            loadItemListData()
+        }
+        else {
+            binding.rvEinvoiceItem.visibility = View.VISIBLE
+        }
+        binding.ivBackToPrev.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+        // Other code for handling UI interactions
 
-
-        // cancel order
         return view
     }
+
+    fun loadItemListData() {
+        itemList.clear()
+        binding.rvEinvoiceItem.visibility = View.GONE
+        binding.orderId.text = orderID.toString()
+        orderID?.let {
+            db.collection("orders")
+                .document(it)
+                .get()
+                .addOnSuccessListener { document ->
+                    val orderData = document.data
+                    binding.subtotal.text = orderData?.get("totalSum").toString()
+                    binding.totalAmount.text = orderData?.get("totalSum").toString()
+                    binding.moneyCollected.text = orderData?.get("totalSum").toString()
+                    binding.customerAddress.text = orderData?.get("shippingAddress").toString()
+
+                    val timeStamp = orderData?.get("creationDate") as Timestamp
+
+                    val date: Date? = timeStamp?.toDate()
+                    val sdf = SimpleDateFormat("dd-MM-yyyy")
+
+                    binding.invoiceDate.text = sdf.format(date).toString()
+                    if (orderData?.get("items") != null) {
+                        val bookList = orderData?.get("items") as? Map<String, Any>
+                        bookList?.let { bookListData ->
+                            for (item in bookListData) {
+                                val itemId = item.key
+                                val quantity = (item.value as? Map<String, Any>)?.get("quantity") as? Number
+                                val totalSum = (item.value as? Map<String, Any>)?.get("totalSum") as? Number
+                                db.collection("books")
+                                    .whereEqualTo("bookID", itemId)
+                                    .get()
+                                    .addOnSuccessListener { bookDocument ->
+                                        for (eachBook in bookDocument) {
+                                            itemList.add(
+                                                DetailInvoiceItem(
+                                                    eachBook.data["name"].toString(),
+                                                    quantity?.toInt() ?: 1,
+                                                    (totalSum?.toFloat() ?: 0.0F) / (quantity?.toFloat() ?: 1.0F),
+                                                    totalSum?.toFloat() ?: 0.0F
+                                                )
+                                            )
+                                        }
+
+                                        adapter.notifyDataSetChanged()
+
+                                        Handler().postDelayed({
+                                            binding.rvEinvoiceItem.visibility = View.VISIBLE
+                                        }, 2000)
+                                    }
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("loadItemListData", "Error loading item list: $e")
+                }
+        }
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(itemsMap: Map<String, Any>): EInvoiceFragment {
-            val fragment = EInvoiceFragment()
-            val args = Bundle()
-            args.putSerializable("itemsMap", itemsMap as Serializable)
-            fragment.arguments = args
-            return fragment
-        }
     }
 }
