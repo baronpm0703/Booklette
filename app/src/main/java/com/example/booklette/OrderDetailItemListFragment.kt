@@ -147,7 +147,9 @@ class OrderDetailItemListFragment : Fragment() {
             context.resources.displayMetrics
         ).toInt()
     }
-
+    fun getListClickedBookID(): List<String>{
+        return adapter.getCheckedItems()
+    }
     companion object {
 
         // TODO: Customize parameter argument names

@@ -35,6 +35,8 @@ class OrderDetailCaseReturnFragment : Fragment() {
     private var _binding: FragmentOrderDetailReturnBinding? = null
     private lateinit var imagePicker: ImageView
     private lateinit var imagePicker2: ImageView
+    private lateinit var cancelImagePicker: ImageView
+    private lateinit var cancelImagePicker2: ImageView
     private var URI1: String = ""
     private var URI2: String = ""
     // This property is only valid between onCreateView and
@@ -67,15 +69,13 @@ class OrderDetailCaseReturnFragment : Fragment() {
                 .get()
                 .addOnSuccessListener {document->
                         val orderData = document.data
-                        val itemsMap = orderData?.get("items") as? Map<String, Any>
+                        val itemsMap = orderData?.get("items") as? Map<String, Map<String,Any>>
                         var totalQuantity: Long = 0
                         itemsMap?.forEach { (itemID, itemData) ->
 
-                            val itemMap = itemData as? Map<String, Any>
-
                             //Log.d("number",itemMap.toString())
-                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toLong()
-                            totalQuantity += itemMap?.get("quantity") as Long
+                            totalQuantity += ((itemData )["quantity"] as? Long) ?: 0
+                            tempTotalOrgMoney += (itemData["totalSum"] as? Long ?: 0)
                         }
 
                         // setup recycler view for books
@@ -96,6 +96,8 @@ class OrderDetailCaseReturnFragment : Fragment() {
         }
         imagePicker = binding.imagePicker
         imagePicker2 = binding.imagePicker2
+        cancelImagePicker = binding.cancelImage1
+        cancelImagePicker2 = binding.cancelImage2
         imagePicker.setOnClickListener{
             val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST1)
@@ -104,7 +106,17 @@ class OrderDetailCaseReturnFragment : Fragment() {
             val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST2)
         }
+        cancelImagePicker.setOnClickListener{
+            imagePicker.setImageResource(R.drawable.baseline_add_circle_outline_24)
+            cancelImagePicker.visibility = View.GONE
+            URI1 = ""
+        }
 
+        cancelImagePicker2.setOnClickListener{
+            imagePicker2.setImageResource(R.drawable.baseline_add_circle_outline_24)
+            cancelImagePicker2.visibility = View.GONE
+            URI2 = ""
+        }
         // return button
         val returnButton = binding.returnButton
         returnButton.setOnClickListener {
@@ -172,14 +184,19 @@ class OrderDetailCaseReturnFragment : Fragment() {
         selectedImageUri?.let { uri ->
             Picasso.get().load(uri).into(imagePicker)
             URI1 = selectedImageUri.toString()
+            Toast.makeText(context,URI1,Toast.LENGTH_SHORT).show()
+
         }
+        cancelImagePicker.visibility = View.VISIBLE
         imagePicker2.visibility = View.VISIBLE
     }
     private fun setImageToImageView2() {
         selectedImageUri?.let { uri ->
             Picasso.get().load(uri).into(imagePicker2)
             URI2 = selectedImageUri.toString()
+            Toast.makeText(context,URI2,Toast.LENGTH_SHORT).show()
         }
+        cancelImagePicker2.visibility = View.VISIBLE
     }
     // Lấy ảnh từ user (Hai?)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -193,7 +210,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
             selectedImageUri = data.data
             setImageToImageView2()
         }
-        Toast.makeText(context,selectedImageUri.toString(),Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onDestroyView() {
