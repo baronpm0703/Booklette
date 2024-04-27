@@ -281,7 +281,7 @@ class CartFragment : Fragment() {
             val background = RectF(itemView.right.toFloat() + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
             val newHeight = itemHeight*0.85f
             val bottomMargin = (itemHeight - newHeight)
-            val adjustedBackground = RectF(background.left, background.top + bottomMargin -3f, background.right, background.bottom-10f)
+            val adjustedBackground = RectF(background.left, background.top + bottomMargin +2.5f, background.right, background.bottom-18)
             c.drawRoundRect(adjustedBackground, 50f, 50f, p)
             val iconSize = 70 // Kích thước của biểu tượng xóa
             val iconMargin = 70// Chuyển đổi itemHeight sang kiểu Int
@@ -342,8 +342,6 @@ class CartFragment : Fragment() {
             cartObject?.let { cartItem ->
                 deleteCartItem(cartItem, position)
             }
-//            adapter?.removeItem(position)
-//            adapter?.notifyItemRemoved(position)
             dialog.dismiss()
         }
 

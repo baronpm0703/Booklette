@@ -2,6 +2,7 @@ package com.example.booklette
 
 import ShipAddressObject
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.content.res.ResourcesCompat
 import com.example.booklette.databinding.AddShipAddressBinding
 import com.google.android.material.chip.Chip
 import com.google.firebase.auth.FirebaseAuth
@@ -16,6 +18,8 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 import kotlin.math.log
 
 class AddShipAddressDialog: Sheet() {
@@ -59,6 +63,13 @@ class AddShipAddressDialog: Sheet() {
     }
 
     private fun saveAddressToFirebase() {
+        val shipAddressFragment = ShipAddressFragment()
+        val args = Bundle()
+        shipAddressFragment.arguments = args
+        val homeAct = (activity as? homeActivity)
+        homeAct?.supportFragmentManager?.popBackStack()
+        homeAct?.changeFragmentContainer(shipAddressFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+
         val receiverName = binding.addRecieverName.text.toString()
         val receiverPhone = binding.addRecieverPhone.text.toString()
         val province = binding.addProvince.text.toString()
@@ -103,6 +114,15 @@ class AddShipAddressDialog: Sheet() {
                 account.reference.update("shippingAddress", addressList)
                     .addOnSuccessListener {
                         Toast.makeText(requireContext(), "Address added successfully", Toast.LENGTH_SHORT).show()
+                        MotionToast.createColorToast(
+                            context as Activity,
+                            getString(R.string.delete_cart_sucessfuly),
+                            getString(R.string.delete_notification),
+                            MotionToastStyle.SUCCESS,
+                            MotionToast.GRAVITY_BOTTOM,
+                            MotionToast.SHORT_DURATION,
+                            ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular)
+                        )
                         dismiss()
                     }
                     .addOnFailureListener { exception ->
