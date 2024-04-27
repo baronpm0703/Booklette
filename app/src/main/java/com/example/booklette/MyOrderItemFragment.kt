@@ -68,24 +68,30 @@ class MyOrderItemFragment : Fragment() {
                     val date: Date? = timeStamp?.toDate()
                     val trackingNumber: String = orderID
                     var orderName = ""
-                    val itemsMap = orderData?.get("items") as? Map<String, Any>
                     var totalQuantity: Long = 0
-                    val fetchBookNamesTasks = itemsMap?.map { (itemID, itemData) ->
-                        val itemMap = itemData as? Map<String, Any>
-                        totalQuantity += itemMap?.get("quantity") as Long
+                    val itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
+                    Log.d("map",itemsMap.toString())
+                    val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
+                        itemMap.map { (itemId, itemData) ->
+                            Log.d("shopID", shopID)
+                            Log.d("itemId", itemId)
+                            Log.d("itemData", itemData.toString())
 
-                        db.collection("books")
-                            .whereEqualTo("bookID", itemID)
-                            .get()
-                            .addOnSuccessListener { bookSnapshot ->
-                                for (book in bookSnapshot.documents) {
-                                    val bookData = book.data
-                                    val bookName = bookData?.get("name") as? String
-                                    if (!bookName.isNullOrEmpty()) {
-                                        orderName += "$bookName, "
+                            totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
+
+                            db.collection("books")
+                                .whereEqualTo("bookID", itemId)
+                                .get()
+                                .addOnSuccessListener { bookSnapshot ->
+                                    for (book in bookSnapshot.documents) {
+                                        val bookData = book.data
+                                        val bookName = bookData?.get("name") as? String
+                                        if (!bookName.isNullOrEmpty()) {
+                                            orderName += "$bookName, "
+                                        }
                                     }
                                 }
-                            }
+                        }
                     }
 
                     Tasks.whenAllComplete(fetchBookNamesTasks!!)

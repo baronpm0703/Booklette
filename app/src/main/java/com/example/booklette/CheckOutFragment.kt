@@ -573,6 +573,9 @@ class CheckOutFragment : Fragment() {
         }
     }
 
+
+    // Space for momo
+    
     private fun calculateTotalAmount(): Float {
         var total = 0f
         for (item in selectedItems) {
