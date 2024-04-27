@@ -184,7 +184,7 @@ class CheckOutFragment : Fragment() {
             }
         })
 
-        binding.placeOrderBtn.setOnClickListener({
+        binding.placeOrderBtn.setOnClickListener {
             if (::radioButtonClicked.isInitialized) {
                 if (radioButtonClicked.text == getString(R.string.paypalMethod)) {
 //                    Toast.makeText(context, totalAmount.toString(), Toast.LENGTH_SHORT).show()
@@ -198,9 +198,10 @@ class CheckOutFragment : Fragment() {
                             e.printStackTrace()
                         }
                     }
-                }
-                else if (radioButtonClicked.text == getString(R.string.payOnDelivery)) {
-                    val selectedItemsMap: MutableMap<Any, HashMap<Any, Any>> = mutableMapOf()
+                } else if (radioButtonClicked.text == getString(R.string.payOnDelivery)) {
+                    val storeItemMap: MutableMap<Any, MutableMap<Any, HashMap<Any, Any>>> =
+                        mutableMapOf()
+
                     var totalAmount = 0.0F
 
                     for (cartObject in selectedItems) {
@@ -211,17 +212,36 @@ class CheckOutFragment : Fragment() {
                         // Create HashMap with quantity and totalSum
                         val itemData = hashMapOf<Any, Any>(
                             "quantity" to cartObject.bookQuantity,
-                            "totalSum" to totalSum
+                            "totalSum" to totalSum,
                         )
 
-                        // Add to selectedItemsMap with bookID as key
+                        val selectedItemsMap: MutableMap<Any, HashMap<Any, Any>> = mutableMapOf()
                         selectedItemsMap[cartObject.bookID.toString()] = itemData
+                        // Add to selectedItemsMap with bookID as key
+
+                        // Add to the map with same storeID
+                        val storeID = cartObject.storeID.toString()
+                        if (storeItemMap.containsKey(storeID)) {
+                            // If storeID already exists, retrieve its corresponding map
+                            val existingMap =
+                                storeItemMap[storeID] as MutableMap<Any, HashMap<Any, Any>>
+
+                            // Update the existing map with new data
+                            existingMap.putAll(selectedItemsMap)
+
+                            // Update storeItemMap with the modified map
+                            storeItemMap[storeID] = existingMap
+                        } else {
+                            // If storeID doesn't exist, simply add the selectedItemsMap
+                            storeItemMap[storeID] = selectedItemsMap
+                        }
                     }
 
+                    val x = 1
                     val data: HashMap<Any, Any> = hashMapOf(
                         "creationDate" to Timestamp(Date()),
                         "customerID" to auth.currentUser!!.uid.toString(),
-                        "items" to selectedItemsMap,
+                        "items" to storeItemMap,
                         "paymentMethod" to hashMapOf<Any, Any>(
                             "Type" to "COD",
                             "cardHolder" to "",
@@ -236,7 +256,7 @@ class CheckOutFragment : Fragment() {
                                 binding.addressZone.text.toString())
                     )
 
-                    db.collection("orders").add(data).addOnCompleteListener{documentReference ->
+                    db.collection("orders").add(data).addOnCompleteListener { documentReference ->
 //                            for (cartObject in selectedItems) {
 //                                val fieldMap = hashMapOf<Any, Any>(
 //                                    cartObject.bookID.toString() to FieldValue.delete()
@@ -246,13 +266,14 @@ class CheckOutFragment : Fragment() {
                             .whereEqualTo("UID", auth.currentUser!!.uid.toString())
                             .get().addOnSuccessListener { documents ->
                                 for (document in documents) {
-
-
                                     for (cartObject in selectedItems) {
 //                                            val fieldMap = hashMapOf<Any, Any>(
 //                                                cartObject.bookID.toString() to FieldValue.delete()
 //                                            )
-                                        db.collection("accounts").document(document.id).update("cart.${cartObject.bookID}", FieldValue.delete()).addOnSuccessListener { result ->
+                                        db.collection("accounts").document(document.id).update(
+                                            "cart.${cartObject.bookID}",
+                                            FieldValue.delete()
+                                        ).addOnSuccessListener { result ->
 
                                         }
                                     }
@@ -265,14 +286,17 @@ class CheckOutFragment : Fragment() {
                                     MotionToastStyle.SUCCESS,
                                     MotionToast.GRAVITY_BOTTOM,
                                     MotionToast.SHORT_DURATION,
-                                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+                                    ResourcesCompat.getFont(
+                                        context as Activity,
+                                        www.sanju.motiontoast.R.font.helvetica_regular
+                                    )
+                                )
 
                                 requireActivity().onBackPressedDispatcher.onBackPressed()
                             }
                     }
                 }
-            }
-            else {
+            } else {
                 MotionToast.createColorToast(
                     context as Activity,
                     getString(R.string.failed),
@@ -280,10 +304,13 @@ class CheckOutFragment : Fragment() {
                     MotionToastStyle.ERROR,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.SHORT_DURATION,
-                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+                    ResourcesCompat.getFont(
+                        context as Activity,
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
+                )
             }
-        })
-
+        }
 
         binding.ivBackToPrev.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()

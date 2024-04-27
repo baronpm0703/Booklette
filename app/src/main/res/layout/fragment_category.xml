@@ -141,14 +141,43 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="30dp"
-        android:text="@string/navigation_category"
-        android:textColor="@color/black"
+        android:text="FOR HCMUS"
+        android:textColor="#003F88"
         android:textSize="10pt"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TopSearchLayout">
 
     </TextView>
+
+    <ImageView
+        android:id="@+id/ivHCMUS"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView17"
+        android:src="@drawable/hcmus_bg_genre">
+    </ImageView>
+
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/navigation_category"
+        android:textColor="@color/black"
+        android:textSize="10pt"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivHCMUS">
+
+    </TextView>
+
+
 
     <GridView
         android:id="@+id/gvCategories"
@@ -163,7 +192,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17"
+        app:layout_constraintTop_toBottomOf="@+id/textView18"
         tools:listitem="@layout/fragment_category_grid_item"/>
 
 
