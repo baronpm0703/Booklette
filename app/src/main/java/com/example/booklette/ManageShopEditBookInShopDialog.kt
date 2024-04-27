@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StringRes
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.AddBookToShopDialogBinding
 import com.example.booklette.databinding.EditBookInShopDialogBinding
 import com.example.booklette.model.ManageShopNewBookObject
@@ -217,12 +219,12 @@ class ManageShopEditBookInShopDialog(
         if (h_linerLayout != null) {
             h_linerLayout.orientation = LinearLayoutManager.HORIZONTAL
         }
-//        binding.chosenPhoto.layoutManager = h_linerLayout
+        binding.chosenPhoto.layoutManager = h_linerLayout
 
-//        val itemDecoration: RecyclerView.ItemDecoration = DividerItemDecoration(
-//            activity,
-//            DividerItemDecoration.HORIZONTAL)
-//        binding.chosenPhoto.addItemDecoration(itemDecoration)
+        val itemDecoration: RecyclerView.ItemDecoration = DividerItemDecoration(
+            activity,
+            DividerItemDecoration.HORIZONTAL)
+        binding.chosenPhoto.addItemDecoration(itemDecoration)
 
         val initValues = InitFilterValuesReviewBookDetail()
         photoGalleryDialogBookDetail = PhotoGalleryDialogBookDetail(initValues)
@@ -232,7 +234,7 @@ class ManageShopEditBookInShopDialog(
                     style(SheetStyle.DIALOG)
                     onPositive {
                         this.dismiss()
-//                        updateChosenPhoto(getChosenPhoto())
+                        updateChosenPhoto(getChosenPhoto())
                     }
                 }
             }
@@ -247,13 +249,13 @@ class ManageShopEditBookInShopDialog(
     }
 
 
-//    @SuppressLint("NotifyDataSetChanged")
-//    fun updateChosenPhoto(dataPhoto: ArrayList<Photo>){
-//        this.dataPhoto = dataPhoto
-//        chosenPhotoAdapter.updateDataPhoto(this.dataPhoto)
-//        chosenPhotoAdapter.notifyDataSetChanged()
-//        binding.chosenPhoto.visibility = View.VISIBLE
-//    }
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateChosenPhoto(dataPhoto: ArrayList<Photo>){
+        this.dataPhoto = dataPhoto
+        chosenPhotoAdapter.updateDataPhoto(this.dataPhoto)
+        chosenPhotoAdapter.notifyDataSetChanged()
+        binding.chosenPhoto.visibility = View.VISIBLE
+    }
 
     fun build(ctx: Context, width: Int? = null, func: ManageShopEditBookInShopDialog.() -> Unit): ManageShopEditBookInShopDialog {
         this.windowContext = ctx

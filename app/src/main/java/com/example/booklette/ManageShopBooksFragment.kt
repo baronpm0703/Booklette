@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -29,8 +30,10 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
+import java.io.ByteArrayOutputStream
 import kotlin.math.abs
 import kotlin.math.round
 
@@ -137,50 +140,67 @@ class ManageShopBooksFragment : Fragment() {
 				if (id > max) max = id
 			}
 			val newBookID = "BK" + (max + 1)
-			val newBookMap = hashMapOf(
-				"author" to newBook.author,
-				"best-deal-sale" to 0.0,
-				"bookID" to newBookID,
-				"description" to newBook.description,
-				"genre" to newBook.genre,
-				"image" to newBook.image,
-				"name" to newBook.name,
-				"releaseDate" to newBook.releaseDate,
-				"review" to emptyList<Any>(),
-				"top-book" to newBook.topBook,
-				"type" to newBook.type
-			)
 
-			bookColl.add(newBookMap)
+			// Upload book image to storage
+			val storageRef = Firebase.storage.reference
+			val bookImage = newBook.image[0]
+			val imageRef = storageRef.child("Books/${newBookID}")
+			val baos = ByteArrayOutputStream()
+			val bitmap = bookImage.image
+			if (bitmap != null) {
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+			}
+			val data = baos.toByteArray()
+			imageRef.putBytes(data).addOnSuccessListener {
+				it.storage.downloadUrl.addOnSuccessListener { result ->
+					// Add to Books collection
+					val newBookMap = hashMapOf(
+						"author" to newBook.author,
+						"best-deal-sale" to 0.0,
+						"bookID" to newBookID,
+						"description" to newBook.description,
+						"genre" to newBook.genre,
+						"image" to result,
+						"name" to newBook.name,
+						"releaseDate" to newBook.releaseDate,
+						"review" to emptyList<Any>(),
+						"top-book" to newBook.topBook,
+						"type" to newBook.type
+					)
 
-			db.collection("accounts").whereEqualTo("UID", auth.uid).get()
-				.addOnSuccessListener { documents ->
-					if (documents.size() != 1) return@addOnSuccessListener	// Failsafe
+					bookColl.add(newBookMap)
 
-					val document = documents.documents[0]
-					val store = document.getDocumentReference("store")
-					store!!.get().addOnSuccessListener { storeSnapshot ->
-						val bookList = storeSnapshot.get("items") as HashMap<String, Map<String, Any>>
+					// Add book to current user's personal store
+					db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+						.addOnSuccessListener { documents ->
+							if (documents.size() != 1) return@addOnSuccessListener	// Failsafe
 
-						val newStoreBookMap = hashMapOf(
-							"discount" to "",
-							"price" to newBook.price,
-							"remain" to newBook.quantity,
-							"sold" to newBook.quantity,
-							"status" to ""
-						)
+							val document = documents.documents[0]
+							val store = document.getDocumentReference("store")
+							store!!.get().addOnSuccessListener { storeSnapshot ->
+								val bookList = storeSnapshot.get("items") as HashMap<String, Map<String, Any>>
 
-						bookList[newBookID] = newStoreBookMap
+								val newStoreBookMap = hashMapOf(
+									"discount" to "",
+									"price" to newBook.price,
+									"remain" to newBook.quantity,
+									"sold" to 0,
+									"status" to ""
+								)
 
-						store.update("items", bookList).addOnSuccessListener {
-							addBookSuccessDialog()
+								bookList[newBookID] = newStoreBookMap
+
+								store.update("items", bookList).addOnSuccessListener {
+									addBookSuccessDialog()
+								}
+							}
 						}
-					}
+
+					Handler().postDelayed({
+
+					}, 1000)
 				}
-
-			Handler().postDelayed({
-
-			}, 1000)
+			}
 		}
 	}
 
@@ -198,7 +218,7 @@ class ManageShopBooksFragment : Fragment() {
 						val bookGenre = data["genre"].toString()
 						val bookAuthor = data["author"].toString()
 						val bookReleaseDate = data["releaseDate"]
-						val bookImage = data["image"].toString()
+						val bookImage = addBookDialog.getImage()
 						val bookPrice = data["price"].toString()
 						val bookDesc = data["desc"].toString()
 						val bookType = data["type"].toString()
@@ -244,27 +264,42 @@ class ManageShopBooksFragment : Fragment() {
 	private fun editBook(bookId: String, bookDetail: ManageShopNewBookObject) {
 		val db = Firebase.firestore
 
-		val updatedBookDetail = hashMapOf(
-			"name" to bookDetail.name,
-			"description" to bookDetail.description,
-			"genre" to bookDetail.genre,
-			"type" to bookDetail.type,
-			"author" to bookDetail.author,
-			"image" to bookDetail.image,
-			"releaseDate" to bookDetail.releaseDate
-		)
-		val updatedShopBookDetail = hashMapOf(
-			"items.${bookId}.price" to bookDetail.price,
-			"items.${bookId}.remain" to bookDetail.quantity
-		)
-
-		val bookColl = db.collection("books")
-		bookColl.whereEqualTo("bookID", bookId).get().addOnSuccessListener {
-			val documentId = it.documents[0].id
-			bookColl.document(documentId).update(updatedBookDetail as Map<String, Any>)
+		// Upload book image to storage
+		val storageRef = Firebase.storage.reference
+		val bookImage = bookDetail.image[0]
+		val imageRef = storageRef.child("Books/${bookId}")
+		val baos = ByteArrayOutputStream()
+		val bitmap = bookImage.image
+		if (bitmap != null) {
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
 		}
+		val data = baos.toByteArray()
+		imageRef.putBytes(data).addOnSuccessListener {
+			it.storage.downloadUrl.addOnSuccessListener { result ->
+				// Add to Books collection
+				val updatedBookDetail = hashMapOf(
+					"name" to bookDetail.name,
+					"description" to bookDetail.description,
+					"genre" to bookDetail.genre,
+					"type" to bookDetail.type,
+					"author" to bookDetail.author,
+					"image" to result,
+					"releaseDate" to bookDetail.releaseDate
+				)
+				val updatedShopBookDetail = hashMapOf(
+					"items.${bookId}.price" to bookDetail.price,
+					"items.${bookId}.remain" to bookDetail.quantity
+				)
 
-		storeRef.update(updatedShopBookDetail as Map<String, Any>)
+				val bookColl = db.collection("books")
+				bookColl.whereEqualTo("bookID", bookId).get().addOnSuccessListener {
+					val documentId = it.documents[0].id
+					bookColl.document(documentId).update(updatedBookDetail as Map<String, Any>)
+				}
+
+				storeRef.update(updatedShopBookDetail as Map<String, Any>)
+			}
+		}
 	}
 
 	private fun editBookDialog(bookDetail: MyShopBookObject) {
@@ -287,7 +322,7 @@ class ManageShopBooksFragment : Fragment() {
 				val bookGenre = data["genre"].toString()
 				val bookAuthor = data["author"].toString()
 				val bookReleaseDate = data["releaseDate"]
-				val bookImage = data["image"].toString()
+				val bookImage = editBookDialog.getImage()
 				val bookPrice = data["price"].toString()
 				val bookDesc = data["desc"].toString()
 				val bookType = data["type"].toString()
