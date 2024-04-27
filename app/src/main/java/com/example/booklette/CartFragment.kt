@@ -28,6 +28,7 @@ import com.example.booklette.model.CartObject
 import com.example.booklette.model.VoucherObject
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 
@@ -290,7 +291,34 @@ class CartFragment : Fragment() {
             super.onChildDraw(c, recyclerView, viewHolder, clampedDX, dY, actionState, isCurrentlyActive)
         }
     }
-}
+    }
+
+    private fun deleteCartItem(item: CartObject, position: Int) {
+        if (item.bookID != null) {
+            db.collection("accounts")
+                .whereEqualTo("UID", auth.uid!!)
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        document.reference.update("cart.${item.bookID}", FieldValue.delete())
+                            .addOnSuccessListener {
+                                // Xóa thành công, cập nhật RecyclerView
+                                adapter.removeItem(position)
+                                adapter.notifyItemRemoved(position)
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w("hello", "Error deleting document", e)
+                                // Xử lý khi xóa thất bại
+                            }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("Firestore", "Error getting documents: ", exception)
+                }
+        } else {
+            Log.e("ok", "Item ID is null")
+        }
+    }
 
     private fun showDeleteConfirmationDialog(deletedItemInfo: String, position: Int) {
         val builder = AlertDialog.Builder(requireContext())
@@ -298,8 +326,12 @@ class CartFragment : Fragment() {
 
         builder.setPositiveButton("Delete") { dialog, which ->
             val adapter = binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter
-            adapter?.removeItem(position)
-            adapter?.notifyItemRemoved(position)
+            val cartObject = adapter?.getItemInfo(position)
+            cartObject?.let { cartItem ->
+                deleteCartItem(cartItem, position)
+            }
+//            adapter?.removeItem(position)
+//            adapter?.notifyItemRemoved(position)
             dialog.dismiss()
         }
 
@@ -320,4 +352,5 @@ class CartFragment : Fragment() {
 
         alertDialog.show()
     }
+
 }
