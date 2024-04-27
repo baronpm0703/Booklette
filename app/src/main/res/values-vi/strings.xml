@@ -182,7 +182,7 @@
     <string name="my_order_returned_button">Trả lại</string>
     <string name="my_order_detail_item_return_success">Hoàn trả thành công</string>
     <string name="my_order_detail_item_return_failed">Hoàn trả thất bại</string>
-    <string name="order_item_order">Đơn hàng №</string>
+    <string name="order_item_order">Đơn hàng </string>
     <string name="order_item_tracking_number">Mã đơn:</string>
     <string name="order_item_quantity">Số lượng:</string>
     <string name="order_item_total">Tổng:</string>
