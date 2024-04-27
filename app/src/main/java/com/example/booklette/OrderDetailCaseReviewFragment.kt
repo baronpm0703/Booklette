@@ -53,7 +53,7 @@ class OrderDetailCaseReviewFragment : Fragment() {
 
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
 
-        var tempTotalOrgMoney: Float = 0.0F
+        var tempTotalOrgMoney: Long = 0
         orderID?.let {
             db.collection("orders")
                 .document(it)
@@ -70,10 +70,10 @@ class OrderDetailCaseReviewFragment : Fragment() {
                             val itemMap = itemData as? Map<String, Any>
 
                             //Log.d("number",itemMap.toString())
-                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toFloat()
+                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toLong()
                             totalQuantity += itemMap?.get("quantity") as Long
                         }
-                        val totalMoney = (orderData?.get("totalSum") as Number).toFloat()
+                        val totalMoney = (orderData?.get("totalSum") as Number).toLong()
                         val status = orderData?.get("status") as String
 
                         val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
@@ -119,7 +119,8 @@ class OrderDetailCaseReviewFragment : Fragment() {
                                 deliveryMethodField.text = "Giao Hàng Nhanh (test)"
 
                                 discountField.text = "30% (test)"
-                                totalField.text = totalMoney.toString()
+                                val formattedMoney = formatMoney(totalMoney)
+                                totalField.text = formattedMoney
                             }
 
                 }
@@ -155,7 +156,11 @@ class OrderDetailCaseReviewFragment : Fragment() {
         }
         return view
     }
-
+    fun formatMoney(number: Long): String {
+        val numberString = number.toString()
+        val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
+        return numberString.replace(regex, "$1.") + " VND"
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of

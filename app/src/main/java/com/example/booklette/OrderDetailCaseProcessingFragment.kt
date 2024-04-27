@@ -71,7 +71,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
 
 
-        var tempTotalOrgMoney: Float = 0.0F
+        var tempTotalOrgMoney: Long = 0
         orderID?.let {
             db.collection("orders")
                 .document(it)
@@ -91,7 +91,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
 //                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toFloat()
 //                            totalQuantity += itemMap?.get("quantity") as Long
 //                        }
-                        val totalMoney = (orderData?.get("totalSum") as Number).toFloat()
+                        val totalMoney = (orderData?.get("totalSum") as Number).toLong()
                         val status = orderData?.get("status") as String
 
                         val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
@@ -107,7 +107,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                                 Log.d("itemData", itemData.toString())
 
                                 totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
-                                tempTotalOrgMoney += (itemData["totalSum"] as? Float ?: 0.0f)
+                                tempTotalOrgMoney += (itemData["totalSum"] as? Long ?: 0)
                                 db.collection("books")
                                     .whereEqualTo("bookID", itemId)
                                     .get()
@@ -164,7 +164,8 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                                 deliveryMethodField.text = "Giao Hàng Nhanh (test)"
 
                                 discountField.text = "30% (test)"
-                                totalField.text = totalMoney.toString()
+                                val formattedMoney = formatMoney(totalMoney)
+                                totalField.text = formattedMoney
                             }
 
                 }
@@ -219,6 +220,11 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                 .setNegativeButton(R.string.no, dialogClickListener).show()
         }
         return view
+    }
+    fun formatMoney(number: Long): String {
+        val numberString = number.toString()
+        val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
+        return numberString.replace(regex, "$1.") + " VND"
     }
 
     companion object {

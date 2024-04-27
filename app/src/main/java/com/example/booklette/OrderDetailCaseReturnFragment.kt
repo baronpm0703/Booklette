@@ -18,6 +18,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.squareup.picasso.Picasso
+import java.net.URI
 
 
 /**
@@ -34,7 +35,8 @@ class OrderDetailCaseReturnFragment : Fragment() {
     private var _binding: FragmentOrderDetailReturnBinding? = null
     private lateinit var imagePicker: ImageView
     private lateinit var imagePicker2: ImageView
-
+    private var URI1: String = ""
+    private var URI2: String = ""
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
@@ -58,7 +60,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
 
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
 
-        var tempTotalOrgMoney: Float = 0.0F
+        var tempTotalOrgMoney: Long = 0
         orderID?.let {
             db.collection("orders")
                 .document(it)
@@ -72,7 +74,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
                             val itemMap = itemData as? Map<String, Any>
 
                             //Log.d("number",itemMap.toString())
-                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toFloat()
+                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toLong()
                             totalQuantity += itemMap?.get("quantity") as Long
                         }
 
@@ -96,11 +98,11 @@ class OrderDetailCaseReturnFragment : Fragment() {
         imagePicker2 = binding.imagePicker2
         imagePicker.setOnClickListener{
             val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST)
+            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST1)
         }
         imagePicker2.setOnClickListener{
             val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST)
+            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST2)
         }
 
         // return button
@@ -141,7 +143,11 @@ class OrderDetailCaseReturnFragment : Fragment() {
         }
         return view
     }
-
+    fun formatMoney(number: Long): String {
+        val numberString = number.toString()
+        val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
+        return numberString.replace(regex, "$1.") + " VND"
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -151,7 +157,8 @@ class OrderDetailCaseReturnFragment : Fragment() {
          * @param orderFullName Parameter 2.
          * @return A new instance of fragment OrderDetailFragment.
          */
-        private const val PICK_IMAGE_REQUEST = 1335
+        private const val PICK_IMAGE_REQUEST1 = 13351
+        private const val PICK_IMAGE_REQUEST2 = 13352
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
@@ -164,16 +171,27 @@ class OrderDetailCaseReturnFragment : Fragment() {
     private fun setImageToImageView() {
         selectedImageUri?.let { uri ->
             Picasso.get().load(uri).into(imagePicker)
+            URI1 = selectedImageUri.toString()
         }
         imagePicker2.visibility = View.VISIBLE
+    }
+    private fun setImageToImageView2() {
+        selectedImageUri?.let { uri ->
+            Picasso.get().load(uri).into(imagePicker2)
+            URI2 = selectedImageUri.toString()
+        }
     }
     // Lấy ảnh từ user (Hai?)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 1335 && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == 13351 && resultCode == Activity.RESULT_OK && data != null) {
             selectedImageUri = data.data
             setImageToImageView()
+        }
+        else if (requestCode == 13352 && resultCode == Activity.RESULT_OK && data != null) {
+            selectedImageUri = data.data
+            setImageToImageView2()
         }
         Toast.makeText(context,selectedImageUri.toString(),Toast.LENGTH_SHORT).show()
     }

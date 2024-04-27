@@ -188,7 +188,11 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
         }
         return view
     }
-
+    fun formatMoney(number: Long): String {
+        val numberString = number.toString()
+        val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
+        return numberString.replace(regex, "$1.") + " VND"
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of

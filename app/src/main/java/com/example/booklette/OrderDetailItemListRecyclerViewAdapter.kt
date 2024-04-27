@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso
  */
 
 data class DetailBookItem(
-    val ID: String, val name: String, val author: String, val amount: Long, val price: Float,
+    val ID: String, val name: String, val author: String, val amount: Long, val price: Long,
     val imageUrl: String, val bookStoreName: String)
 class OrderDetailItemListRecyclerViewAdapter(
     private val values: List<DetailBookItem>,

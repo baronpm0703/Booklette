@@ -17,7 +17,7 @@ import java.util.Date
  */
 data class OrderDataClass(
     val ID: String,
-    val creationDate: Date, val trackingNumber: String, val quantity: Long, val total: Float, val status: String)
+    val creationDate: Date, val trackingNumber: String, val quantity: Long, val total: Long, val status: String)
 class MyOrderItemRecyclerViewAdapter(
     private var context: Context,
     private var values: List<OrderDataClass>
@@ -43,7 +43,7 @@ class MyOrderItemRecyclerViewAdapter(
         holder.trackingNumber.text = "  " + item.trackingNumber
 
         holder.quantityLabel.text = "  " + item.quantity.toString()
-        holder.totalLabel.text = "  " + item.total.toString()
+        holder.totalLabel.text = "  " + formatMoney(item.total)
 
         if (item.status.contains("xử lý", true)){
             holder.statusField.text = context.getString(R.string.my_order_processing_button)
@@ -65,7 +65,11 @@ class MyOrderItemRecyclerViewAdapter(
         }
         
     }
-
+    fun formatMoney(number: Long): String {
+        val numberString = number.toString()
+        val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
+        return numberString.replace(regex, "$1.") + " VND"
+    }
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(binding: MyOrderItemBinding) : RecyclerView.ViewHolder(binding.root) {

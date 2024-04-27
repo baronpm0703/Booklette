@@ -93,11 +93,10 @@ class OrderDetailItemListFragment : Fragment() {
                                         val imageUrl = bookData["image"].toString()
 
                                         val itemMap = itemData as? Map<*, *>
-                                        val price = itemMap?.get("totalSum") as Number
-                                        val floatPrice = price.toFloat()
+                                        val price = (itemMap?.get("totalSum") as Number).toLong()
                                         val quantity = itemMap?.get("quantity") as Long
 
-                                        val detailBookItem = DetailBookItem(id, name, author, quantity, floatPrice, imageUrl, bookStoreName)
+                                        val detailBookItem = DetailBookItem(id, name, author, quantity, price, imageUrl, bookStoreName)
                                         listBooks.add(detailBookItem)
                                     }
 
