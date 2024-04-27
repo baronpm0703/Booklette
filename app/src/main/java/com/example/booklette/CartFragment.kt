@@ -5,6 +5,7 @@ import android.graphics.Paint
 import CartFragmentRecyclerViewAdapter
 import CheckOutFragment
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import android.util.Log
+import androidx.core.content.res.ResourcesCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.booklette.model.CartObject
 import com.example.booklette.model.VoucherObject
@@ -30,6 +32,8 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -311,6 +315,14 @@ class CartFragment : Fragment() {
                                 // Xử lý khi xóa thất bại
                             }
                     }
+                    MotionToast.createColorToast(
+                        context as Activity,
+                        getString(R.string.delete_cart_sucessfuly),
+                        getString(R.string.delete_notification),
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.SHORT_DURATION,
+                        ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
                 }
                 .addOnFailureListener { exception ->
                     Log.e("Firestore", "Error getting documents: ", exception)

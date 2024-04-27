@@ -299,5 +299,7 @@
     <string name="please_select_product_to_return">Please select product to return</string>
     <string name="write_your_review_here">Please select product to review</string>
     <string name="write_review">Write Review</string>
+    <string name="delete_cart_sucessfuly">Delete sucessfully</string>
+    <string name="delete_notification">This Book has been deleted</string>
 
 </resources>

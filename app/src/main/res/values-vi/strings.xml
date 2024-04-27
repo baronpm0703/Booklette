@@ -256,4 +256,6 @@
     <string name="review">Nhận xét</string>
     <string name="please_select_product_to_return">Hãy chọn sách bạn muốn trả</string>
     <string name="write_your_review_here">Hãy chọn sách bạn muốn nhận xét</string>
+    <string name="delete_cart_sucessfuly">Xóa thành công</string>
+    <string name="delete_notification">Sách của bạn đã được xóa khỏi Giỏ hàng</string>
 </resources>

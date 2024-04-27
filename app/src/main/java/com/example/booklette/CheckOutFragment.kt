@@ -285,14 +285,6 @@ class CheckOutFragment : Fragment() {
         })
 
 
-
-//        binding.ivBackToPrev.setOnClickListener {
-//            val cartFragment = CartFragment()
-//            activity?.supportFragmentManager?.beginTransaction()
-//                ?.replace(R.id.fcvNavigation, cartFragment)
-//                ?.commit()
-//        }
-
         binding.ivBackToPrev.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
