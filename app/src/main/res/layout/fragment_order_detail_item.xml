@@ -26,11 +26,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-
             android:id="@+id/orderDetailItemShopName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_margin="8dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -69,7 +68,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/orderDetailItemImage"
         app:layout_constraintTop_toTopOf="@+id/orderDetailItemImage"
-        tools:text="TextView" />
+        app:layout_constrainedWidth="true"
+        tools:text="The Silence of the lamb" />
 
     <TextView
         android:id="@+id/orderDetailItemAuthor"
@@ -110,13 +110,13 @@
         android:id="@+id/orderDetailItemPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="TextView"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/orderDetailItemAmount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/orderDetailItemAmount"
-        app:layout_constraintTop_toTopOf="@+id/orderDetailItemAmount" />
+        app:layout_constraintTop_toTopOf="@+id/orderDetailItemAmount"
+        tools:text="TextView" />
 
 
 

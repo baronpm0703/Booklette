@@ -77,7 +77,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
                         }
 
                         // setup recycler view for books
-                        val itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!)
+                        val itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!,true, true)
                         childFragmentManager.beginTransaction()
                             .replace(orderItemLayout.id,itemsFragment)
                             .commit()

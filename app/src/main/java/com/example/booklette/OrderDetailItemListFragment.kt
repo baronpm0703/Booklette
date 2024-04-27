@@ -33,6 +33,9 @@ class OrderDetailItemListFragment : Fragment() {
     // Define a property to hold the itemsMap
     private lateinit var itemsMap: Map<String, Map<String,Any>>
     private var listBooks = arrayListOf<DetailBookItem>()
+
+    private var allowSelection: Boolean = false
+    private var allowMultipleSelection: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,6 +44,10 @@ class OrderDetailItemListFragment : Fragment() {
 
             // Retrieve itemsMap from arguments
             itemsMap = it.getSerializable(ARG_ITEMS_MAP) as? Map<String, Map<String,Any>> ?: emptyMap()
+
+            allowSelection = it.getBoolean(ARG_SELECTION_CHECK)
+
+            allowMultipleSelection = it.getBoolean(ARG_MULTIPLE_CHECK)
             Log.d("items",itemsMap.toString())
         }
     }
@@ -96,6 +103,12 @@ class OrderDetailItemListFragment : Fragment() {
 
                                     // Update the adapter after fetching all books
                                     adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
+                                    if (allowSelection){
+                                        adapter.allowSelection()
+                                        if (allowMultipleSelection){
+                                            adapter.allowMultiple()
+                                        }
+                                    }
                                     view.adapter = adapter
                                     view.layoutManager = LinearLayoutManager(context)
                                 }
@@ -141,14 +154,19 @@ class OrderDetailItemListFragment : Fragment() {
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
         const val ARG_ITEMS_MAP = "items-map"
+        const val ARG_SELECTION_CHECK = "default-false"
+        const val ARG_MULTIPLE_CHECK = "default-false"
         // TODO: Customize parameter initialization
         @JvmStatic
-        fun newInstance(columnCount: Int, itemsMap: Map<String, Any>): OrderDetailItemListFragment {
+        fun newInstance(columnCount: Int, itemsMap: Map<String, Any>, allowSelection: Boolean, allowMultipleSelection: Boolean): OrderDetailItemListFragment {
             return OrderDetailItemListFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                     // Pass itemsMap as an argument
                     putSerializable(ARG_ITEMS_MAP, itemsMap as Serializable)
+                    // Pass selection bool and multiple
+                    putBoolean(ARG_SELECTION_CHECK, allowSelection)
+                    putBoolean(ARG_MULTIPLE_CHECK, allowMultipleSelection)
                 }
             }
         }

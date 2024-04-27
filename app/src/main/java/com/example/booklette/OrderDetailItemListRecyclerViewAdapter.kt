@@ -1,8 +1,10 @@
 package com.example.booklette
 
  import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.ImageView
+ import android.view.View
+ import android.view.ViewGroup
+ import android.widget.CheckBox
+ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentOrderDetailItemBinding
@@ -19,8 +21,12 @@ data class DetailBookItem(
     val ID: String, val name: String, val author: String, val amount: Long, val price: Float,
     val imageUrl: String, val bookStoreName: String)
 class OrderDetailItemListRecyclerViewAdapter(
-    private val values: List<DetailBookItem>
+    private val values: List<DetailBookItem>,
+    private var allowSelection: Boolean = false, // Default to not allow to select
+    private var MultipleSelection: Boolean = false // Default to single selection
 ) : RecyclerView.Adapter<OrderDetailItemListRecyclerViewAdapter.ViewHolder>() {
+
+    private val checkedBookIDList = mutableListOf<String>() // List of positions of checked items
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -33,7 +39,12 @@ class OrderDetailItemListRecyclerViewAdapter(
         )
 
     }
-
+    fun allowSelection(){
+        allowSelection = true
+    }
+    fun allowMultiple(){
+        MultipleSelection = true
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
 //        holder.idView.text = item.id
@@ -46,10 +57,32 @@ class OrderDetailItemListRecyclerViewAdapter(
         holder.itemPrice.text = item.price.toString()
         if (item.imageUrl != "")
             Picasso.get().load(item.imageUrl).into(holder.itemImage)
+        if (allowSelection){
+            holder.itemCheckBox.setOnCheckedChangeListener { _, isChecked ->
+
+                if (isChecked) {
+                    if (!MultipleSelection) {
+                        checkedBookIDList.clear() // Clear previous selection if single selection is enabled
+                    }
+                    checkedBookIDList.add(item.ID)
+                } else {
+                    checkedBookIDList.remove(item.ID)
+                }
+
+
+            }
+        }
+        else{
+            holder.itemCheckBox.visibility = View.INVISIBLE
+            holder.itemCheckBox.isClickable = false
+        }
+
     }
 
     override fun getItemCount(): Int = values.size
-
+    fun getCheckedItems(): List<String> {
+        return checkedBookIDList
+    }
     inner class ViewHolder(binding: FragmentOrderDetailItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 //        val idView: TextView = binding.itemNumber
@@ -61,6 +94,7 @@ class OrderDetailItemListRecyclerViewAdapter(
         val itemPrice: TextView = binding.orderDetailItemPrice
         val itemImage: ImageView = binding.orderDetailItemImage
         val itemBookStore: TextView = binding.orderDetailItemShopName
+        val itemCheckBox: CheckBox = binding.orderDetailItemCheckBox
 //        override fun toString(): String {
 //            return super.toString() + " '" + contentView.text + "'"
 //        }

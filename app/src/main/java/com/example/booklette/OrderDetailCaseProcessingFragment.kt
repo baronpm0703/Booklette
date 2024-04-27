@@ -123,7 +123,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                             }
                         }
                         // setup recycler view for books
-                        val itemsFragment = OrderDetailItemListFragment.newInstance(1,itemsMap!!)
+                        val itemsFragment = OrderDetailItemListFragment.newInstance(1,itemsMap!!,false,false)
                         childFragmentManager.beginTransaction()
                             .replace(orderItemLayout.id,itemsFragment)
                             .commit()
