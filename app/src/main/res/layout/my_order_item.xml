@@ -6,7 +6,8 @@
     android:layout_height="180dp"
     android:orientation="horizontal"
     android:layout_margin="10dp"
-    android:background="@drawable/round_corner_order_item_gray">
+    android:background="@drawable/round_corner_order_item_white_with_shadow"
+    android:elevation="5dp">
 
     <TextView
         android:id="@+id/orderNumber"

@@ -1,16 +1,23 @@
 package com.example.booklette
 
+import VerticalSpaceItemDecoration
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentOrderDetailItemListBinding
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import java.io.Serializable
+
 
 /**
  * A fragment representing a list of Items.
@@ -103,21 +110,30 @@ class OrderDetailItemListFragment : Fragment() {
             }
         }
 
+        if (view is RecyclerView) {
+            with(view) {
+                layoutManager = when {
+                    columnCount <= 1 -> LinearLayoutManager(context)
+                    else -> GridLayoutManager(context, columnCount)
+                }
+                adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
+                val spacing = 20.dpToPx(context) // Convert 10dp to pixels
+                addItemDecoration(VerticalSpaceItemDecoration(spacing))
+            }
+        }
 
-                                        // Set the adapter
-//        if (view is RecyclerView) {
-//            with(view) {
-//                layoutManager = when {
-//                    columnCount <= 1 -> LinearLayoutManager(context)
-//                    else -> GridLayoutManager(context, columnCount)
-//                }
-//                adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
-//
-//            }
-//        }
+
+
 
 
         return view
+    }
+    fun Int.dpToPx(context: Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            this.toFloat(),
+            context.resources.displayMetrics
+        ).toInt()
     }
 
     companion object {

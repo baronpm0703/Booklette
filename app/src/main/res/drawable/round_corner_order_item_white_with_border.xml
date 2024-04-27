@@ -3,6 +3,7 @@
     android:shape="rectangle">
     <corners android:radius="20dp" /> <!-- Adjust the radius to control the roundness -->
     <solid android:color="@color/white" /> <!-- Set the button color -->
+    <stroke android:color="@color/black" android:width="1dp"/>
 <!--    <stroke-->
 <!--        android:width="2dp"-->
 <!--        android:color="#ECECEC"/> &lt;!&ndash; Adjust the border width &ndash;&gt;-->

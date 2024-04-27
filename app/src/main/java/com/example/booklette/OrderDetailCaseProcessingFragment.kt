@@ -140,7 +140,25 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                                 dateField.text = sdf.format(date)
 
                                 trackingNumberField.text = orderID
-                                statusField.text = status
+                                //statusField.text = status
+                                if (status.contains("xử lý", true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_processing_button)
+                                }
+                                else if (status.contains("huỷ",true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_cancelled_button)
+                                }
+                                else if (status.contains("trả thành công", true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_detail_item_return_success)
+                                }
+                                else if (status.contains("trả thất bại", true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_detail_item_return_failed)
+                                }
+                                else if (status.contains("thành công", true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_completed_button)
+                                }
+                                else if (status.contains("đã giao",true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_delivered_button)
+                                }
                                 shippingAddressField.text = shippingAddress
                                 paymentMethodField.text = paymentMethodType.toString()
                                 deliveryMethodField.text = "Giao Hàng Nhanh (test)"

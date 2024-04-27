@@ -116,7 +116,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:background="@drawable/round_corner_order_item_white"
+            android:background="@drawable/round_corner_order_item_white_with_shadow"
             android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -131,7 +131,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:background="@drawable/round_corner_order_item_white"
+            android:background="@drawable/round_corner_order_item_white_with_shadow"
             android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -216,7 +216,7 @@
                 android:textStyle="bold"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
 
                 app:layout_constraintStart_toStartOf="@+id/orderDetailPaymentMethodField"
                 app:layout_constraintTop_toTopOf="@+id/textView52" />
@@ -230,26 +230,32 @@
                 android:text=""
                 android:textStyle="bold"
                 app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/textView53"
                 app:layout_constraintTop_toTopOf="@+id/textView53" />
 
             <TextView
                 android:id="@+id/orderDetailDeliveryMethodField"
                 android:layout_width="wrap_content"
-                app:layout_constrainedWidth="true"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/orderDetailPaymentMethodField"
                 app:layout_constraintTop_toTopOf="@+id/textView54" />
 
             <TextView
                 android:id="@+id/orderDetailDiscountField"
                 android:layout_width="wrap_content"
-                app:layout_constrainedWidth="true"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/orderDetailDeliveryMethodField"
                 app:layout_constraintTop_toTopOf="@+id/textView55" />
 
@@ -262,6 +268,8 @@
                 android:textStyle="bold"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/orderDetailDiscountField"
                 app:layout_constraintTop_toTopOf="@+id/textView56"
                 app:layout_constraintVertical_bias="0.0" />
