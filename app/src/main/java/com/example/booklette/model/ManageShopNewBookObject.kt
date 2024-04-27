@@ -7,7 +7,7 @@ class ManageShopNewBookObject {
 	var genre: String
 	var author: String
 	var releaseDate: Timestamp
-	var image: String
+	var image: ArrayList<Photo>
 	var price: Float
 	var description: String
 	var topBook: String
@@ -19,7 +19,7 @@ class ManageShopNewBookObject {
 		genre: String,
 		author: String,
 		releaseDate: Timestamp,
-		image: String,
+		image: ArrayList<Photo>,
 		price: Float,
 		description: String,
 		topBook: String,

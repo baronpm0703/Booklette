@@ -59,20 +59,36 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/review_text_editor_round_corner"
-                android:orientation="vertical">
+                android:orientation="vertical" android:gravity="center"
+                android:padding="10dp">
 
             <ImageView
                     android:id="@+id/notFoundBooks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="17dp"
                     android:adjustViewBounds="true"
 
                     android:scaleType="centerCrop"
                     android:src="@drawable/managebook_addbookimg_icon"/>
 
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:visibility="invisible"
+                android:id="@+id/chosenPhoto"
+                android:layout_width="304dp"
+                android:layout_height="61dp"
+                android:layout_below="@+id/review_title"
+
+                android:background="@drawable/recyler_view_round_corner"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="30dp"
+
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:layout_toEndOf="@+id/add_photo_ln"/>
 
         <EditText
                 android:id="@+id/bookNameET"
