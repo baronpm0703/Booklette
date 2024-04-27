@@ -216,6 +216,7 @@
     <string name="my_order_detail_item_return_success">Return successfully</string>
     <string name="my_order_detail_item_return_failed">Return failed</string>
     <string name="order_item_order">Order </string>
+    <string name="review_instruction">Please choose a book to review!</string>
     <string name="order_item_tracking_number">Tracking number:</string>
     <string name="order_item_quantity">Quantity:</string>
     <string name="order_item_total">Total:</string>
@@ -298,7 +299,7 @@
     <string name="review">Review</string>
     <string name="please_select_product_to_return">Please select product to return</string>
     <string name="write_your_review_here">Please select product to review</string>
-    <string name="write_review">Write Review</string>
+    <string name="write_review">Write review</string>
     <string name="delete_cart_sucessfuly">Delete sucessfully</string>
     <string name="delete_notification">This Book has been deleted</string>
 

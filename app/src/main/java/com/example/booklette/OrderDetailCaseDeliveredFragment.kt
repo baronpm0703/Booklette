@@ -82,7 +82,7 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
                         val paymentMethodType = paymentMethod?.get("Type")
                         val shippingAddress = orderData?.get("shippingAddress") as String
                         // setup recycler view for books
-                        val itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!,false,false)
+                        val itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!,allowSelection = false,allowMultipleSelection = false)
                         childFragmentManager.beginTransaction()
                             .replace(orderItemLayout.id,itemsFragment)
                             .commit()

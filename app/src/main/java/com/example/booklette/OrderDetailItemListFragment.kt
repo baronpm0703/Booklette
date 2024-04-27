@@ -17,6 +17,7 @@ import com.example.booklette.databinding.FragmentOrderDetailItemListBinding
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import java.io.Serializable
+import kotlin.properties.Delegates
 
 
 /**
@@ -34,8 +35,8 @@ class OrderDetailItemListFragment : Fragment() {
     private lateinit var itemsMap: Map<String, Map<String,Any>>
     private var listBooks = arrayListOf<DetailBookItem>()
 
-    private var allowSelection: Boolean = false
-    private var allowMultipleSelection: Boolean = false
+    private var allowSelection by Delegates.notNull<Boolean>()
+    private var allowMultipleSelection by Delegates.notNull<Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,7 +49,7 @@ class OrderDetailItemListFragment : Fragment() {
             allowSelection = it.getBoolean(ARG_SELECTION_CHECK)
 
             allowMultipleSelection = it.getBoolean(ARG_MULTIPLE_CHECK)
-            Log.d("items",itemsMap.toString())
+
         }
     }
     private lateinit var bookIDs: ArrayList<String>
@@ -155,8 +156,8 @@ class OrderDetailItemListFragment : Fragment() {
         // TODO: Customize parameter argument names
         const val ARG_COLUMN_COUNT = "column-count"
         const val ARG_ITEMS_MAP = "items-map"
-        const val ARG_SELECTION_CHECK = "default-false"
-        const val ARG_MULTIPLE_CHECK = "default-false"
+        const val ARG_SELECTION_CHECK = "allow-selection"
+        const val ARG_MULTIPLE_CHECK = "allow-multiple-selection"
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int, itemsMap: Map<String, Any>, allowSelection: Boolean, allowMultipleSelection: Boolean): OrderDetailItemListFragment {
@@ -168,6 +169,7 @@ class OrderDetailItemListFragment : Fragment() {
                     // Pass selection bool and multiple
                     putBoolean(ARG_SELECTION_CHECK, allowSelection)
                     putBoolean(ARG_MULTIPLE_CHECK, allowMultipleSelection)
+                   
                 }
             }
         }

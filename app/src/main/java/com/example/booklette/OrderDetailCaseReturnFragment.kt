@@ -37,6 +37,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
     private lateinit var imagePicker2: ImageView
     private lateinit var cancelImagePicker: ImageView
     private lateinit var cancelImagePicker2: ImageView
+    private lateinit var itemsFragment: OrderDetailItemListFragment
     private var URI1: String = ""
     private var URI2: String = ""
     // This property is only valid between onCreateView and
@@ -79,7 +80,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
                         }
 
                         // setup recycler view for books
-                        val itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!,true, true)
+                        itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!, allowSelection = true, allowMultipleSelection = true)
                         childFragmentManager.beginTransaction()
                             .replace(orderItemLayout.id,itemsFragment)
                             .commit()

@@ -183,6 +183,7 @@
     <string name="my_order_detail_item_return_success">Hoàn trả thành công</string>
     <string name="my_order_detail_item_return_failed">Hoàn trả thất bại</string>
     <string name="order_item_order">Đơn hàng </string>
+    <string name="review_instruction">Hãy chọn 1 quyển sách để nhận xét!</string>
     <string name="order_item_tracking_number">Mã đơn:</string>
     <string name="order_item_quantity">Số lượng:</string>
     <string name="order_item_total">Tổng:</string>
@@ -256,6 +257,7 @@
     <string name="review">Nhận xét</string>
     <string name="please_select_product_to_return">Hãy chọn sách bạn muốn trả</string>
     <string name="write_your_review_here">Hãy chọn sách bạn muốn nhận xét</string>
+    <string name="write_review">Viết nhận xét</string>
     <string name="delete_cart_sucessfuly">Xóa thành công</string>
     <string name="delete_notification">Sách của bạn đã được xóa khỏi Giỏ hàng</string>
 </resources>

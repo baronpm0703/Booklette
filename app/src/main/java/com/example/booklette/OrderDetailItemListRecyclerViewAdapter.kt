@@ -58,8 +58,8 @@ class OrderDetailItemListRecyclerViewAdapter(
         if (item.imageUrl != "")
             Picasso.get().load(item.imageUrl).into(holder.itemImage)
         if (allowSelection){
+            holder.itemCheckBox.visibility = View.VISIBLE
             holder.itemCheckBox.setOnCheckedChangeListener { _, isChecked ->
-
                 if (isChecked) {
                     if (!MultipleSelection) {
                         checkedBookIDList.clear() // Clear previous selection if single selection is enabled
