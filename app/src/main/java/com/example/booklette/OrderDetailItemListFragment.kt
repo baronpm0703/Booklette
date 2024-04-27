@@ -24,7 +24,7 @@ class OrderDetailItemListFragment : Fragment() {
     private val binding get() = _binding!!
 
     // Define a property to hold the itemsMap
-    private lateinit var itemsMap: Map<String, Any>
+    private lateinit var itemsMap: Map<String, Map<String,Any>>
     private var listBooks = arrayListOf<DetailBookItem>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class OrderDetailItemListFragment : Fragment() {
             columnCount = it.getInt(ARG_COLUMN_COUNT)
 
             // Retrieve itemsMap from arguments
-            itemsMap = it.getSerializable(ARG_ITEMS_MAP) as? Map<String, Any> ?: emptyMap()
+            itemsMap = it.getSerializable(ARG_ITEMS_MAP) as? Map<String, Map<String,Any>> ?: emptyMap()
             Log.d("items",itemsMap.toString())
         }
     }
@@ -51,37 +51,60 @@ class OrderDetailItemListFragment : Fragment() {
         bookIDs = ArrayList()
 
 
-        itemsMap?.forEach { (itemID, itemData) ->
-            Log.d("itemID", itemID)
-            db.collection("books")
-                .whereEqualTo("bookID", itemID)
-                .get()
-                .addOnSuccessListener { querySnapshot ->
-                    for (document in querySnapshot) {
-                        val bookData = document.data
-                        val id = itemID
-                        val name = bookData["name"].toString()
-                        val author = bookData["author"].toString()
-                        val imageUrl = bookData["image"].toString()
+        itemsMap?.flatMap { (shopID, itemMap) ->
+            itemMap.map { (itemId, itemData) ->
+                Log.d("shopID", shopID)
+                Log.d("itemId", itemId)
+                Log.d("itemData", itemData.toString())
 
-                        val itemMap = itemData as? Map<*, *>
-                        val price = itemMap?.get("totalSum") as Number
-                        val floatPrice = price.toFloat()
-                        val quantity = itemMap?.get("quantity") as Long
+                // Get shop name
+                db.collection("accounts")
+                    .whereEqualTo("UID", shopID)
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        for (document in querySnapshot) {
+                            val storeData = document.data
+                            val bookStoreName = storeData["fullname"].toString()
 
-                        val detailBookItem = DetailBookItem(id, name, author, quantity, floatPrice, imageUrl)
-                        listBooks.add(detailBookItem)
+                            // Fetch books after getting store name
+                            db.collection("books")
+                                .whereEqualTo("bookID", itemId)
+                                .get()
+                                .addOnSuccessListener { bookQuerySnapshot ->
+                                    for (bookDocument in bookQuerySnapshot) {
+                                        val bookData = bookDocument.data
+                                        val id = itemId
+                                        val name = bookData["name"].toString()
+                                        val author = bookData["author"].toString()
+                                        val imageUrl = bookData["image"].toString()
+
+                                        val itemMap = itemData as? Map<*, *>
+                                        val price = itemMap?.get("totalSum") as Number
+                                        val floatPrice = price.toFloat()
+                                        val quantity = itemMap?.get("quantity") as Long
+
+                                        val detailBookItem = DetailBookItem(id, name, author, quantity, floatPrice, imageUrl, bookStoreName)
+                                        listBooks.add(detailBookItem)
+                                    }
+
+                                    // Update the adapter after fetching all books
+                                    adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
+                                    view.adapter = adapter
+                                    view.layoutManager = LinearLayoutManager(context)
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.e("Loi", exception.toString())
+                                }
+                        }
                     }
-                    adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
-                    view.adapter = adapter
-                    view.layoutManager = LinearLayoutManager(context)
-                }
-                .addOnFailureListener { exception ->
-                    Log.e("Loi", exception.toString())
-                }
+                    .addOnFailureListener { exception ->
+                        Log.e("Loi", exception.toString())
+                    }
+            }
         }
 
-        // Set the adapter
+
+                                        // Set the adapter
 //        if (view is RecyclerView) {
 //            with(view) {
 //                layoutManager = when {

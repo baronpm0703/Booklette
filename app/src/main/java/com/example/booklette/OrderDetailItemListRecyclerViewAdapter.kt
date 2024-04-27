@@ -1,6 +1,6 @@
 package com.example.booklette
 
-import android.view.LayoutInflater
+ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso
 
 data class DetailBookItem(
     val ID: String, val name: String, val author: String, val amount: Long, val price: Float,
-    val imageUrl: String)
+    val imageUrl: String, val bookStoreName: String)
 class OrderDetailItemListRecyclerViewAdapter(
     private val values: List<DetailBookItem>
 ) : RecyclerView.Adapter<OrderDetailItemListRecyclerViewAdapter.ViewHolder>() {
@@ -38,6 +38,8 @@ class OrderDetailItemListRecyclerViewAdapter(
         val item = values[position]
 //        holder.idView.text = item.id
 //        holder.contentView.text = item.content
+
+        holder.itemBookStore.text = item.bookStoreName
         holder.itemName.text = item.name
         holder.itemAuthor.text = item.author
         holder.itemAmount.text = item.amount.toString()
@@ -52,11 +54,13 @@ class OrderDetailItemListRecyclerViewAdapter(
         RecyclerView.ViewHolder(binding.root) {
 //        val idView: TextView = binding.itemNumber
 //        val contentView: TextView = binding.content
+
         val itemName: TextView = binding.orderDetailItemName
         val itemAuthor: TextView = binding.orderDetailItemAuthor
         val itemAmount: TextView = binding.orderDetailItemAmount
         val itemPrice: TextView = binding.orderDetailItemPrice
         val itemImage: ImageView = binding.orderDetailItemImage
+        val itemBookStore: TextView = binding.orderDetailItemShopName
 //        override fun toString(): String {
 //            return super.toString() + " '" + contentView.text + "'"
 //        }

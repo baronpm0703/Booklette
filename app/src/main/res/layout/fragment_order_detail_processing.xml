@@ -111,10 +111,13 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/orderDetailProductsFragmentFrameLayout"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:background="@drawable/round_corner_order_item_white"
+            android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailStatusField">
@@ -126,7 +129,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@drawable/round_corner_order_item_gray"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/round_corner_order_item_white"
+            android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailProductsFragmentFrameLayout">
@@ -210,8 +216,8 @@
                 android:textStyle="bold"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
-
                 app:layout_constraintHorizontal_bias="1.0"
+
                 app:layout_constraintStart_toStartOf="@+id/orderDetailPaymentMethodField"
                 app:layout_constraintTop_toTopOf="@+id/textView52" />
 

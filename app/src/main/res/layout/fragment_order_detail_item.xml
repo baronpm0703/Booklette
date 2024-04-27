@@ -3,20 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="170dp"
     android:orientation="horizontal"
     android:background="@drawable/round_corner_order_item_white_with_shadow"
-    android:layout_margin="10dp">
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="20dp"
+    android:elevation="5dp">
+
+    <TextView
+        android:id="@+id/orderDetailItemShopName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Vo Chanh Tin BookStore" />
+
+    <CheckBox
+        android:id="@+id/orderDetailItemCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/orderDetailItemShopName"
+        app:layout_constraintTop_toBottomOf="@+id/orderDetailItemShopName" />
 
     <ImageView
         android:id="@+id/orderDetailItemImage"
         android:layout_width="80dp"
         android:layout_height="100dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/transparent"
+        android:layout_marginBottom="8dp"
+        android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/orderDetailItemCheckBox"
+        app:layout_constraintTop_toBottomOf="@+id/orderDetailItemShopName"
         app:srcCompat="@drawable/book_cover" />
 
     <TextView
@@ -24,40 +47,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/orderDetailItemImage"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/orderDetailItemImage"
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/orderDetailItemAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:textStyle="italic"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/textView46"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/orderDetailItemName"
-        app:layout_constraintTop_toBottomOf="@+id/orderDetailItemName" />
+        app:layout_constraintTop_toBottomOf="@+id/orderDetailItemName"
+        tools:text="Trần Đan Thư, Nguyễn Thanh Phương, Đinh Bá Tiến, Trần Minh Triết" />
 
     <TextView
         android:id="@+id/textView46"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="@string/order_item_quantity"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/orderDetailItemAuthor"
-        app:layout_constraintTop_toBottomOf="@+id/orderDetailItemAuthor" />
+        app:layout_constraintStart_toStartOf="@+id/orderDetailItemAuthor" />
 
     <TextView
         android:id="@+id/orderDetailItemAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        tools:text="TextView"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView46"
         app:layout_constraintStart_toEndOf="@+id/textView46"
@@ -67,12 +96,14 @@
         android:id="@+id/orderDetailItemPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        tools:text="TextView"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/orderDetailItemAmount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/orderDetailItemAmount"
         app:layout_constraintTop_toTopOf="@+id/orderDetailItemAmount" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
