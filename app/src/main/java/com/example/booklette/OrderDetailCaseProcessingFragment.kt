@@ -34,7 +34,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
     private var _binding: FragmentOrderDetailProcessingBinding? = null
-    private var itemsMap: Map<String, Any>? = null
+    private var itemsMap: Map<String, Map<String, Any>>? = null
 
 
     // This property is only valid between onCreateView and
@@ -81,43 +81,52 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                         val timeStamp = orderData?.get("creationDate") as Timestamp
 
                         val date: Date? = timeStamp?.toDate()
-                        itemsMap = orderData?.get("items") as? Map<String, Any>
+                        itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
                         var totalQuantity: Long = 0
-                        itemsMap?.forEach { (itemID, itemData) ->
-
-                            val itemMap = itemData as? Map<String, Any>
-
-                            //Log.d("number",itemMap.toString())
-                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toFloat()
-                            totalQuantity += itemMap?.get("quantity") as Long
-                        }
+//                        itemsMap?.forEach { (itemID, itemData) ->
+//
+//                            val itemMap = itemData as? Map<String, Any>
+//
+//                            //Log.d("number",itemMap.toString())
+//                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toFloat()
+//                            totalQuantity += itemMap?.get("quantity") as Long
+//                        }
                         val totalMoney = (orderData?.get("totalSum") as Number).toFloat()
                         val status = orderData?.get("status") as String
 
                         val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
                         val paymentMethodType = paymentMethod?.get("Type")
                         val shippingAddress = orderData?.get("shippingAddress") as String
+
+                        // assign to field in view
+                        var orderName = ""
+                        val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
+                            itemMap.map { (itemId, itemData) ->
+                                Log.d("shopID", shopID)
+                                Log.d("itemId", itemId)
+                                Log.d("itemData", itemData.toString())
+
+                                totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
+                                tempTotalOrgMoney += (itemData["totalSum"] as? Float ?: 0.0f)
+                                db.collection("books")
+                                    .whereEqualTo("bookID", itemId)
+                                    .get()
+                                    .addOnSuccessListener { bookSnapshot ->
+                                        for (book in bookSnapshot.documents) {
+                                            val bookData = book.data
+                                            val bookName = bookData?.get("name") as? String
+                                            if (!bookName.isNullOrEmpty()) {
+                                                orderName += "$bookName, "
+                                            }
+                                        }
+                                    }
+                            }
+                        }
                         // setup recycler view for books
-                        val itemsFragment = OrderDetailItemListFragment.newInstance(1,itemsMap!!)
+                        val itemsFragment = OrderDetailItemListFragment.newInstance(1,itemsMap!!,false,false)
                         childFragmentManager.beginTransaction()
                             .replace(orderItemLayout.id,itemsFragment)
                             .commit()
-                        // assign to field in view
-                        var orderName = ""
-                        val fetchBookNamesTasks = itemsMap?.map { (itemID, _) ->
-                            db.collection("books")
-                                .whereEqualTo("bookID", itemID)
-                                .get()
-                                .addOnSuccessListener { bookSnapshot ->
-                                    for (book in bookSnapshot.documents) {
-                                        val bookData = book.data
-                                        val bookName = bookData?.get("name") as? String
-                                        if (!bookName.isNullOrEmpty()) {
-                                            orderName += "$bookName, "
-                                        }
-                                    }
-                                }
-                        }
                         Tasks.whenAllComplete(fetchBookNamesTasks!!)
                             .addOnSuccessListener {
                                 if (orderName.length >= 2) {
@@ -131,7 +140,25 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                                 dateField.text = sdf.format(date)
 
                                 trackingNumberField.text = orderID
-                                statusField.text = status
+                                //statusField.text = status
+                                if (status.contains("xử lý", true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_processing_button)
+                                }
+                                else if (status.contains("huỷ",true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_cancelled_button)
+                                }
+                                else if (status.contains("trả thành công", true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_detail_item_return_success)
+                                }
+                                else if (status.contains("trả thất bại", true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_detail_item_return_failed)
+                                }
+                                else if (status.contains("thành công", true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_completed_button)
+                                }
+                                else if (status.contains("đã giao",true)){
+                                    statusField.text = requireContext().getString(R.string.my_order_delivered_button)
+                                }
                                 shippingAddressField.text = shippingAddress
                                 paymentMethodField.text = paymentMethodType.toString()
                                 deliveryMethodField.text = "Giao Hàng Nhanh (test)"

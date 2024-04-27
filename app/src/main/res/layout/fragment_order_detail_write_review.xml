@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/reasonLabel"
+                android:text="@string/review"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="4dp"
-                android:text="@string/reasonInstruction"
+                android:text="@string/reviewInstruction"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/reasonLabel"
@@ -104,14 +104,6 @@
                 app:layout_constraintStart_toEndOf="@+id/imagePicker"
                 app:layout_constraintTop_toBottomOf="@+id/returnReasonLabel" />
 
-            <TextView
-                android:id="@+id/textView44"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/returnReasonLabel"
-                app:layout_constraintStart_toStartOf="@+id/imagePicker"
-                app:layout_constraintTop_toBottomOf="@+id/imagePicker" />
 
             <EditText
                 android:id="@+id/editTextText2"
@@ -127,8 +119,8 @@
                 android:inputType="textMultiLine"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView44"
-                app:layout_constraintTop_toBottomOf="@+id/textView44" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagePicker" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -138,13 +130,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:text="@string/write_your_review_here"
             android:textColor="@color/black"
-            android:text="@string/please_select_product_to_return"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/backButton"
-            app:layout_constraintTop_toBottomOf="@+id/backButton"
-            tools:text="Please select product to return" />
-
+            app:layout_constraintTop_toBottomOf="@+id/backButton"/>
         <Button
             android:id="@+id/returnButton"
             android:layout_width="match_parent"
@@ -152,7 +142,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_corner_order_item_white_with_border"
-            android:text="@string/returnAndExchange"
+            android:text="@string/write_review"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

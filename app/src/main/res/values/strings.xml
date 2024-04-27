@@ -215,7 +215,7 @@
     <string name="my_order_delivered_button">Delivered</string>
     <string name="my_order_detail_item_return_success">Return successfully</string>
     <string name="my_order_detail_item_return_failed">Return failed</string>
-    <string name="order_item_order">Order №</string>
+    <string name="order_item_order">Order </string>
     <string name="order_item_tracking_number">Tracking number:</string>
     <string name="order_item_quantity">Quantity:</string>
     <string name="order_item_total">Total:</string>
@@ -288,11 +288,18 @@
     <string name="returnAndExchange">Return/Exchange</string>
     <string name="orderReceived">Order received</string>
     <string name="reasonLabel">Reason</string>
-    <string name="reasonInstruction">Please upload clear image of product and/or chat to illustrate the product condition</string>
+    <string name="reasonInstruction">Please upload clear image of product and/or chat to illustrate the product condition.</string>
+    <string name="reviewInstruction">Please upload clear image of product and/or write review to illustrate the product.</string>
     <string name="returnReasonLabel">Return reason</string>
     <string name="descriptionHint">Description</string>
     <string name="filter_title_dialog_product_list">Filter</string>
     <string name="chatActivityConversation">Conversations</string>
     <string name="e_invoice">E-Invoice</string>
+    <string name="review">Review</string>
+    <string name="please_select_product_to_return">Please select product to return</string>
+    <string name="write_your_review_here">Please select product to review</string>
+    <string name="write_review">Write Review</string>
+    <string name="delete_cart_sucessfuly">Delete sucessfully</string>
+    <string name="delete_notification">This Book has been deleted</string>
 
 </resources>

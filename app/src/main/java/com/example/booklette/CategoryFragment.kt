@@ -87,6 +87,17 @@ class CategoryFragment : Fragment() {
         auth = Firebase.auth
         db = Firebase.firestore
 
+        binding.ivHCMUS.setOnClickListener{
+            val genre = "Hcmus-book"
+            val productListHCMUS = ProductListHCMUS()
+            val args = Bundle()
+            args.putString("Genre", genre)
+            productListHCMUS.arguments = args
+
+            // Have to cast homePage to "activity as HomePage", otherwise the supportFragment can recognize the host
+            val homeAct = (activity as homeActivity)
+            homeAct.changeFragmentContainer(productListHCMUS, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+        }
         // Init fixed categories
         val categories = ArrayList<String>()
         categories.add("Non-fiction")

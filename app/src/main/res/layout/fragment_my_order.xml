@@ -52,6 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchBar">
@@ -63,18 +65,19 @@
 
                 <Button
                     android:id="@+id/processingButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_my_order"
                     android:backgroundTint="@color/white"
                     android:text="@string/my_order_processing_button"
+                    tools:text="ĐANG XỬ LÝ"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/deliveredButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/button_my_order"
@@ -86,19 +89,20 @@
 
                 <Button
                     android:id="@+id/completedButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/button_my_order"
                     android:backgroundTint="@color/white"
                     android:text="@string/my_order_completed_button"
+                    tools:text="đã hoàn thành"
                     android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@id/deliveredButton"
                     app:layout_constraintTop_toTopOf="@+id/deliveredButton" />
 
                 <Button
                     android:id="@+id/cancelledButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/button_my_order"
@@ -110,7 +114,7 @@
 
                 <Button
                     android:id="@+id/returnedButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/button_my_order"
@@ -123,7 +127,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </HorizontalScrollView>
-
 
 
         <androidx.fragment.app.FragmentContainerView

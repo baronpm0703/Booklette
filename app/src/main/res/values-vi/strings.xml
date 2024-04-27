@@ -182,7 +182,7 @@
     <string name="my_order_returned_button">Trả lại</string>
     <string name="my_order_detail_item_return_success">Hoàn trả thành công</string>
     <string name="my_order_detail_item_return_failed">Hoàn trả thất bại</string>
-    <string name="order_item_order">Đơn hàng №</string>
+    <string name="order_item_order">Đơn hàng </string>
     <string name="order_item_tracking_number">Mã đơn:</string>
     <string name="order_item_quantity">Số lượng:</string>
     <string name="order_item_total">Tổng:</string>
@@ -247,9 +247,15 @@
     <string name="orderDetailConfirmlabel">Xác nhận nhận hàng? Bạn sẽ không thể trả hàng nếu xác nhận!</string>
     <string name="reasonLabel">Lí do</string>
     <string name="reasonInstruction">Vui lòng tải lên hình ảnh rõ ràng của sản phẩm và/hoặc trò chuyện để minh họa điều kiện của sản phẩm.</string>
+    <string name="reviewInstruction">Vui lòng tải lên hình ảnh rõ ràng của sản phẩm và/hoặc viết nhận xét để minh họa sản phẩm.</string>
     <string name="returnReasonLabel">Lí do đổi</string>
     <string name="descriptionHint">Mô tả</string>
     <string name="chatActivityConversation">Cuộc trò chuyện</string>
     <string name="my_order_delivered_button">Đã giao hàng</string>
     <string name="e_invoice">Hóa đơn điện tử</string>
+    <string name="review">Nhận xét</string>
+    <string name="please_select_product_to_return">Hãy chọn sách bạn muốn trả</string>
+    <string name="write_your_review_here">Hãy chọn sách bạn muốn nhận xét</string>
+    <string name="delete_cart_sucessfuly">Xóa thành công</string>
+    <string name="delete_notification">Sách của bạn đã được xóa khỏi Giỏ hàng</string>
 </resources>

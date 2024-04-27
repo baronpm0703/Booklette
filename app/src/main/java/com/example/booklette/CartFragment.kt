@@ -5,6 +5,7 @@ import android.graphics.Paint
 import CartFragmentRecyclerViewAdapter
 import CheckOutFragment
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Canvas
 import android.graphics.RectF
 import android.os.Bundle
@@ -23,12 +24,16 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import android.util.Log
+import androidx.core.content.res.ResourcesCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.example.booklette.model.CartObject
 import com.example.booklette.model.VoucherObject
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -276,7 +281,7 @@ class CartFragment : Fragment() {
             val background = RectF(itemView.right.toFloat() + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
             val newHeight = itemHeight*0.85f
             val bottomMargin = (itemHeight - newHeight)
-            val adjustedBackground = RectF(background.left, background.top + bottomMargin -3f, background.right, background.bottom-10f)
+            val adjustedBackground = RectF(background.left, background.top + bottomMargin +2.5f, background.right, background.bottom-18)
             c.drawRoundRect(adjustedBackground, 50f, 50f, p)
             val iconSize = 70 // Kích thước của biểu tượng xóa
             val iconMargin = 70// Chuyển đổi itemHeight sang kiểu Int
@@ -290,7 +295,42 @@ class CartFragment : Fragment() {
             super.onChildDraw(c, recyclerView, viewHolder, clampedDX, dY, actionState, isCurrentlyActive)
         }
     }
-}
+    }
+
+    private fun deleteCartItem(item: CartObject, position: Int) {
+        if (item.bookID != null) {
+            db.collection("accounts")
+                .whereEqualTo("UID", auth.uid!!)
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        document.reference.update("cart.${item.bookID}", FieldValue.delete())
+                            .addOnSuccessListener {
+                                // Xóa thành công, cập nhật RecyclerView
+                                adapter.removeItem(position)
+                                adapter.notifyItemRemoved(position)
+                            }
+                            .addOnFailureListener { e ->
+                                Log.w("hello", "Error deleting document", e)
+                                // Xử lý khi xóa thất bại
+                            }
+                    }
+                    MotionToast.createColorToast(
+                        context as Activity,
+                        getString(R.string.delete_cart_sucessfuly),
+                        getString(R.string.delete_notification),
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.SHORT_DURATION,
+                        ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+                }
+                .addOnFailureListener { exception ->
+                    Log.e("Firestore", "Error getting documents: ", exception)
+                }
+        } else {
+            Log.e("ok", "Item ID is null")
+        }
+    }
 
     private fun showDeleteConfirmationDialog(deletedItemInfo: String, position: Int) {
         val builder = AlertDialog.Builder(requireContext())
@@ -298,8 +338,10 @@ class CartFragment : Fragment() {
 
         builder.setPositiveButton("Delete") { dialog, which ->
             val adapter = binding.rvCart.adapter as? CartFragmentRecyclerViewAdapter
-            adapter?.removeItem(position)
-            adapter?.notifyItemRemoved(position)
+            val cartObject = adapter?.getItemInfo(position)
+            cartObject?.let { cartItem ->
+                deleteCartItem(cartItem, position)
+            }
             dialog.dismiss()
         }
 
@@ -320,4 +362,5 @@ class CartFragment : Fragment() {
 
         alertDialog.show()
     }
+
 }

@@ -114,7 +114,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/round_corner_order_item_white"
+            android:background="@drawable/round_corner_order_item_white_with_border"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailStatusField">
@@ -250,26 +250,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
-            android:id="@+id/orderDetailReturnButton"
+            android:id="@+id/orderDetailReviewButton"
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
-            android:background="@drawable/round_corner_product_list_item"
-            android:text="@string/returnAndExchange"
+            android:background="@drawable/round_corner_button_solid_color"
+            android:text="@string/review"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderInformationFrameLayout" />
-
-        <Button
-            android:id="@+id/orderDetailConfirmButton"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:background="@drawable/round_corner_button_solid_color"
-            android:text="@string/orderReceived"
-            app:layout_constraintBottom_toBottomOf="@+id/orderDetailReturnButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/orderDetailReturnButton" />
 
         <TextView
             android:id="@+id/textView22"

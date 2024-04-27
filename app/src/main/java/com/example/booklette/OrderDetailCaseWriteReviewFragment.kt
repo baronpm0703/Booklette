@@ -3,35 +3,26 @@ package com.example.booklette
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.booklette.databinding.FragmentOrderDetailReturnBinding
+import com.example.booklette.databinding.FragmentOrderDetailWriteReviewBinding
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.squareup.picasso.Picasso
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [OrderDetailCaseReturnFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 private const val ORDERID_PARAM = "param1"
-class OrderDetailCaseReturnFragment : Fragment() {
+class OrderDetailCaseWriteReviewFragment : Fragment() {
     private var selectedImageUri: Uri? = null
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
-    private var _binding: FragmentOrderDetailReturnBinding? = null
+    private var _binding: FragmentOrderDetailWriteReviewBinding? = null
     private lateinit var imagePicker: ImageView
     private lateinit var imagePicker2: ImageView
 
@@ -50,7 +41,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentOrderDetailReturnBinding.inflate(inflater, container, false)
+        _binding = FragmentOrderDetailWriteReviewBinding.inflate(inflater, container, false)
         val view = binding.root
 
         db = Firebase.firestore
@@ -77,7 +68,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
                         }
 
                         // setup recycler view for books
-                        val itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!,true, true)
+                        val itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!,true,false)
                         childFragmentManager.beginTransaction()
                             .replace(orderItemLayout.id,itemsFragment)
                             .commit()
@@ -87,22 +78,23 @@ class OrderDetailCaseReturnFragment : Fragment() {
                 }
         }
 
+        imagePicker = binding.imagePicker
+        imagePicker2 = binding.imagePicker2
+        imagePicker.setOnClickListener{
+            val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(pickImageIntent,PICK_IMAGE_REQUEST
+            )
+        }
+        imagePicker2.setOnClickListener{
+            val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST
+            )
+        }
         // back
         val backButton = binding.backButton
         backButton.setOnClickListener{
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-        imagePicker = binding.imagePicker
-        imagePicker2 = binding.imagePicker2
-        imagePicker.setOnClickListener{
-            val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST)
-        }
-        imagePicker2.setOnClickListener{
-            val pickImageIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST)
-        }
-
         // return button
         val returnButton = binding.returnButton
         returnButton.setOnClickListener {
@@ -137,7 +129,6 @@ class OrderDetailCaseReturnFragment : Fragment() {
 //
 //            builder.setMessage(R.string.orderDetailProcessingCancelLabel).setPositiveButton(R.string.yes, dialogClickListener)
 //                .setNegativeButton(R.string.no, dialogClickListener).show()
-
         }
         return view
     }
@@ -150,12 +141,14 @@ class OrderDetailCaseReturnFragment : Fragment() {
          * @param orderID Parameter 1.
          * @param orderFullName Parameter 2.
          * @return A new instance of fragment OrderDetailFragment.
+         *
          */
+
         private const val PICK_IMAGE_REQUEST = 1335
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
-            OrderDetailCaseReturnFragment().apply {
+            OrderDetailCaseWriteReviewFragment().apply {
                 arguments = Bundle().apply {
                     putString(ORDERID_PARAM, orderID)
                 }
@@ -175,9 +168,8 @@ class OrderDetailCaseReturnFragment : Fragment() {
             selectedImageUri = data.data
             setImageToImageView()
         }
-        Toast.makeText(context,selectedImageUri.toString(),Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,selectedImageUri.toString(), Toast.LENGTH_SHORT).show()
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

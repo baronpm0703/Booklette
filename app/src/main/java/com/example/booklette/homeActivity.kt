@@ -1,5 +1,8 @@
 package com.example.booklette
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -89,6 +92,8 @@ class homeActivity : AppCompatActivity() {
             isEnabled = true
         }
     }
+
+
 
     fun changeFragmentContainer(fragment: Fragment, barItem: Int) {
         supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, fragment).addToBackStack(null).commit()
