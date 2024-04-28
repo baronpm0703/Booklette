@@ -3,6 +3,7 @@ package com.example.booklette
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,7 +62,7 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
 
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
 
-        var tempTotalOrgMoney: Float = 0.0F
+        var tempTotalOrgMoney: Long = 0
         orderID?.let {
             db.collection("orders")
                 .document(it)
@@ -71,16 +72,9 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
                         val timeStamp = orderData?.get("creationDate") as Timestamp
 
                         val date: Date? = timeStamp?.toDate()
-                        val itemsMap = orderData?.get("items") as? Map<String, Any>
+                        val itemsMap = orderData?.get("items") as? Map<String, Map<String,Any>>
                         var totalQuantity: Long = 0
-                        itemsMap?.forEach { (itemID, itemData) ->
 
-                            val itemMap = itemData as? Map<String, Any>
-
-                            //Log.d("number",itemMap.toString())
-                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toFloat()
-                            totalQuantity += itemMap?.get("quantity") as Long
-                        }
                         val totalMoney = (orderData?.get("totalSum") as Number).toFloat()
                         val status = orderData?.get("status") as String
 
@@ -88,15 +82,22 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
                         val paymentMethodType = paymentMethod?.get("Type")
                         val shippingAddress = orderData?.get("shippingAddress") as String
                         // setup recycler view for books
-                        val itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!,false,false)
+                        val itemsFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!,allowSelection = false,allowMultipleSelection = false)
                         childFragmentManager.beginTransaction()
                             .replace(orderItemLayout.id,itemsFragment)
                             .commit()
                         // assign to field in view
                         var orderName = ""
-                        val fetchBookNamesTasks = itemsMap?.map { (itemID, _) ->
+                    val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
+                        itemMap.map { (itemId, itemData) ->
+                            Log.d("shopID", shopID)
+                            Log.d("itemId", itemId)
+                            Log.d("itemData", itemData.toString())
+
+                            totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
+                            tempTotalOrgMoney += (itemData["totalSum"] as? Long ?: 0)
                             db.collection("books")
-                                .whereEqualTo("bookID", itemID)
+                                .whereEqualTo("bookID", itemId)
                                 .get()
                                 .addOnSuccessListener { bookSnapshot ->
                                     for (book in bookSnapshot.documents) {
@@ -108,6 +109,7 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
                                     }
                                 }
                         }
+                    }
                         Tasks.whenAllComplete(fetchBookNamesTasks!!)
                             .addOnSuccessListener {
                                 if (orderName.length >= 2) {
@@ -188,7 +190,11 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
         }
         return view
     }
-
+    fun formatMoney(number: Long): String {
+        val numberString = number.toString()
+        val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
+        return numberString.replace(regex, "$1.") + " VND"
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of

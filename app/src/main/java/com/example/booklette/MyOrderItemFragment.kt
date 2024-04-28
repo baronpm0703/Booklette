@@ -109,7 +109,7 @@ class MyOrderItemFragment : Fragment() {
                             }
 
                             // Create OrderDataClass instance
-                            val totalMoney = (orderData?.get("totalSum") as? Number)?.toFloat() ?: 0.0f
+                            val totalMoney = (orderData?.get("totalSum") as? Number)?.toLong() ?: 0
                             val status = orderData?.get("status") as String
                             val newOrder = date?.let {
                                 OrderDataClass(orderName, it, trackingNumber, totalQuantity, totalMoney, status)

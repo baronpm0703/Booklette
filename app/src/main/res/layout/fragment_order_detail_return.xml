@@ -39,7 +39,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@drawable/round_corner_order_item_white_with_border"
+            android:background="@drawable/round_corner_order_item_white_with_shadow"
+            android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/returnLabel">
@@ -51,7 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@drawable/round_corner_order_item_gray"
+            android:elevation="2dp"
+            android:background="@drawable/round_corner_order_item_white_with_shadow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailProductsFragmentFrameLayout">
@@ -84,25 +86,80 @@
                 app:layout_constraintTop_toBottomOf="@+id/reasonLabel"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <ImageView
-                android:id="@+id/imagePicker"
-                android:layout_width="80dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/baseline_add_circle_outline_24"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@+id/returnReasonLabel"
-                app:layout_constraintTop_toBottomOf="@+id/returnReasonLabel" />
+                app:layout_constraintTop_toBottomOf="@+id/returnReasonLabel">
 
-            <ImageView
-                android:id="@+id/imagePicker2"
-                android:layout_width="80dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:visibility="gone"
-                android:src="@drawable/baseline_add_circle_outline_24"
-                app:layout_constraintStart_toEndOf="@+id/imagePicker"
-                app:layout_constraintTop_toBottomOf="@+id/returnReasonLabel" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/frameImage1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/imagePicker"
+                        android:layout_width="80dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/baseline_add_circle_outline_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/cancelImage1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/transparent"
+                        android:src="@drawable/baseline_cancel_24"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imagePicker" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/frameImage2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@+id/frameImage1"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/imagePicker2"
+                        android:layout_width="80dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/baseline_add_circle_outline_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/cancelImage2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/transparent"
+                        android:src="@drawable/baseline_cancel_24"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imagePicker2" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <TextView
                 android:id="@+id/textView44"
@@ -110,8 +167,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/returnReasonLabel"
-                app:layout_constraintStart_toStartOf="@+id/imagePicker"
-                app:layout_constraintTop_toBottomOf="@+id/imagePicker" />
+                app:layout_constraintStart_toStartOf="@+id/frameLayout"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
             <EditText
                 android:id="@+id/editTextText2"
@@ -151,7 +208,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/round_corner_order_item_white_with_border"
+            android:background="@drawable/round_corner_order_item_white_with_shadow"
+            android:elevation="2dp"
             android:text="@string/returnAndExchange"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
