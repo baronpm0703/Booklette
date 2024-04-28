@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,7 @@ import com.example.booklette.databinding.FragmentManageshopBinding
 import com.example.booklette.databinding.FragmentMyshopBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
 import com.squareup.picasso.Picasso
 import kotlin.math.round
@@ -79,6 +81,21 @@ class ManageShopFragment : Fragment() {
 				bookFragment,
 				(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
 			)
+		}
+
+		val layoutInflater = LayoutInflater.from(requireContext())
+		val programDialogLayout = layoutInflater.inflate(R.layout.manageshop_program_choice_dialog, null)
+		val builder = AlertDialog.Builder(requireContext())
+		builder.setView(programDialogLayout)
+		val programDialog = builder.create()
+		programDialogLayout.findViewById<Button>(R.id.discountProgramBtn).setOnClickListener {
+
+		}
+		programDialogLayout.findViewById<Button>(R.id.shopVoucherBtn).setOnClickListener {
+
+		}
+		view.findViewById<Button>(R.id.programBtn).setOnClickListener {
+			programDialog.show()
 		}
 
 		return view

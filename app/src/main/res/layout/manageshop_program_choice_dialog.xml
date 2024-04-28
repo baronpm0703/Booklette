@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
              xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="wrap_content"
+             android:layout_width="240dp"
              android:layout_height="wrap_content"
              android:background="@drawable/myshop_book_info_card"
 >
@@ -27,30 +27,33 @@
                 android:layout_marginEnd="62dp" app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/shopVoucherBtn"/>
         <Button
-                android:text="@string/manageshop_mybooks_add_back"
-                android:layout_width="160dp"
+                android:text="@string/manageshop_program_shopvoucher_btn"
+                android:layout_width="wrap_content"
                 android:layout_height="45dp" android:id="@+id/shopVoucherBtn"
                 android:textAllCaps="false"
                 android:textSize="15sp"
                 android:textColor="#FFFFFF"
                 android:background="@drawable/manageshop_addbook_success_back_btn"
-                app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="32dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/discountProgramBtn"
                 app:layout_constraintTop_toBottomOf="@+id/imageView9" android:layout_marginEnd="40dp"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="40dp"/>
+                android:layout_marginStart="40dp"
+                android:paddingHorizontal="20dp"/>
         <Button
-                android:text="@string/manageshop_mybooks_add_back"
-                android:layout_width="160dp"
+                android:text="@string/manageshop_program_discountprogram_btn"
+                android:layout_width="wrap_content"
                 android:layout_height="45dp" android:id="@+id/discountProgramBtn"
                 android:textAllCaps="false"
                 android:textSize="15sp"
                 android:textColor="#FFFFFF"
                 android:background="@drawable/manageshop_addbook_success_back_btn"
                 app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="32dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintTop_toBottomOf="@+id/shopVoucherBtn" android:layout_marginEnd="40dp"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="40dp"/>
+                android:layout_marginStart="40dp"
+                android:paddingHorizontal="20dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
