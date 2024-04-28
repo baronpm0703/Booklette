@@ -260,4 +260,6 @@
     <string name="write_review">Viết nhận xét</string>
     <string name="delete_cart_sucessfuly">Xóa thành công</string>
     <string name="delete_notification">Sách của bạn đã được xóa khỏi Giỏ hàng</string>
+    <string name="book_detail_update_quantity_denied">Từ chối</string>
+    <string name="filter_title_dialog_product_list">Lọc</string>
 </resources>

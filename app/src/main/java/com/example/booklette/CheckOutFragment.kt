@@ -249,7 +249,8 @@ class CheckOutFragment : Fragment() {
                             "expiryDate" to ""
                         ),
                         "status" to "Đang xử lý",
-                        "totalSum" to totalAmount,
+                        "beforeDiscount" to totalAmount,
+                        "totalSum" to afterFomartedTotalAmount.toFloat(),
                         "shippingAddress" to (binding.recieverName.text.toString() + " - " +
                                 binding.recieverPhone.text.toString() + " - " +
                                 binding.addressNumber.text.toString() + " " +

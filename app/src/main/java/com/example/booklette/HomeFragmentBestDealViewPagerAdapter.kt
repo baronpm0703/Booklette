@@ -28,7 +28,7 @@ class HomeFragmentBestDealViewPagerAdapter(private val context: Context, private
         txtName.text = pageTitles[position].name
         txtAuthor.text = pageTitles[position].author
         txtCategory.text = pageTitles[position].genre
-        txtPriceOff.text = (price_off[position] * 100).toString() + "% OFF"
+        txtPriceOff.text = "%.0f".format(price_off[position] * 100) + "% OFF"
         val price = pageTitles[position].price
         txtPrice.text = (price - price * price_off[position]).toString()
         Picasso.get()

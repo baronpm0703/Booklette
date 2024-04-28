@@ -573,43 +573,50 @@ class BookDetailFragment : Fragment() {
 
         val userID = Firebase.auth.currentUser?.uid
 
-        binding.btnAddToCard.setOnClickListener({
+        binding.btnAddToCard.setOnClickListener {
             binding.btnAddToCard.showProgress {
                 buttonTextRes = R.string.book_detail_adding_to_cart
                 progressColor = Color.WHITE
             }
 
-            db.collection("accounts").whereEqualTo("UID", userID).get().addOnSuccessListener { result ->
-                for (document in result) {
-                    var tmp = document.data.get("cart")
-                    var cart = mutableMapOf<String, Any>()
+            db.collection("accounts").whereEqualTo("UID", userID).get()
+                .addOnSuccessListener { result ->
+                    for (document in result) {
+                        var tmp = document.data.get("cart")
+                        var cart = mutableMapOf<String, Any>()
 
-                    if (tmp != null)
-                        cart = (document.data.get("cart") as Map<String, Any>).toMutableMap()
+                        if (tmp != null)
+                            cart = (document.data.get("cart") as Map<String, Any>).toMutableMap()
 
-                    lifecycleScope.launch {
-                        val data: MutableMap<Any, Any> = mutableMapOf()
+                        lifecycleScope.launch {
+                            val data: MutableMap<Any, Any> = mutableMapOf()
 
-                        val storeID = getBookStoreID(bookID)
-                        val storeUID = getUIDFromBookStoreID(storeID)
+                            val storeID = getBookStoreID(bookID)
+                            val storeUID = getUIDFromBookStoreID(storeID)
 
 
-                        data["quantity"] = binding.txtNumberCount.text.toString().toInt()
-                        data["storeID"] = storeUID
+                            data["quantity"] = binding.txtNumberCount.text.toString().toInt()
+                            data["storeID"] = storeUID
 
-                        cart[bookID] = data
+                            cart[bookID] = data
 
-                        db.collection("accounts")
-                            .document(document.id)
-                            .update("cart", cart).addOnCompleteListener {
+                            if (storeID.isNotEmpty()) {
+                                db.collection("accounts")
+                                    .document(document.id)
+                                    .update("cart", cart).addOnCompleteListener {
+                                        Handler().postDelayed({
+                                            binding.btnAddToCard.hideProgress(R.string.book_detail_update_quantity)
+                                        }, 2000)
+                                    }
+                            } else {
                                 Handler().postDelayed({
-                                    binding.btnAddToCard.hideProgress(R.string.book_detail_update_quantity)
+                                    binding.btnAddToCard.hideProgress(R.string.book_detail_update_quantity_denied)
                                 }, 2000)
+                            }
                         }
                     }
                 }
-            }
-        })
+        }
     }
 
     fun updateRatingAndComment(rating: Float, cmt: String, images: ArrayList<Photo>) {
@@ -1067,6 +1074,7 @@ class BookDetailFragment : Fragment() {
     }
 
     suspend fun getUIDFromBookStoreID(storeID: String): String {
+        if (storeID.isEmpty()) return ""
         val reference = db.collection("personalStores").document(storeID)
 
         return try {

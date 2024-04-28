@@ -366,6 +366,7 @@ class ProductList : Fragment() {
     override fun onResume() {
         super.onResume()
         bookList.clear()
+
     }
     suspend fun getBookQuantity(bookID: String): Int {
         var res = 0
