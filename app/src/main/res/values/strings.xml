@@ -237,6 +237,7 @@
     <string name="total">Total</string>
     <string name="details">Detail</string>
     <string name="book_detail_update_quantity">Update</string>
+    <string name="book_detail_update_quantity_denied">Denied</string>
     <string name="my_order_search_bar_hint_focused">Order ID</string>
 
     <!--    Speech to text-->
