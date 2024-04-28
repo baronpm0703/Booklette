@@ -31,9 +31,6 @@ import kotlin.math.round
 class MyShopFragment : Fragment() {
 //	private var discountHScrollView: HorizontalScrollView? = null
 //	private var newArrivalsHScrollView: HorizontalScrollView? = null
-	private var discountViews = arrayListOf<View>()
-	private var newArrivalsViews = arrayListOf<View>()
-	private var bestSellersViews = arrayListOf<View>()
 
 	private var _binding: FragmentMyshopBinding? = null
 	private val binding get() = _binding!!

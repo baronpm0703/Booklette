@@ -8,4 +8,5 @@ class ManageShopAddBookToShopDialogInitFilterValues {
     var desc: String = ""
     var price: String = ""
     var quantity: String = ""
+    var image: String = ""
 }

@@ -48,6 +48,7 @@ class ManageShopBooksFragment : Fragment() {
 	private var _binding: FragmentManageshopBooksBinding? = null
 
 	private val binding get() = _binding!!
+	private val bookViews = arrayListOf<View>()
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -197,8 +198,57 @@ class ManageShopBooksFragment : Fragment() {
 						}
 
 					Handler().postDelayed({
+						val content = view?.findViewById<LinearLayout>(R.id.bookListScrollViewContent)
 
-					}, 1000)
+						var singleFrame: View = layoutInflater.inflate(R.layout.manageshop_book_item, null)
+						singleFrame.id = bookViews.size
+
+						val bookImg = singleFrame.findViewById<ImageView>(R.id.bookImg)
+						val bookGenreText = singleFrame.findViewById<TextView>(R.id.bookGenreText)
+						val bookNameText = singleFrame.findViewById<TextView>(R.id.bookNameText)
+						val bookAuthorText = singleFrame.findViewById<TextView>(R.id.bookAuthorText)
+						val bookPriceText = singleFrame.findViewById<TextView>(R.id.bookPriceText)
+						val editBtn = singleFrame.findViewById<Button>(R.id.editBookBtn)
+						val deleteBtn = singleFrame.findViewById<Button>(R.id.deleteBookBtn)
+
+						Picasso.get()
+							.load(result)
+							.into(bookImg)
+						bookGenreText.text = newBook.genre
+						bookNameText.text = newBook.name
+						bookAuthorText.text = newBook.author
+						bookPriceText.text = newBook.price.toLong().toString()
+						val book = MyShopBookObject(newBookID, newBook.name, newBook.genre, newBook.author, result.toString(), newBook.price.toLong(), 0F, newBook.quantity, 0, "", newBook.releaseDate, newBook.description, newBook.type)
+
+						editBtn.setOnClickListener {
+							editBookDialog(singleFrame.id, book)
+						}
+
+						deleteBtn.setOnClickListener {
+							deleteBookDialog(singleFrame, book.id)
+						}
+
+						singleFrame.setOnClickListener {
+							if (context is homeActivity) {
+								var bdFragment = BookDetailFragment()
+
+								var bundle = Bundle()
+								bundle.putString("bookID", book.id)
+
+								bdFragment.arguments = bundle
+
+//                Toast.makeText(context, pageTitles[position].bookID.toString(), Toast.LENGTH_SHORT).show()
+
+								(context as homeActivity).changeFragmentContainer(
+									bdFragment,
+									(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+								)
+							}
+						}
+
+						bookViews.add(singleFrame)
+						content?.addView(singleFrame)
+					}, 10)
 				}
 			}
 		}
@@ -261,7 +311,7 @@ class ManageShopBooksFragment : Fragment() {
 		dialog.show()
 	}
 
-	private fun editBook(bookId: String, bookDetail: ManageShopNewBookObject) {
+	private fun editBook(numId: Int, bookId: String, bookDetail: ManageShopNewBookObject) {
 		val db = Firebase.firestore
 
 		// Upload book image to storage
@@ -298,11 +348,26 @@ class ManageShopBooksFragment : Fragment() {
 				}
 
 				storeRef.update(updatedShopBookDetail as Map<String, Any>)
+
+				Handler().postDelayed({
+					val singleFrame = bookViews[numId]
+					val bookImg = singleFrame.findViewById<ImageView>(R.id.bookImg)
+					val bookGenreText = singleFrame.findViewById<TextView>(R.id.bookGenreText)
+					val bookNameText = singleFrame.findViewById<TextView>(R.id.bookNameText)
+					val bookAuthorText = singleFrame.findViewById<TextView>(R.id.bookAuthorText)
+					val bookPriceText = singleFrame.findViewById<TextView>(R.id.bookPriceText)
+
+					Picasso.get().load(result).into(bookImg)
+					bookGenreText.text = bookDetail.genre
+					bookNameText.text = bookDetail.name
+					bookAuthorText.text = bookDetail.author
+					bookPriceText.text = bookDetail.price.toLong().toString()
+				}, 10)
 			}
 		}
 	}
 
-	private fun editBookDialog(bookDetail: MyShopBookObject) {
+	private fun editBookDialog(numId: Int, bookDetail: MyShopBookObject) {
 		val editBookInitValues = ManageShopAddBookToShopDialogInitFilterValues()
 		editBookInitValues.name = bookDetail.name
 		editBookInitValues.category = bookDetail.genre
@@ -311,6 +376,7 @@ class ManageShopBooksFragment : Fragment() {
 		editBookInitValues.desc = bookDetail.description
 		editBookInitValues.type = bookDetail.type
 		editBookInitValues.quantity = bookDetail.remain.toString()
+		editBookInitValues.image = bookDetail.image
 
 
 		val editBookDialog = ManageShopEditBookInShopDialog(editBookInitValues)
@@ -341,7 +407,7 @@ class ManageShopBooksFragment : Fragment() {
 				else {
 					val dataObj = ManageShopNewBookObject(bookName, bookGenre, bookAuthor, data["releaseDate"] as Timestamp, bookImage, bookPrice.toFloat(), bookDesc, "This decade", bookType, bookQuantity.toLong())
 
-					editBook(bookDetail.id, dataObj)
+					editBook(numId, bookDetail.id, dataObj)
 
 					this.dismiss()
 				}
@@ -349,7 +415,7 @@ class ManageShopBooksFragment : Fragment() {
 		}
 	}
 
-	private fun deleteBookDialog(bookId: String) {
+	private fun deleteBookDialog(singleFrame: View, bookId: String) {
 		val layoutInflater = LayoutInflater.from(requireContext())
 		val view = layoutInflater.inflate(R.layout.manageshop_delete_dialog, null)
 		val builder = AlertDialog.Builder(requireContext())
@@ -364,6 +430,12 @@ class ManageShopBooksFragment : Fragment() {
 
 				storeRef.update(deleteBook as Map<String, Any>).addOnSuccessListener {
 					dialog.dismiss()
+
+					Handler().postDelayed({
+						val singleFrame = bookViews[singleFrame.id]
+						bookViews.remove(singleFrame)
+						(singleFrame.parent as ViewGroup).removeView(singleFrame)
+					}, 10)
 				}
 			}
 		}
@@ -398,11 +470,11 @@ class ManageShopBooksFragment : Fragment() {
 			bookPriceText.text = book.shopPrice.toString()
 
 			editBtn.setOnClickListener {
-				editBookDialog(book)
+				editBookDialog(singleFrame.id, book)
 			}
 
 			deleteBtn.setOnClickListener {
-				deleteBookDialog(book.id)
+				deleteBookDialog(singleFrame, book.id)
 			}
 
 			singleFrame.setOnClickListener {
@@ -423,6 +495,7 @@ class ManageShopBooksFragment : Fragment() {
 				}
 			}
 
+			bookViews.add(singleFrame)
 			content.addView(singleFrame)
 		}
 

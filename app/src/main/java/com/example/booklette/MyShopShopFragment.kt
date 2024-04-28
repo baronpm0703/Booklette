@@ -174,7 +174,7 @@ class MyShopShopFragment : Fragment() {
 							setBestSellersItemViews(view, bestSellers)
 							// Highly Recommended scroll view
 							setHighlyRecommendedItemViews(view, highlyRecommended)
-						}, 1000)
+						}, 2000)
 					}
 				}
 			}

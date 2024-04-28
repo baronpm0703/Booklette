@@ -2,26 +2,28 @@ package com.example.booklette
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.StringRes
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.booklette.databinding.AddBookToShopDialogBinding
 import com.example.booklette.databinding.EditBookInShopDialogBinding
-import com.example.booklette.model.ManageShopNewBookObject
 import com.example.booklette.model.Photo
-import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
 import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
 import com.maxkeppeler.sheets.core.SheetStyle
+import com.squareup.picasso.Picasso
+import java.net.URL
 
 
 class ManageShopEditBookInShopDialog(
@@ -107,6 +109,11 @@ class ManageShopEditBookInShopDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Init data Photo
+        dataPhoto = ArrayList()
+        chosenPhotoAdapter = activity?.let { ChosenReviewPhotoBookDetailRVAdapter(it, dataPhoto) }!!
+//        binding.chosenPhoto.adapter = chosenPhotoAdapter
+
         bookName = initValue.name
         binding.bookNameET.setText(bookName)
         bookAuthor = initValue.author
@@ -121,6 +128,20 @@ class ManageShopEditBookInShopDialog(
         binding.bookPriceET.setText(bookPrice)
         bookQuantity = initValue.quantity
         binding.bookQuantityET.setText(bookQuantity)
+        // Read image
+        val thread = Thread {
+            run {
+                val conn = URL(initValue.image).openConnection()
+                conn.doInput = true
+                conn.connect()
+                val input = conn.getInputStream()
+                val img = Photo()
+                img.image = BitmapFactory.decodeStream(input)
+                dataPhoto.add(img)
+            }
+        }
+        thread.start()
+        thread.join()
 
         // Click out editext
         binding.addBookDialog.setOnClickListener {
@@ -207,12 +228,6 @@ class ManageShopEditBookInShopDialog(
             bookQuantity = binding.bookQuantityET.text.toString()
             positiveListener?.invoke()
         }
-
-
-        // Init data Photo
-        dataPhoto = ArrayList()
-        chosenPhotoAdapter = activity?.let { ChosenReviewPhotoBookDetailRVAdapter(it, dataPhoto) }!!
-//        binding.chosenPhoto.adapter = chosenPhotoAdapter
 
         //Set Up horizontal layout
         val h_linerLayout = activity?.let {LinearLayoutManager(it)}
