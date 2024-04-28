@@ -38,14 +38,14 @@ class MyShopFragment : Fragment() {
 	private var _binding: FragmentMyshopBinding? = null
 	private val binding get() = _binding!!
 
-	val shopTab = MyShopShopFragment()
-	val bookTab = MyShopProductList()
-	val categoryTab = CategoryFragment()
-
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View? {
+		val shopTab = MyShopShopFragment()
+		val bookTab = MyShopProductList()
+		val categoryTab = CategoryFragment()
+
 		// Inflate the layout for this fragment
 		_binding = FragmentMyshopBinding.inflate(inflater, container, false)
 		val view = binding.root
