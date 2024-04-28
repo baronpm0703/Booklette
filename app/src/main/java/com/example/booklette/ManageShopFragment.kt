@@ -75,7 +75,10 @@ class ManageShopFragment : Fragment() {
 
 		val bookFragment = ManageShopBooksFragment()
 		view.findViewById<Button>(R.id.myBookBtn).setOnClickListener {
-			changeFragmentContainer(bookFragment)
+			(context as homeActivity).changeFragmentContainer(
+				bookFragment,
+				(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+			)
 		}
 
 		return view

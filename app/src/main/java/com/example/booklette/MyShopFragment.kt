@@ -56,7 +56,10 @@ class MyShopFragment : Fragment() {
 		val manageShopFragment = ManageShopFragment()
 		val manageShopBtn = view.findViewById<Button>(R.id.manageShopBtn)
 		manageShopBtn.setOnClickListener {
-			changeFragmentContainer(manageShopFragment)
+			(context as homeActivity).changeFragmentContainer(
+				manageShopFragment,
+				(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+			)
 		}
 
 		// Shop info
