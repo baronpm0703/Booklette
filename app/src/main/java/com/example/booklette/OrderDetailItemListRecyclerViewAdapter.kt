@@ -23,7 +23,8 @@ data class DetailBookItem(
 class OrderDetailItemListRecyclerViewAdapter(
     private val values: List<DetailBookItem>,
     private var allowSelection: Boolean = false, // Default to not allow to select
-    private var MultipleSelection: Boolean = false // Default to single selection
+    private var MultipleSelection: Boolean = false, // Default to single selection
+    private var lastCheckedBox: CheckBox? = null
 ) : RecyclerView.Adapter<OrderDetailItemListRecyclerViewAdapter.ViewHolder>() {
 
     private val checkedBookIDList = mutableListOf<String>() // List of positions of checked items
@@ -60,13 +61,28 @@ class OrderDetailItemListRecyclerViewAdapter(
         if (allowSelection){
             holder.itemCheckBox.visibility = View.VISIBLE
             holder.itemCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    if (!MultipleSelection) {
-                        checkedBookIDList.clear() // Clear previous selection if single selection is enabled
+                if (!MultipleSelection) {
+                    checkedBookIDList.clear()
+                    if (isChecked) {
+                        if (lastCheckedBox != null){
+                            lastCheckedBox!!.isChecked = false
+                        }
+                        checkedBookIDList.add(item.ID)
+                        lastCheckedBox = holder.itemCheckBox
+                    } else {
+                        if (lastCheckedBox != null){
+                            lastCheckedBox!!.isChecked = false
+                            lastCheckedBox = null
+                        }
+                        checkedBookIDList.remove(item.ID)
                     }
-                    checkedBookIDList.add(item.ID)
-                } else {
-                    checkedBookIDList.remove(item.ID)
+                }
+                else{
+                    if (isChecked) {
+                        checkedBookIDList.add(item.ID)
+                    } else {
+                        checkedBookIDList.remove(item.ID)
+                    }
                 }
 
 
