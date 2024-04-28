@@ -12,7 +12,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.TextView
+import bolts.Task
 import com.example.booklette.databinding.FragmentMyOrderBinding
+import com.google.android.gms.tasks.Tasks
 import com.mancj.materialsearchbar.MaterialSearchBar
 import java.util.Objects
 
@@ -56,19 +58,24 @@ class MyOrderFragment : Fragment() {
 
         val itemListContainer = binding.itemsRecyclerView // fragmentContainerView
         myOrderItemFragment = MyOrderItemFragment.newInstance(1)
-        childFragmentManager.beginTransaction()
-            .replace(itemListContainer.id,myOrderItemFragment)
-            .commit()
-
+        val transaction = childFragmentManager.beginTransaction()
+        transaction.replace(itemListContainer.id, myOrderItemFragment)
+        transaction.commit()
+        transaction.runOnCommit {
+            // This code will be executed after the transaction is committed
+            processingButton.performClick()
+        }
+        
 
         processingButton.setOnClickListener {
-            resetColorButton()
+
             if (myOrderItemFragment != null) {
                 if (lastPressedButton == processingButton){
-                    lastPressedButton = null
-                    myOrderItemFragment.unfilter()
+//                    lastPressedButton = null
+//                    myOrderItemFragment.unfilter()
                 }
                 else{
+                    resetColorButton()
                     lastPressedButton = processingButton
                     processingButton.backgroundTintList = null
                     myOrderItemFragment.processingButton()
@@ -76,27 +83,30 @@ class MyOrderFragment : Fragment() {
             }
         }
         deliveredButton.setOnClickListener {
-            resetColorButton()
+
             if (myOrderItemFragment != null) {
                 if (lastPressedButton == deliveredButton){
-                    lastPressedButton = null
-                    myOrderItemFragment.unfilter()
+//                    lastPressedButton = null
+//                    myOrderItemFragment.unfilter()
                 }
                 else{
+                    resetColorButton()
                     lastPressedButton = deliveredButton
                     deliveredButton.backgroundTintList = null
                     myOrderItemFragment.deliveredButton()
                 }
             }
         }
+
         completedButton.setOnClickListener{
-            resetColorButton()
+
             if (myOrderItemFragment != null) {
                 if (lastPressedButton == completedButton){
-                    lastPressedButton = null
-                    myOrderItemFragment.unfilter()
+//                    lastPressedButton = null
+//                    myOrderItemFragment.unfilter()
                 }
                 else{
+                    resetColorButton()
                     lastPressedButton = completedButton
                     completedButton.backgroundTintList = null
                     myOrderItemFragment.completedButton()
@@ -105,13 +115,14 @@ class MyOrderFragment : Fragment() {
             }
         }
         cancelledButton.setOnClickListener {
-            resetColorButton()
+
             if (myOrderItemFragment != null) {
                 if (lastPressedButton == cancelledButton){
-                    lastPressedButton = null
-                    myOrderItemFragment.unfilter()
+//                    lastPressedButton = null
+//                    myOrderItemFragment.unfilter()
                 }
                 else{
+                    resetColorButton()
                     lastPressedButton = cancelledButton
                     cancelledButton.backgroundTintList = null
                     myOrderItemFragment.cancelledButton()
@@ -120,13 +131,14 @@ class MyOrderFragment : Fragment() {
             }
         }
         returnedButton.setOnClickListener {
-            resetColorButton()
+
             if (myOrderItemFragment != null) {
                 if (lastPressedButton == returnedButton){
-                    lastPressedButton = null
-                    myOrderItemFragment.returnedButton()
+//                    lastPressedButton = null
+//                    myOrderItemFragment.returnedButton()
                 }
                 else{
+                    resetColorButton()
                     lastPressedButton = returnedButton
                     returnedButton.backgroundTintList = null
                     myOrderItemFragment.returnedButton()
@@ -157,12 +169,12 @@ class MyOrderFragment : Fragment() {
             }
 
         })
+
         return view
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-
     }
 
     private fun resetColorButton(){
