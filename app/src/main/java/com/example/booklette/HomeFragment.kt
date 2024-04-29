@@ -53,6 +53,7 @@ class HomeFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private var topBookArrayList = ArrayList<BookObject>()
+    private var hcmusBookArrayList = ArrayList<BookObject>()
     private var topBookRating = ArrayList<Float>()
     private var bookCategory = ArrayList<String>();
     private var RCDBookList = ArrayList<BookObject>()
@@ -61,6 +62,7 @@ class HomeFragment : Fragment() {
     private var BookNewArrivalSaleList = ArrayList<Float>()
 
     lateinit var topBookAdapter: TopBookHomeFragmentAdapter
+    lateinit var hcmusBookHomeFragmentAdapter: HcmusBookHomeFragmentAdapter
     lateinit var RCDAdapter: HomeFragmentTodayRCDTypeAdapter
     lateinit var RCDBookAdapter: TopBookHomeFragmentAdapter
 
@@ -97,6 +99,8 @@ class HomeFragment : Fragment() {
 
         auth = Firebase.auth
         db = Firebase.firestore
+
+        hcmusBookHomeRVInitialize()
 
         bestDealInitialize()
 
@@ -514,15 +518,60 @@ class HomeFragment : Fragment() {
                         topBookRating.add(avg_rating / rating_num)
                     }
 
-                    if (topBookAdapter != null) {
-                        topBookAdapter.notifyDataSetChanged()
+                    topBookAdapter.notifyDataSetChanged()
 
-                        Handler().postDelayed({
-                            binding.smHomeFragmentTopBookRV.visibility = View.GONE
-                            binding.rvTopBookHomeFragment.visibility = View.VISIBLE
-                            binding.smHomeFragmentTopBookRV.stopShimmer()
-                        }, 2000)
+                    Handler().postDelayed({
+                        binding.smHomeFragmentTopBookRV.visibility = View.GONE
+                        binding.rvTopBookHomeFragment.visibility = View.VISIBLE
+                        binding.smHomeFragmentTopBookRV.stopShimmer()
+                    }, 2000)
+                }
+            }
+        }
+    }
+
+    private fun hcmusBookHomeRVInitialize() {
+        binding.rvHcmusBook.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        hcmusBookHomeFragmentAdapter = HcmusBookHomeFragmentAdapter(activity, topBookArrayList)
+        binding.rvHcmusBook.adapter = hcmusBookHomeFragmentAdapter
+
+        if (topBookArrayList.size == 0 || topBookRating.size == 0) {
+            binding.smHcmusBookRV.visibility = View.VISIBLE
+            binding.rvHcmusBook.visibility = View.GONE
+            binding.smHcmusBookRV.startShimmer()
+
+            val chosenGenre = "Hcmus-book"
+            db.collection("books").whereEqualTo("genre", chosenGenre).get().addOnSuccessListener { result ->
+                lifecycleScope.launch {
+
+                    for (document in result) {
+                        val tmp_id = document.data.get("bookID").toString()
+                        var tmp = 0.0F
+
+                        tmp = getBookPrice1(tmp_id)
+
+                        hcmusBookArrayList.add(
+                            BookObject(
+                                document.data.get("bookID").toString(),
+                                document.data.get("name").toString(),
+                                document.data.get("genre").toString(),
+                                document.data.get("author").toString(),
+                                document.data.get("releaseDate").toString(),
+                                document.data.get("image").toString(),
+//                    document.data.get("price").toString().toFloat()
+                                tmp,
+                                document.data.get("description").toString()
+                            )
+                        )
                     }
+
+                    hcmusBookHomeFragmentAdapter.notifyDataSetChanged()
+
+                    Handler().postDelayed({
+                        binding.smHcmusBookRV.visibility = View.GONE
+                        binding.rvHcmusBook.visibility = View.VISIBLE
+                        binding.smHcmusBookRV.stopShimmer()
+                    }, 2000)
                 }
             }
         }

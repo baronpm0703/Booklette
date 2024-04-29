@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -47,6 +48,7 @@ class ProductListHCMUSFragmentGridViewAdapter(
         bookList = newBookList
     }
 
+    @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
         val viewHolder: ViewHolder
@@ -66,7 +68,13 @@ class ProductListHCMUSFragmentGridViewAdapter(
 //        Log.i("GV", bookInfo.name)
         viewHolder.bookTitle?.text = bookInfo.name
         viewHolder.bookRate?.rating = bookInfo.rating
-        viewHolder.bookOwner?.text = bookInfo.author
+
+        val authorList = bookInfo.author.split(",")
+        if (authorList.size <= 1)
+            viewHolder.bookOwner?.text = bookInfo.author
+        else {
+            viewHolder.bookOwner?.text = authorList[0] + ",..."
+        }
         val bookPrice = "${bookInfo.price} VND"
         viewHolder.bookPrice?.text = bookPrice
         Picasso.get()
