@@ -89,54 +89,59 @@ class EInvoiceFragment : Fragment() {
         itemList.clear()
         binding.rvEinvoiceItem.visibility = View.GONE
         binding.orderId.text = orderID.toString()
-        orderID?.let {
+        orderID?.let { orderId ->
             db.collection("orders")
-                .document(it)
+                .document(orderId)
                 .get()
                 .addOnSuccessListener { document ->
                     val orderData = document.data
-                    binding.subtotal.text = orderData?.get("totalSum").toString()
+                    binding.orderId.text = orderID.toString()
+                    binding.subtotal.text = orderData?.get("beforeDiscount").toString()
+                    val discountMoney = (orderData?.get("totalSum").toString().toFloat()) - (orderData?.get("beforeDiscount").toString().toFloat())
+                    binding.discount.text = discountMoney.toString()
                     binding.totalAmount.text = orderData?.get("totalSum").toString()
                     binding.moneyCollected.text = orderData?.get("totalSum").toString()
                     binding.customerAddress.text = orderData?.get("shippingAddress").toString()
 
-                    val timeStamp = orderData?.get("creationDate") as Timestamp
-
+                    val timeStamp = orderData?.get("creationDate") as? Timestamp
                     val date: Date? = timeStamp?.toDate()
                     val sdf = SimpleDateFormat("dd-MM-yyyy")
-
                     binding.invoiceDate.text = sdf.format(date).toString()
-                    if (orderData?.get("items") != null) {
-                        val bookList = orderData?.get("items") as? Map<String, Any>
-                        bookList?.let { bookListData ->
-                            for (item in bookListData) {
-                                val itemId = item.key
-                                val quantity = (item.value as? Map<String, Any>)?.get("quantity") as? Number
-                                val totalSum = (item.value as? Map<String, Any>)?.get("totalSum") as? Number
-                                db.collection("books")
-                                    .whereEqualTo("bookID", itemId)
-                                    .get()
-                                    .addOnSuccessListener { bookDocument ->
-                                        for (eachBook in bookDocument) {
-                                            itemList.add(
-                                                DetailInvoiceItem(
-                                                    eachBook.data["name"].toString(),
-                                                    quantity?.toInt() ?: 1,
-                                                    (totalSum?.toFloat() ?: 0.0F) / (quantity?.toFloat() ?: 1.0F),
-                                                    totalSum?.toFloat() ?: 0.0F
-                                                )
-                                            )
-                                        }
 
+                    val items = orderData?.get("items") as? Map<String, Map<String, Any>> // Assuming "items" is a Map of Maps
+                    val fetchBookNamesTasks = items?.flatMap { (shopID, itemMap) ->
+                        itemMap.map { (itemId, itemData) ->
+                            Log.d("shopID", shopID)
+                            Log.d("itemId", itemId)
+                            Log.d("itemData", itemData.toString())
+
+                            val quantity = ((itemData as Map<*, *>)["quantity"] as? Number) ?: 0
+                            val totalSum = ((itemData as Map<*, *>)["totalSum"] as? Number) ?: 0
+                            db.collection("books")
+                                .whereEqualTo("bookID", itemId)
+                                .get()
+                                .addOnSuccessListener { bookSnapshot ->
+                                    for (book in bookSnapshot.documents) {
+                                        val bookData = book.data
+                                        val bookName = bookData?.get("name") as? String
+                                        itemList.add(
+                                            DetailInvoiceItem(
+                                                bookName.toString(),
+                                                quantity?.toInt() ?: 1,
+                                                (totalSum?.toFloat() ?: 0.0F) / (quantity?.toFloat() ?: 1.0F),
+                                                totalSum?.toFloat() ?: 0.0F
+                                            )
+                                        )
                                         adapter.notifyDataSetChanged()
 
                                         Handler().postDelayed({
                                             binding.rvEinvoiceItem.visibility = View.VISIBLE
                                         }, 2000)
                                     }
-                            }
+                                }
                         }
                     }
+
                 }
                 .addOnFailureListener { e ->
                     Log.e("loadItemListData", "Error loading item list: $e")

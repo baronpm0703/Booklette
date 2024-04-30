@@ -238,11 +238,14 @@ class CheckOutFragment : Fragment() {
                     }
 
                     val x = 1
-                    val data: HashMap<Any, Any> = hashMapOf(
+                    val totalPaymentText = binding.totalPaymentInPaymentDetail.text.toString().replace(",", "").split(" ")[0]
+                    val totalPayment = if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() else 0.0F
+
+                    val data: HashMap<String, Any> = hashMapOf(
                         "creationDate" to Timestamp(Date()),
-                        "customerID" to auth.currentUser!!.uid.toString(),
+                        "customerID" to auth.currentUser!!.uid,
                         "items" to storeItemMap,
-                        "paymentMethod" to hashMapOf<Any, Any>(
+                        "paymentMethod" to hashMapOf(
                             "Type" to "COD",
                             "cardHolder" to "",
                             "cardNumber" to "",
@@ -250,12 +253,10 @@ class CheckOutFragment : Fragment() {
                         ),
                         "status" to "Đang xử lý",
                         "beforeDiscount" to totalAmount,
-                        "totalSum" to ((binding.totalPaymentInPaymentDetail.text as String).split(" ")[0].toFloat() * 1000.0F),
-                        "shippingAddress" to (binding.recieverName.text.toString() + " - " +
-                                binding.recieverPhone.text.toString() + " - " +
-                                binding.addressNumber.text.toString() + " " +
-                                binding.addressZone.text.toString())
+                        "totalSum" to (totalPayment * 1000.0F),
+                        "shippingAddress" to "${binding.recieverName.text} - ${binding.recieverPhone.text} - ${binding.addressNumber.text} ${binding.addressZone.text}"
                     )
+
 
                     db.collection("orders").add(data).addOnCompleteListener { documentReference ->
 //                            for (cartObject in selectedItems) {

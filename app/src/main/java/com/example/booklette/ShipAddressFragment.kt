@@ -20,6 +20,7 @@ import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.model.CartObject
@@ -46,6 +47,7 @@ class ShipAddressFragment : Fragment(){
 
 
     private var shipAddressList: ArrayList<ShipAddressObject> = ArrayList()
+    private lateinit var fragmentManager: FragmentManager // Add this parameter
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -61,6 +63,30 @@ class ShipAddressFragment : Fragment(){
 
         binding.rvShipAddress.adapter = adapter
         binding.rvShipAddress.layoutManager = LinearLayoutManager(requireContext())
+
+        adapter.setOnEditAddressClickListener(object : ShipAddressFragmentRecycleViewAdapter.OnEditAddressClickListener {
+            override fun onEditAddressClicked(address: ShipAddressObject) {
+                // Create a bundle to pass ShipAddressObject data
+                val bundle = Bundle().apply {
+                    putParcelable("shipAddressObject", address)
+                }
+
+                // Initialize EditShipAddressDialog and pass data through bundle
+                val editDialog = EditShipAddressDialog().apply {
+                    arguments = bundle
+                }
+
+                // Check if the context of the adapter is an Activity
+                if (context is Activity) {
+                    // Use parentFragmentManager to get the FragmentManager of the parent Fragment
+                    editDialog.show(requireActivity().supportFragmentManager, "edit_dialog_tag")
+                } else {
+                    // Handle this case according to your app's structure if the context is not an Activity
+                }
+            }
+        })
+
+
 
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(binding.rvShipAddress)
@@ -102,6 +128,7 @@ class ShipAddressFragment : Fragment(){
             } else {
             }
         }
+
 
         binding.cartSwipeRefresh.setOnRefreshListener {
             loadShipAddressData()
