@@ -3,6 +3,7 @@ package com.example.booklette
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
@@ -46,6 +47,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.Collections
 import kotlin.math.round
 
@@ -136,6 +138,7 @@ class BookDetailFragment : Fragment() {
             if (userInfo != null){
                 initValues.rating = userInfo!!.ratings
                 initValues.text = userInfo!!.description
+                initValues.reviewPhotos = userInfo!!.reviewPhotos
                 val index = userInfo!!.wishListObject.indexOf(bookID)
                 if (index != -1)
                     isFollowed.value = true
@@ -748,6 +751,7 @@ class BookDetailFragment : Fragment() {
 
                 var rating = 0.0F
                 var cmt = ""
+                var linkToFolder = ""
                 val bookRef = db.collection("books").whereEqualTo("bookID", bookID).get().await()
 
                 for (book in bookRef.documents) {
@@ -760,6 +764,7 @@ class BookDetailFragment : Fragment() {
                             val reviewOfUser = reviewsArray.single{it -> it.get("UID") == UID}
                             rating = reviewOfUser.get("score").toString().toFloat()
                             cmt = reviewOfUser.get("text").toString()
+                            linkToFolder = reviewOfUser.get("image").toString()
                         }
 
                     }
@@ -768,6 +773,9 @@ class BookDetailFragment : Fragment() {
                 res = UserReviewObject(uid, username, avatar, rating, cmt)
                 if (wishListBookID != null) {
                     res.wishListObject = wishListBookID as ArrayList<String>
+                }
+                if (linkToFolder.isNotEmpty()) {
+                    res.reviewPhotos = downloadImagesFromFolder(linkToFolder)
                 }
             }
         } catch (e: Exception){
@@ -786,6 +794,48 @@ class BookDetailFragment : Fragment() {
         }
 
         return res
+    }
+
+    fun downloadImagesFromFolder(folderPath: String): ArrayList<Photo>{
+        val storage = Firebase.storage
+
+        val listRef =  storage.getReferenceFromUrl(folderPath)
+
+        val dataPhoto = ArrayList<Photo>()
+
+        listRef.listAll()
+            .addOnSuccessListener { listResult ->
+                listResult.items.forEach { item ->
+
+                    val originalFilename = item.name
+
+                    // Download the file directly into a Bitmap
+                    item.getBytes(Long.MAX_VALUE)
+                        .addOnSuccessListener { bytes ->
+                            // Convert the downloaded bytes to a Bitmap
+                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                            val photo = Photo()
+                            photo.id = Photo.totalID
+                            photo.nameFile = item.name
+                            photo.id?.let { Photo.updateTotalID(it) }
+                            photo.image = bitmap
+                            dataPhoto.add(photo)
+                            // Now you can use the bitmap for further processing
+                            // For example, you can display it in an ImageView
+                            // imageView.setImageBitmap(bitmap)
+                        }
+                        .addOnFailureListener { exception ->
+                            // Handle any errors
+                            println("Failed to download $originalFilename: $exception")
+                        }
+                }
+            }
+            .addOnFailureListener { exception ->
+                // Handle any errors
+                println("Failed to list files in folder: $exception")
+            }
+
+        return dataPhoto
     }
 
     fun checkDoesUserReviewExist(UID: String): Int{
@@ -908,6 +958,7 @@ class BookDetailFragment : Fragment() {
         val initValues = InitFilterValuesReviewBookDetail()
         initValues.rating = rating
         initValues.text = cmt
+        initValues.reviewPhotos = images
         reviewDialogBookDetail.updateinitValue(initValues)
 
 

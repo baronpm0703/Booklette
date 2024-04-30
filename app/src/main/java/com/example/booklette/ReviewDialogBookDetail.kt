@@ -110,6 +110,11 @@ class ReviewDialogBookDetail(
 
         // Init data Photo
         dataPhoto = ArrayList()
+        if (initValue.reviewPhotos.isNotEmpty())
+        {
+            dataPhoto = initValue.reviewPhotos
+            binding.chosenPhoto.visibility = View.VISIBLE
+        }
         chosenPhotoAdapter = activity?.let { ChosenReviewPhotoBookDetailRVAdapter(it, dataPhoto) }!!
         binding.chosenPhoto.adapter = chosenPhotoAdapter
 
@@ -191,6 +196,8 @@ class ReviewDialogBookDetail(
             // For example, display selected images in ImageView
         }
     }
+
+
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateChosenPhoto(dataPhoto: ArrayList<Photo>){
