@@ -44,7 +44,7 @@
     <string name="forgotPasswordSuccess">Kiểm tra email của bạn!</string>
     <string name="sendingText">đang xử lí...</string>
     <string name="navigation_home">Trang chủ</string>
-    <string name="navigation_category">Thể loại</string>
+    <string name="navigation_category">THỂ LOẠI</string>
     <string name="navigation_cart">Giỏ hàng</string>
     <string name="navigation_favorite">Yêu thích</string>
     <string name="navigation_account">Tài khoản</string>
@@ -215,7 +215,7 @@
     <string name="myprofile_blacklist">Danh sách đen</string>
     <string name="myprofile_help_center">Trung tâm hỗ trợ</string>
     <string name="bookDetailLess">ẩn bớt ></string>
-    <string name="my_order_label">Đơn Mua</string>
+    <string name="my_order_label">Đơn hàng của tôi</string>
     <string name="my_order_processing_button">Đang xử lý</string>
     <string name="my_order_completed_button">Đã hoàn thành</string>
     <string name="my_order_cancelled_button">Đã huỷ</string>

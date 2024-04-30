@@ -48,7 +48,7 @@ class ProductListHCMUS : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    private lateinit var gvProductListAdapter: ProductListFragmentGridViewAdapter
+    private lateinit var gvProductListAdapter: ProductListHCMUSFragmentGridViewAdapter
 
     private var chosenGenre: String? = null
     private var wordToSearch: String? = null
@@ -109,7 +109,7 @@ class ProductListHCMUS : Fragment() {
         }
 
         // Product List Grid view
-        gvProductListAdapter = activity?.let { ProductListFragmentGridViewAdapter(it, bookList) }!!
+        gvProductListAdapter = activity?.let { ProductListHCMUSFragmentGridViewAdapter(it, bookList) }!!
 
         binding.gvProductList.adapter = gvProductListAdapter
         binding.gvProductList.visibility = View.GONE

@@ -250,7 +250,7 @@ class CheckOutFragment : Fragment() {
                         ),
                         "status" to "Đang xử lý",
                         "beforeDiscount" to totalAmount,
-                        "totalSum" to afterFomartedTotalAmount.toFloat(),
+                        "totalSum" to ((binding.totalPaymentInPaymentDetail.text as String).split(" ")[0].toFloat() * 1000.0F),
                         "shippingAddress" to (binding.recieverName.text.toString() + " - " +
                                 binding.recieverPhone.text.toString() + " - " +
                                 binding.addressNumber.text.toString() + " " +
