@@ -88,8 +88,13 @@ class ManageShopFragment : Fragment() {
 		val builder = AlertDialog.Builder(requireContext())
 		builder.setView(programDialogLayout)
 		val programDialog = builder.create()
+		val discountProgramsFragment = ManageShopDiscountProgramsFragment()
 		programDialogLayout.findViewById<Button>(R.id.discountProgramBtn).setOnClickListener {
-
+			(context as homeActivity).changeFragmentContainer(
+				discountProgramsFragment,
+				(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+			)
+			programDialog.dismiss()
 		}
 		programDialogLayout.findViewById<Button>(R.id.shopVoucherBtn).setOnClickListener {
 
