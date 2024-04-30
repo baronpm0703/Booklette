@@ -23,6 +23,7 @@ import com.example.booklette.databinding.EditBookInShopDialogBinding
 import com.example.booklette.databinding.FragmentManageshopBooksBinding
 import com.example.booklette.databinding.FragmentManageshopDiscountprogramsBinding
 import com.example.booklette.databinding.FragmentMyshopBinding
+import com.example.booklette.model.DiscountProgramObject
 import com.example.booklette.model.HRecommendedBookObject
 import com.example.booklette.model.ManageShopNewBookObject
 import com.example.booklette.model.MyShopBookObject
@@ -62,12 +63,56 @@ class ManageShopDiscountProgramsFragment : Fragment() {
 
 		val auth = Firebase.auth
 		val db = Firebase.firestore
+		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
+			.addOnSuccessListener { documents ->
+				if (documents.size() != 1) return@addOnSuccessListener    // Failsafe
+
+				for (document in documents) {
+					storeRef = document.getDocumentReference("store")!!
+				}
+			}
 
 		val comingSoonTabBtn = view.findViewById<Button>(R.id.comingSoonTabBtn)
 		comingSoonTabBtn.setBackground(context?.let { ContextCompat.getDrawable(it, R.drawable.manageshop_discount_tab_chosen) })
 		comingSoonTabBtn.setTextColor(Color.WHITE)
 
 		return view
+	}
+
+	private fun addNewProgram(programObject: DiscountProgramObject) {
+		val db = Firebase.firestore
+
+		val discColl = db.collection("discounts")
+		discColl.get().addOnSuccessListener {
+			val documents = it.documents
+			var max: Long = 0
+			for (document in documents) {
+				val id = document.get("discountID").toString().filter { it.isDigit() }.toLong()
+
+				if (id > max) max = id
+			}
+			val newDiscountID = "DSC" + (max + 1)
+
+			val newDiscMap = hashMapOf(
+				"discountID" to newDiscountID,
+				"discountIntroduction" to programObject.discountIntroduction,
+				"discountName" to programObject.discountName,
+				"discountType" to "product",
+				"endDate" to programObject.endDate,
+				"orderLimit" to programObject.orderLimit,
+				"percent" to programObject.percent,
+				"startDate" to programObject.startDate
+			)
+
+			discColl.add(newDiscMap).addOnSuccessListener {
+				storeRef.get().addOnSuccessListener {
+					val updateDiscMap = hashMapOf(
+						"items/${programObject.productID}/discount" to newDiscountID
+					)
+					storeRef.update(updateDiscMap as Map<String, Any>)
+				}
+			}
+		}
 	}
 
 	override fun onDestroyView() {
