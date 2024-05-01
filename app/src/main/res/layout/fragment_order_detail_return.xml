@@ -171,7 +171,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
 
             <EditText
-                android:id="@+id/editTextText2"
+                android:id="@+id/returnReasonField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

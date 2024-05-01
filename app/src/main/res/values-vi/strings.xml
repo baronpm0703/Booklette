@@ -302,4 +302,9 @@
     <string name="delete_notification">Sách của bạn đã được xóa khỏi Giỏ hàng</string>
     <string name="book_detail_update_quantity_denied">Từ chối</string>
     <string name="filter_title_dialog_product_list">Lọc</string>
+    <string name="orderDetailReturnConfirmLabel">Bạn có chắc rằng muốn trả những sản phẩm này?</string>
+    <string name="orderDetailReturnConfirmYes">Yêu cầu hoàn trả đã được tạo.</string>
+    <string name="documentUploading">Đang gửi</string>
+    <string name="pleaseWait">Vui lòng đợi...</string>
+    <string name="return_instruction">Hãy chọn một hay nhiều quyển sách để trả!</string>
 </resources>

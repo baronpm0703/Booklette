@@ -1,23 +1,36 @@
 package com.example.booklette
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.ProgressDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentOrderDetailReturnBinding
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.storage
 import com.squareup.picasso.Picasso
+import java.io.File
 import java.net.URI
 
 
@@ -44,6 +57,8 @@ class OrderDetailCaseReturnFragment : Fragment() {
 // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var db : FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+    private lateinit var cloudStorage: FirebaseStorage
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -59,10 +74,10 @@ class OrderDetailCaseReturnFragment : Fragment() {
         val view = binding.root
 
         db = Firebase.firestore
-
-
+        auth = Firebase.auth
+        cloudStorage = Firebase.storage
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
-
+        val reasonField = binding.returnReasonField
         var tempTotalOrgMoney: Long = 0
         orderID?.let {
             db.collection("orders")
@@ -118,43 +133,130 @@ class OrderDetailCaseReturnFragment : Fragment() {
             cancelImagePicker2.visibility = View.GONE
             URI2 = ""
         }
+
+        val timestamp = FieldValue.serverTimestamp()
+        val returnRef = db.collection("returnNExchange")
+        val cloudStorageRef = cloudStorage.reference
+        var count = 0
+        returnRef.get()
+            .addOnSuccessListener {
+                count = it.size()
+            }
+            .addOnFailureListener { exception ->
+                Log.e("error", exception.toString())
+            }
         // return button
         val returnButton = binding.returnButton
         returnButton.setOnClickListener {
-
             //implement later when document finished.
-//            val dialogClickListener =
-//                DialogInterface.OnClickListener { dialog, which ->
-//                    when (which) {
-//                        DialogInterface.BUTTON_POSITIVE -> {
-//                            val docRef = orderID?.let { it1 -> db.collection("orders").document(it1) }
-//                            docRef?.update("status","Bị huỷ")?.addOnSuccessListener {
-//                                // will change to motion toast later
-//                                Toast.makeText(
-//                                    context,
-//                                    R.string.orderDetailCancelArgument,
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                                requireActivity().onBackPressedDispatcher.onBackPressed()
-//                            }?.addOnFailureListener{
-//                                Toast.makeText(
-//                                    context,
-//                                    R.string.orderDetailFailedArgument,
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                            }
-//                        }
-//                        DialogInterface.BUTTON_NEGATIVE -> {}
-//                    }
-//                }
-//
-//            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-//
-//            builder.setMessage(R.string.orderDetailProcessingCancelLabel).setPositiveButton(R.string.yes, dialogClickListener)
-//                .setNegativeButton(R.string.no, dialogClickListener).show()
+            val dialogClickListener =
+                DialogInterface.OnClickListener { dialog, which ->
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            if (itemsFragment.getListClickedBookID().isEmpty()){
+                                val instruction = context?.getString(R.string.return_instruction)
+                                instruction?.let {
+                                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            else{
+                                var URI1Ref = ""
+                                var URI2Ref = ""
+                                // Create a list to store the upload tasks
+                                val uploadTasks = mutableListOf<Task<Uri>>()
+
+                                if (!URI1.isNullOrEmpty()) {
+                                    val imageRef = cloudStorageRef.child("returnImages/" + auth.uid + getFileNameFromUri(URI1.toUri()) + timestamp.toString())
+                                    val uploadTask1 = imageRef.putFile(URI1.toUri())
+                                        .continueWithTask { task ->
+                                            if (!task.isSuccessful) {
+                                                throw task.exception ?: IllegalStateException("Unknown error")
+                                            }
+                                            imageRef.downloadUrl
+                                        }
+                                    uploadTasks.add(uploadTask1)
+                                }
+
+                                if (!URI2.isNullOrEmpty()) {
+                                    val imageRef = cloudStorageRef.child("returnImages/" + auth.uid+ getFileNameFromUri(URI2.toUri()) + timestamp.toString())
+                                    val uploadTask2 = imageRef.putFile(URI2.toUri())
+                                        .continueWithTask { task ->
+                                            if (!task.isSuccessful) {
+                                                throw task.exception ?: IllegalStateException("Unknown error")
+                                            }
+                                            imageRef.downloadUrl
+                                        }
+                                    uploadTasks.add(uploadTask2)
+                                }
+
+                                fun uploadImagesAndAddDocument() {
+                                    // Your code for uploading images and adding the document
+                                    var imageList = arrayListOf(URI1Ref,URI2Ref)
+                                    val returnDoc = hashMapOf(
+                                        "customerID" to auth.uid.toString(),
+                                        "image" to imageList.toList(),
+                                        "itemID" to itemsFragment.getListClickedBookID(),
+                                        "reason" to reasonField.text.toString(),
+                                        "requestID" to "RNE$count",
+                                        "returnDate" to timestamp,
+                                        "status" to "Không phê duyệt",
+                                    )
+                                    returnRef.add(returnDoc)
+                                        .addOnSuccessListener {
+                                            Toast.makeText(requireContext(),getString(R.string.orderDetailReturnConfirmYes),Toast.LENGTH_SHORT).show()
+                                            requireActivity().onBackPressedDispatcher.onBackPressed()
+                                        }
+                                        .addOnFailureListener{
+                                            Log.e("error", it.toString())
+                                        }
+                                }
+                                // Initialize a progress dialog
+                                val progressDialog = ProgressDialog(requireContext())
+                                progressDialog.setTitle(getString(R.string.documentUploading))
+                                progressDialog.setMessage(getString(R.string.pleaseWait))
+                                progressDialog.setCancelable(false) // Disable canceling the dialog by clicking outside of it
+
+                                // Show the progress dialog
+                                progressDialog.show()
+                                if (uploadTasks.isNotEmpty()) {
+                                    // Wait for all upload tasks to complete
+                                    Tasks.whenAllSuccess<Uri>(uploadTasks)
+                                        .addOnSuccessListener { downloadUrls ->
+                                            // Process download URLs
+                                            URI1Ref = if (URI1.isNullOrEmpty()) "" else downloadUrls[0].toString()
+                                            URI2Ref = if (URI2.isNullOrEmpty()) "" else downloadUrls.getOrElse(1) { "" }.toString()
+
+                                            uploadImagesAndAddDocument()
+                                            progressDialog.dismiss()
+
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            Log.e("Upload", "Error uploading images", exception)
+                                            progressDialog.dismiss()
+
+                                        }
+                                } else {
+                                    uploadImagesAndAddDocument()
+                                    progressDialog.dismiss()
+
+                                }
+                            }
+                        }
+                        DialogInterface.BUTTON_NEGATIVE -> {}
+                    }
+                }
+
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+
+            builder.setMessage(R.string.orderDetailReturnConfirmLabel).setPositiveButton(R.string.yes, dialogClickListener)
+                .setNegativeButton(R.string.no, dialogClickListener).show()
 
         }
         return view
+    }
+    fun getFileNameFromUri(uri: Uri): String {
+        val file = File(uri.path)
+        return file.name
     }
     fun formatMoney(number: Long): String {
         val numberString = number.toString()
@@ -186,10 +288,8 @@ class OrderDetailCaseReturnFragment : Fragment() {
             Picasso.get().load(uri).into(imagePicker)
             URI1 = selectedImageUri.toString()
             Toast.makeText(context,URI1,Toast.LENGTH_SHORT).show()
-
         }
         cancelImagePicker.visibility = View.VISIBLE
-        imagePicker2.visibility = View.VISIBLE
     }
     private fun setImageToImageView2() {
         selectedImageUri?.let { uri ->

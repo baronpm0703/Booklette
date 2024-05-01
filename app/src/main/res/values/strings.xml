@@ -257,6 +257,7 @@
     <string name="my_order_detail_item_return_failed">Return failed</string>
     <string name="order_item_order">Order </string>
     <string name="review_instruction">Please choose a book to review!</string>
+    <string name="return_instruction">Please choose one or more book to return!</string>
     <string name="order_item_tracking_number">Tracking number:</string>
     <string name="order_item_quantity">Quantity:</string>
     <string name="order_item_total">Total:</string>
@@ -319,7 +320,11 @@
     <string name="paymentCanceled">Payment canceled!</string>
     <string name="paymentSuccessfully">Payment successfully!</string>
     <string name="orderDetailStatus">Status:</string>
-    <string name="orderDetailProcessingCancelLabel">Are you sure cancel this order?</string>
+    <string name="orderDetailProcessingCancelLabel">Are you sure you want to cancel this order?</string>
+    <string name="orderDetailReturnConfirmLabel">Are you sure you want to return these product?</string>
+    <string name="orderDetailReturnConfirmYes">Return request created successfully.</string>
+    <string name="documentUploading">Uploading</string>
+    <string name="pleaseWait">Please wait...</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="orderDetailCancelArgument">Order cancelled successfully.</string>
