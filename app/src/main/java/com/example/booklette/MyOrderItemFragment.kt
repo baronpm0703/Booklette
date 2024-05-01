@@ -25,7 +25,7 @@ class MyOrderItemFragment : Fragment() {
     private lateinit var adapter: MyOrderItemRecyclerViewAdapter
     private var userOrders = arrayListOf<OrderDataClass>()
     private var originalValues = arrayListOf<OrderDataClass>()
-    private lateinit var db : FirebaseFirestore
+    private lateinit var db: FirebaseFirestore
     private var _binding: MyOrderItemListBinding? = null
     private var fullItemNames = arrayListOf<String>()
     private val binding get() = _binding!!
@@ -53,11 +53,12 @@ class MyOrderItemFragment : Fragment() {
 
         db = Firebase.firestore
 
-        adapter = MyOrderItemRecyclerViewAdapter(requireContext(),userOrders)
+        val ordersRef = db.collection("orders")
+        adapter = MyOrderItemRecyclerViewAdapter(requireContext(), userOrders)
+        view.adapter = adapter
+        view.layoutManager = LinearLayoutManager(context)
         // Fetch data from Firestore
-        db.collection("orders")
-            // remove this line if want to test all ID
-            .whereEqualTo("customerID",userID)
+        ordersRef.whereEqualTo("customerID", userID)
             .orderBy("creationDate", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { querySnapshot ->
@@ -70,7 +71,7 @@ class MyOrderItemFragment : Fragment() {
                     var orderName = ""
                     var totalQuantity: Long = 0
                     val itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
-                    Log.d("map",itemsMap.toString())
+                    Log.d("map", itemsMap.toString())
                     val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
                         itemMap.map { (itemId, itemData) ->
                             Log.d("shopID", shopID)
@@ -112,25 +113,24 @@ class MyOrderItemFragment : Fragment() {
                             val totalMoney = (orderData?.get("totalSum") as? Number)?.toLong() ?: 0
                             val status = orderData?.get("status") as String
                             val newOrder = date?.let {
-                                OrderDataClass(orderName, it, trackingNumber, totalQuantity, totalMoney, status)
+                                OrderDataClass(
+                                    orderName,
+                                    it,
+                                    trackingNumber,
+                                    totalQuantity,
+                                    totalMoney,
+                                    status
+                                )
                             }
 
                             // Add newOrder to userOrders list
                             if (newOrder != null) {
                                 userOrders.add(newOrder)
+                                originalValues.add(newOrder)
                             }
-
                             // Update adapter and layout manager
-                            originalValues = ArrayList(userOrders)
-                            adapter.notifyDataSetChanged()
-                            if (adapter.onButtonClick == null) {
-                                adapter.onButtonClick = orderItemClickListener
-                            }
-                            view.adapter = adapter
-                            view.layoutManager = LinearLayoutManager(context)
-
+                            afterQuery()
                         }
-
 
                 }
 
@@ -139,23 +139,41 @@ class MyOrderItemFragment : Fragment() {
                 Log.e("CanhBao", "Error getting documents.", exception)
             }
 
+
         return view
     }
-    private var orderItemClickListener: ((OrderDataClass) -> Unit)? = null
 
+    private var orderItemClickListener: ((OrderDataClass) -> Unit)? = null
+    private fun afterQuery(){
+        Log.d("dataSetUserOrder", userOrders.toString())
+        Log.d("dataSetOG", originalValues.toString())
+        adapter.notifyDataSetChanged()
+        if (adapter.onButtonClick == null) {
+            adapter.onButtonClick = orderItemClickListener
+        }
+        processingButton()
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is homeActivity) {
             orderItemClickListener = { orderItem ->
                 // đang xử lý => huỷ đơn,
-                if (orderItem.status.contains("xử lý",ignoreCase = true)){
-                    val detailFragment = OrderDetailCaseProcessingFragment.newInstance(orderItem.trackingNumber)
-                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+                if (orderItem.status.contains("xử lý", ignoreCase = true)) {
+                    val detailFragment =
+                        OrderDetailCaseProcessingFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(
+                        detailFragment,
+                        (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
+                    )
                 }
                 // đã giao => trả hoặc xác nhận nhận hàng (không cho huỷ)
-                else if (orderItem.status.contains("đã giao",true)){
-                    val detailFragment = OrderDetailCaseDeliveredFragment.newInstance(orderItem.trackingNumber)
-                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+                else if (orderItem.status.contains("đã giao", true)) {
+                    val detailFragment =
+                        OrderDetailCaseDeliveredFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(
+                        detailFragment,
+                        (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
+                    )
                 }
 
 
@@ -165,9 +183,13 @@ class MyOrderItemFragment : Fragment() {
 //                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
 //                }
                 // đơn bị huỷ thành công (ko thành công) => viết review
-                else{
-                    val detailFragment = OrderDetailCaseReviewFragment.newInstance(orderItem.trackingNumber)
-                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+                else {
+                    val detailFragment =
+                        OrderDetailCaseReviewFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(
+                        detailFragment,
+                        (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
+                    )
                 }
             }
         }
@@ -178,21 +200,32 @@ class MyOrderItemFragment : Fragment() {
         orderItemClickListener = null
     }
 
-    fun filterStatus(query: String) {
+    private fun filterStatus(query: String) {
         userOrders.clear()
         if (query.isBlank()) {
             userOrders.addAll(ArrayList(originalValues))  // If the query is empty, show the original list
         } else {
-            userOrders.addAll(ArrayList(originalValues.filter { it.status.contains(query, ignoreCase = true) }))  // Filter by status
+            userOrders.addAll(ArrayList(originalValues.filter {
+                it.status.contains(
+                    query,
+                    ignoreCase = true
+                )
+            }))  // Filter by status
         }
         adapter.notifyDataSetChanged() // Notify the adapter that the data has changed
     }
+
     fun filterName(query: String) {
         userOrders.clear()
         if (query.isBlank()) {
             userOrders.addAll(ArrayList(originalValues))  // If the query is empty, show the original list
         } else {
-            userOrders.addAll(ArrayList(originalValues.filter { it.trackingNumber.contains(query, ignoreCase = true) }))  // Filter by status
+            userOrders.addAll(ArrayList(originalValues.filter {
+                it.trackingNumber.contains(
+                    query,
+                    ignoreCase = true
+                )
+            }))  // Filter by status
         }
         adapter.notifyDataSetChanged() // Notify the adapter that the data has changed
     }
@@ -205,22 +238,27 @@ class MyOrderItemFragment : Fragment() {
     }
 
 
-    fun completedButton(){
+    fun completedButton() {
         filterStatus("Thành công")
     }
-    fun processingButton(){
+
+    fun processingButton() {
         filterStatus("Đang xử lý")
     }
-    fun cancelledButton(){
+
+    fun cancelledButton() {
         filterStatus("huỷ")
     }
-    fun returnedButton(){
+
+    fun returnedButton() {
         filterStatus("trả")
     }
-    fun deliveredButton(){
+
+    fun deliveredButton() {
         filterStatus("đã giao")
     }
-    fun unfilter(){
+
+    fun unfilter() {
         filterStatus("")
     }
 

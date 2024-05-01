@@ -40,13 +40,14 @@ class OrderDetailCaseProcessingFragment : Fragment() {
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var db : FirebaseFirestore
+    private lateinit var db: FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             orderID = it.getString(ORDERID_PARAM)
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,7 +63,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
         val statusField = binding.orderDetailStatusField
         val shippingAddressField = binding.orderDetailShippingAddressField
         val paymentMethodField = binding.orderDetailPaymentMethodField
-        val deliveryMethodField = binding.orderDetailDeliveryMethodField
+        val beforeDiscountField = binding.orderDetailBeforeDiscountField
         val discountField = binding.orderDetailDiscountField
         val totalField = binding.orderDetailTotalField
         val viewInvoice = binding.viewInvoice
@@ -76,13 +77,13 @@ class OrderDetailCaseProcessingFragment : Fragment() {
             db.collection("orders")
                 .document(it)
                 .get()
-                .addOnSuccessListener {document->
-                        val orderData = document.data
-                        val timeStamp = orderData?.get("creationDate") as Timestamp
+                .addOnSuccessListener { document ->
+                    val orderData = document.data
+                    val timeStamp = orderData?.get("creationDate") as Timestamp
 
-                        val date: Date? = timeStamp?.toDate()
-                        itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
-                        var totalQuantity: Long = 0
+                    val date: Date? = timeStamp?.toDate()
+                    itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
+                    var totalQuantity: Long = 0
 //                        itemsMap?.forEach { (itemID, itemData) ->
 //
 //                            val itemMap = itemData as? Map<String, Any>
@@ -91,82 +92,86 @@ class OrderDetailCaseProcessingFragment : Fragment() {
 //                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toFloat()
 //                            totalQuantity += itemMap?.get("quantity") as Long
 //                        }
-                        val totalMoney = (orderData?.get("totalSum") as Number).toLong()
-                        val status = orderData?.get("status") as String
+                    val totalMoney = (orderData?.get("totalSum") as Number).toLong()
+                    val status = orderData?.get("status") as String
 
-                        val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
-                        val paymentMethodType = paymentMethod?.get("Type")
-                        val shippingAddress = orderData?.get("shippingAddress") as String
+                    val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
+                    val paymentMethodType = paymentMethod?.get("Type")
+                    val shippingAddress = orderData?.get("shippingAddress") as String
+                    val beforeDiscount = (orderData?.get("beforeDiscount") as Number).toLong()
+                    // assign to field in view
+                    var orderName = ""
+                    val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
+                        itemMap.map { (itemId, itemData) ->
+                            Log.d("shopID", shopID)
+                            Log.d("itemId", itemId)
+                            Log.d("itemData", itemData.toString())
 
-                        // assign to field in view
-                        var orderName = ""
-                        val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
-                            itemMap.map { (itemId, itemData) ->
-                                Log.d("shopID", shopID)
-                                Log.d("itemId", itemId)
-                                Log.d("itemData", itemData.toString())
 
-                                totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
-                                tempTotalOrgMoney += (itemData["totalSum"] as? Long ?: 0)
-                                db.collection("books")
-                                    .whereEqualTo("bookID", itemId)
-                                    .get()
-                                    .addOnSuccessListener { bookSnapshot ->
-                                        for (book in bookSnapshot.documents) {
-                                            val bookData = book.data
-                                            val bookName = bookData?.get("name") as? String
-                                            if (!bookName.isNullOrEmpty()) {
-                                                orderName += "$bookName, "
-                                            }
+                            db.collection("books")
+                                .whereEqualTo("bookID", itemId)
+                                .get()
+                                .addOnSuccessListener { bookSnapshot ->
+                                    for (book in bookSnapshot.documents) {
+                                        val bookData = book.data
+                                        val bookName = bookData?.get("name") as? String
+                                        if (!bookName.isNullOrEmpty()) {
+                                            orderName += "$bookName, "
                                         }
                                     }
-                            }
+                                }
                         }
-                        // setup recycler view for books
-                        val itemsFragment = OrderDetailItemListFragment.newInstance(1,itemsMap!!,allowSelection = false,allowMultipleSelection = false)
-                        childFragmentManager.beginTransaction()
-                            .replace(orderItemLayout.id,itemsFragment)
-                            .commit()
-                        Tasks.whenAllComplete(fetchBookNamesTasks!!)
-                            .addOnSuccessListener {
-                                if (orderName.length >= 2) {
-                                    orderName = orderName.dropLast(2)
-                                }
-                                if (orderName.length > 20) {
-                                    orderName = orderName.substring(0, 20) + "..."
-                                }
-                                numberField.text = orderName
-                                val sdf = SimpleDateFormat("dd-MM-yyyy")
-                                dateField.text = sdf.format(date)
-
-                                trackingNumberField.text = orderID
-                                //statusField.text = status
-                                if (status.contains("xử lý", true)){
-                                    statusField.text = requireContext().getString(R.string.my_order_processing_button)
-                                }
-                                else if (status.contains("huỷ",true)){
-                                    statusField.text = requireContext().getString(R.string.my_order_cancelled_button)
-                                }
-                                else if (status.contains("trả thành công", true)){
-                                    statusField.text = requireContext().getString(R.string.my_order_detail_item_return_success)
-                                }
-                                else if (status.contains("trả thất bại", true)){
-                                    statusField.text = requireContext().getString(R.string.my_order_detail_item_return_failed)
-                                }
-                                else if (status.contains("thành công", true)){
-                                    statusField.text = requireContext().getString(R.string.my_order_completed_button)
-                                }
-                                else if (status.contains("đã giao",true)){
-                                    statusField.text = requireContext().getString(R.string.my_order_delivered_button)
-                                }
-                                shippingAddressField.text = shippingAddress
-                                paymentMethodField.text = paymentMethodType.toString()
-                                deliveryMethodField.text = "Giao Hàng Nhanh (test)"
-
-                                discountField.text = "30% (test)"
-                                val formattedMoney = formatMoney(totalMoney)
-                                totalField.text = formattedMoney
+                    }
+                    // setup recycler view for books
+                    val itemsFragment = OrderDetailItemListFragment.newInstance(
+                        1,
+                        itemsMap!!,
+                        allowSelection = false,
+                        allowMultipleSelection = false
+                    )
+                    childFragmentManager.beginTransaction()
+                        .replace(orderItemLayout.id, itemsFragment)
+                        .commit()
+                    Tasks.whenAllComplete(fetchBookNamesTasks!!)
+                        .addOnSuccessListener {
+                            if (orderName.length >= 2) {
+                                orderName = orderName.dropLast(2)
                             }
+                            if (orderName.length > 20) {
+                                orderName = orderName.substring(0, 20) + "..."
+                            }
+                            numberField.text = orderName
+                            val sdf = SimpleDateFormat("dd-MM-yyyy")
+                            dateField.text = sdf.format(date)
+
+                            trackingNumberField.text = orderID
+                            //statusField.text = status
+                            if (status.contains("xử lý", true)) {
+                                statusField.text =
+                                    requireContext().getString(R.string.my_order_processing_button)
+                            } else if (status.contains("huỷ", true)) {
+                                statusField.text =
+                                    requireContext().getString(R.string.my_order_cancelled_button)
+                            } else if (status.contains("trả thành công", true)) {
+                                statusField.text =
+                                    requireContext().getString(R.string.my_order_detail_item_return_success)
+                            } else if (status.contains("trả thất bại", true)) {
+                                statusField.text =
+                                    requireContext().getString(R.string.my_order_detail_item_return_failed)
+                            } else if (status.contains("thành công", true)) {
+                                statusField.text =
+                                    requireContext().getString(R.string.my_order_completed_button)
+                            } else if (status.contains("đã giao", true)) {
+                                statusField.text =
+                                    requireContext().getString(R.string.my_order_delivered_button)
+                            }
+                            shippingAddressField.text = shippingAddress
+                            paymentMethodField.text = paymentMethodType.toString()
+                            beforeDiscountField.text = formatMoney(beforeDiscount)
+                            discountField.text = "-" + formatMoney(beforeDiscount - totalMoney)
+                            val formattedMoney = formatMoney(totalMoney)
+                            totalField.text = formattedMoney
+                        }
 
                 }
         }
@@ -174,7 +179,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
 
         // back
         val backButton = binding.backButton
-        backButton.setOnClickListener{
+        backButton.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
@@ -191,7 +196,10 @@ class OrderDetailCaseProcessingFragment : Fragment() {
             // Lấy instance của homeActivity
             val homeAct = (activity as homeActivity)
             // Chuyển đổi sang EInvoiceFragment và truyền stack hiện tại
-            homeAct.changeFragmentContainer(eInvoiceFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+            homeAct.changeFragmentContainer(
+                eInvoiceFragment,
+                homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]
+            )
         }
 
         // cancel order
@@ -201,26 +209,38 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                 DialogInterface.OnClickListener { dialog, which ->
                     when (which) {
                         DialogInterface.BUTTON_POSITIVE -> {
-                            val docRef = orderID?.let { it1 -> db.collection("orders").document(it1) }
-                            docRef?.update("status","Bị huỷ")?.addOnSuccessListener {
+                            val docRef =
+                                orderID?.let { it1 -> db.collection("orders").document(it1) }
+                            docRef?.update("status", "Bị huỷ")?.addOnSuccessListener {
                                 // will change to motion toast later
-                                Toast.makeText(context,R.string.orderDetailCancelArgument, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    R.string.orderDetailCancelArgument,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 requireActivity().onBackPressedDispatcher.onBackPressed()
-                            }?.addOnFailureListener{
-                                Toast.makeText(context,R.string.orderDetailFailedArgument, Toast.LENGTH_SHORT).show()
+                            }?.addOnFailureListener {
+                                Toast.makeText(
+                                    context,
+                                    R.string.orderDetailFailedArgument,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
+
                         DialogInterface.BUTTON_NEGATIVE -> {}
                     }
                 }
 
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
 
-            builder.setMessage(R.string.orderDetailProcessingCancelLabel).setPositiveButton(R.string.yes, dialogClickListener)
+            builder.setMessage(R.string.orderDetailProcessingCancelLabel)
+                .setPositiveButton(R.string.yes, dialogClickListener)
                 .setNegativeButton(R.string.no, dialogClickListener).show()
         }
         return view
     }
+
     fun formatMoney(number: Long): String {
         val numberString = number.toString()
         val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
@@ -245,6 +265,7 @@ class OrderDetailCaseProcessingFragment : Fragment() {
                 }
             }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

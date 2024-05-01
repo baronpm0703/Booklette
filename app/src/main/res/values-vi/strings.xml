@@ -232,7 +232,7 @@
     <string name="order_information">Thông tin đơn hàng</string>
     <string name="shipping_address">Địa chỉ nhận hàng:</string>
     <string name="payment_method">Phương thức thanh toán:</string>
-    <string name="delivery_method">Hình thức vẫn chuyển:</string>
+    <string name="before_discount">Tổng tiền hàng:</string>
     <string name="discount">Giảm giá:</string>
     <string name="total_amount">Thành tiền:</string>
     <string name="cancel_order">Huỷ Đơn Hàng</string>

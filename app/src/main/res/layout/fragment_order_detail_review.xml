@@ -166,7 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/delivery_method"
+                android:text="@string/before_discount"
                 app:layout_constraintStart_toStartOf="@+id/textView53"
                 app:layout_constraintTop_toBottomOf="@+id/textView53" />
 
@@ -216,7 +216,7 @@
                 app:layout_constraintTop_toTopOf="@+id/textView53" />
 
             <TextView
-                android:id="@+id/orderDetailDeliveryMethodField"
+                android:id="@+id/orderDetailBeforeDiscountField"
                 android:layout_width="wrap_content"
                 app:layout_constrainedWidth="true"
                 android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/orderDetailDeliveryMethodField"
+                app:layout_constraintStart_toStartOf="@+id/orderDetailBeforeDiscountField"
                 app:layout_constraintTop_toTopOf="@+id/textView55" />
 
             <TextView

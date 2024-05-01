@@ -265,9 +265,9 @@
     <string name="order_information">Order Information</string>
     <string name="shipping_address">Shipping address:</string>
     <string name="payment_method">Payment method:</string>
-    <string name="delivery_method">Delivery method:</string>
+    <string name="before_discount">Total amount:</string>
     <string name="discount">Discount:</string>
-    <string name="total_amount">Total amount:</string>
+    <string name="total_amount">Final price:</string>
     <string name="cancel_order">Cancel Order</string>
     <string name="payment_detail">Payment Details</string>
     <string name="book_detail_adding_to_cart">adding...</string>
