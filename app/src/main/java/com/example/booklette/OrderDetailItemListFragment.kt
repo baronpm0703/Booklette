@@ -101,15 +101,7 @@ class OrderDetailItemListFragment : Fragment() {
                                     }
 
                                     // Update the adapter after fetching all books
-                                    adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
-                                    if (allowSelection){
-                                        adapter.allowSelection()
-                                        if (allowMultipleSelection){
-                                            adapter.allowMultiple()
-                                        }
-                                    }
-                                    view.adapter = adapter
-                                    view.layoutManager = LinearLayoutManager(context)
+                                    adapter.notifyDataSetChanged()
                                 }
                                 .addOnFailureListener { exception ->
                                     Log.e("Loi", exception.toString())
@@ -124,14 +116,23 @@ class OrderDetailItemListFragment : Fragment() {
 
         if (view is RecyclerView) {
             with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
+//                layoutManager = when {
+//                    columnCount <= 1 -> LinearLayoutManager(context)
+//                    else -> GridLayoutManager(context, columnCount)
+//                }
+//                adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
                 val spacing = 20.dpToPx(context) // Convert 10dp to pixels
                 addItemDecoration(VerticalSpaceItemDecoration(spacing))
             }
+            adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
+            if (allowSelection){
+                adapter.allowSelection()
+                if (allowMultipleSelection){
+                    adapter.allowMultiple()
+                }
+            }
+            view.adapter = adapter
+            view.layoutManager = LinearLayoutManager(context)
         }
 
 
@@ -140,6 +141,7 @@ class OrderDetailItemListFragment : Fragment() {
 
         return view
     }
+
     fun Int.dpToPx(context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,

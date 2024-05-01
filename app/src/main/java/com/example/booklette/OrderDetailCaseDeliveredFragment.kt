@@ -157,7 +157,7 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
                         DialogInterface.BUTTON_POSITIVE -> { // Chỗ này bị cấn ở UI vì cái status chỉ có hoàn thành, thiếu giao hàng, làm sao để xác nhận là hoàn thành?
                             val docRef =
                                 orderID?.let { it1 -> db.collection("orders").document(it1) }
-                            docRef?.update("status", "Hoàn thành")?.addOnSuccessListener {
+                            docRef?.update("status", "Thành công")?.addOnSuccessListener {
                                 Toast.makeText(
                                     context,
                                     R.string.orderDetailConfirmSuccessfulArgument,
