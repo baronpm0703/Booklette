@@ -118,14 +118,14 @@ class HomeFragment : Fragment() {
 
         addLogicToSearchBar(inflater)
 
-        if (auth.currentUser != null) {
-            binding.txtWelcomeBack.text = "Welcome back, " + auth.currentUser!!.email.toString()
-        }
-
-        binding.btnSignOut.setOnClickListener {
-            auth.signOut()
-            startActivity(Intent(activity, LoginActivity::class.java))
-        }
+//        if (auth.currentUser != null) {
+//            binding.txtWelcomeBack.text = "Welcome back, " + auth.currentUser!!.email.toString()
+//        }
+//
+//        binding.btnSignOut.setOnClickListener {
+//            auth.signOut()
+//            startActivity(Intent(activity, LoginActivity::class.java))
+//        }
 
         return view
     }

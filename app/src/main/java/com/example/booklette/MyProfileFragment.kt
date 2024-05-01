@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -30,6 +31,10 @@ class MyProfileFragment : Fragment() {
 		val auth = Firebase.auth
 		val db = Firebase.firestore
 
+		binding.btnSignOut.setOnClickListener {
+			auth.signOut()
+			startActivity(Intent(activity, LoginActivity::class.java))
+		}
 		// Toggle navigation to My Shop
 		view.findViewById<Button>(R.id.myShopBtn).setOnClickListener {
 			if (context is homeActivity) {

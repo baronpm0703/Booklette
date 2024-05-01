@@ -258,7 +258,7 @@ class CheckOutFragment : Fragment() {
                     )
 
 
-                    db.collection("orders").add(data).addOnCompleteListener { documentReference ->
+                    db.collection("orders").add(data).addOnCompleteListener {
 //                            for (cartObject in selectedItems) {
 //                                val fieldMap = hashMapOf<Any, Any>(
 //                                    cartObject.bookID.toString() to FieldValue.delete()
