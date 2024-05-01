@@ -76,7 +76,7 @@ class MyShopShopFragment : Fragment() {
 				for (document in documents) {
 					document.getDocumentReference("store")!!.get().addOnSuccessListener { storeSnapshot ->
 						val shopVouchers = storeSnapshot.get("shopVouchers") as ArrayList<String>
-						shopVouchers.forEach {voucher ->
+						for (voucher in shopVouchers) {
 							db.collection("discounts").whereEqualTo("discountID", voucher).get().addOnSuccessListener {
 								val vouchers = it.documents
 

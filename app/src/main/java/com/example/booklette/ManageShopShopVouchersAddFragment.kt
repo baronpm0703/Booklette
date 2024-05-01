@@ -166,13 +166,13 @@ class ManageShopShopVouchersAddFragment : Fragment() {
 
 				if (id > max) max = id
 			}
-			val newDiscountID = "DSC" + (max + 1)
+			val newDiscountID = "DSC" + (max + 1).toString().padStart(3, '0')
 
 			val newDiscMap = hashMapOf(
 				"discountID" to newDiscountID,
 				"discountIntroduction" to voucherObject.discountIntroduction,
 				"discountName" to voucherObject.discountName,
-				"discountType" to "product",
+				"discountType" to "shop",
 				"endDate" to voucherObject.endDate,
 				"minimumOrder" to voucherObject.minimumOrder,
 				"orderLimit" to voucherObject.orderLimit,
@@ -188,8 +188,31 @@ class ManageShopShopVouchersAddFragment : Fragment() {
 					)
 					storeRef.update(updateDiscMap as Map<String, Any>)
 				}
+
+				Handler().postDelayed({
+					addSuccessDialog()
+				}, 10)
 			}
 		}
+	}
+
+	private fun addSuccessDialog() {
+		val layoutInflater = LayoutInflater.from(requireContext())
+		val view = layoutInflater.inflate(R.layout.manageshop_voucher_add_success_dialog, null)
+		val builder = AlertDialog.Builder(requireContext())
+		builder.setView(view)
+		val dialog = builder.create()
+
+		val shopVouchersFragment = ManageShopShopVouchersFragment()
+		view.findViewById<Button>(R.id.dismissBtn).setOnClickListener {
+			dialog.dismiss()
+			(context as homeActivity).changeFragmentContainer(
+				shopVouchersFragment,
+				(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+			)
+		}
+
+		dialog.show()
 	}
 
 	override fun onDestroyView() {

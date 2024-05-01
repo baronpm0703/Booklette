@@ -140,8 +140,31 @@ class ManageShopDiscountProgramsAddFragment : Fragment() {
 					)
 					storeRef.update(updateDiscMap as Map<String, Any>)
 				}
+
+				Handler().postDelayed({
+					addSuccessDialog()
+				}, 10)
 			}
 		}
+	}
+
+	private fun addSuccessDialog() {
+		val layoutInflater = LayoutInflater.from(requireContext())
+		val view = layoutInflater.inflate(R.layout.manageshop_voucher_add_success_dialog, null)
+		val builder = AlertDialog.Builder(requireContext())
+		builder.setView(view)
+		val dialog = builder.create()
+
+		val discountProgramsFragment = ManageShopDiscountProgramsFragment()
+		view.findViewById<Button>(R.id.dismissBtn).setOnClickListener {
+			dialog.dismiss()
+			(context as homeActivity).changeFragmentContainer(
+				discountProgramsFragment,
+				(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+			)
+		}
+
+		dialog.show()
 	}
 
 	override fun onDestroyView() {

@@ -140,7 +140,7 @@ class ManageShopBooksFragment : Fragment() {
 
 				if (id > max) max = id
 			}
-			val newBookID = "BK" + (max + 1)
+			val newBookID = "BK" + (max + 1).toString().padStart(3, '0')
 
 			// Upload book image to storage
 			val storageRef = Firebase.storage.reference
