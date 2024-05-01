@@ -254,7 +254,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
 
-                android:inputType="text"
+                android:inputType="number"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
 
@@ -283,7 +283,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
 
-                android:inputType="text"
+                android:inputType="number"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
 
