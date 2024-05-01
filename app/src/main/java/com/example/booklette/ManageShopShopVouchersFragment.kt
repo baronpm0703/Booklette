@@ -43,6 +43,15 @@ class ManageShopShopVouchersFragment : Fragment() {
 		comingSoonTabBtn.setBackground(context?.let { ContextCompat.getDrawable(it, R.drawable.manageshop_discount_tab_chosen) })
 		comingSoonTabBtn.setTextColor(Color.WHITE)
 
+		val addShopVouchersFragment = ManageShopShopVouchersAddFragment()
+		val addVoucherBtn = view.findViewById<Button>(R.id.addProgramBtn)
+		addVoucherBtn.setOnClickListener {
+			(context as homeActivity).changeFragmentContainer(
+				addShopVouchersFragment,
+				(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+			)
+		}
+
 		return view
 	}
 

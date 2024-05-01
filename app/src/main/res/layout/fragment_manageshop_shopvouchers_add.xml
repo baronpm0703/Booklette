@@ -239,7 +239,7 @@
             <Button
                     android:text="@string/manageshop_program_shopvoucher_add"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" android:id="@+id/addBookBtn"
+                    android:layout_height="wrap_content" android:id="@+id/addVoucherBtn"
                     android:textAllCaps="false"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="16dp" android:layout_marginEnd="16dp"

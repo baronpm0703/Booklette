@@ -2,6 +2,7 @@ package com.example.booklette
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.os.Handler
@@ -21,12 +22,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.EditBookInShopDialogBinding
 import com.example.booklette.databinding.FragmentManageshopBooksBinding
+import com.example.booklette.databinding.FragmentManageshopDiscountprogramsAddBinding
 import com.example.booklette.databinding.FragmentManageshopDiscountprogramsBinding
 import com.example.booklette.databinding.FragmentMyshopBinding
-import com.example.booklette.model.DiscountProgramObject
-import com.example.booklette.model.HRecommendedBookObject
-import com.example.booklette.model.ManageShopNewBookObject
-import com.example.booklette.model.MyShopBookObject
+import com.example.booklette.model.*
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
@@ -42,13 +41,13 @@ import kotlin.math.round
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ManageShopDiscountProgramsFragment.newInstance] factory method to
+ * Use the [ManageShopDiscountProgramsAddFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ManageShopDiscountProgramsFragment : Fragment() {
+class ManageShopDiscountProgramsAddFragment : Fragment() {
 	private lateinit var storeRef: DocumentReference
 
-	private var _binding: FragmentManageshopDiscountprogramsBinding? = null
+	private var _binding: FragmentManageshopDiscountprogramsAddBinding? = null
 
 	private val binding get() = _binding!!
 	private val bookViews = arrayListOf<View>()
@@ -58,7 +57,7 @@ class ManageShopDiscountProgramsFragment : Fragment() {
 		savedInstanceState: Bundle?
 	): View? {
 		// Inflate the layout for this fragment
-		_binding = FragmentManageshopDiscountprogramsBinding.inflate(inflater, container, false)
+		_binding = FragmentManageshopDiscountprogramsAddBinding.inflate(inflater, container, false)
 		val view = binding.root
 
 		val auth = Firebase.auth
@@ -72,17 +71,38 @@ class ManageShopDiscountProgramsFragment : Fragment() {
 				}
 			}
 
-		val comingSoonTabBtn = view.findViewById<Button>(R.id.comingSoonTabBtn)
-		comingSoonTabBtn.setBackground(context?.let { ContextCompat.getDrawable(it, R.drawable.manageshop_discount_tab_chosen) })
-		comingSoonTabBtn.setTextColor(Color.WHITE)
+		view.findViewById<Button>(R.id.addProgramBtn).setOnClickListener{
+			val id = ""
+			val name = view.findViewById<EditText>(R.id.programNameET).text.toString()
+			val startTime = view.findViewById<EditText>(R.id.starttimeET).text.toString()
+			val endTime = view.findViewById<EditText>(R.id.endtimeET).text.toString()
+			val discountPercent = view.findViewById<EditText>(R.id.discountPercentET).text.toString()
+			val orderLimit = view.findViewById<EditText>(R.id.orderLimitET).text.toString()
+			val introduction = view.findViewById<EditText>(R.id.introductionET).text.toString()
 
-		val addDiscountProgramsFragment = ManageShopDiscountProgramsAddFragment()
-		val addProgramBtn = view.findViewById<Button>(R.id.addProgramBtn)
-		addProgramBtn.setOnClickListener {
-			(context as homeActivity).changeFragmentContainer(
-				addDiscountProgramsFragment,
-				(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
-			)
+			if (name.isEmpty() || startTime.isEmpty() || endTime.isEmpty() || discountPercent.isEmpty() || orderLimit.isEmpty() || introduction.isEmpty()) {
+				if (Locale.current.language == "en")
+					Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show()
+				else
+					Toast.makeText(context, "Các trường không được phép bỏ trống", Toast.LENGTH_SHORT).show()
+			}
+			else if (discountPercent.toLongOrNull() == null || orderLimit.toLongOrNull() == null)
+				if (Locale.current.language == "en")
+					Toast.makeText(context, "% discount, order limit and minimum order must be numbers", Toast.LENGTH_SHORT).show()
+				else
+					Toast.makeText(context, "Phần trăm giảm giá, đơn tối đa và tối thiểu đơn hàng phải là số", Toast.LENGTH_SHORT).show()
+			else {
+				val dateParser = SimpleDateFormat("yyyy-MM-dd")
+				val startTimeTS = Timestamp(dateParser.parse(startTime))
+				val endTimeTS = Timestamp(dateParser.parse(endTime))
+				val newProgramObject = DiscountProgramObject(id, name, introduction, startTimeTS, endTimeTS, orderLimit.toLong(), discountPercent.toLong())
+
+				addNewProgram(newProgramObject)
+
+				Handler().postDelayed({
+
+				}, 10)
+			}
 		}
 
 		return view
