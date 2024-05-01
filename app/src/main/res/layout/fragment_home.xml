@@ -14,31 +14,6 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/txtWelcomeBack"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Welcome back, "
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                        </TextView>
-
-                        <Button
-                            android:id="@+id/btnSignOut"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/txtWelcomeBack"
-                            android:text="sign out"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/txtWelcomeBack">
-
-                        </Button>
-
                         <RelativeLayout
                             android:id="@+id/relativeLayout"
                             android:layout_width="match_parent"
@@ -46,7 +21,7 @@
                             android:padding="15dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/btnSignOut">
+                            app:layout_constraintTop_toTopOf="parent">
 
                                 <ImageView
                                     android:id="@+id/ivHomeHamburgerView"
