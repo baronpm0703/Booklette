@@ -4,4 +4,10 @@
         <item>00.0</item>
         <item>100.0</item>
     </array>
+
+    <string-array name="manageshop_mybooks_add_type">
+        <item>Type</item>
+        <item>Hard Cover</item>
+        <item>Paperback</item>
+    </string-array>
 </resources>

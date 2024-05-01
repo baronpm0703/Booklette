@@ -177,41 +177,40 @@
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
-        <EditText
-            android:id="@+id/bookTypeET"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/bookAuthorET"
+        <Spinner
+                android:id="@+id/bookTypeSpin"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/bookAuthorET"
 
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
 
-            android:background="@drawable/review_text_editor_round_corner"
+                android:background="@drawable/review_text_editor_round_corner"
 
-            android:ems="10"
-            android:gravity="start|center_vertical"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+                android:ems="10"
+                android:gravity="start|center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
 
-            android:inputType="text"
-            android:paddingStart="20dp"
-            android:paddingTop="10dp"
+                android:inputType="text"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
 
-            android:paddingEnd="20dp"
-            android:paddingBottom="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"
 
-            android:hint="@string/manageshop_mybooks_add_type"
-            android:textColorHint="#9B9B9B"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_toEndOf="@+id/bookCategoryET"/>
+                android:textColorHint="#9B9B9B"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_toEndOf="@+id/bookCategoryET"/>
 
         <EditText
                 android:id="@+id/bookDescET"
                 android:layout_width="380dp"
                 android:layout_height="100dp"
-                android:layout_below="@+id/bookTypeET"
+                android:layout_below="@+id/bookTypeSpin"
 
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"

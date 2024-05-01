@@ -10,6 +10,9 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -120,8 +123,6 @@ class ManageShopEditBookInShopDialog(
         binding.bookAuthorET.setText(bookAuthor)
         bookCategory = initValue.category
         binding.bookCategoryET.setText(bookCategory)
-        bookType = initValue.type
-        binding.bookTypeET.setText(bookType)
         bookDesc = initValue.desc
         binding.bookDescET.setText(bookDesc)
         bookPrice = initValue.price
@@ -142,13 +143,34 @@ class ManageShopEditBookInShopDialog(
         }
         thread.start()
         thread.join()
+        // Get type for Spinner
+        bookType = initValue.type
+        val spinner = binding.bookTypeSpin
+        val items = resources.getStringArray(R.array.manageshop_mybooks_add_type)
+        spinner.setSelection(items.indexOf(bookType))
+
+        if (spinner != null) {
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
+            spinner.adapter = adapter
+
+            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>,
+                                            view: View, position: Int, id: Long) {
+
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // write code to perform some action
+                }
+            }
+        }
 
         // Click out editext
         binding.addBookDialog.setOnClickListener {
             binding.bookNameET.clearFocus()
             binding.bookAuthorET.clearFocus()
             binding.bookCategoryET.clearFocus()
-            binding.bookTypeET.clearFocus()
+            binding.bookTypeSpin.clearFocus()
             binding.bookDescET.clearFocus()
             binding.bookPriceET.clearFocus()
             binding.bookQuantityET.clearFocus()
@@ -180,15 +202,15 @@ class ManageShopEditBookInShopDialog(
                 imm.hideSoftInputFromWindow(binding.bookCategoryET.windowToken, 0)
             }
         }
-        binding.bookTypeET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            // If EditText loses focus
-            if (!hasFocus) {
-                bookType = binding.bookTypeET.text.toString()
-                // Hide the keyboard if it's currently showing
-                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(binding.bookTypeET.windowToken, 0)
-            }
-        }
+//        binding.bookTypeET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+//            // If EditText loses focus
+//            if (!hasFocus) {
+//                bookType = binding.bookTypeET.text.toString()
+//                // Hide the keyboard if it's currently showing
+//                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                imm.hideSoftInputFromWindow(binding.bookTypeET.windowToken, 0)
+//            }
+//        }
         binding.bookDescET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             // If EditText loses focus
             if (!hasFocus) {
@@ -222,7 +244,7 @@ class ManageShopEditBookInShopDialog(
             bookName = binding.bookNameET.text.toString()
             bookAuthor = binding.bookAuthorET.text.toString()
             bookCategory = binding.bookCategoryET.text.toString()
-            bookType = binding.bookTypeET.text.toString()
+            bookType = binding.bookTypeSpin.selectedItem.toString()
             bookDesc = binding.bookDescET.text.toString()
             bookPrice = binding.bookPriceET.text.toString()
             bookQuantity = binding.bookQuantityET.text.toString()

@@ -8,6 +8,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -113,21 +116,36 @@ class ManageShopAddBookToShopDialog(
         binding.bookAuthorET.setText(bookAuthor)
         bookCategory = initValue.category
         binding.bookCategoryET.setText(bookCategory)
-        bookType = initValue.type
-        binding.bookTypeET.setText(bookType)
         bookDesc = initValue.desc
         binding.bookDescET.setText(bookDesc)
         bookPrice = initValue.price
         binding.bookPriceET.setText(bookPrice)
         bookQuantity = initValue.quantity
         binding.bookQuantityET.setText(bookQuantity)
+        bookType = initValue.type
+
+        val items = resources.getStringArray(R.array.manageshop_mybooks_add_type)
+        val spinner = binding.bookTypeSpin
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
+        spinner.adapter = adapter
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>,
+                                        view: View, position: Int, id: Long) {
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
+        }
 
         // Click out editext
         binding.addBookDialog.setOnClickListener {
             binding.bookNameET.clearFocus()
             binding.bookAuthorET.clearFocus()
             binding.bookCategoryET.clearFocus()
-            binding.bookTypeET.clearFocus()
+            binding.bookTypeSpin.clearFocus()
             binding.bookDescET.clearFocus()
             binding.bookPriceET.clearFocus()
             binding.bookQuantityET.clearFocus()
@@ -159,15 +177,15 @@ class ManageShopAddBookToShopDialog(
                 imm.hideSoftInputFromWindow(binding.bookCategoryET.windowToken, 0)
             }
         }
-        binding.bookTypeET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            // If EditText loses focus
-            if (!hasFocus) {
-                bookType = binding.bookTypeET.text.toString()
-                // Hide the keyboard if it's currently showing
-                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(binding.bookTypeET.windowToken, 0)
-            }
-        }
+//        binding.bookTypeET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+//            // If EditText loses focus
+//            if (!hasFocus) {
+//                bookType = binding.bookTypeET.selectedItem.toString()
+//                // Hide the keyboard if it's currently showing
+//                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                imm.hideSoftInputFromWindow(binding.bookTypeET.windowToken, 0)
+//            }
+//        }
         binding.bookDescET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             // If EditText loses focus
             if (!hasFocus) {
@@ -201,7 +219,7 @@ class ManageShopAddBookToShopDialog(
             bookName = binding.bookNameET.text.toString()
             bookAuthor = binding.bookAuthorET.text.toString()
             bookCategory = binding.bookCategoryET.text.toString()
-            bookType = binding.bookTypeET.text.toString()
+            bookType = binding.bookTypeSpin.selectedItem.toString()
             bookDesc = binding.bookDescET.text.toString()
             bookPrice = binding.bookPriceET.text.toString()
             bookQuantity = binding.bookQuantityET.text.toString()

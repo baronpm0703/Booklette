@@ -177,8 +177,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold"/>
 
-        <EditText
-            android:id="@+id/bookTypeET"
+        <Spinner
+            android:id="@+id/bookTypeSpin"
             android:layout_width="180dp"
             android:layout_height="50dp"
             android:layout_below="@+id/bookAuthorET"
@@ -200,7 +200,6 @@
             android:paddingEnd="20dp"
             android:paddingBottom="10dp"
 
-            android:hint="@string/manageshop_mybooks_add_type"
             android:textColorHint="#9B9B9B"
             android:textColor="#000000"
             android:textSize="18sp"
@@ -211,7 +210,7 @@
                 android:id="@+id/bookDescET"
                 android:layout_width="380dp"
                 android:layout_height="100dp"
-                android:layout_below="@+id/bookTypeET"
+                android:layout_below="@+id/bookTypeSpin"
 
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"

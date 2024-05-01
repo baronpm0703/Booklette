@@ -129,7 +129,6 @@
     <string name="manageshop_mybooks_add_name">Book name</string>
     <string name="manageshop_mybooks_add_author">Book Author</string>
     <string name="manageshop_mybooks_add_category">Category</string>
-    <string name="manageshop_mybooks_add_type">Type</string>
     <string name="manageshop_mybooks_add_desc">Description</string>
     <string name="manageshop_mybooks_add_price">Price</string>
     <string name="manageshop_mybooks_add_quantity">Quantity remaining</string>

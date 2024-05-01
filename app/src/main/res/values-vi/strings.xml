@@ -105,7 +105,6 @@
     <string name="manageshop_mybooks_add_name">Tên sách</string>
     <string name="manageshop_mybooks_add_author">Tác giả</string>
     <string name="manageshop_mybooks_add_category">Thể loại</string>
-    <string name="manageshop_mybooks_add_type">Loại sách</string>
     <string name="manageshop_mybooks_add_desc">Mô tả</string>
     <string name="manageshop_mybooks_add_price">Giá</string>
     <string name="manageshop_mybooks_add_quantity">Số lượng tồn</string>
@@ -139,6 +138,7 @@
     <string name="manageshop_program_shopvoucher_none">Không có voucher nào</string>
     <string name="manageshop_program_shopvoucher_add">Thêm 1 voucher mới</string>
     <string name="manageshop_program_shopvoucher_add_flavor">Thêm Giảm Giá Mới</string>
+    <string name="manageshop_program_shopvoucher_add_chooseproduct">Chọn sản phẩm</string>
     <string name="manageshop_program_shopvoucher_add_name">Tên voucher</string>
     <string name="manageshop_program_shopvoucher_add_name2">(không hiện với người mua)</string>
     <string name="manageshop_program_shopvoucher_add_time">Cài đặt thời gian</string>
