@@ -97,49 +97,9 @@ class MyShopFragment : Fragment() {
 				}
 			}
 
-
-		val shopTabButton = view.findViewById<Button>(R.id.shopBtn)
-		val bookTabButton = view.findViewById<Button>(R.id.bookBtn)
-		val categoryTabButton = view.findViewById<Button>(R.id.categoryBtn)
-
 		requireActivity().supportFragmentManager.beginTransaction()
 			.replace(R.id.tabDisplayFCV, shopTab)
 			.commit()
-		shopTabButton.setTextColor(Color.parseColor("#D45555"))
-
-		shopTabButton.setOnClickListener {
-			// Set color of the 3 buttons
-			shopTabButton.setTextColor(Color.parseColor("#D45555"))
-			bookTabButton.setTextColor(Color.parseColor("#000000"))
-			categoryTabButton.setTextColor(Color.parseColor("#000000"))
-
-			// Replace FCV's content with this fragment
-			requireActivity().supportFragmentManager.beginTransaction()
-				.replace(R.id.tabDisplayFCV, shopTab)
-				.commit()
-		}
-		bookTabButton.setOnClickListener {
-			// Set color of the 3 buttons
-			shopTabButton.setTextColor(Color.parseColor("#000000"))
-			bookTabButton.setTextColor(Color.parseColor("#D45555"))
-			categoryTabButton.setTextColor(Color.parseColor("#000000"))
-
-			// Replace FCV's content with this fragment
-			requireActivity().supportFragmentManager.beginTransaction()
-				.replace(R.id.tabDisplayFCV, bookTab)
-				.commit()
-		}
-		categoryTabButton.setOnClickListener {
-			// Set color of the 3 buttons
-			shopTabButton.setTextColor(Color.parseColor("#000000"))
-			bookTabButton.setTextColor(Color.parseColor("#000000"))
-			categoryTabButton.setTextColor(Color.parseColor("#D45555"))
-
-			// Replace FCV's content with this fragment
-			requireActivity().supportFragmentManager.beginTransaction()
-				.replace(R.id.tabDisplayFCV, categoryTab)
-				.commit()
-		}
 
 		return view
 	}
