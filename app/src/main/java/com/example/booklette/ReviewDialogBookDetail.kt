@@ -1,28 +1,29 @@
 package com.example.booklette
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Rect
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.provider.OpenableColumns
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.Toast
+
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.ReviewDialogBookDetailBinding
 import com.example.booklette.model.Photo
 import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
 import com.maxkeppeler.sheets.core.SheetStyle
-import java.util.Locale
+import java.io.IOException
 
 
 class ReviewDialogBookDetail(
@@ -36,6 +37,7 @@ class ReviewDialogBookDetail(
     private lateinit var dataPhoto : ArrayList<Photo>
     private lateinit var photoGalleryDialogBookDetail: PhotoGalleryDialogBookDetail
     private lateinit var chosenPhotoAdapter: ChosenReviewPhotoBookDetailRVAdapter
+
 
     fun getClientReview(): String {
         return client_review
@@ -108,6 +110,11 @@ class ReviewDialogBookDetail(
 
         // Init data Photo
         dataPhoto = ArrayList()
+        if (initValue.reviewPhotos.isNotEmpty())
+        {
+            dataPhoto = initValue.reviewPhotos
+            binding.chosenPhoto.visibility = View.VISIBLE
+        }
         chosenPhotoAdapter = activity?.let { ChosenReviewPhotoBookDetailRVAdapter(it, dataPhoto) }!!
         binding.chosenPhoto.adapter = chosenPhotoAdapter
 
@@ -123,19 +130,8 @@ class ReviewDialogBookDetail(
 //            DividerItemDecoration.HORIZONTAL)
 //        binding.chosenPhoto.addItemDecoration(itemDecoration)
 
-        val initValues = InitFilterValuesReviewBookDetail()
-        photoGalleryDialogBookDetail = PhotoGalleryDialogBookDetail(initValues)
         binding.notFoundBooks.setOnClickListener {
-            activity?.let {
-                photoGalleryDialogBookDetail.show(it){
-                    style(SheetStyle.DIALOG)
-                    onPositive {
-                        this.dismiss()
-                        updateChosenPhoto(getChosenPhoto())
-                    }
-                }
-            }
-
+            openGallery()
         }
 
         this.displayButtonsView(false)
@@ -144,6 +140,63 @@ class ReviewDialogBookDetail(
 //        displayButtonPositive() Hiding the positive button will prevent clicks
 //        Hide the toolbar of the sheet, the title and the icon
     }
+
+    @SuppressLint("Range")
+    fun getFileName(contentResolver: ContentResolver, uri: Uri): String? {
+        var displayName: String? = null
+        contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+            }
+        }
+        return displayName
+    }
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        galleryLauncher.launch(intent)
+    }
+    private fun uriToBitmap(uri: Uri): Bitmap? {
+        return try {
+            val inputStream = activity?.contentResolver?.openInputStream(uri)
+            BitmapFactory.decodeStream(inputStream)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Handle selected photos
+            val selectedPhotosUriList = result.data?.clipData?.let { clipData ->
+                (0 until clipData.itemCount).map { index ->
+                    clipData.getItemAt(index).uri
+                }
+            } ?: listOf(result.data?.data)
+
+            // Do something with selectedPhotosUriList
+            dataPhoto.clear()
+
+            for (uri in selectedPhotosUriList) {
+                val item = uri?.let { uriToBitmap(it) }
+                if (item != null)  {
+                    var photo = Photo()
+                    photo.id = Photo.totalID
+                    photo.nameFile = activity?.let { getFileName(it.contentResolver, uri) }
+                    photo.id?.let { Photo.updateTotalID(it) }
+                    val bitmap = item
+                    photo.image = bitmap
+                    dataPhoto.add(photo)
+                }
+            }
+
+            updateChosenPhoto(dataPhoto)
+            // For example, display selected images in ImageView
+        }
+    }
+
 
 
     @SuppressLint("NotifyDataSetChanged")

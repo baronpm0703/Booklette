@@ -532,7 +532,7 @@ class HomeFragment : Fragment() {
 
     private fun hcmusBookHomeRVInitialize() {
         binding.rvHcmusBook.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        hcmusBookHomeFragmentAdapter = HcmusBookHomeFragmentAdapter(activity, topBookArrayList)
+        hcmusBookHomeFragmentAdapter = HcmusBookHomeFragmentAdapter(activity, hcmusBookArrayList)
         binding.rvHcmusBook.adapter = hcmusBookHomeFragmentAdapter
 
         if (topBookArrayList.size == 0 || topBookRating.size == 0) {
@@ -543,7 +543,6 @@ class HomeFragment : Fragment() {
             val chosenGenre = "Hcmus-book"
             db.collection("books").whereEqualTo("genre", chosenGenre).get().addOnSuccessListener { result ->
                 lifecycleScope.launch {
-
                     for (document in result) {
                         val tmp_id = document.data.get("bookID").toString()
                         var tmp = 0.0F
