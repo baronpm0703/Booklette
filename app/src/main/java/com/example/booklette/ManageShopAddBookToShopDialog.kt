@@ -2,26 +2,23 @@ package com.example.booklette
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.AddBookToShopDialogBinding
-import com.example.booklette.model.ManageShopNewBookObject
 import com.example.booklette.model.Photo
-import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
 import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
 import com.maxkeppeler.sheets.core.SheetStyle
@@ -126,17 +123,35 @@ class ManageShopAddBookToShopDialog(
 
         val items = resources.getStringArray(R.array.manageshop_mybooks_add_type)
         val spinner = binding.bookTypeSpin
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
-        spinner.adapter = adapter
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>,
-                                        view: View, position: Int, id: Long) {
-
+        val adapter = object: ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, items) {
+            override fun isEnabled(position: Int): Boolean {
+                return position != 0
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // write code to perform some action
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                if (position == 0) (view as TextView).setTextColor(Color.GRAY)
+                else (view as TextView).setTextColor(Color.BLACK)
+
+                view.setTypeface(Typeface.DEFAULT_BOLD)
+                return view
+            }
+        }
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>,
+                                        view: View?, position: Int, id: Long) {
+                if (view == null) return
+
+                if (position == 0) (view as TextView).setTextColor(Color.GRAY)
+                else (view as TextView).setTextColor(Color.BLACK)
+
+                view.setTypeface(Typeface.DEFAULT_BOLD)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
             }
         }
 

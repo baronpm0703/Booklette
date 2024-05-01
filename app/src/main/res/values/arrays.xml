@@ -8,6 +8,6 @@
     <string-array name="manageshop_mybooks_add_type">
         <item>Type</item>
         <item>Hard Cover</item>
-        <item>Paperback</item>
+        <item>Paper Back</item>
     </string-array>
 </resources>

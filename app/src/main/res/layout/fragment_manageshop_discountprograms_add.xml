@@ -104,8 +104,8 @@
                         app:layout_constraintStart_toEndOf="@+id/textView45"
                         android:textSize="11sp" android:layout_marginStart="8dp"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="20dp" android:layout_marginEnd="169dp"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        android:layout_marginTop="20dp"
+                />
                 <EditText
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -200,7 +200,7 @@
                 <EditText
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:hint="@string/manageshop_program_discountprogram_add_percent"
                         android:textColorHint="#9B9B9B"
                         android:ems="10"
@@ -218,7 +218,7 @@
                 <EditText
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:hint="@string/manageshop_program_discountprogram_add_limit"
                         android:textColorHint="#9B9B9B"
                         android:ems="10"

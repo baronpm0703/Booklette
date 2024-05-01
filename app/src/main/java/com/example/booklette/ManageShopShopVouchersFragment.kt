@@ -44,7 +44,7 @@ class ManageShopShopVouchersFragment : Fragment() {
 		comingSoonTabBtn.setTextColor(Color.WHITE)
 
 		val addShopVouchersFragment = ManageShopShopVouchersAddFragment()
-		val addVoucherBtn = view.findViewById<Button>(R.id.addProgramBtn)
+		val addVoucherBtn = view.findViewById<Button>(R.id.addVoucherBtn)
 		addVoucherBtn.setOnClickListener {
 			(context as homeActivity).changeFragmentContainer(
 				addShopVouchersFragment,

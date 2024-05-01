@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.icu.text.SimpleDateFormat
@@ -73,6 +74,49 @@ class ManageShopShopVouchersAddFragment : Fragment() {
 				}
 			}
 
+		val dobCalendar = Calendar.getInstance()
+		val startDate = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+			dobCalendar.set(Calendar.YEAR, year)
+			dobCalendar.set(Calendar.MONTH, month)
+			dobCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+			val format = "yyyy-MM-dd"
+			val dateFormat = SimpleDateFormat(format, java.util.Locale.US)
+			binding.starttimeET.setText(dateFormat.format(dobCalendar.time))
+		}
+		binding.starttimeET.setOnClickListener {
+			this.context?.let { it1 ->
+				DatePickerDialog(
+					it1,
+					startDate,
+					dobCalendar.get(Calendar.YEAR),
+					dobCalendar.get(Calendar.MONTH),
+					dobCalendar.get(Calendar.DAY_OF_MONTH)
+				).show()
+			}
+		}
+
+		val endDate = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+			dobCalendar.set(Calendar.YEAR, year)
+			dobCalendar.set(Calendar.MONTH, month)
+			dobCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+			val format = "yyyy-MM-dd"
+			val dateFormat = SimpleDateFormat(format, java.util.Locale.US)
+			binding.endtimeET.setText(dateFormat.format(dobCalendar.time))
+		}
+		binding.endtimeET.setOnClickListener {
+			this.context?.let { it1 ->
+				DatePickerDialog(
+					it1,
+					endDate,
+					dobCalendar.get(Calendar.YEAR),
+					dobCalendar.get(Calendar.MONTH),
+					dobCalendar.get(Calendar.DAY_OF_MONTH)
+				).show()
+			}
+		}
+
 		view.findViewById<Button>(R.id.addVoucherBtn).setOnClickListener{
 			val name = view.findViewById<EditText>(R.id.programNameET).text.toString()
 			val startTime = view.findViewById<EditText>(R.id.starttimeET).text.toString()
@@ -135,7 +179,16 @@ class ManageShopShopVouchersAddFragment : Fragment() {
 				"percent" to voucherObject.percent,
 				"startDate" to voucherObject.startDate
 			)
-			discColl.add(newDiscMap)
+			discColl.add(newDiscMap).addOnSuccessListener {
+				storeRef.get().addOnSuccessListener {
+					val shopVouchers = it.get("shopVouchers") as ArrayList<String>
+					shopVouchers.add(newDiscountID)
+					val updateDiscMap = hashMapOf(
+						"shopVouchers" to shopVouchers
+					)
+					storeRef.update(updateDiscMap as Map<String, Any>)
+				}
+			}
 		}
 	}
 
