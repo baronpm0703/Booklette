@@ -346,6 +346,7 @@
     <string name="orderDetailConfirmFailedArgument">Order received failed.</string>
     <string name="orderDetailConfirmlabel">Confirm receiving order? You cannot return products after confirming!</string>
     <string name="returnAndExchange">Return/Exchange</string>
+    <string name="contactBuyer">Contact buyer</string>
     <string name="orderReceived">Order received</string>
     <string name="reasonLabel">Reason</string>
     <string name="reasonInstruction">Please upload clear image of product and/or chat to illustrate the product condition.</string>

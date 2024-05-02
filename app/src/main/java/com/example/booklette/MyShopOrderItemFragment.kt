@@ -172,7 +172,7 @@ class MyShopOrderItemFragment : Fragment() {
                 // đã giao => trả hoặc xác nhận nhận hàng (không cho huỷ)
                 else if (orderItem.status.contains("đã giao", true)) {
                     val detailFragment =
-                        OrderDetailCaseDeliveredFragment.newInstance(orderItem.trackingNumber)
+                        OrderDetailCaseShopDeliveredFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(
                         detailFragment,
                         (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
