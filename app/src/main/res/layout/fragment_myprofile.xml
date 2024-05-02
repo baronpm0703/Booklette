@@ -494,6 +494,8 @@
                     android:layout_marginTop="23dp"
                     android:layout_marginBottom="23dp"
                     android:text="sign out"
+                    android:textColor="@color/white"
+                    android:background="@drawable/round_corner_button_solid_color_book_detail_pink"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -125,7 +125,7 @@
     <string name="manageshop_mybooks_delete_confirm">Are you sure to delete this item?</string>
     <string name="manageshop_mybooks_delete_yes">Yes</string>
     <string name="manageshop_mybooks_delete_no">No</string>
-    <string name="manageshop_mybooks_add">Add 1 new book</string>
+    <string name="manageshop_mybooks_add">Add new book</string>
     <string name="manageshop_mybooks_add_name">Book name</string>
     <string name="manageshop_mybooks_add_author">Book Author</string>
     <string name="manageshop_mybooks_add_category">Category</string>

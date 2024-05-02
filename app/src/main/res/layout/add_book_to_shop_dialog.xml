@@ -28,7 +28,7 @@
                 android:id="@+id/slideDownTab"
                 android:layout_width="110dp"
                 android:layout_height="4dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/slide_down_tab"/>
 
@@ -300,8 +300,8 @@
         <TextView
                 android:id="@+id/addBtn"
 
-                android:layout_width="370dp"
-                android:layout_height="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/bookPriceET"
 
                 android:layout_centerHorizontal="true"
@@ -314,6 +314,7 @@
 
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
+                android:layout_marginLeft="100dp"
                 android:text="@string/manageshop_mybooks_add_btn"
 
                 android:textColor="@color/white"
