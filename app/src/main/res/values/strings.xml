@@ -280,6 +280,7 @@
     <string name="total_amount">Final price:</string>
     <string name="cancel_order">Cancel Order</string>
     <string name="accept_order">Accept Order</string>
+    
     <string name="payment_detail">Payment Details</string>
     <string name="book_detail_adding_to_cart">adding...</string>
     <string name="order">Order</string>

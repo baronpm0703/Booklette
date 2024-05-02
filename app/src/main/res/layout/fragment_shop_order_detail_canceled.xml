@@ -276,7 +276,6 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/round_corner_button_solid_color"
-
             android:elevation="2dp"
             android:text="@string/contactBuyer"
             app:layout_constraintBottom_toBottomOf="parent"
