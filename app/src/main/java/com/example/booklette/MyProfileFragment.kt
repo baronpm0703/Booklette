@@ -36,6 +36,11 @@ class MyProfileFragment : Fragment() {
 			auth.signOut()
 			startActivity(Intent(activity, LoginActivity::class.java))
 		}
+
+		binding.languageBtn.setOnClickListener {
+			val homeAct = (activity as homeActivity)
+			homeAct.changeFragmentContainer(Language_Fragment(), homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+		}
 		// Toggle navigation to My Shop
 		view.findViewById<Button>(R.id.myShopBtn).setOnClickListener {
 			if (context is homeActivity) {

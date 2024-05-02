@@ -165,6 +165,7 @@ class OrderDetailCaseReviewFragment : Fragment() {
             var bdFragment = BookDetailFragment()
 
             var bundle = Bundle()
+            var chosenBookID = ""
             val listBookID: List<String> = itemsFragment.getListClickedBookID()
             if (listBookID.isEmpty()) {
                 val instruction = context?.getString(R.string.review_instruction)
@@ -172,15 +173,19 @@ class OrderDetailCaseReviewFragment : Fragment() {
                     Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 }
             } else {
+                bundle.putString("bookID", itemsFragment.getListClickedBookID()[0])
+                bundle.putBoolean("openReview", true)
                 Toast.makeText(context, itemsFragment.getListClickedBookID()[0], Toast.LENGTH_SHORT)
                     .show()
                 //            bundle.putString("bookID", itemsFragment.getListClickedBookID()[0])
-//
-//            bdFragment.arguments = bundle
-//
-//            val homeAct = (context as homeActivity)
-//            homeAct.changeFragmentContainer(bdFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
+
+                bdFragment.arguments = bundle
+
+                val homeAct = (context as homeActivity)
+                homeAct.changeFragmentContainer(bdFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
             }
+
+
 
         }
         return view

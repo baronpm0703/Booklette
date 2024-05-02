@@ -396,7 +396,7 @@
 
                         android:text="@string/myprofile_language"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" android:id="@+id/textView37"
+                        android:layout_height="wrap_content" android:id="@+id/languageBtn"
                         android:textStyle="bold"
                         android:textColor="#000000" android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="29dp"

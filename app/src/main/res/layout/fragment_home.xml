@@ -40,7 +40,6 @@
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
                                     android:src="@drawable/booklette_logo">
-
                                 </de.hdodenhof.circleimageview.CircleImageView>
 
                                 <ImageView

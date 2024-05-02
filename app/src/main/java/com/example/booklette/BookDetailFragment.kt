@@ -80,6 +80,7 @@ class BookDetailFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var storage: FirebaseStorage
     private var bookID: String = ""
+    private var openReview: Boolean = false
 
     private var voucherList = ArrayList<VoucherObject>()
     private var otherBookFromStore = ArrayList<BookObject>()
@@ -131,6 +132,7 @@ class BookDetailFragment : Fragment() {
         storage = Firebase.storage("gs://book-store-3ed32.appspot.com")
 
         bookID = arguments?.getString("bookID").toString()
+        openReview = arguments?.getBoolean("openReview") ?: false
         // Save user Info
         lifecycleScope.launch {
             userInfo = auth.uid?.let { getInfoCurrentUser(it) }
@@ -496,8 +498,23 @@ class BookDetailFragment : Fragment() {
                 }
             }
         }
+        // Or Review Dialog being requested from other fragment
 
-        binding.imgOpenChatBookDetail.setOnClickListener({
+        if (openReview) {
+            Handler().postDelayed({
+                activity?.let {
+                    reviewDialogBookDetail.show(it){
+                        style(SheetStyle.BOTTOM_SHEET)
+                        onPositive {
+                            this.dismiss()
+                            upLoadComment(getClientRating(), getClientReview(), getImage()) // Upload Comment
+                        }
+                    }
+                }
+            }, 2000)
+        }
+
+        binding.imgOpenChatBookDetail.setOnClickListener {
             lifecycleScope.launch {
                 val storeID = getBookStoreID(bookID)
                 val storeUID = getUIDFromBookStoreID(storeID)
@@ -509,7 +526,7 @@ class BookDetailFragment : Fragment() {
 
                 startActivity(intent)
             }
-        })
+        }
 
         // Add to wishlist
         isFollowed.observe(viewLifecycleOwner) {
