@@ -256,6 +256,12 @@
     <string name="my_order_detail_item_return_success">Return successfully</string>
     <string name="my_order_detail_item_return_failed">Return failed</string>
     <string name="my_order_detail_item_return_in_process">Return order in processing</string>
+    <string name="my_shop_order_label">My Sales</string>
+    <string name="my_shop_order_to_ship_button">To ship</string>
+    <string name="my_shop_order_shipping_button">Shipping</string>
+    <string name="my_shop_order_completed_button">Completed</string>
+    <string name="my_shop_order_cancel_button">Cancelled</string>
+    <string name="my_shop_order_return_button">Return</string>
     <string name="order_item_order">Order </string>
     <string name="review_instruction">Please choose a book to review!</string>
     <string name="return_instruction">Please choose one or more book to return!</string>

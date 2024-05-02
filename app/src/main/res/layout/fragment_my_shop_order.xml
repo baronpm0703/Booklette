@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".MyOrderFragment">
+
+
+        <TextView
+            android:id="@+id/Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/my_shop_order_label"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#202020"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/searchBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/backButton"
+            app:layout_constraintTop_toBottomOf="@+id/backButton"
+            app:mt_hint="@string/my_order_search_bar_hint_focused"
+            app:mt_placeholder="@string/fragment_home_search" />
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="48dp"
+            android:background="@color/transparent"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="@+id/Label"
+            app:layout_constraintEnd_toStartOf="@+id/Label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/Label" />
+
+        <HorizontalScrollView
+            android:id="@+id/buttonScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchBar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/buttonScrollViewLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/toShipButton"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_my_order"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/my_shop_order_to_ship_button"
+                    tools:text="CHỜ GIAO HANG"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/shippingButton"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_my_order"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/my_order_delivered_button"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/toShipButton"
+                    app:layout_constraintTop_toTopOf="@+id/toShipButton" />
+
+                <Button
+                    android:id="@+id/completedButton"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_my_order"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/my_shop_order_completed_button"
+                    tools:text="đã hoàn thành"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/shippingButton"
+                    app:layout_constraintTop_toTopOf="@+id/shippingButton" />
+
+                <Button
+                    android:id="@+id/cancelledButton"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_my_order"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/my_shop_order_cancel_button"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/completedButton"
+                    app:layout_constraintTop_toTopOf="@+id/completedButton" />
+
+                <Button
+                    android:id="@+id/returnedButton"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_my_order"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/my_shop_order_return_button"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/cancelledButton"
+                    app:layout_constraintTop_toTopOf="@+id/cancelledButton" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </HorizontalScrollView>
+
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/itemsRecyclerView"
+
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonScrollView" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="382dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
