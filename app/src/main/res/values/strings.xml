@@ -280,7 +280,7 @@
     <string name="total_amount">Final price:</string>
     <string name="cancel_order">Cancel Order</string>
     <string name="accept_order">Accept Order</string>
-    
+
     <string name="payment_detail">Payment Details</string>
     <string name="book_detail_adding_to_cart">adding...</string>
     <string name="order">Order</string>
@@ -347,11 +347,14 @@
     <string name="orderDetailConfirmFailedArgument">Order received failed.</string>
     <string name="orderDetailConfirmlabel">Confirm receiving order? You cannot return products after confirming!</string>
     <string name="returnAndExchange">Return/Exchange</string>
+    <string name="acceptRequest">Accept Request</string>
+    <string name="rejectRequest">Reject Request</string>
     <string name="contactBuyer">Contact buyer</string>
     <string name="orderReceived">Order received</string>
     <string name="reasonLabel">Reason</string>
     <string name="reasonInstruction">Please upload clear image of product and/or chat to illustrate the product condition.</string>
     <string name="reviewInstruction">Please upload clear image of product and/or write review to illustrate the product.</string>
+    <string name="reasonProvided">Images and/or messages provided.</string>
     <string name="returnReasonLabel">Return reason</string>
     <string name="descriptionHint">Description</string>
     <string name="filter_title_dialog_product_list">Filter</string>
@@ -359,6 +362,7 @@
     <string name="e_invoice">E-Invoice</string>
     <string name="review">Review</string>
     <string name="please_select_product_to_return">Please select product to return</string>
+    <string name="returned_products">Request to return these books</string>
     <string name="write_your_review_here">Please select product to review</string>
     <string name="write_review">Write review</string>
     <string name="delete_cart_sucessfuly">Delete sucessfully</string>

@@ -169,7 +169,7 @@ class MyShopOrderItemFragment : Fragment() {
                         (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
                     )
                 }
-                // đã giao => trả hoặc xác nhận nhận hàng (không cho huỷ)
+                // đã giao => chat buyer,
                 else if (orderItem.status.contains("đã giao", true)) {
                     val detailFragment =
                         OrderDetailCaseShopDeliveredFragment.newInstance(orderItem.trackingNumber)
@@ -180,20 +180,28 @@ class MyShopOrderItemFragment : Fragment() {
                 }
 
 
-                // thành công => viết review
-//                else if (orderItem.status.contains("Thành công")){
-//                    val detailFragment = OrderDetailCaseDeliveredFragment.newInstance(orderItem.trackingNumber)
-//                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
-//                }
-                // đơn bị huỷ thành công (ko thành công) => viết review
-                else {
+                // thành công => chat buyer, e invoice
+                else if (orderItem.status.contains("Thành công")){
+                    val detailFragment = OrderDetailCaseShopCompletedFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+                }
+                // đơn bị huỷ thành công (ko thành công) => chat buyer,
+                else if (orderItem.status.contains("huỷ",ignoreCase = true)){
                     val detailFragment =
-                        OrderDetailCaseReviewFragment.newInstance(orderItem.trackingNumber)
+                        OrderDetailCaseShopCancelFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(
                         detailFragment,
                         (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
                     )
                 }
+//                // trả đơn => xác nhận có hoặc không
+//                else if (orderItem.status.contains("yêu câu trả",ignoreCase = true)){
+//
+//                }
+//                // đơn đã trả (có hoặc không
+//                else {
+//
+//                }
             }
         }
     }

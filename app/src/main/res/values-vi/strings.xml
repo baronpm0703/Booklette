@@ -321,4 +321,8 @@
     <string name="orderDetailAcceptSuccessfulArgument">Đơn hàng chấp nhận thành công.</string>
     <string name="orderDetailAcceptFailedArgument">Đơn hàng chấp nhận không thành công.</string>
     <string name="contactBuyer">Liên hệ người mua</string>
+    <string name="returned_products">Sách được yêu cầu trả</string>
+    <string name="reasonProvided">Hình ảnh và/hoặc lời nhắn được cung cấp</string>
+    <string name="acceptRequest">Chấp nhận yêu cầu</string>
+    <string name="rejectRequest">Từ chối yêu cầu</string>
 </resources>

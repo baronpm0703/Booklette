@@ -303,17 +303,16 @@
             android:id="@+id/orderDetailContactBuyerButton"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="1dp"
             android:background="@drawable/round_corner_button_solid_color"
-            android:text="@string/contactBuyer"
-            tools:text="Liên lạc người mua"
             android:backgroundTint="@color/white"
+            android:text="@string/contactBuyer"
             app:layout_constraintBottom_toBottomOf="@+id/orderDetailCancelOrderButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/orderDetailAcceptOrderButton"
             app:layout_constraintStart_toEndOf="@+id/orderDetailCancelOrderButton"
             app:layout_constraintTop_toTopOf="@+id/orderDetailCancelOrderButton"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Liên lạc người mua" />
 
         <Button
             android:id="@+id/orderDetailCancelOrderButton"
@@ -322,9 +321,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/round_corner_button_solid_color"
-
             android:text="@string/cancel_order"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderInformationFrameLayout" />
