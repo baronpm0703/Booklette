@@ -79,6 +79,7 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
                 .addOnSuccessListener {document->
                         val orderData = document.data
                         val itemsMap = orderData?.get("items") as? Map<String, Map<String,Any>>
+
                         var totalQuantity: Long = 0
                         itemsMap?.forEach { (itemID, itemData) ->
 
@@ -146,8 +147,7 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
          * @param orderFullName Parameter 2.
          * @return A new instance of fragment OrderDetailFragment.
          */
-        private const val PICK_IMAGE_REQUEST1 = 13351
-        private const val PICK_IMAGE_REQUEST2 = 13352
+
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
@@ -161,7 +161,6 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
     private fun setImageToImageView2() {
         selectedImageUri?.let { uri ->
             Picasso.get().load(uri).into(imagePicker2)
-            URI2 = selectedImageUri.toString()
 
         }
 

@@ -89,7 +89,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/frameLayout"
-                android:layout_width="mat"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@+id/returnReasonLabel"
                 app:layout_constraintTop_toBottomOf="@+id/returnReasonLabel">

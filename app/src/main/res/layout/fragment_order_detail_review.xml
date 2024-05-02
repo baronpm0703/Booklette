@@ -261,8 +261,9 @@
             android:elevation="2dp"
             android:text="@string/view_e_invoice"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderInformationFrameLayout" />
+            app:layout_constraintStart_toStartOf="@+id/orderDetailOrderInformationFrameLayout"
+            app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderInformationFrameLayout"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/orderDetailReviewButton"
@@ -271,8 +272,7 @@
             android:background="@drawable/round_corner_button_solid_color"
             android:text="@string/review"
             app:layout_constraintBottom_toBottomOf="@+id/orderDetailViewEInvoiceButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/orderDetailViewEInvoiceButton"
+            app:layout_constraintEnd_toEndOf="@+id/orderDetailOrderInformationFrameLayout"
             app:layout_constraintTop_toTopOf="@+id/orderDetailViewEInvoiceButton" />
 
         <TextView
