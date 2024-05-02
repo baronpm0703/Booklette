@@ -16,13 +16,13 @@ import com.example.booklette.databinding.FragmentMyOrderBinding
 import com.example.booklette.databinding.FragmentMyShopOrderBinding
 import com.mancj.materialsearchbar.MaterialSearchBar
 
-
+//personalStores/yUChUxAjm629wkpYcJOI
 class MyShopOrderFragment : Fragment() {
     private var _binding: FragmentMyShopOrderBinding? = null
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var myOrderItemFragment: MyOrderItemFragment
+    private lateinit var myOrderItemFragment: MyShopOrderItemFragment
 
     private lateinit var label: TextView
     private lateinit var searchBar: MaterialSearchBar
@@ -55,7 +55,7 @@ class MyShopOrderFragment : Fragment() {
         val returnedButton: Button = binding.returnedButton
 
         val itemListContainer = binding.itemsRecyclerView // fragmentContainerView
-        myOrderItemFragment = MyOrderItemFragment.newInstance(1)
+        myOrderItemFragment = MyShopOrderItemFragment.newInstance(1)
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(itemListContainer.id, myOrderItemFragment)
 

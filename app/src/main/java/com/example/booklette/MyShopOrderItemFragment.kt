@@ -19,7 +19,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import java.util.Date
 
-class MyOrderItemFragment : Fragment() {
+class MyShopOrderItemFragment : Fragment() {
 
     private var columnCount = 1
     private lateinit var adapter: MyOrderItemRecyclerViewAdapter
@@ -58,7 +58,7 @@ class MyOrderItemFragment : Fragment() {
         view.adapter = adapter
         view.layoutManager = LinearLayoutManager(context)
         // Fetch data from Firestore
-        ordersRef.whereEqualTo("customerID", userID)
+        ordersRef
             .orderBy("creationDate", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { querySnapshot ->
@@ -72,65 +72,68 @@ class MyOrderItemFragment : Fragment() {
                     var totalQuantity: Long = 0
                     val itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
                     Log.d("map", itemsMap.toString())
-                    val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
-                        itemMap.map { (itemId, itemData) ->
-                            Log.d("shopID", shopID)
-                            Log.d("itemId", itemId)
-                            Log.d("itemData", itemData.toString())
+                    if (itemsMap != null && itemsMap.containsKey(userID)) {
+                        val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
+                            itemMap.map { (itemId, itemData) ->
+                                Log.d("shopID", shopID)
+                                Log.d("itemId", itemId)
+                                Log.d("itemData", itemData.toString())
 
-                            totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
+                                totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
 
-                            db.collection("books")
-                                .whereEqualTo("bookID", itemId)
-                                .get()
-                                .addOnSuccessListener { bookSnapshot ->
-                                    for (book in bookSnapshot.documents) {
-                                        val bookData = book.data
-                                        val bookName = bookData?.get("name") as? String
-                                        if (!bookName.isNullOrEmpty()) {
-                                            orderName += "$bookName, "
+                                db.collection("books")
+                                    .whereEqualTo("bookID", itemId)
+                                    .get()
+                                    .addOnSuccessListener { bookSnapshot ->
+                                        for (book in bookSnapshot.documents) {
+                                            val bookData = book.data
+                                            val bookName = bookData?.get("name") as? String
+                                            if (!bookName.isNullOrEmpty()) {
+                                                orderName += "$bookName, "
+                                            }
                                         }
                                     }
-                                }
+                            }
                         }
+
+                        Tasks.whenAllComplete(fetchBookNamesTasks!!)
+                            .addOnSuccessListener {
+                                // Remove the last comma and space from orderName
+                                if (orderName.length >= 2) {
+                                    orderName = orderName.dropLast(2)
+                                    val copiedName = orderName
+                                    fullItemNames.add(copiedName)
+                                }
+
+                                // Truncate orderName if it exceeds 15 characters
+                                if (orderName.length > 15) {
+                                    orderName = orderName.substring(0, 15) + "..."
+                                }
+
+                                // Create OrderDataClass instance
+                                val totalMoney = (orderData?.get("totalSum") as? Number)?.toLong() ?: 0
+                                val status = orderData?.get("status") as String
+                                val newOrder = date?.let {
+                                    OrderDataClass(
+                                        orderName,
+                                        it,
+                                        trackingNumber,
+                                        totalQuantity,
+                                        totalMoney,
+                                        status
+                                    )
+                                }
+
+                                // Add newOrder to userOrders list
+                                if (newOrder != null) {
+                                    userOrders.add(newOrder)
+                                    originalValues.add(newOrder)
+                                }
+                                // Update adapter and layout manager
+                                afterQuery()
+                            }
                     }
 
-                    Tasks.whenAllComplete(fetchBookNamesTasks!!)
-                        .addOnSuccessListener {
-                            // Remove the last comma and space from orderName
-                            if (orderName.length >= 2) {
-                                orderName = orderName.dropLast(2)
-                                val copiedName = orderName
-                                fullItemNames.add(copiedName)
-                            }
-
-                            // Truncate orderName if it exceeds 15 characters
-                            if (orderName.length > 15) {
-                                orderName = orderName.substring(0, 15) + "..."
-                            }
-
-                            // Create OrderDataClass instance
-                            val totalMoney = (orderData?.get("totalSum") as? Number)?.toLong() ?: 0
-                            val status = orderData?.get("status") as String
-                            val newOrder = date?.let {
-                                OrderDataClass(
-                                    orderName,
-                                    it,
-                                    trackingNumber,
-                                    totalQuantity,
-                                    totalMoney,
-                                    status
-                                )
-                            }
-
-                            // Add newOrder to userOrders list
-                            if (newOrder != null) {
-                                userOrders.add(newOrder)
-                                originalValues.add(newOrder)
-                            }
-                            // Update adapter and layout manager
-                            afterQuery()
-                        }
 
                 }
 
@@ -267,7 +270,7 @@ class MyOrderItemFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            MyOrderItemFragment().apply {
+            MyShopOrderItemFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
