@@ -349,5 +349,6 @@
     <string name="write_review">Write review</string>
     <string name="delete_cart_sucessfuly">Delete sucessfully</string>
     <string name="delete_notification">This Book has been deleted</string>
+    <string name="view_e_invoice">View E-Invoice</string>
 
 </resources>

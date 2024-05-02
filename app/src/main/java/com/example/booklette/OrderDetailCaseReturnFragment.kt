@@ -141,7 +141,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
         var count = 0
         returnRef.get()
             .addOnSuccessListener {
-                count = it.size()
+                count = it.size() + 1
             }
             .addOnFailureListener { exception ->
                 Log.e("error", exception.toString())
