@@ -199,6 +199,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
                                     val returnDoc = hashMapOf(
                                         "customerID" to auth.uid.toString(),
                                         "image" to imageList.toList(),
+                                        "orderID" to orderID,
                                         "itemID" to itemsFragment.getListClickedBookID(),
                                         "reason" to reasonField.text.toString(),
                                         "requestID" to "RNE$count",

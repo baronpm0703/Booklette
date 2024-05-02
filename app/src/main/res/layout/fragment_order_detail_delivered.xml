@@ -260,7 +260,7 @@
             android:elevation="2dp"
             android:text="@string/returnAndExchange"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/orderDetailOrderInformationFrameLayout"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderInformationFrameLayout" />
 
         <Button
@@ -271,7 +271,7 @@
             android:elevation="2dp"
             android:text="@string/orderReceived"
             app:layout_constraintBottom_toBottomOf="@+id/orderDetailReturnButton"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/orderDetailOrderInformationFrameLayout"
             app:layout_constraintTop_toTopOf="@+id/orderDetailReturnButton" />
 
         <TextView

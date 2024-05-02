@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@string/my_shop_order_label"
+            android:text="@string/order_detail"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -111,13 +111,10 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/orderDetailProductsFragmentFrameLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
             android:background="@drawable/round_corner_order_item_white_with_shadow"
-            android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailStatusField">
@@ -129,10 +126,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/round_corner_order_item_white_with_shadow"
-            android:elevation="2dp"
+            android:background="@drawable/round_corner_order_item_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailProductsFragmentFrameLayout">
@@ -147,6 +141,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/textView523"
                 android:layout_width="wrap_content"
@@ -202,23 +197,7 @@
                 android:text="@string/total_amount"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView55"
-                app:layout_constraintTop_toBottomOf="@+id/textView55"
-                app:layout_constraintVertical_bias="0.0" />
-
-
-            <TextView
-                android:id="@+id/orderDetailShippingAddressField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textStyle="bold"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-
-                app:layout_constraintStart_toStartOf="@+id/orderDetailPaymentMethodField"
-                app:layout_constraintTop_toTopOf="@+id/textView52" />
-
+                app:layout_constraintTop_toBottomOf="@+id/textView55" />
             <TextView
                 android:id="@+id/orderDetailBuyerNameField"
                 android:layout_width="wrap_content"
@@ -231,6 +210,18 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/orderDetailShippingAddressField"
                 app:layout_constraintTop_toTopOf="@+id/textView523" />
+            <TextView
+                android:id="@+id/orderDetailShippingAddressField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/orderDetailPaymentMethodField"
+                app:layout_constraintTop_toTopOf="@+id/textView52" />
 
             <TextView
                 android:id="@+id/orderDetailPaymentMethodField"
@@ -241,88 +232,54 @@
                 android:text=""
                 android:textStyle="bold"
                 app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/textView53"
                 app:layout_constraintTop_toTopOf="@+id/textView53" />
 
             <TextView
                 android:id="@+id/orderDetailBeforeDiscountField"
                 android:layout_width="wrap_content"
+                app:layout_constrainedWidth="true"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textStyle="bold"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/orderDetailPaymentMethodField"
                 app:layout_constraintTop_toTopOf="@+id/textView54" />
 
             <TextView
                 android:id="@+id/orderDetailDiscountField"
                 android:layout_width="wrap_content"
+                app:layout_constrainedWidth="true"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textStyle="bold"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/orderDetailBeforeDiscountField"
                 app:layout_constraintTop_toTopOf="@+id/textView55" />
 
             <TextView
                 android:id="@+id/orderDetailTotalField"
                 android:layout_width="wrap_content"
+                app:layout_constrainedWidth="true"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text=""
                 android:textStyle="bold"
-                app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/orderDetailDiscountField"
-                app:layout_constraintTop_toTopOf="@+id/textView56"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="@+id/textView56" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <Button
-            android:id="@+id/orderDetailAcceptOrderButton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:background="@drawable/round_corner_button_solid_color"
-            android:text="@string/accept_order"
-            android:backgroundTint="@color/add_card_blue"
-            app:layout_constraintBottom_toBottomOf="@+id/orderDetailContactBuyerButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/orderDetailContactBuyerButton" />
-
         <Button
             android:id="@+id/orderDetailContactBuyerButton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:background="@drawable/round_corner_button_solid_color"
-            android:backgroundTint="@color/white"
-            android:text="@string/contactBuyer"
-            app:layout_constraintBottom_toBottomOf="@+id/orderDetailCancelOrderButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/orderDetailAcceptOrderButton"
-            app:layout_constraintStart_toEndOf="@+id/orderDetailCancelOrderButton"
-            app:layout_constraintTop_toTopOf="@+id/orderDetailCancelOrderButton"
-            app:layout_constraintVertical_bias="0.0"
-            tools:text="Liên lạc người mua" />
-
-        <Button
-            android:id="@+id/orderDetailCancelOrderButton"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/round_corner_button_solid_color"
-            android:text="@string/cancel_order"
+            android:elevation="2dp"
+            android:text="@string/contactBuyer"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderInformationFrameLayout" />
 
@@ -334,8 +291,6 @@
             android:text="@string/orderDetailStatus"
             app:layout_constraintStart_toStartOf="@+id/textView47"
             app:layout_constraintTop_toBottomOf="@+id/textView47" />
-
-
 
         <!-- Your existing layout content here -->
 
