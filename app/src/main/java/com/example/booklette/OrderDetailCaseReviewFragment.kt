@@ -185,8 +185,24 @@ class OrderDetailCaseReviewFragment : Fragment() {
                 homeAct.changeFragmentContainer(bdFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
             }
 
+        }
 
-
+        binding.orderDetailViewEInvoiceButton.setOnClickListener{
+            // Tạo một instance mới của EInvoiceFragment
+            val eInvoiceFragment = EInvoiceFragment()
+            // Tạo Bundle để chứa orderId
+            val args = Bundle()
+            // Đặt orderId vào Bundle
+            args.putString(ORDERID_PARAM, orderID)
+            // Đặt Bundle vào fragment
+            eInvoiceFragment.arguments = args
+            // Lấy instance của homeActivity
+            val homeAct = (activity as homeActivity)
+            // Chuyển đổi sang EInvoiceFragment và truyền stack hiện tại
+            homeAct.changeFragmentContainer(
+                eInvoiceFragment,
+                homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]
+            )
         }
         return view
     }
