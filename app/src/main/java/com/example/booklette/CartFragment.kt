@@ -75,6 +75,13 @@ class CartFragment : Fragment() {
         val view = binding.root
         // Add more items as needed
 
+        binding.ivHomeProfile.setOnClickListener({
+            (context as homeActivity).changeContainerToProfileFragment()
+        })
+
+        binding.ivNotificationIcon.setOnClickListener({
+            (context as homeActivity).changeContainerToProfileFragment()
+        })
 
         adapter = CartFragmentRecyclerViewAdapter(requireContext(), cartList)
         binding.rvCart.adapter = adapter

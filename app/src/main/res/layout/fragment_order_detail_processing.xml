@@ -283,6 +283,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
+            android:textColor="@color/white"
             android:background="@drawable/round_corner_button_solid_color"
             android:text="@string/cancel_order"
             app:layout_constraintBottom_toBottomOf="parent"

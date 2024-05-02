@@ -294,7 +294,8 @@
             android:layout_height="50dp"
             android:background="@drawable/round_corner_button_solid_color"
             android:text="@string/accept_order"
-            android:backgroundTint="@color/add_card_blue"
+            android:textColor="@color/white"
+            android:backgroundTint="#41BA00"
             app:layout_constraintBottom_toBottomOf="@+id/orderDetailContactBuyerButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/orderDetailContactBuyerButton" />
@@ -304,7 +305,7 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:background="@drawable/round_corner_button_solid_color"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="#F1D800"
             android:text="@string/contactBuyer"
             app:layout_constraintBottom_toBottomOf="@+id/orderDetailCancelOrderButton"
             app:layout_constraintEnd_toEndOf="parent"
@@ -322,6 +323,7 @@
             android:layout_marginBottom="32dp"
             android:background="@drawable/round_corner_button_solid_color"
             android:text="@string/cancel_order"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderInformationFrameLayout" />

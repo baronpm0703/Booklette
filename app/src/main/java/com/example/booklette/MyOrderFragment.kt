@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentMyOrderBinding
 import com.mancj.materialsearchbar.MaterialSearchBar
@@ -46,6 +47,14 @@ class MyOrderFragment : Fragment() {
 
         _binding = FragmentMyOrderBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        binding.ivHomeProfile.setOnClickListener({
+            (context as homeActivity).changeContainerToProfileFragment()
+        })
+
+        binding.ivNotificationIcon.setOnClickListener({
+            (context as homeActivity).changeContainerToProfileFragment()
+        })
 
         val processingButton : Button = binding.processingButton
         val deliveredButton : Button = binding.deliveredButton
@@ -87,6 +96,12 @@ class MyOrderFragment : Fragment() {
                 myOrderItemFragment.processingButton()
                 Log.d("testButton","else")
             }
+
+            processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
 
         deliveredButton.setOnClickListener {
@@ -101,6 +116,12 @@ class MyOrderFragment : Fragment() {
                 deliveredButton.backgroundTintList = null
                 myOrderItemFragment.deliveredButton()
             }
+
+            processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
 
         completedButton.setOnClickListener{
@@ -115,6 +136,12 @@ class MyOrderFragment : Fragment() {
                 completedButton.backgroundTintList = null
                 myOrderItemFragment.completedButton()
             }
+
+            processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
         cancelledButton.setOnClickListener {
 
@@ -128,6 +155,12 @@ class MyOrderFragment : Fragment() {
                 cancelledButton.backgroundTintList = null
                 myOrderItemFragment.cancelledButton()
             }
+
+            processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
         returnedButton.setOnClickListener {
 
@@ -141,15 +174,21 @@ class MyOrderFragment : Fragment() {
                 returnedButton.backgroundTintList = null
                 myOrderItemFragment.returnedButton()
             }
+
+            processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         }
 
-        val backButton = binding.backButton
-        backButton.setOnClickListener{
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
+//        val backButton = binding.backButton
+//        backButton.setOnClickListener{
+//            requireActivity().onBackPressedDispatcher.onBackPressed()
+//        }
 
 
-        label = binding.Label
+//        label = binding.Label
         searchBar = binding.searchBar
         searchBar.addTextChangeListener(object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

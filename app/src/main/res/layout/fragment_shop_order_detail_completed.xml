@@ -270,6 +270,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
+            android:textColor="@color/white"
             android:id="@+id/orderDetailContactBuyerButton"
             android:layout_width="150dp"
             android:layout_height="50dp"

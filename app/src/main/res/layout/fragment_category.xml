@@ -49,6 +49,7 @@
                 </de.hdodenhof.circleimageview.CircleImageView>
 
                 <ImageView
+                    android:id="@+id/ivNotificationIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

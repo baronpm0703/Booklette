@@ -19,6 +19,11 @@ class homeActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     var smoothBottomBarStack = ArrayList<Int>()
 
+    val homeFragment = HomeFragment()
+    val categoryFragment = CategoryFragment()
+    val cartFragment = CartFragment()
+    val profileFragment = MyProfileFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -26,13 +31,6 @@ class homeActivity : AppCompatActivity() {
         setContentView(view)
 
         auth = Firebase.auth
-
-        val homeFragment = HomeFragment()
-        val categoryFragment = CategoryFragment()
-        val productList = ProductList()
-        val cartFragment = CartFragment()
-        val bookDetailFragment = BookDetailFragment()
-        val profileFragment = MyProfileFragment()
 
         // (Hải) t gán để test cái MyOrder
         val myOrderFragment = MyOrderFragment()
@@ -98,5 +96,10 @@ class homeActivity : AppCompatActivity() {
     fun changeFragmentContainer(fragment: Fragment, barItem: Int) {
         supportFragmentManager.beginTransaction().replace(R.id.fcvNavigation, fragment).addToBackStack(null).commit()
         smoothBottomBarStack.add(barItem)
+    }
+
+    fun changeContainerToProfileFragment() {
+        changeFragmentContainer(profileFragment, 4)
+        binding.smoothBottomBar.itemActiveIndex = 4
     }
 }

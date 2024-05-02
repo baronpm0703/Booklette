@@ -269,6 +269,7 @@
             android:id="@+id/orderDetailReviewButton"
             android:layout_width="150dp"
             android:layout_height="50dp"
+            android:textColor="@color/white"
             android:background="@drawable/round_corner_button_solid_color"
             android:text="@string/review"
             app:layout_constraintBottom_toBottomOf="@+id/orderDetailViewEInvoiceButton"

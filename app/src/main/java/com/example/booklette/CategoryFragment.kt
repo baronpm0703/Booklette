@@ -88,6 +88,14 @@ class CategoryFragment : Fragment() {
         auth = Firebase.auth
         db = Firebase.firestore
 
+        binding.ivHomeProfile.setOnClickListener({
+            (context as homeActivity).changeContainerToProfileFragment()
+        })
+
+        binding.ivNotificationIcon.setOnClickListener({
+            (context as homeActivity).changeContainerToProfileFragment()
+        })
+
         binding.ivHCMUS.setOnClickListener{
             val genre = "Hcmus-book"
             val productListHCMUS = ProductListHCMUS()
