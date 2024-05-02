@@ -262,6 +262,7 @@
     <string name="my_shop_order_completed_button">Completed</string>
     <string name="my_shop_order_cancel_button">Cancelled</string>
     <string name="my_shop_order_return_button">Return</string>
+
     <string name="order_item_order">Order </string>
     <string name="review_instruction">Please choose a book to review!</string>
     <string name="return_instruction">Please choose one or more book to return!</string>
@@ -272,11 +273,13 @@
     <string name="order_detail">Order detail</string>
     <string name="order_information">Order Information</string>
     <string name="shipping_address">Shipping address:</string>
+    <string name="buyer_name">Buyer name:</string>
     <string name="payment_method">Payment method:</string>
     <string name="before_discount">Total amount:</string>
     <string name="discount">Discount:</string>
     <string name="total_amount">Final price:</string>
     <string name="cancel_order">Cancel Order</string>
+    <string name="accept_order">Accept Order</string>
     <string name="payment_detail">Payment Details</string>
     <string name="book_detail_adding_to_cart">adding...</string>
     <string name="order">Order</string>
@@ -328,6 +331,7 @@
     <string name="paymentSuccessfully">Payment successfully!</string>
     <string name="orderDetailStatus">Status:</string>
     <string name="orderDetailProcessingCancelLabel">Are you sure you want to cancel this order?</string>
+    <string name="orderDetailToShipAcceptLabel">Are you sure you want to accept this order?</string>
     <string name="orderDetailReturnConfirmLabel">Are you sure you want to return these product?</string>
     <string name="orderDetailReturnConfirmYes">Return request created successfully.</string>
     <string name="documentUploading">Uploading</string>
@@ -336,6 +340,8 @@
     <string name="no">No</string>
     <string name="orderDetailCancelArgument">Order cancelled successfully.</string>
     <string name="orderDetailFailedArgument">Order cancelled failed.</string>
+    <string name="orderDetailAcceptSuccessfulArgument">Order accepted successfully.</string>
+    <string name="orderDetailAcceptFailedArgument">Order accepted failed.</string>
     <string name="orderDetailConfirmSuccessfulArgument">Order received successfully.</string>
     <string name="orderDetailConfirmFailedArgument">Order received failed.</string>
     <string name="orderDetailConfirmlabel">Confirm receiving order? You cannot return products after confirming!</string>

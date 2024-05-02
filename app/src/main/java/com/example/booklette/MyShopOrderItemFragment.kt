@@ -22,7 +22,7 @@ import java.util.Date
 class MyShopOrderItemFragment : Fragment() {
 
     private var columnCount = 1
-    private lateinit var adapter: MyOrderItemRecyclerViewAdapter
+    private lateinit var adapter: MyShopOrderItemRecyclerViewAdapter
     private var userOrders = arrayListOf<OrderDataClass>()
     private var originalValues = arrayListOf<OrderDataClass>()
     private lateinit var db: FirebaseFirestore
@@ -54,7 +54,7 @@ class MyShopOrderItemFragment : Fragment() {
         db = Firebase.firestore
 
         val ordersRef = db.collection("orders")
-        adapter = MyOrderItemRecyclerViewAdapter(requireContext(), userOrders)
+        adapter = MyShopOrderItemRecyclerViewAdapter(requireContext(), userOrders)
         view.adapter = adapter
         view.layoutManager = LinearLayoutManager(context)
         // Fetch data from Firestore
@@ -163,7 +163,7 @@ class MyShopOrderItemFragment : Fragment() {
                 // đang xử lý => huỷ đơn,
                 if (orderItem.status.contains("xử lý", ignoreCase = true)) {
                     val detailFragment =
-                        OrderDetailCaseProcessingFragment.newInstance(orderItem.trackingNumber)
+                        OrderDetailCaseShopToShipFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(
                         detailFragment,
                         (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]

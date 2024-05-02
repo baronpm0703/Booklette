@@ -62,7 +62,7 @@ class MyShopOrderFragment : Fragment() {
         transaction.runOnCommit {
             // This code will be executed after the transaction is committed
             Log.d("testButton","click")
-
+            toShipButton.performClick()
         }
         transaction.commit()
 

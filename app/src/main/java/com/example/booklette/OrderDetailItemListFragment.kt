@@ -150,8 +150,6 @@ class OrderDetailItemListFragment : Fragment() {
 
 
 
-
-
         return view
     }
 

@@ -315,4 +315,9 @@
     <string name="my_shop_order_completed_button">Đã hoàn thành</string>
     <string name="my_shop_order_cancel_button">Đã huỷ</string>
     <string name="my_shop_order_return_button">Đơn hoàn trả</string>
+    <string name="buyer_name">Tên người mua:</string>
+    <string name="accept_order">Chấp nhận đơn</string>
+    <string name="orderDetailToShipAcceptLabel">Bạn có chắc rằng chấp nhận đơn hàng này?</string>
+    <string name="orderDetailAcceptSuccessfulArgument">Đơn hàng chấp nhận thành công.</string>
+    <string name="orderDetailAcceptFailedArgument">Đơn hàng chấp nhận không thành công.</string>
 </resources>

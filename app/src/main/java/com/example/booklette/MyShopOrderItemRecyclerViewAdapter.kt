@@ -44,10 +44,10 @@ class MyShopOrderItemRecyclerViewAdapter(
         holder.totalLabel.text = "  " + formatMoney(item.total)
 
         if (item.status.contains("xử lý", true)){
-            holder.statusField.text = context.getString(R.string.my_order_processing_button)
+            holder.statusField.text = context.getString(R.string.my_shop_order_to_ship_button)
         }
         else if (item.status.contains("huỷ",true)){
-            holder.statusField.text = context.getString(R.string.my_order_cancelled_button)
+            holder.statusField.text = context.getString(R.string.my_shop_order_cancel_button)
         }
         else if (item.status.contains("trả đang duyệt", ignoreCase = true)){
             holder.statusField.text = context.getString(R.string.my_order_detail_item_return_in_process)
