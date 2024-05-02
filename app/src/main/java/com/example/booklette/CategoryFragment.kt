@@ -118,20 +118,6 @@ class CategoryFragment : Fragment() {
         binding.gvCategories.adapter =
             activity?.let { CategoryFragmentGridViewAdapter(it, categories) }
 
-        // On every item selected, get the item's genre and call the changeFragment from home Page
-        // In order to allow onBack/Gesture navigation work with been conflicted/fragment layout stack
-//        binding.gvCategories.setOnItemClickListener { parent, view, position, id ->
-//            val genre = categories[position]
-//            val productList = ProductList()
-//            val args = Bundle()
-//            args.putString("Genre", genre)
-//            productList.arguments = args
-//
-//            // Have to cast homePage to "activity as HomePage", otherwise the supportFragment can recognize the host
-//            val homeAct = (activity as homeActivity)
-//            homeAct.changeFragmentContainer(productList, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
-//        }
-
         val customSuggestionAdapter = activity?.let {
             CustomSuggestionAdapter(it, inflater, binding.searchBar)
         }

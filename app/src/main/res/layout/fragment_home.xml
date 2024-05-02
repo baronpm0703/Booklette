@@ -112,8 +112,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="220dp"
 
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="15dp"
 
                             android:layout_marginTop="30dp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -134,32 +134,32 @@
                                     android:layout_gravity="center_horizontal"
                                     android:orientation="vertical">
                                     <LinearLayout
-                                            android:layout_width="130dp"
-                                            android:layout_height="35dp"
+                                        android:layout_width="130dp"
+                                        android:layout_height="35dp"
 
-                                            android:orientation="horizontal"
+                                        android:orientation="horizontal"
 
-                                            android:paddingVertical="2dp"
-                                            android:paddingHorizontal="10dp"
-                                            android:layout_marginTop="10dp"
-                                            android:layout_marginStart="10dp"
+                                        android:paddingVertical="2dp"
+                                        android:paddingHorizontal="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:layout_marginStart="10dp"
 
-                                            android:background="@drawable/round_corner_popular_holder">
-                                            <ImageView
-                                                android:layout_marginTop="3dp"
-                                                android:layout_width="25dp"
-                                                android:layout_height="25dp"
-                                                android:src="@drawable/popular_icon"
+                                        android:background="@drawable/round_corner_popular_holder">
+                                        <ImageView
+                                            android:layout_marginTop="3dp"
+                                            android:layout_width="25dp"
+                                            android:layout_height="25dp"
+                                            android:src="@drawable/popular_icon"
                                             />
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="10dp"
-                                                android:text="Popular"
-                                                android:textColor="#C33434"
-                                                android:textStyle="bold"
-                                                android:textSize="21sp"/>
-                                        </LinearLayout>
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="10dp"
+                                            android:text="Popular"
+                                            android:textColor="#C33434"
+                                            android:textStyle="bold"
+                                            android:textSize="21sp"/>
+                                    </LinearLayout>
 
                                     <ImageView
                                         android:layout_width="match_parent"
@@ -167,7 +167,7 @@
                                         android:src="@drawable/hcmus_home_logo"
                                         android:layout_marginTop="10dp"
                                         android:layout_gravity="center"
-                                    />
+                                        />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -225,6 +225,7 @@
                                 </androidx.recyclerview.widget.RecyclerView>
 
                             </LinearLayout>
+
                         </androidx.cardview.widget.CardView>
 
 
