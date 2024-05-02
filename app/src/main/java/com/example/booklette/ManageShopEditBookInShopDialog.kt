@@ -25,7 +25,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.EditBookInShopDialogBinding
 import com.example.booklette.model.Photo
+import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.firestore
 import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
 import com.maxkeppeler.sheets.core.SheetStyle
@@ -116,6 +118,8 @@ class ManageShopEditBookInShopDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val db = Firebase.firestore
+
         // Init data Photo
         dataPhoto = ArrayList()
         chosenPhotoAdapter = activity?.let { ChosenReviewPhotoBookDetailRVAdapter(it, dataPhoto) }!!
@@ -125,8 +129,6 @@ class ManageShopEditBookInShopDialog(
         binding.bookNameET.setText(bookName)
         bookAuthor = initValue.author
         binding.bookAuthorET.setText(bookAuthor)
-        bookCategory = initValue.category
-        binding.bookCategoryET.setText(bookCategory)
         bookDesc = initValue.desc
         binding.bookDescET.setText(bookDesc)
         bookPrice = initValue.price
@@ -147,12 +149,50 @@ class ManageShopEditBookInShopDialog(
         }
         thread.start()
         thread.join()
+        // Get category for Spinner
+        bookCategory = initValue.category
+        db.collection("book-category").document("IEBLyJGkGNq4ewmONSTd").get().addOnSuccessListener {
+            val categories = it.get("categories") as ArrayList<String>
+            categories.add(0, resources.getString(R.string.manageshop_mybooks_add_category))
+
+            val bookCategorySpinner = binding.bookCategorySpin
+            val bookCategoryAdapter = object: ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, categories) {
+                override fun isEnabled(position: Int): Boolean {
+                    return position != 0
+                }
+
+                override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    val view = super.getDropDownView(position, convertView, parent)
+                    if (position == 0) (view as TextView).setTextColor(Color.GRAY)
+                    else (view as TextView).setTextColor(Color.BLACK)
+
+                    view.setTypeface(Typeface.DEFAULT_BOLD)
+                    return view
+                }
+            }
+            bookCategorySpinner.adapter = bookCategoryAdapter
+            bookCategorySpinner.setSelection(categories.indexOf(bookCategory))
+            bookCategorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>,
+                                            view: View?, position: Int, id: Long) {
+                    if (view == null) return
+
+                    if (position == 0) (view as TextView).setTextColor(Color.GRAY)
+                    else (view as TextView).setTextColor(Color.BLACK)
+
+                    view.setTypeface(Typeface.DEFAULT_BOLD)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+            }
+        }
         // Get type for Spinner
         bookType = initValue.type
-        val spinner = binding.bookTypeSpin
-        val items = resources.getStringArray(R.array.manageshop_mybooks_add_type)
-
-        val adapter = object: ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, items) {
+        val bookTypeSpinner = binding.bookTypeSpin
+        val bookTypeItems = resources.getStringArray(R.array.manageshop_mybooks_add_type)
+        val bookTypeAdapter = object: ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, bookTypeItems) {
             override fun isEnabled(position: Int): Boolean {
                 return position != 0
             }
@@ -166,9 +206,9 @@ class ManageShopEditBookInShopDialog(
                 return view
             }
         }
-        spinner.adapter = adapter
-        spinner.setSelection(items.indexOf(bookType))
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        bookTypeSpinner.adapter = bookTypeAdapter
+        bookTypeSpinner.setSelection(bookTypeItems.indexOf(bookType))
+        bookTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>,
                                         view: View?, position: Int, id: Long) {
                 if (view == null) return
@@ -188,7 +228,7 @@ class ManageShopEditBookInShopDialog(
         binding.addBookDialog.setOnClickListener {
             binding.bookNameET.clearFocus()
             binding.bookAuthorET.clearFocus()
-            binding.bookCategoryET.clearFocus()
+            binding.bookCategorySpin.clearFocus()
             binding.bookTypeSpin.clearFocus()
             binding.bookDescET.clearFocus()
             binding.bookPriceET.clearFocus()
@@ -212,15 +252,15 @@ class ManageShopEditBookInShopDialog(
                 imm.hideSoftInputFromWindow(binding.bookAuthorET.windowToken, 0)
             }
         }
-        binding.bookCategoryET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            // If EditText loses focus
-            if (!hasFocus) {
-                bookCategory = binding.bookCategoryET.text.toString()
-                // Hide the keyboard if it's currently showing
-                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(binding.bookCategoryET.windowToken, 0)
-            }
-        }
+//        binding.bookCategoryET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+//            // If EditText loses focus
+//            if (!hasFocus) {
+//                bookCategory = binding.bookCategoryET.text.toString()
+//                // Hide the keyboard if it's currently showing
+//                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                imm.hideSoftInputFromWindow(binding.bookCategoryET.windowToken, 0)
+//            }
+//        }
 //        binding.bookTypeET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
 //            // If EditText loses focus
 //            if (!hasFocus) {
@@ -262,7 +302,7 @@ class ManageShopEditBookInShopDialog(
         binding.addBtn.setOnClickListener {
             bookName = binding.bookNameET.text.toString()
             bookAuthor = binding.bookAuthorET.text.toString()
-            bookCategory = binding.bookCategoryET.text.toString()
+            bookCategory = binding.bookCategorySpin.selectedItem.toString()
             bookType = binding.bookTypeSpin.selectedItem.toString()
             bookDesc = binding.bookDescET.text.toString()
             bookPrice = binding.bookPriceET.text.toString()
