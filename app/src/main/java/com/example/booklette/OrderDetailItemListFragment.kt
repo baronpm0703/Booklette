@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentOrderDetailItemListBinding
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
 import java.io.Serializable
 import kotlin.properties.Delegates
@@ -78,7 +79,19 @@ class OrderDetailItemListFragment : Fragment() {
                     .addOnSuccessListener { querySnapshot ->
                         for (document in querySnapshot) {
                             val storeData = document.data
-                            val bookStoreName = storeData["fullname"].toString()
+                            val bookStoreRef = storeData["store"] as DocumentReference
+                            var bookStoreName = storeData["fullname"].toString()
+                            bookStoreRef.get()
+                                .addOnSuccessListener{
+                                    if (it.exists()){
+                                        val bookStoreData = it.data
+                                        bookStoreName = bookStoreData?.get("storeName").toString()
+                                    }
+                                }
+                                .addOnFailureListener { exception ->
+                                    // Handle any errors
+                                    Log.e("getStoreNameError", "Error getting document: $exception")
+                                }
 
                             // Fetch books after getting store name
                             db.collection("books")
