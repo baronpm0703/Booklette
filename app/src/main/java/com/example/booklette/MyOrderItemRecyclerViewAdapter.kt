@@ -51,6 +51,9 @@ class MyOrderItemRecyclerViewAdapter(
         else if (item.status.contains("huỷ",true)){
             holder.statusField.text = context.getString(R.string.my_order_cancelled_button)
         }
+        else if (item.status.contains("trả đang duyệt", ignoreCase = true)){
+            holder.statusField.text = context.getString(R.string.my_order_detail_item_return_in_process)
+        }
         else if (item.status.contains("trả thành công", true)){
             holder.statusField.text = context.getString(R.string.my_order_detail_item_return_success)
         }

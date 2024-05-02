@@ -255,6 +255,7 @@
     <string name="my_order_delivered_button">Delivered</string>
     <string name="my_order_detail_item_return_success">Return successfully</string>
     <string name="my_order_detail_item_return_failed">Return failed</string>
+    <string name="my_order_detail_item_return_in_process">Return order in processing</string>
     <string name="order_item_order">Order </string>
     <string name="review_instruction">Please choose a book to review!</string>
     <string name="return_instruction">Please choose one or more book to return!</string>

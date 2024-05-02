@@ -135,6 +135,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
         }
 
         val timestamp = FieldValue.serverTimestamp()
+        val orderRef = orderID?.let { db.collection("orders").document(it) }
         val returnRef = db.collection("returnNExchange")
         val cloudStorageRef = cloudStorage.reference
         var count = 0
@@ -191,6 +192,9 @@ class OrderDetailCaseReturnFragment : Fragment() {
 
                                 fun uploadImagesAndAddDocument() {
                                     // Your code for uploading images and adding the document
+                                    if (orderRef != null) {
+                                        orderRef.update("status","Yêu cầu trả đang duyệt")
+                                    }
                                     var imageList = arrayListOf(URI1Ref,URI2Ref)
                                     val returnDoc = hashMapOf(
                                         "customerID" to auth.uid.toString(),
@@ -253,6 +257,18 @@ class OrderDetailCaseReturnFragment : Fragment() {
 
         }
         return view
+    }
+    fun changeStatusText(status: String): String {
+        return when {
+            status.contains("xử lý", true) -> getString(R.string.my_order_processing_button)
+            status.contains("huỷ", true) -> getString(R.string.my_order_cancelled_button)
+            status.contains("trả đang duyệt", true) -> getString(R.string.my_order_detail_item_return_in_process)
+            status.contains("trả thành công", true) -> getString(R.string.my_order_detail_item_return_success)
+            status.contains("trả thất bại", true) -> getString(R.string.my_order_detail_item_return_failed)
+            status.contains("thành công", true) -> getString(R.string.my_order_completed_button)
+            status.contains("đã giao", true) -> getString(R.string.my_order_delivered_button)
+            else -> ""
+        }
     }
     fun getFileNameFromUri(uri: Uri): String {
         val file = File(uri.path)
