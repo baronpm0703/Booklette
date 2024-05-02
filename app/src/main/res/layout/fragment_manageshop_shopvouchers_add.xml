@@ -57,11 +57,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/textView46"
                         android:textColor="#0B0B0B"
-                        app:layout_constraintStart_toEndOf="@+id/textView45"
-                        android:textSize="11sp" android:layout_marginStart="8dp"
+                        android:textSize="11sp"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="20dp" android:layout_marginEnd="169dp"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="8dp" app:layout_constraintStart_toEndOf="@+id/textView45"/>
                 <EditText
                         android:layout_width="0dp"
                         android:layout_height="50dp"
@@ -104,6 +103,7 @@
                         android:layout_height="50dp"
                         android:inputType="text"
                         android:hint="@string/manageshop_program_shopvoucher_add_starttime"
+                        android:focusable="false"
                         android:textColorHint="#9B9B9B"
                         android:ems="10"
                         android:elevation="10dp"
@@ -121,6 +121,7 @@
                         android:layout_height="50dp"
                         android:inputType="text"
                         android:hint="@string/manageshop_program_shopvoucher_add_endtime"
+                        android:focusable="false"
                         android:textColorHint="#9B9B9B"
                         android:ems="10"
                         android:elevation="10dp"
@@ -156,7 +157,7 @@
                 <EditText
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:hint="@string/manageshop_program_shopvoucher_add_percent"
                         android:textColorHint="#9B9B9B"
                         android:ems="10"
@@ -174,7 +175,7 @@
                 <EditText
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:hint="@string/manageshop_program_shopvoucher_add_limit"
                         android:textColorHint="#9B9B9B"
                         android:ems="10"
@@ -191,7 +192,7 @@
                 <EditText
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:hint="@string/manageshop_program_shopvoucher_add_minimum"
                         android:textColorHint="#9B9B9B"
                         android:ems="10"

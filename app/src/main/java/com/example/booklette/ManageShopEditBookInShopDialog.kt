@@ -4,15 +4,19 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -147,21 +151,36 @@ class ManageShopEditBookInShopDialog(
         bookType = initValue.type
         val spinner = binding.bookTypeSpin
         val items = resources.getStringArray(R.array.manageshop_mybooks_add_type)
+
+        val adapter = object: ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, items) {
+            override fun isEnabled(position: Int): Boolean {
+                return position != 0
+            }
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                if (position == 0) (view as TextView).setTextColor(Color.GRAY)
+                else (view as TextView).setTextColor(Color.BLACK)
+
+                view.setTypeface(Typeface.DEFAULT_BOLD)
+                return view
+            }
+        }
+        spinner.adapter = adapter
         spinner.setSelection(items.indexOf(bookType))
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>,
+                                        view: View?, position: Int, id: Long) {
+                if (view == null) return
 
-        if (spinner != null) {
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items)
-            spinner.adapter = adapter
+                if (position == 0) (view as TextView).setTextColor(Color.GRAY)
+                else (view as TextView).setTextColor(Color.BLACK)
 
-            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>,
-                                            view: View, position: Int, id: Long) {
+                view.setTypeface(Typeface.DEFAULT_BOLD)
+            }
 
-                }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
 
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // write code to perform some action
-                }
             }
         }
 
