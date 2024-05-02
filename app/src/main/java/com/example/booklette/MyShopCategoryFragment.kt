@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.booklette.databinding.FragmentCategoryBinding
 import com.mancj.materialsearchbar.MaterialSearchBar
 import com.maxkeppeler.sheets.core.SheetStyle
@@ -60,23 +61,25 @@ class MyShopCategoryFragment : Fragment() {
         categories.add("Sci-fi")
         categories.add("Drama")
 
+        binding.gvCategories.layoutManager = GridLayoutManager(activity, 2)
+
         binding.gvCategories.adapter =
             activity?.let { CategoryFragmentGridViewAdapter(it, categories) }
 
-        binding.gvCategories.setOnItemClickListener { parent, view, position, id ->
-            val genre = categories[position]
-            val productList = ProductList()
-            val args = Bundle()
-            args.putString("Genre", genre)
-            productList.arguments = args
-
-            val ft = activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.fcvNavigation, productList)
-                ?.commit()
-
-//            ft.replace(R.id.fragment_holder, MusicAlbumList(), "albumlist")
-//            ft.commit()
-        }
+//        binding.gvCategories.setOnItemClickListener { parent, view, position, id ->
+//            val genre = categories[position]
+//            val productList = ProductList()
+//            val args = Bundle()
+//            args.putString("Genre", genre)
+//            productList.arguments = args
+//
+//            val ft = activity?.supportFragmentManager?.beginTransaction()
+//                ?.replace(R.id.fcvNavigation, productList)
+//                ?.commit()
+//
+////            ft.replace(R.id.fragment_holder, MusicAlbumList(), "albumlist")
+////            ft.commit()
+//        }
 
 
         val inflater = LayoutInflater.from(activity)
