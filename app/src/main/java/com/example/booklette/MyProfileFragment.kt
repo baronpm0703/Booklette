@@ -35,6 +35,7 @@ class MyProfileFragment : Fragment() {
 		binding.btnSignOut.setOnClickListener {
 			auth.signOut()
 			startActivity(Intent(activity, LoginActivity::class.java))
+			requireActivity().finish()
 		}
 
 		binding.languageBtn.setOnClickListener {
