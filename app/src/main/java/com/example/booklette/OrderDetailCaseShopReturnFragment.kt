@@ -1,10 +1,14 @@
 package com.example.booklette
 
+import android.app.ActionBar.LayoutParams
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,6 +93,7 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
                             shopReason ?: getString(R.string.no_reason_provided)
                         )
                         shopReasonField.isEnabled = false
+                        contactBuyerButton.layoutParams.width = LayoutParams.MATCH_PARENT
                         cancelRequestButton.visibility = View.GONE
                         acceptRequestButton.visibility = View.GONE
                     }
@@ -232,7 +237,7 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
         }
 
         contactBuyerButton.setOnClickListener {
-
+            //later
         }
 
         acceptRequestButton.setOnClickListener {
@@ -352,6 +357,13 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
             }
     }
 
+    fun dpToPx(context: Context, dp: Int): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp.toFloat(),
+            context.resources.displayMetrics
+        ).toInt()
+    }
     private fun setImageToImageView2() {
         selectedImageUri?.let { uri ->
             Picasso.get().load(uri).into(imagePicker2)

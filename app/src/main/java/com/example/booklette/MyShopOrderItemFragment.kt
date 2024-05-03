@@ -266,7 +266,15 @@ class MyShopOrderItemFragment : Fragment() {
     fun returnedButton() {
         filterStatus("trả")
     }
-
+    fun returnProcessingButton(){
+        filterStatus("trả đang duyệt")
+    }
+    fun returnSuccessButton(){
+        filterStatus("trả thành công")
+    }
+    fun returnFailedButton(){
+        filterStatus("bị từ chối")
+    }
     fun deliveredButton() {
         filterStatus("đã giao")
     }
