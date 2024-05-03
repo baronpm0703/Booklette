@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.booklette.databinding.FragmentOrderDetailReviewBinding
+import com.example.booklette.databinding.FragmentOrderDetailCompletedBinding
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
@@ -19,10 +19,10 @@ import java.util.Date
 
 private const val ORDERID_PARAM = "param1"
 
-class OrderDetailCaseReviewFragment : Fragment() {
+class OrderDetailCaseCompletedFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
-    private var _binding: FragmentOrderDetailReviewBinding? = null
+    private var _binding: FragmentOrderDetailCompletedBinding? = null
 
     private var itemsMap: Map<String, Map<String, Any>>? = null
     private lateinit var itemsFragment: OrderDetailItemListFragment
@@ -43,7 +43,7 @@ class OrderDetailCaseReviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentOrderDetailReviewBinding.inflate(inflater, container, false)
+        _binding = FragmentOrderDetailCompletedBinding.inflate(inflater, container, false)
         val view = binding.root
 
         db = Firebase.firestore
@@ -236,7 +236,7 @@ class OrderDetailCaseReviewFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
-            OrderDetailCaseReviewFragment().apply {
+            OrderDetailCaseCompletedFragment().apply {
                 arguments = Bundle().apply {
                     putString(ORDERID_PARAM, orderID)
                 }

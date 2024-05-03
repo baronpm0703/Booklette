@@ -251,8 +251,11 @@
     <string name="my_order_completed_button">Completed</string>
     <string name="my_order_cancelled_button">Cancelled</string>
     <string name="my_order_processing_button">Processing</string>
+    <string name="my_order_return_in_processing_button">In process</string>
     <string name="my_order_returned_button">Returned</string>
     <string name="my_order_delivered_button">Delivered</string>
+    <string name="my_order_return_success_button">Success</string>
+    <string name="my_order_return_failed_button">Rejected</string>
     <string name="my_order_detail_item_return_success">Return successfully</string>
     <string name="my_order_detail_item_return_failed">Return failed</string>
     <string name="my_order_detail_item_return_in_process">Return order in processing</string>
@@ -350,8 +353,11 @@
     <string name="acceptRequest">Accept Request</string>
     <string name="rejectRequest">Reject Request</string>
     <string name="contactBuyer">Contact buyer</string>
+    <string name="contactShop">Contact shop</string>
     <string name="orderReceived">Order received</string>
     <string name="reasonLabel">Reason</string>
+    <string name="yourReasonLabel">Your reason</string>
+    <string name="shopReasonLabel">Seller reason</string>
     <string name="reasonInstruction">Please upload clear image of product and/or chat to illustrate the product condition.</string>
     <string name="reviewInstruction">Please upload clear image of product and/or write review to illustrate the product.</string>
     <string name="reasonProvided">Images and/or messages provided.</string>
@@ -362,12 +368,13 @@
     <string name="e_invoice">E-Invoice</string>
     <string name="review">Review</string>
     <string name="please_select_product_to_return">Please select product to return</string>
-    <string name="returned_products">Request to return these books</string>
+    <string name="returned_products">Books that have been requested to return</string>
+    <string name="returned_products_with_review">Books that have been requested to return \nYou can choose a book to write review</string>
     <string name="write_your_review_here">Please select product to review</string>
     <string name="write_review">Write review</string>
     <string name="delete_cart_sucessfuly">Delete sucessfully</string>
     <string name="delete_notification">This Book has been deleted</string>
     <string name="view_e_invoice">View E-Invoice</string>
     <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget mauris lectus. Vestibulum vehicula tellus ut tortor fringilla ultricies. I</string>
-    <string name="no_reason_provided">No reason provided by customer.</string>
+    <string name="no_reason_provided">No reason provided.</string>
 </resources>

@@ -185,7 +185,7 @@ class MyOrderItemFragment : Fragment() {
                 // đơn bị huỷ thành công (ko thành công) => viết review
                 else {
                     val detailFragment =
-                        OrderDetailCaseReviewFragment.newInstance(orderItem.trackingNumber)
+                        OrderDetailCaseCompletedFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(
                         detailFragment,
                         (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
@@ -253,7 +253,15 @@ class MyOrderItemFragment : Fragment() {
     fun returnedButton() {
         filterStatus("trả")
     }
-
+    fun returnProcessingButton(){
+        filterStatus("trả đang duyệt")
+    }
+    fun returnSuccessButton(){
+        filterStatus("trả thành công")
+    }
+    fun returnFailedButton(){
+        filterStatus("bị từ chối")
+    }
     fun deliveredButton() {
         filterStatus("đã giao")
     }

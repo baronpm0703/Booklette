@@ -17,8 +17,7 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentOrderDetailReturnBinding
-import com.example.booklette.databinding.FragmentShopOrderDetailCanceledBinding
-import com.example.booklette.databinding.FragmentShopOrderDetailReturnBinding
+import com.example.booklette.databinding.FragmentOrderDetailReturnWithResultBinding
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
@@ -34,18 +33,15 @@ import java.io.File
 
 private const val ORDERID_PARAM = "param1"
 
-class OrderDetailCaseShopReturnFragment : Fragment() {
-    private var selectedImageUri: Uri? = null
+class OrderDetailCaseReturnWithResultFragment : Fragment() {
 
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
-    private var _binding: FragmentShopOrderDetailReturnBinding? = null
+    private var _binding: FragmentOrderDetailReturnWithResultBinding? = null
     private lateinit var imagePicker: ImageView
     private lateinit var imagePicker2: ImageView
 
     private lateinit var itemsFragment: OrderDetailItemListFragment
-    private var URI1: String = ""
-    private var URI2: String = ""
 
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -59,36 +55,38 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
             orderID = it.getString(ORDERID_PARAM)
         }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentShopOrderDetailReturnBinding.inflate(inflater, container, false)
+        _binding = FragmentOrderDetailReturnWithResultBinding.inflate(inflater, container, false)
         val view = binding.root
-
         db = Firebase.firestore
         auth = Firebase.auth
         cloudStorage = Firebase.storage
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
         val reasonField = binding.returnReasonField
-
         val returnRef = db.collection("returnNExchange").whereEqualTo("orderID", orderID)
-        returnRef
-
         imagePicker = binding.imagePicker
         imagePicker2 = binding.imagePicker2
         val returnReasonLabel = binding.returnReasonLabel
+        val shopReasonField = binding.shopReasonField
+        val statusField = binding.statusField
         returnRef.get()
             .addOnSuccessListener { QuerySnapshot ->
                 for (document in QuerySnapshot) {
                     val returnData = document.data
                     val imageList = returnData["image"] as? List<String>
                     val itemList = returnData["itemID"] as? List<String>
-
+                    val status = returnData["status"] as String
+                    statusField.text = changeStatusText(status)
                     val reason = returnData["reason"] as? String
                     reasonField.setText(reason ?: getString(R.string.no_reason_provided))
+
+                    val shopReason = returnData["shopReason"] as? String
+                    shopReasonField.setText(shopReason ?: getString(R.string.no_reason_provided))
+
                     if (imageList != null) {
                         if (imageList[0].isNotEmpty() && imageList[1].isNotEmpty()) {
                             Picasso.get().load(imageList[0]).into(imagePicker)
@@ -115,22 +113,10 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
                                 val itemsMap =
                                     orderData?.get("items") as? Map<String, Map<String, Any>>
 
-
                                 var itemsToDisplay = mutableMapOf<String, Map<String, Any>>()
-//                                itemsMap?.forEach { (itemID, itemData) ->
-//                                    val bookMap : Map<String,Map<String,Any>> = itemData as Map<String,Map<String,Any>>
-//                                    if (itemList != null) {
-//                                        if (itemList.contains(itemID)){
-//                                            itemsToDisplay[itemID] = itemData
-//                                            Log.d("itemsToDisplay",itemsToDisplay.toString())
-//                                        }
-//                                    }
-//                                }
+
                                 itemsMap?.flatMap { (shopID, itemMap) ->
                                     itemMap.map { (itemId, itemData) ->
-//                                        Log.d("shopID", shopID)
-//                                        Log.d("itemId", itemId)
-//                                        Log.d("itemData", itemData.toString())
                                         if (itemList != null) {
                                             if (itemList.contains(itemId)) {
                                                 itemsToDisplay[shopID] = itemMap
@@ -143,7 +129,7 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
                                 itemsFragment = OrderDetailItemListFragment.newInstance(
                                     1,
                                     itemsToDisplay,
-                                    allowSelection = false,
+                                    allowSelection = true,
                                     allowMultipleSelection = false
                                 )
                                 childFragmentManager.beginTransaction()
@@ -166,6 +152,7 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
         backButton.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+        val reviewButton = binding.reviewButton
 
         return view
     }
@@ -215,25 +202,19 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
          * @param orderFullName Parameter 2.
          * @return A new instance of fragment OrderDetailFragment.
          */
+        private const val PICK_IMAGE_REQUEST1 = 13351
+        private const val PICK_IMAGE_REQUEST2 = 13352
 
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
-            OrderDetailCaseShopReturnFragment().apply {
+            OrderDetailCaseReturnWithResultFragment().apply {
                 arguments = Bundle().apply {
                     putString(ORDERID_PARAM, orderID)
                 }
             }
     }
 
-    private fun setImageToImageView2() {
-        selectedImageUri?.let { uri ->
-            Picasso.get().load(uri).into(imagePicker2)
-
-        }
-
-    }
-    // Lấy ảnh từ user (Hai?)
 
     override fun onDestroyView() {
         super.onDestroyView()
