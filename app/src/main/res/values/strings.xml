@@ -258,7 +258,7 @@
     <string name="my_order_return_failed_button">Rejected</string>
     <string name="my_order_detail_item_return_success">Return successfully</string>
     <string name="my_order_detail_item_return_failed">Return failed</string>
-    <string name="my_order_detail_item_return_in_process">Return order in processing</string>
+    <string name="my_order_detail_item_return_in_process">Return request in process</string>
     <string name="my_shop_order_label">My Sales</string>
     <string name="my_shop_order_to_ship_button">To ship</string>
     <string name="my_shop_order_shipping_button">Shipping</string>

@@ -204,7 +204,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
                                         "reason" to reasonField.text.toString(),
                                         "requestID" to "RNE$count",
                                         "returnDate" to timestamp,
-                                        "status" to "Không phê duyệt",
+                                        "status" to "Yêu cầu trả đang duyệt",
                                     )
                                     returnRef.add(returnDoc)
                                         .addOnSuccessListener {

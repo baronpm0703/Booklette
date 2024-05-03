@@ -16,7 +16,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import com.example.booklette.databinding.FragmentOrderDetailReturnBinding
+
 import com.example.booklette.databinding.FragmentOrderDetailReturnWithResultBinding
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
@@ -71,6 +71,7 @@ class OrderDetailCaseReturnWithResultFragment : Fragment() {
         imagePicker = binding.imagePicker
         imagePicker2 = binding.imagePicker2
         val returnReasonLabel = binding.returnReasonLabel
+        val shopReasonFrameLayout = binding.orderDetailOrderShopReasonFrameLayout
         val shopReasonField = binding.shopReasonField
         val statusField = binding.statusField
         returnRef.get()
@@ -80,6 +81,10 @@ class OrderDetailCaseReturnWithResultFragment : Fragment() {
                     val imageList = returnData["image"] as? List<String>
                     val itemList = returnData["itemID"] as? List<String>
                     val status = returnData["status"] as String
+                    if (!status.contains("trả đang duyệt", true)){
+                        shopReasonFrameLayout.visibility = View.VISIBLE
+                        reasonField.isEnabled = false
+                    }
                     statusField.text = changeStatusText(status)
                     val reason = returnData["reason"] as? String
                     reasonField.setText(reason ?: getString(R.string.no_reason_provided))
@@ -153,7 +158,38 @@ class OrderDetailCaseReturnWithResultFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         val reviewButton = binding.reviewButton
+        reviewButton.setOnClickListener {
 
+//            val returnFragment = orderID?.let { it1 -> OrderDetailCaseReturnFragment.newInstance(it1) }
+//            if (context is homeActivity){
+//                if (returnFragment != null) {
+//                    (context as homeActivity).changeFragmentContainer(returnFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1])
+//                }
+//            }
+            var bdFragment = BookDetailFragment()
+
+            var bundle = Bundle()
+            var chosenBookID = ""
+            val listBookID: List<String> = itemsFragment.getListClickedBookID()
+            if (listBookID.isEmpty()) {
+                val instruction = context?.getString(R.string.review_instruction)
+                instruction?.let {
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                bundle.putString("bookID", itemsFragment.getListClickedBookID()[0])
+                bundle.putBoolean("openReview", true)
+                Toast.makeText(context, itemsFragment.getListClickedBookID()[0], Toast.LENGTH_SHORT)
+                    .show()
+                //            bundle.putString("bookID", itemsFragment.getListClickedBookID()[0])
+
+                bdFragment.arguments = bundle
+
+                val homeAct = (context as homeActivity)
+                homeAct.changeFragmentContainer(bdFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
+            }
+
+        }
         return view
     }
 
