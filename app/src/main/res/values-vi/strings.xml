@@ -325,4 +325,5 @@
     <string name="reasonProvided">Hình ảnh và/hoặc lời nhắn được cung cấp</string>
     <string name="acceptRequest">Chấp nhận yêu cầu</string>
     <string name="rejectRequest">Từ chối yêu cầu</string>
+    <string name="no_reason_provided">Không có lí do nào được cung cấp bởi người mua.</string>
 </resources>
