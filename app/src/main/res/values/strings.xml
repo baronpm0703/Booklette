@@ -125,7 +125,7 @@
     <string name="manageshop_mybooks_delete_confirm">Are you sure to delete this item?</string>
     <string name="manageshop_mybooks_delete_yes">Yes</string>
     <string name="manageshop_mybooks_delete_no">No</string>
-    <string name="manageshop_mybooks_add">Add 1 new book</string>
+    <string name="manageshop_mybooks_add">Add new book</string>
     <string name="manageshop_mybooks_add_name">Book name</string>
     <string name="manageshop_mybooks_add_author">Book Author</string>
     <string name="manageshop_mybooks_add_category">Category</string>
@@ -255,8 +255,17 @@
     <string name="my_order_delivered_button">Delivered</string>
     <string name="my_order_detail_item_return_success">Return successfully</string>
     <string name="my_order_detail_item_return_failed">Return failed</string>
+    <string name="my_order_detail_item_return_in_process">Return order in processing</string>
+    <string name="my_shop_order_label">My Sales</string>
+    <string name="my_shop_order_to_ship_button">To ship</string>
+    <string name="my_shop_order_shipping_button">Shipping</string>
+    <string name="my_shop_order_completed_button">Completed</string>
+    <string name="my_shop_order_cancel_button">Cancelled</string>
+    <string name="my_shop_order_return_button">Return</string>
+
     <string name="order_item_order">Order </string>
     <string name="review_instruction">Please choose a book to review!</string>
+    <string name="return_instruction">Please choose one or more book to return!</string>
     <string name="order_item_tracking_number">Tracking number:</string>
     <string name="order_item_quantity">Quantity:</string>
     <string name="order_item_total">Total:</string>
@@ -264,11 +273,14 @@
     <string name="order_detail">Order detail</string>
     <string name="order_information">Order Information</string>
     <string name="shipping_address">Shipping address:</string>
+    <string name="buyer_name">Buyer name:</string>
     <string name="payment_method">Payment method:</string>
-    <string name="delivery_method">Delivery method:</string>
+    <string name="before_discount">Total amount:</string>
     <string name="discount">Discount:</string>
-    <string name="total_amount">Total amount:</string>
+    <string name="total_amount">Final price:</string>
     <string name="cancel_order">Cancel Order</string>
+    <string name="accept_order">Accept Order</string>
+
     <string name="payment_detail">Payment Details</string>
     <string name="book_detail_adding_to_cart">adding...</string>
     <string name="order">Order</string>
@@ -319,19 +331,30 @@
     <string name="paymentCanceled">Payment canceled!</string>
     <string name="paymentSuccessfully">Payment successfully!</string>
     <string name="orderDetailStatus">Status:</string>
-    <string name="orderDetailProcessingCancelLabel">Are you sure cancel this order?</string>
+    <string name="orderDetailProcessingCancelLabel">Are you sure you want to cancel this order?</string>
+    <string name="orderDetailToShipAcceptLabel">Are you sure you want to accept this order?</string>
+    <string name="orderDetailReturnConfirmLabel">Are you sure you want to return these product?</string>
+    <string name="orderDetailReturnConfirmYes">Return request created successfully.</string>
+    <string name="documentUploading">Uploading</string>
+    <string name="pleaseWait">Please wait...</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="orderDetailCancelArgument">Order cancelled successfully.</string>
     <string name="orderDetailFailedArgument">Order cancelled failed.</string>
+    <string name="orderDetailAcceptSuccessfulArgument">Order accepted successfully.</string>
+    <string name="orderDetailAcceptFailedArgument">Order accepted failed.</string>
     <string name="orderDetailConfirmSuccessfulArgument">Order received successfully.</string>
     <string name="orderDetailConfirmFailedArgument">Order received failed.</string>
     <string name="orderDetailConfirmlabel">Confirm receiving order? You cannot return products after confirming!</string>
     <string name="returnAndExchange">Return/Exchange</string>
+    <string name="acceptRequest">Accept Request</string>
+    <string name="rejectRequest">Reject Request</string>
+    <string name="contactBuyer">Contact buyer</string>
     <string name="orderReceived">Order received</string>
     <string name="reasonLabel">Reason</string>
     <string name="reasonInstruction">Please upload clear image of product and/or chat to illustrate the product condition.</string>
     <string name="reviewInstruction">Please upload clear image of product and/or write review to illustrate the product.</string>
+    <string name="reasonProvided">Images and/or messages provided.</string>
     <string name="returnReasonLabel">Return reason</string>
     <string name="descriptionHint">Description</string>
     <string name="filter_title_dialog_product_list">Filter</string>
@@ -339,9 +362,11 @@
     <string name="e_invoice">E-Invoice</string>
     <string name="review">Review</string>
     <string name="please_select_product_to_return">Please select product to return</string>
+    <string name="returned_products">Request to return these books</string>
     <string name="write_your_review_here">Please select product to review</string>
     <string name="write_review">Write review</string>
     <string name="delete_cart_sucessfuly">Delete sucessfully</string>
     <string name="delete_notification">This Book has been deleted</string>
+    <string name="view_e_invoice">View E-Invoice</string>
 
 </resources>

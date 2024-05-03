@@ -55,7 +55,7 @@ class OrderDetailItemListRecyclerViewAdapter(
         holder.itemName.text = item.name
         holder.itemAuthor.text = item.author
         holder.itemAmount.text = item.amount.toString()
-        holder.itemPrice.text = item.price.toString()
+        holder.itemPrice.text = formatMoney(item.price)
         if (item.imageUrl != "")
             Picasso.get().load(item.imageUrl).into(holder.itemImage)
         if (allowSelection){
@@ -94,7 +94,11 @@ class OrderDetailItemListRecyclerViewAdapter(
         }
 
     }
-
+    fun formatMoney(number: Long): String {
+        val numberString = number.toString()
+        val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
+        return numberString.replace(regex, "$1.") + " ₫"
+    }
     override fun getItemCount(): Int = values.size
     fun getCheckedItems(): List<String> {
         return checkedBookIDList

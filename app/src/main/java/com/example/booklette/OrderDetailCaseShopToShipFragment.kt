@@ -1,5 +1,7 @@
 package com.example.booklette
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,24 +10,29 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.booklette.databinding.FragmentOrderDetailReviewBinding
+
+import com.example.booklette.databinding.FragmentShopOrderDetailToShipBinding
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
 import java.util.Date
 
+/**
+ * A simple [Fragment] subclass.
+ * Use the [OrderDetailCaseShopToShipFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
 private const val ORDERID_PARAM = "param1"
-
-class OrderDetailCaseReviewFragment : Fragment() {
+class OrderDetailCaseShopToShipFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
-    private var _binding: FragmentOrderDetailReviewBinding? = null
-
+    private var _binding: FragmentShopOrderDetailToShipBinding? = null
     private var itemsMap: Map<String, Map<String, Any>>? = null
-    private lateinit var itemsFragment: OrderDetailItemListFragment
+
 
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -43,7 +50,7 @@ class OrderDetailCaseReviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentOrderDetailReviewBinding.inflate(inflater, container, false)
+        _binding = FragmentShopOrderDetailToShipBinding.inflate(inflater, container, false)
         val view = binding.root
 
         db = Firebase.firestore
@@ -51,13 +58,16 @@ class OrderDetailCaseReviewFragment : Fragment() {
         val dateField = binding.orderDetailDateField
         val trackingNumberField = binding.orderDetailTrackingNumberField
         val statusField = binding.orderDetailStatusField
+        val buyerNameField = binding.orderDetailBuyerNameField
         val shippingAddressField = binding.orderDetailShippingAddressField
         val paymentMethodField = binding.orderDetailPaymentMethodField
         val beforeDiscountField = binding.orderDetailBeforeDiscountField
         val discountField = binding.orderDetailDiscountField
         val totalField = binding.orderDetailTotalField
 
+
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
+
 
         var tempTotalOrgMoney: Long = 0
         orderID?.let {
@@ -67,7 +77,16 @@ class OrderDetailCaseReviewFragment : Fragment() {
                 .addOnSuccessListener { document ->
                     val orderData = document.data
                     val timeStamp = orderData?.get("creationDate") as Timestamp
-
+                    val customerID = orderData?.get("customerID")
+                    val customerRef = db.collection("accounts").whereEqualTo("UID",customerID)
+                    var customerName = "Minh Bảo"
+                    customerRef.get()
+                        .addOnSuccessListener { QuerySnapshot ->
+                            for ( userDocument in QuerySnapshot){
+                                val userData = userDocument.data
+                                customerName = userData?.get("fullname").toString()
+                            }
+                        }
                     val date: Date? = timeStamp?.toDate()
                     itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
                     var totalQuantity: Long = 0
@@ -76,7 +95,7 @@ class OrderDetailCaseReviewFragment : Fragment() {
 //                            val itemMap = itemData as? Map<String, Any>
 //
 //                            //Log.d("number",itemMap.toString())
-//                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toLong()
+//                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toFloat()
 //                            totalQuantity += itemMap?.get("quantity") as Long
 //                        }
                     val totalMoney = (orderData?.get("totalSum") as Number).toLong()
@@ -86,16 +105,6 @@ class OrderDetailCaseReviewFragment : Fragment() {
                     val paymentMethodType = paymentMethod?.get("Type")
                     val shippingAddress = orderData?.get("shippingAddress") as String
                     val beforeDiscount = (orderData?.get("beforeDiscount") as Number).toLong()
-                    // setup recycler view for books
-                    itemsFragment = OrderDetailItemListFragment.newInstance(
-                        1,
-                        itemsMap!!,
-                        allowSelection = true,
-                        allowMultipleSelection = false
-                    )
-                    childFragmentManager.beginTransaction()
-                        .replace(orderItemLayout.id, itemsFragment)
-                        .commit()
                     // assign to field in view
                     var orderName = ""
                     val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
@@ -104,8 +113,6 @@ class OrderDetailCaseReviewFragment : Fragment() {
                             Log.d("itemId", itemId)
                             Log.d("itemData", itemData.toString())
 
-                            totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
-                            tempTotalOrgMoney += (itemData["totalSum"] as? Long ?: 0)
                             db.collection("books")
                                 .whereEqualTo("bookID", itemId)
                                 .get()
@@ -120,6 +127,16 @@ class OrderDetailCaseReviewFragment : Fragment() {
                                 }
                         }
                     }
+                    // setup recycler view for books
+                    val itemsFragment = OrderDetailItemListFragment.newInstance(
+                        1,
+                        itemsMap!!,
+                        allowSelection = false,
+                        allowMultipleSelection = false
+                    )
+                    childFragmentManager.beginTransaction()
+                        .replace(orderItemLayout.id, itemsFragment)
+                        .commit()
                     Tasks.whenAllComplete(fetchBookNamesTasks!!)
                         .addOnSuccessListener {
                             if (orderName.length >= 2) {
@@ -132,6 +149,7 @@ class OrderDetailCaseReviewFragment : Fragment() {
                             val sdf = SimpleDateFormat("dd-MM-yyyy")
                             dateField.text = sdf.format(date)
 
+                            buyerNameField.text = customerName
                             trackingNumberField.text = orderID
                             statusField.text = changeStatusText(status)
                             shippingAddressField.text = shippingAddress
@@ -152,63 +170,85 @@ class OrderDetailCaseReviewFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // review order
-        val reviewButton = binding.orderDetailReviewButton
-        reviewButton.setOnClickListener {
 
-//            val returnFragment = orderID?.let { it1 -> OrderDetailCaseReturnFragment.newInstance(it1) }
-//            if (context is homeActivity){
-//                if (returnFragment != null) {
-//                    (context as homeActivity).changeFragmentContainer(returnFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1])
-//                }
-//            }
-            var bdFragment = BookDetailFragment()
+        // cancel order
+        val cancelButton = binding.orderDetailCancelOrderButton
+        cancelButton.setOnClickListener {
+            val dialogClickListener =
+                DialogInterface.OnClickListener { dialog, which ->
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            val docRef =
+                                orderID?.let { it1 -> db.collection("orders").document(it1) }
+                            docRef?.update("status", "Bị huỷ")?.addOnSuccessListener {
+                                // will change to motion toast later
+                                Toast.makeText(
+                                    context,
+                                    R.string.orderDetailCancelArgument,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                requireActivity().onBackPressedDispatcher.onBackPressed()
+                            }?.addOnFailureListener {
+                                Toast.makeText(
+                                    context,
+                                    R.string.orderDetailFailedArgument,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
 
-            var bundle = Bundle()
-            var chosenBookID = ""
-            val listBookID: List<String> = itemsFragment.getListClickedBookID()
-            if (listBookID.isEmpty()) {
-                val instruction = context?.getString(R.string.review_instruction)
-                instruction?.let {
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                        DialogInterface.BUTTON_NEGATIVE -> {}
+                    }
                 }
-            } else {
-                bundle.putString("bookID", itemsFragment.getListClickedBookID()[0])
-                bundle.putBoolean("openReview", true)
-                Toast.makeText(context, itemsFragment.getListClickedBookID()[0], Toast.LENGTH_SHORT)
-                    .show()
-                //            bundle.putString("bookID", itemsFragment.getListClickedBookID()[0])
 
-                bdFragment.arguments = bundle
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
 
-                val homeAct = (context as homeActivity)
-                homeAct.changeFragmentContainer(bdFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
-            }
-
+            builder.setMessage(R.string.orderDetailProcessingCancelLabel)
+                .setPositiveButton(R.string.yes, dialogClickListener)
+                .setNegativeButton(R.string.no, dialogClickListener).show()
         }
+        // accept order
+        val acceptButton = binding.orderDetailAcceptOrderButton
+        acceptButton.setOnClickListener {
+            val dialogClickListener =
+                DialogInterface.OnClickListener { dialog, which ->
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            val docRef =
+                                orderID?.let { it1 -> db.collection("orders").document(it1) }
+                            docRef?.update("status", "Đã giao")?.addOnSuccessListener {
+                                // will change to motion toast later
+                                Toast.makeText(
+                                    context,
+                                    R.string.orderDetailAcceptSuccessfulArgument,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                requireActivity().onBackPressedDispatcher.onBackPressed()
+                            }?.addOnFailureListener {
+                                Toast.makeText(
+                                    context,
+                                    R.string.orderDetailAcceptFailedArgument,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
 
-        binding.orderDetailViewEInvoiceButton.setOnClickListener{
-            // Tạo một instance mới của EInvoiceFragment
-            val eInvoiceFragment = EInvoiceFragment()
-            // Tạo Bundle để chứa orderId
-            val args = Bundle()
-            // Đặt orderId vào Bundle
-            args.putString(ORDERID_PARAM, orderID)
-            // Đặt Bundle vào fragment
-            eInvoiceFragment.arguments = args
-            // Lấy instance của homeActivity
-            val homeAct = (activity as homeActivity)
-            // Chuyển đổi sang EInvoiceFragment và truyền stack hiện tại
-            homeAct.changeFragmentContainer(
-                eInvoiceFragment,
-                homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]
-            )
+                        DialogInterface.BUTTON_NEGATIVE -> {}
+                    }
+                }
+
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+
+            builder.setMessage(R.string.orderDetailToShipAcceptLabel)
+                .setPositiveButton(R.string.yes, dialogClickListener)
+                .setNegativeButton(R.string.no, dialogClickListener).show()
         }
         return view
     }
+
     fun changeStatusText(status: String): String {
         return when {
-            status.contains("xử lý", true) -> getString(R.string.my_order_processing_button)
+            status.contains("xử lý", true) -> getString(R.string.my_shop_order_to_ship_button)
             status.contains("huỷ", true) -> getString(R.string.my_order_cancelled_button)
             status.contains("trả đang duyệt", true) -> getString(R.string.my_order_detail_item_return_in_process)
             status.contains("trả thành công", true) -> getString(R.string.my_order_detail_item_return_success)
@@ -236,7 +276,7 @@ class OrderDetailCaseReviewFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
-            OrderDetailCaseReviewFragment().apply {
+            OrderDetailCaseShopToShipFragment().apply {
                 arguments = Bundle().apply {
                     putString(ORDERID_PARAM, orderID)
                 }

@@ -7,203 +7,216 @@
     android:layout_height="match_parent"
     tools:context=".CategoryFragment">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbars="none">
 
-        <ImageView
-            android:id="@+id/ivHomeHamburgerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="TODO"
-            android:src="@drawable/baseline_density_medium_24">
-
-        </ImageView>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/ivHomeProfile"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/booklette_logo">
-
-        </de.hdodenhof.circleimageview.CircleImageView>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
-            android:layout_toStartOf="@+id/ivHomeProfile"
-            android:src="@drawable/subtract">
-
-        </ImageView>
-
-    </RelativeLayout>
-
-    <com.mancj.materialsearchbar.MaterialSearchBar
-        android:id="@+id/searchBar"
-        style="@style/MaterialSearchBarLight"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/filterCategorySearchPage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:mt_hint="@string/fragment_home_search_hint"
-        app:mt_maxSuggestionsCount="10"
-        app:mt_placeholder="@string/fragment_home_search"
-        app:mt_searchBarColor="#F4F4F4"
-        app:mt_searchIconDrawable="@drawable/magnifyingglass"
-        app:mt_searchIconTint="@color/black"
-        app:mt_searchIconUseTint="true"
-        app:mt_speechMode="true" />
-
-    <RelativeLayout
-        android:id="@+id/TopSearchLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBar">
-
-        <View
-            android:id="@+id/gradientLine"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="7dp"
-            android:background="@drawable/gradient_color" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/TopSearchTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/fragment_category_top_search"
-            android:textColor="@color/black"
-            android:textSize="10pt"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/gradientLine" />
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <GridView
-            android:id="@+id/topSearchGV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/TopSearchTitle"
-            android:horizontalSpacing="5dp"
-            android:numColumns="4"
-            android:padding="15dp"
-            android:verticalSpacing="5dp" />
+                <ImageView
+                    android:visibility="invisible"
+                    android:id="@+id/ivHomeHamburgerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/baseline_density_medium_24">
 
-        <View
-            android:id="@+id/gradientLine2"
-            android:layout_width="match_parent"
-            android:layout_height="7dp"
-            android:layout_below="@+id/topSearchGV"
-            android:background="@drawable/gradient_color" />
+                </ImageView>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivHomeProfile"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/booklette_logo">
+
+                </de.hdodenhof.circleimageview.CircleImageView>
+
+                <ImageView
+                    android:id="@+id/ivNotificationIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toStartOf="@+id/ivHomeProfile"
+                    android:src="@drawable/subtract">
+
+                </ImageView>
+
+            </RelativeLayout>
+
+            <com.mancj.materialsearchbar.MaterialSearchBar
+                android:id="@+id/searchBar"
+                style="@style/MaterialSearchBarLight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                app:layout_constraintEnd_toStartOf="@+id/filterCategorySearchPage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+                app:mt_hint="@string/fragment_home_search_hint"
+                app:mt_maxSuggestionsCount="10"
+                app:mt_placeholder="@string/fragment_home_search"
+                app:mt_searchBarColor="#F4F4F4"
+                app:mt_searchIconDrawable="@drawable/magnifyingglass"
+                app:mt_searchIconTint="@color/black"
+                app:mt_searchIconUseTint="true"
+                app:mt_speechMode="true" />
+
+            <RelativeLayout
+                android:id="@+id/TopSearchLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchBar">
+
+                <View
+                    android:id="@+id/gradientLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp"
+                    android:background="@drawable/gradient_color" />
+
+                <TextView
+                    android:id="@+id/TopSearchTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/fragment_category_top_search"
+                    android:textColor="@color/black"
+                    android:textSize="10pt"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@+id/gradientLine" />
+
+                <GridView
+                    android:id="@+id/topSearchGV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/TopSearchTitle"
+                    android:horizontalSpacing="5dp"
+                    android:numColumns="4"
+                    android:padding="15dp"
+                    android:verticalSpacing="5dp" />
+
+                <View
+                    android:id="@+id/gradientLine2"
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp"
+                    android:layout_below="@+id/topSearchGV"
+                    android:background="@drawable/gradient_color" />
 
 
-    </RelativeLayout>
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/filterCategorySearchPage"
-        android:layout_width="50dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="15dp"
-        android:background="#F4F4F4"
-        android:gravity="center"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/searchBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/searchBar">
+            <RelativeLayout
+                android:id="@+id/filterCategorySearchPage"
+                android:layout_width="50dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="15dp"
+                android:background="#F4F4F4"
+                android:gravity="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/searchBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/searchBar">
 
-        <ImageView
-            android:id="@+id/filterIcon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/filter_alt" />
+                <ImageView
+                    android:id="@+id/filterIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/filter_alt" />
 
-    </RelativeLayout>
+            </RelativeLayout>
 
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="30dp"
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="30dp"
 
-        android:background="@drawable/round_corner_hcmus_genre"
+                android:background="@drawable/round_corner_hcmus_genre"
 
-        android:paddingVertical="5dp"
-        android:paddingHorizontal="12dp"
-        android:text="FOR HCMUS"
-        android:textColor="#FFFFFF"
-        android:textSize="10pt"
-        android:textStyle="bold"
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="12dp"
+                android:text="FOR HCMUS"
+                android:textColor="#FFFFFF"
+                android:textSize="10pt"
+                android:textStyle="bold"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TopSearchLayout">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TopSearchLayout">
 
-    </TextView>
+            </TextView>
 
-    <ImageView
-        android:id="@+id/ivHCMUS"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:src="@drawable/hcmus_bg_genre"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17"/>
+            <ImageView
+                android:id="@+id/ivHCMUS"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/hcmus_bg_genre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView17"/>
 
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/round_corner_genre"
-        android:paddingHorizontal="12dp"
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/round_corner_genre"
+                android:paddingHorizontal="12dp"
 
-        android:paddingVertical="5dp"
-        android:text="@string/navigation_category"
-        android:textColor="#FFFFFF"
-        android:textSize="10pt"
+                android:paddingVertical="5dp"
+                android:text="@string/navigation_category"
+                android:textColor="#FFFFFF"
+                android:textSize="10pt"
 
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivHCMUS">
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivHCMUS">
 
-    </TextView>
+            </TextView>
 
-    <GridView
-        android:id="@+id/gvCategories"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="5dp"
-        android:gravity="center"
-        android:numColumns="2"
-        android:verticalSpacing="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18"
-        app:layout_constraintVertical_bias="1.0"
-        tools:listitem="@layout/fragment_category_grid_item" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/gvCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="5dp"
+                app:spanCount="2"
+                android:layout_centerInParent="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView18"
+                tools:itemCount="5"
+                tools:listitem="@layout/fragment_category_grid_item" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

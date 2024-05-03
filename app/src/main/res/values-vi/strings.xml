@@ -232,7 +232,7 @@
     <string name="order_information">Thông tin đơn hàng</string>
     <string name="shipping_address">Địa chỉ nhận hàng:</string>
     <string name="payment_method">Phương thức thanh toán:</string>
-    <string name="delivery_method">Hình thức vẫn chuyển:</string>
+    <string name="before_discount">Tổng tiền hàng:</string>
     <string name="discount">Giảm giá:</string>
     <string name="total_amount">Thành tiền:</string>
     <string name="cancel_order">Huỷ Đơn Hàng</string>
@@ -302,4 +302,27 @@
     <string name="delete_notification">Sách của bạn đã được xóa khỏi Giỏ hàng</string>
     <string name="book_detail_update_quantity_denied">Từ chối</string>
     <string name="filter_title_dialog_product_list">Lọc</string>
+    <string name="orderDetailReturnConfirmLabel">Bạn có chắc rằng muốn trả những sản phẩm này?</string>
+    <string name="orderDetailReturnConfirmYes">Yêu cầu hoàn trả đã được tạo.</string>
+    <string name="documentUploading">Đang gửi</string>
+    <string name="pleaseWait">Vui lòng đợi...</string>
+    <string name="return_instruction">Hãy chọn một hay nhiều quyển sách để trả!</string>
+    <string name="my_order_detail_item_return_in_process">Yêu cầu trả đang phê duyệt</string>
+    <string name="view_e_invoice">Xem hoá đơn điện tử</string>
+    <string name="my_shop_order_label">Cửa hàng của tôi</string>
+    <string name="my_shop_order_to_ship_button">Chờ giao hàng</string>
+    <string name="my_shop_order_shipping_button">Đang giao</string>
+    <string name="my_shop_order_completed_button">Đã hoàn thành</string>
+    <string name="my_shop_order_cancel_button">Đã huỷ</string>
+    <string name="my_shop_order_return_button">Đơn hoàn trả</string>
+    <string name="buyer_name">Tên người mua:</string>
+    <string name="accept_order">Chấp nhận đơn</string>
+    <string name="orderDetailToShipAcceptLabel">Bạn có chắc rằng chấp nhận đơn hàng này?</string>
+    <string name="orderDetailAcceptSuccessfulArgument">Đơn hàng chấp nhận thành công.</string>
+    <string name="orderDetailAcceptFailedArgument">Đơn hàng chấp nhận không thành công.</string>
+    <string name="contactBuyer">Liên hệ người mua</string>
+    <string name="returned_products">Sách được yêu cầu trả</string>
+    <string name="reasonProvided">Hình ảnh và/hoặc lời nhắn được cung cấp</string>
+    <string name="acceptRequest">Chấp nhận yêu cầu</string>
+    <string name="rejectRequest">Từ chối yêu cầu</string>
 </resources>

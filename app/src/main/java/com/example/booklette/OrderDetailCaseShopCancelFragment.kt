@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.booklette.databinding.FragmentOrderDetailReviewBinding
+import com.example.booklette.databinding.FragmentShopOrderDetailCanceledBinding
+import com.example.booklette.databinding.FragmentShopOrderDetailCompletedBinding
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
@@ -16,16 +16,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
 import java.util.Date
-
 private const val ORDERID_PARAM = "param1"
-
-class OrderDetailCaseReviewFragment : Fragment() {
+class OrderDetailCaseShopCancelFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
-    private var _binding: FragmentOrderDetailReviewBinding? = null
+    private var _binding: FragmentShopOrderDetailCanceledBinding? = null
 
-    private var itemsMap: Map<String, Map<String, Any>>? = null
-    private lateinit var itemsFragment: OrderDetailItemListFragment
 
     // This property is only valid between onCreateView and
 // onDestroyView.
@@ -43,13 +39,14 @@ class OrderDetailCaseReviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentOrderDetailReviewBinding.inflate(inflater, container, false)
+        _binding = FragmentShopOrderDetailCanceledBinding.inflate(inflater, container, false)
         val view = binding.root
 
         db = Firebase.firestore
         val numberField: TextView = binding.orderDetailNumberField
         val dateField = binding.orderDetailDateField
         val trackingNumberField = binding.orderDetailTrackingNumberField
+        val buyerNameField = binding.orderDetailBuyerNameField
         val statusField = binding.orderDetailStatusField
         val shippingAddressField = binding.orderDetailShippingAddressField
         val paymentMethodField = binding.orderDetailPaymentMethodField
@@ -69,28 +66,32 @@ class OrderDetailCaseReviewFragment : Fragment() {
                     val timeStamp = orderData?.get("creationDate") as Timestamp
 
                     val date: Date? = timeStamp?.toDate()
-                    itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
-                    var totalQuantity: Long = 0
-//                        itemsMap?.forEach { (itemID, itemData) ->
-//
-//                            val itemMap = itemData as? Map<String, Any>
-//
-//                            //Log.d("number",itemMap.toString())
-//                            tempTotalOrgMoney += (itemMap?.get("totalSum") as Number).toLong()
-//                            totalQuantity += itemMap?.get("quantity") as Long
-//                        }
+                    val itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
+
                     val totalMoney = (orderData?.get("totalSum") as Number).toLong()
                     val status = orderData?.get("status") as String
 
                     val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
                     val paymentMethodType = paymentMethod?.get("Type")
+                    val customerID = orderData?.get("customerID")
+                    val customerRef = db.collection("accounts").whereEqualTo("UID",customerID)
+                    var customerName = "Minh Bảo"
+                    customerRef.get()
+                        .addOnSuccessListener { QuerySnapshot ->
+                            for ( userDocument in QuerySnapshot){
+                                val userData = userDocument.data
+                                customerName = userData?.get("fullname").toString()
+                            }
+                        }
                     val shippingAddress = orderData?.get("shippingAddress") as String
+
                     val beforeDiscount = (orderData?.get("beforeDiscount") as Number).toLong()
+
                     // setup recycler view for books
-                    itemsFragment = OrderDetailItemListFragment.newInstance(
+                    val itemsFragment = OrderDetailItemListFragment.newInstance(
                         1,
                         itemsMap!!,
-                        allowSelection = true,
+                        allowSelection = false,
                         allowMultipleSelection = false
                     )
                     childFragmentManager.beginTransaction()
@@ -104,8 +105,6 @@ class OrderDetailCaseReviewFragment : Fragment() {
                             Log.d("itemId", itemId)
                             Log.d("itemData", itemData.toString())
 
-                            totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
-                            tempTotalOrgMoney += (itemData["totalSum"] as? Long ?: 0)
                             db.collection("books")
                                 .whereEqualTo("bookID", itemId)
                                 .get()
@@ -134,12 +133,12 @@ class OrderDetailCaseReviewFragment : Fragment() {
 
                             trackingNumberField.text = orderID
                             statusField.text = changeStatusText(status)
+                            buyerNameField.text = customerName
                             shippingAddressField.text = shippingAddress
                             paymentMethodField.text = paymentMethodType.toString()
                             beforeDiscountField.text = formatMoney(beforeDiscount)
                             discountField.text = "-" + formatMoney(beforeDiscount - totalMoney)
-                            val formattedMoney = formatMoney(totalMoney)
-                            totalField.text = formattedMoney
+                            totalField.text = formatMoney(totalMoney)
                         }
 
                 }
@@ -152,63 +151,25 @@ class OrderDetailCaseReviewFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // review order
-        val reviewButton = binding.orderDetailReviewButton
-        reviewButton.setOnClickListener {
-
-//            val returnFragment = orderID?.let { it1 -> OrderDetailCaseReturnFragment.newInstance(it1) }
-//            if (context is homeActivity){
-//                if (returnFragment != null) {
-//                    (context as homeActivity).changeFragmentContainer(returnFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1])
-//                }
-//            }
-            var bdFragment = BookDetailFragment()
-
-            var bundle = Bundle()
-            var chosenBookID = ""
-            val listBookID: List<String> = itemsFragment.getListClickedBookID()
-            if (listBookID.isEmpty()) {
-                val instruction = context?.getString(R.string.review_instruction)
-                instruction?.let {
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        // return order
+        val contactButton = binding.orderDetailContactBuyerButton
+        contactButton.setOnClickListener {
+            val returnFragment =
+                orderID?.let { it1 -> OrderDetailCaseReturnFragment.newInstance(it1) }
+            if (context is homeActivity) {
+                if (returnFragment != null) {
+                    (context as homeActivity).changeFragmentContainer(
+                        returnFragment,
+                        (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+                    )
                 }
-            } else {
-                bundle.putString("bookID", itemsFragment.getListClickedBookID()[0])
-                bundle.putBoolean("openReview", true)
-                Toast.makeText(context, itemsFragment.getListClickedBookID()[0], Toast.LENGTH_SHORT)
-                    .show()
-                //            bundle.putString("bookID", itemsFragment.getListClickedBookID()[0])
-
-                bdFragment.arguments = bundle
-
-                val homeAct = (context as homeActivity)
-                homeAct.changeFragmentContainer(bdFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
             }
-
-        }
-
-        binding.orderDetailViewEInvoiceButton.setOnClickListener{
-            // Tạo một instance mới của EInvoiceFragment
-            val eInvoiceFragment = EInvoiceFragment()
-            // Tạo Bundle để chứa orderId
-            val args = Bundle()
-            // Đặt orderId vào Bundle
-            args.putString(ORDERID_PARAM, orderID)
-            // Đặt Bundle vào fragment
-            eInvoiceFragment.arguments = args
-            // Lấy instance của homeActivity
-            val homeAct = (activity as homeActivity)
-            // Chuyển đổi sang EInvoiceFragment và truyền stack hiện tại
-            homeAct.changeFragmentContainer(
-                eInvoiceFragment,
-                homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]
-            )
         }
         return view
     }
     fun changeStatusText(status: String): String {
         return when {
-            status.contains("xử lý", true) -> getString(R.string.my_order_processing_button)
+            status.contains("xử lý", true) -> getString(R.string.my_shop_order_to_ship_button)
             status.contains("huỷ", true) -> getString(R.string.my_order_cancelled_button)
             status.contains("trả đang duyệt", true) -> getString(R.string.my_order_detail_item_return_in_process)
             status.contains("trả thành công", true) -> getString(R.string.my_order_detail_item_return_success)
@@ -218,6 +179,7 @@ class OrderDetailCaseReviewFragment : Fragment() {
             else -> ""
         }
     }
+
     fun formatMoney(number: Long): String {
         val numberString = number.toString()
         val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
@@ -236,7 +198,7 @@ class OrderDetailCaseReviewFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(orderID: String) =
-            OrderDetailCaseReviewFragment().apply {
+            OrderDetailCaseShopCancelFragment().apply {
                 arguments = Bundle().apply {
                     putString(ORDERID_PARAM, orderID)
                 }

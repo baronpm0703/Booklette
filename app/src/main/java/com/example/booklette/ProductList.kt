@@ -184,6 +184,7 @@ class ProductList : Fragment() {
 
                     Handler().postDelayed({
                         binding.gvProductList.visibility = View.VISIBLE
+                        binding.loadingAnimProductList.visibility = View.GONE
                     }, 2000)
                 }
             }

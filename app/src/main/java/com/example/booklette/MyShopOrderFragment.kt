@@ -11,18 +11,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentMyOrderBinding
+import com.example.booklette.databinding.FragmentMyShopOrderBinding
 import com.mancj.materialsearchbar.MaterialSearchBar
-
-
-class MyOrderFragment : Fragment() {
-    private var _binding: FragmentMyOrderBinding? = null
+// original account: ViHiZGEAp3WTpoxOpxklpXWeGEZ2
+//personalStores/yUChUxAjm629wkpYcJOI
+class MyShopOrderFragment : Fragment() {
+    private var _binding: FragmentMyShopOrderBinding? = null
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var myOrderItemFragment: MyOrderItemFragment
+    private lateinit var myOrderItemFragment: MyShopOrderItemFragment
 
     private lateinit var label: TextView
     private lateinit var searchBar: MaterialSearchBar
@@ -45,38 +45,30 @@ class MyOrderFragment : Fragment() {
 
         // Inflate the layout for this fragment
 
-        _binding = FragmentMyOrderBinding.inflate(inflater, container, false)
+        _binding = FragmentMyShopOrderBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        binding.ivHomeProfile.setOnClickListener({
-            (context as homeActivity).changeContainerToProfileFragment()
-        })
-
-        binding.ivNotificationIcon.setOnClickListener({
-            (context as homeActivity).changeContainerToProfileFragment()
-        })
-
-        val processingButton : Button = binding.processingButton
-        val deliveredButton : Button = binding.deliveredButton
+        val toShipButton : Button = binding.toShipButton
+        val shippingButton : Button = binding.shippingButton
         val completedButton : Button = binding.completedButton
         val cancelledButton: Button = binding.cancelledButton
         val returnedButton: Button = binding.returnedButton
 
         val itemListContainer = binding.itemsRecyclerView // fragmentContainerView
-        myOrderItemFragment = MyOrderItemFragment.newInstance(1)
+        myOrderItemFragment = MyShopOrderItemFragment.newInstance(1)
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(itemListContainer.id, myOrderItemFragment)
 
         transaction.runOnCommit {
             // This code will be executed after the transaction is committed
             Log.d("testButton","click")
-            processingButton.performClick()
+            toShipButton.performClick()
         }
         transaction.commit()
 
-        processingButton.setOnClickListener {
+        toShipButton.setOnClickListener {
 
-            if (lastPressedButton == processingButton){
+            if (lastPressedButton == toShipButton){
 //                    lastPressedButton = null
 //                    myOrderItemFragment.unfilter()
                 Log.d("testButton","==")
@@ -84,44 +76,32 @@ class MyOrderFragment : Fragment() {
             else if (firstRender){
                 resetColorButton()
                 firstRender = false
-                lastPressedButton = processingButton
-                processingButton.backgroundTintList = null
+                lastPressedButton = toShipButton
+                toShipButton.backgroundTintList = null
                 //myOrderItemFragment.processingButton()
                 Log.d("testButton","firstRender")
             }
             else{
                 resetColorButton()
-                lastPressedButton = processingButton
-                processingButton.backgroundTintList = null
+                lastPressedButton = toShipButton
+                toShipButton.backgroundTintList = null
                 myOrderItemFragment.processingButton()
                 Log.d("testButton","else")
             }
-
-            processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
 
-        deliveredButton.setOnClickListener {
+        shippingButton.setOnClickListener {
 
-            if (lastPressedButton == deliveredButton){
+            if (lastPressedButton == shippingButton){
 //                    lastPressedButton = null
 //                    myOrderItemFragment.unfilter()
             }
             else{
                 resetColorButton()
-                lastPressedButton = deliveredButton
-                deliveredButton.backgroundTintList = null
+                lastPressedButton = shippingButton
+                shippingButton.backgroundTintList = null
                 myOrderItemFragment.deliveredButton()
             }
-
-            processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
 
         completedButton.setOnClickListener{
@@ -136,12 +116,6 @@ class MyOrderFragment : Fragment() {
                 completedButton.backgroundTintList = null
                 myOrderItemFragment.completedButton()
             }
-
-            processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
         cancelledButton.setOnClickListener {
 
@@ -155,12 +129,6 @@ class MyOrderFragment : Fragment() {
                 cancelledButton.backgroundTintList = null
                 myOrderItemFragment.cancelledButton()
             }
-
-            processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
         returnedButton.setOnClickListener {
 
@@ -174,21 +142,15 @@ class MyOrderFragment : Fragment() {
                 returnedButton.backgroundTintList = null
                 myOrderItemFragment.returnedButton()
             }
-
-            processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         }
 
-//        val backButton = binding.backButton
-//        backButton.setOnClickListener{
-//            requireActivity().onBackPressedDispatcher.onBackPressed()
-//        }
+        val backButton = binding.backButton
+        backButton.setOnClickListener{
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
 
 
-//        label = binding.Label
+        label = binding.Label
         searchBar = binding.searchBar
         searchBar.addTextChangeListener(object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -240,7 +202,7 @@ class MyOrderFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            MyOrderFragment().apply {
+            MyShopOrderFragment().apply {
                 arguments = Bundle().apply {
 
                 }

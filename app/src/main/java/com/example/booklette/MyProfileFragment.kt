@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.example.booklette.databinding.FragmentMyprofileBinding
 import com.google.firebase.Firebase
@@ -34,6 +35,12 @@ class MyProfileFragment : Fragment() {
 		binding.btnSignOut.setOnClickListener {
 			auth.signOut()
 			startActivity(Intent(activity, LoginActivity::class.java))
+			requireActivity().finish()
+		}
+
+		binding.languageBtn.setOnClickListener {
+			val homeAct = (activity as homeActivity)
+			homeAct.changeFragmentContainer(Language_Fragment(), homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
 		}
 		// Toggle navigation to My Shop
 		view.findViewById<Button>(R.id.myShopBtn).setOnClickListener {
@@ -46,7 +53,19 @@ class MyProfileFragment : Fragment() {
 				)
 			}
 		}
+		// Hải: t add shop order vào
+		val myShopOrderButton = view.findViewById<CardView>(R.id.myOrdersOption)
+		myShopOrderButton.setOnClickListener{
+			if (context is homeActivity) {
+				var myShopOrderFragment = MyShopOrderFragment()
 
+				(context as homeActivity).changeFragmentContainer(
+					myShopOrderFragment,
+					(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+				)
+			}
+		}
+		//
 		binding.favorites.setOnClickListener {
 			val userFavoritesBookFragment = UserFavoritesBookFragment()
 			val homeAct = (activity as homeActivity)

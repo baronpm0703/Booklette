@@ -127,6 +127,14 @@ class HomeFragment : Fragment() {
 //            startActivity(Intent(activity, LoginActivity::class.java))
 //        }
 
+        binding.ivHomeProfile.setOnClickListener({
+            (context as homeActivity).changeContainerToProfileFragment()
+        })
+
+        binding.ivNotificationIcon.setOnClickListener({
+            (context as homeActivity).changeContainerToProfileFragment()
+        })
+
         return view
     }
 

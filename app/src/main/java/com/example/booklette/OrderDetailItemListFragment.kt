@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentOrderDetailItemListBinding
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.firestore
 import java.io.Serializable
 import kotlin.properties.Delegates
@@ -78,7 +79,19 @@ class OrderDetailItemListFragment : Fragment() {
                     .addOnSuccessListener { querySnapshot ->
                         for (document in querySnapshot) {
                             val storeData = document.data
-                            val bookStoreName = storeData["fullname"].toString()
+                            val bookStoreRef = storeData["store"] as DocumentReference
+                            var bookStoreName = storeData["fullname"].toString()
+                            bookStoreRef.get()
+                                .addOnSuccessListener{
+                                    if (it.exists()){
+                                        val bookStoreData = it.data
+                                        bookStoreName = bookStoreData?.get("storeName").toString()
+                                    }
+                                }
+                                .addOnFailureListener { exception ->
+                                    // Handle any errors
+                                    Log.e("getStoreNameError", "Error getting document: $exception")
+                                }
 
                             // Fetch books after getting store name
                             db.collection("books")
@@ -101,15 +114,7 @@ class OrderDetailItemListFragment : Fragment() {
                                     }
 
                                     // Update the adapter after fetching all books
-                                    adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
-                                    if (allowSelection){
-                                        adapter.allowSelection()
-                                        if (allowMultipleSelection){
-                                            adapter.allowMultiple()
-                                        }
-                                    }
-                                    view.adapter = adapter
-                                    view.layoutManager = LinearLayoutManager(context)
+                                    adapter.notifyDataSetChanged()
                                 }
                                 .addOnFailureListener { exception ->
                                     Log.e("Loi", exception.toString())
@@ -124,22 +129,30 @@ class OrderDetailItemListFragment : Fragment() {
 
         if (view is RecyclerView) {
             with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
+//                layoutManager = when {
+//                    columnCount <= 1 -> LinearLayoutManager(context)
+//                    else -> GridLayoutManager(context, columnCount)
+//                }
+//                adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
                 val spacing = 20.dpToPx(context) // Convert 10dp to pixels
                 addItemDecoration(VerticalSpaceItemDecoration(spacing))
             }
+            adapter = OrderDetailItemListRecyclerViewAdapter(listBooks)
+            if (allowSelection){
+                adapter.allowSelection()
+                if (allowMultipleSelection){
+                    adapter.allowMultiple()
+                }
+            }
+            view.adapter = adapter
+            view.layoutManager = LinearLayoutManager(context)
         }
-
-
 
 
 
         return view
     }
+
     fun Int.dpToPx(context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,

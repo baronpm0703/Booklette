@@ -15,13 +15,11 @@ import java.util.Date
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
  * TODO: Replace the implementation with code for your data type.
  */
-data class OrderDataClass(
-    val ID: String,
-    val creationDate: Date, val trackingNumber: String, val quantity: Long, val total: Long, val status: String)
-class MyOrderItemRecyclerViewAdapter(
+
+class MyShopOrderItemRecyclerViewAdapter(
     private var context: Context,
     private var values: List<OrderDataClass>
-) : RecyclerView.Adapter<MyOrderItemRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MyShopOrderItemRecyclerViewAdapter.ViewHolder>() {
     var onButtonClick: ((OrderDataClass) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -46,10 +44,10 @@ class MyOrderItemRecyclerViewAdapter(
         holder.totalLabel.text = "  " + formatMoney(item.total)
 
         if (item.status.contains("xử lý", true)){
-            holder.statusField.text = context.getString(R.string.my_order_processing_button)
+            holder.statusField.text = context.getString(R.string.my_shop_order_to_ship_button)
         }
         else if (item.status.contains("huỷ",true)){
-            holder.statusField.text = context.getString(R.string.my_order_cancelled_button)
+            holder.statusField.text = context.getString(R.string.my_shop_order_cancel_button)
         }
         else if (item.status.contains("trả đang duyệt", ignoreCase = true)){
             holder.statusField.text = context.getString(R.string.my_order_detail_item_return_in_process)
