@@ -69,41 +69,9 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
         val reasonField = binding.returnReasonField
         var tempTotalOrgMoney: Long = 0
-        val returnRef = db.collection("returnNExchange")
+        val returnRef = db.collection("returnNExchange").whereEqualTo("orderID",orderID)
         val cloudStorageRef = cloudStorage.reference
         returnRef
-        orderID?.let {
-            db.collection("orders")
-                .document(it)
-                .get()
-                .addOnSuccessListener {document->
-                        val orderData = document.data
-                        val itemsMap = orderData?.get("items") as? Map<String, Map<String,Any>>
-
-                        var totalQuantity: Long = 0
-                        itemsMap?.forEach { (itemID, itemData) ->
-
-                            //Log.d("number",itemMap.toString())
-                            totalQuantity += ((itemData)["quantity"] as? Long) ?: 0
-                            tempTotalOrgMoney += (itemData["totalSum"] as? Long ?: 0)
-                        }
-
-                        // setup recycler view for books
-                        itemsFragment = OrderDetailItemListFragment.newInstance(
-                            1,
-                            itemsMap!!,
-                            allowSelection = false,
-                            allowMultipleSelection = false
-                        )
-                        childFragmentManager.beginTransaction()
-                            .replace(orderItemLayout.id,itemsFragment)
-                            .commit()
-
-
-
-                }
-        }
-
         // back
         val backButton = binding.backButton
         backButton.setOnClickListener{
@@ -111,6 +79,75 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
         }
         imagePicker = binding.imagePicker
         imagePicker2 = binding.imagePicker2
+        val returnReasonLabel = binding.returnReasonLabel
+        returnRef.get()
+            .addOnSuccessListener { QuerySnapshot ->
+                for (document in QuerySnapshot){
+                    val returnData  = document.data
+                    val imageList = returnData["image"] as? List<String>
+                    val itemList = returnData["itemID"] as? List<String>
+                    reasonField.setText(returnData["reason"] as String)
+
+                    if (imageList != null) {
+                        if (imageList[0].isNotEmpty() && imageList[1].isNotEmpty()){
+                            Picasso.get().load(imageList[0]).into(imagePicker)
+                            Picasso.get().load(imageList[1]).into(imagePicker2)
+                        }
+                        else if (imageList[0].isNotEmpty() || imageList[1].isNotEmpty()){
+                            if (imageList[0].isNotEmpty()){
+                                Picasso.get().load(imageList[0]).into(imagePicker)
+                            }
+                            else{
+                                Picasso.get().load(imageList[1]).into(imagePicker)
+                            }
+                            imagePicker2.visibility = View.GONE
+                        }
+                        else{
+                            returnReasonLabel.visibility = View.GONE
+                            imagePicker.visibility = View.GONE
+                            imagePicker2.visibility = View.GONE
+                        }
+                    }
+                    orderID?.let {
+                        db.collection("orders")
+                            .document(it)
+                            .get()
+                            .addOnSuccessListener {document->
+                                val orderData = document.data
+                                val itemsMap = orderData?.get("items") as? Map<String, Map<String,Any>>
+
+                                var totalQuantity: Long = 0
+                                val itemsToDisplay = mutableMapOf<String,Map<String,Any>>()
+                                itemsMap?.forEach { (itemID, itemData) ->
+                                    if (itemList != null) {
+                                        if (itemList.contains(itemID)){
+                                            itemsToDisplay.plus(Pair(itemID,itemData))
+                                            totalQuantity += ((itemData)["quantity"] as? Long) ?: 0
+                                            tempTotalOrgMoney += (itemData["totalSum"] as? Long ?: 0)
+                                        }
+                                    }
+                                }
+
+                                // setup recycler view for books
+                                itemsFragment = OrderDetailItemListFragment.newInstance(
+                                    1,
+                                    itemsToDisplay,
+                                    allowSelection = false,
+                                    allowMultipleSelection = false
+                                )
+                                childFragmentManager.beginTransaction()
+                                    .replace(orderItemLayout.id,itemsFragment)
+                                    .commit()
+
+                            }
+                    }
+
+
+                }
+            }
+            .addOnFailureListener {
+                Log.e("Loi", it.toString())
+            }
 
 
 

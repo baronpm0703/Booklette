@@ -194,14 +194,19 @@ class MyShopOrderItemFragment : Fragment() {
                         (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
                     )
                 }
-//                // trả đơn => xác nhận có hoặc không
-//                else if (orderItem.status.contains("yêu câu trả",ignoreCase = true)){
-//
-//                }
-//                // đơn đã trả (có hoặc không
-//                else {
-//
-//                }
+                // trả đơn => xác nhận có hoặc không
+                else if (orderItem.status.contains("yêu cầu trả đang duyệt",ignoreCase = true)){
+                    val detailFragment =
+                        OrderDetailCaseShopReturnFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(
+                        detailFragment,
+                        (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
+                    )
+                }
+                // đơn đã trả (có hoặc không
+                else {
+
+                }
             }
         }
     }
