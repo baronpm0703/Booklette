@@ -190,6 +190,9 @@ class CartFragment : Fragment() {
                                                                 .get()
                                                                 .addOnSuccessListener { bookDocument ->
                                                                     for (eachBook in bookDocument) {
+                                                                        val storePrice = (eachItem?.get("price") as Number).toDouble()
+                                                                        val bookDiscount = (eachBook.data["best-deal-sale"] as Number).toDouble()
+                                                                        val priceAfterDiscount = storePrice - storePrice * bookDiscount
                                                                         cartList.add(
                                                                             CartObject(
                                                                                 eachBook.data["bookID"].toString(),
@@ -198,9 +201,7 @@ class CartFragment : Fragment() {
                                                                                 eachBook.data["image"].toString(),
                                                                                 eachBook.data["name"].toString(),
                                                                                 eachBook.data["author"].toString(),
-                                                                                eachItem?.get("price")
-                                                                                    .toString()
-                                                                                    .toFloat(),
+                                                                                priceAfterDiscount.toFloat(),
                                                                                 quantity?.toInt()
                                                                                     ?: 1,
                                                                                 0f,
