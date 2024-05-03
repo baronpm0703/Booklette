@@ -1,7 +1,9 @@
 package com.example.booklette
 
+import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -34,8 +36,11 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import com.maxkeppeler.sheets.core.SheetStyle
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import com.tbuonomo.viewpagerdotsindicator.setBackgroundCompat
 import java.io.ByteArrayOutputStream
+import java.lang.Exception
 import kotlin.math.abs
 import kotlin.math.round
 
@@ -50,7 +55,7 @@ class ManageShopDiscountProgramsAddFragment : Fragment() {
 	private var _binding: FragmentManageshopDiscountprogramsAddBinding? = null
 
 	private val binding get() = _binding!!
-	private val bookViews = arrayListOf<View>()
+	private var chosenProductID = ""
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +67,7 @@ class ManageShopDiscountProgramsAddFragment : Fragment() {
 
 		val auth = Firebase.auth
 		val db = Firebase.firestore
+
 		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
 			.addOnSuccessListener { documents ->
 				if (documents.size() != 1) return@addOnSuccessListener    // Failsafe
@@ -69,10 +75,57 @@ class ManageShopDiscountProgramsAddFragment : Fragment() {
 				for (document in documents) {
 					storeRef = document.getDocumentReference("store")!!
 				}
+
+				Handler().postDelayed({
+					chooseProductDialog(view, storeRef)
+				}, 10)
 			}
 
+		val dobCalendar = Calendar.getInstance()
+		val startDate = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+			dobCalendar.set(Calendar.YEAR, year)
+			dobCalendar.set(Calendar.MONTH, month)
+			dobCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+			val format = "yyyy-MM-dd"
+			val dateFormat = SimpleDateFormat(format, java.util.Locale.US)
+			binding.starttimeET.setText(dateFormat.format(dobCalendar.time))
+		}
+		binding.starttimeET.setOnClickListener {
+			this.context?.let { it1 ->
+				DatePickerDialog(
+					it1,
+					startDate,
+					dobCalendar.get(Calendar.YEAR),
+					dobCalendar.get(Calendar.MONTH),
+					dobCalendar.get(Calendar.DAY_OF_MONTH)
+				).show()
+			}
+		}
+
+		val endDate = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+			dobCalendar.set(Calendar.YEAR, year)
+			dobCalendar.set(Calendar.MONTH, month)
+			dobCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+			val format = "yyyy-MM-dd"
+			val dateFormat = SimpleDateFormat(format, java.util.Locale.US)
+			binding.endtimeET.setText(dateFormat.format(dobCalendar.time))
+		}
+		binding.endtimeET.setOnClickListener {
+			this.context?.let { it1 ->
+				DatePickerDialog(
+					it1,
+					endDate,
+					dobCalendar.get(Calendar.YEAR),
+					dobCalendar.get(Calendar.MONTH),
+					dobCalendar.get(Calendar.DAY_OF_MONTH)
+				).show()
+			}
+		}
+
 		view.findViewById<Button>(R.id.addProgramBtn).setOnClickListener{
-			val id = ""
+			val id = chosenProductID
 			val name = view.findViewById<EditText>(R.id.programNameET).text.toString()
 			val startTime = view.findViewById<EditText>(R.id.starttimeET).text.toString()
 			val endTime = view.findViewById<EditText>(R.id.endtimeET).text.toString()
@@ -120,7 +173,7 @@ class ManageShopDiscountProgramsAddFragment : Fragment() {
 
 				if (id > max) max = id
 			}
-			val newDiscountID = "DSC" + (max + 1)
+			val newDiscountID = "DSC" + (max + 1).toString().padStart(3, '0')
 
 			val newDiscMap = hashMapOf(
 				"discountID" to newDiscountID,
@@ -135,8 +188,10 @@ class ManageShopDiscountProgramsAddFragment : Fragment() {
 
 			discColl.add(newDiscMap).addOnSuccessListener {
 				storeRef.get().addOnSuccessListener {
+					val items = it.get("items") as HashMap<String, HashMap<String, Any>>
+					items[programObject.productID]?.put("discount", newDiscountID)
 					val updateDiscMap = hashMapOf(
-						"items/${programObject.productID}/discount" to newDiscountID
+						"items" to items
 					)
 					storeRef.update(updateDiscMap as Map<String, Any>)
 				}
@@ -144,6 +199,42 @@ class ManageShopDiscountProgramsAddFragment : Fragment() {
 				Handler().postDelayed({
 					addSuccessDialog()
 				}, 10)
+			}
+		}
+	}
+
+	private fun chooseProductDialog(view: View, storeRef: DocumentReference) {
+		val chooseProductBtn = view.findViewById<LinearLayout>(R.id.chooseProductBtn)
+		val chooseProductDialog = ManageShopDiscountProgramsAddChooseProductDialog(storeRef)
+		val chooseProductImg = view.findViewById<ImageView>(R.id.addProductBook)
+		chooseProductBtn.setOnClickListener {
+			if (chosenProductID.isEmpty()) {
+				activity?.let {
+					chooseProductDialog.show(it) {
+						style(SheetStyle.BOTTOM_SHEET)
+						onPositive {
+							lateinit var drawable: BitmapDrawable
+							val thread = Thread {
+								drawable = BitmapDrawable(
+									resources,
+									Picasso.get().load(chooseProductDialog.getProductImage()).get()
+								)
+							}
+							thread.start()
+							thread.join()
+
+							chooseProductBtn.background = drawable
+							chosenProductID = chooseProductDialog.getProductID()
+							chooseProductImg.visibility = View.GONE
+							dismiss()
+						}
+					}
+				}
+			}
+			else {
+				chooseProductBtn.setBackgroundResource(R.drawable.review_text_editor_round_corner)
+				chosenProductID = ""
+				chooseProductImg.visibility = View.VISIBLE
 			}
 		}
 	}

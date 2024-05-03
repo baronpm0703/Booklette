@@ -62,7 +62,7 @@
                         android:layout_marginBottom="16dp" android:layout_marginTop="16dp"
                         android:background="@drawable/review_text_editor_round_corner"
                         android:orientation="vertical" android:gravity="center"
-                        android:padding="10dp">
+                        android:padding="10dp" android:id="@+id/chooseProductBtn">
 
                     <ImageView
                             android:id="@+id/addProductBook"
@@ -147,6 +147,7 @@
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:inputType="text"
+                        android:focusable="false"
                         android:hint="@string/manageshop_program_discountprogram_add_starttime"
                         android:textColorHint="#9B9B9B"
                         android:ems="10"
@@ -164,6 +165,7 @@
                         android:layout_width="0dp"
                         android:layout_height="50dp"
                         android:inputType="text"
+                        android:focusable="false"
                         android:hint="@string/manageshop_program_discountprogram_add_endtime"
                         android:textColorHint="#9B9B9B"
                         android:ems="10"
