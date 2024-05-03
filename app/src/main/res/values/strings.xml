@@ -246,6 +246,29 @@
     <string name="myprofile_blacklist">Blacklist</string>
     <string name="myprofile_help_center">Help Center</string>
     <string name="bookDetailLess">less ></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="profilesetting_title">Profile Setting</string>
+    <string name="profilesetting_personalinfo">Personal Information</string>
+    <string name="profilesetting_editprofile">Edit Profile</string>
+    <string name="profilesetting_editprofile_avt_takephoto">Take photo</string>
+    <string name="profilesetting_editprofile_avt_gallery">Choose a gallery</string>
+    <string name="profilesetting_editprofile_save">Save change</string>
+    <string name="profilesetting_fullname">Full name</string>
+    <string name="profilesetting_dob">Date of Birth</string>
+    <string name="profilesetting_phone">Phone</string>
+    <string name="profilesetting_email">Email</string>
+    <string name="profilesetting_address">Address</string>
+    <string name="profilesetting_password">Password</string>
+    <string name="profilesetting_password_change">Change</string>
+    <string name="profilesetting_password_change_flavor">Change Password</string>
+    <string name="profilesetting_password_change_old">Old password</string>
+    <string name="profilesetting_password_change_new">New password</string>
+    <string name="profilesetting_password_change_confirm">Repeat new password</string>
+    <string name="profilesetting_password_change_save">Save password</string>
+    <string name="profilesetting_notif">Notifications</string>
+    <string name="profilesetting_notif_sales">Sales</string>
+    <string name="profilesetting_notif_newarrivals">New arrivals</string>
+    <string name="profilesetting_notif_delivery">Delivery status changes</string>
 
     <string name="my_order_label">My Order</string>
     <string name="my_order_completed_button">Completed</string>
