@@ -256,8 +256,8 @@
     <string name="my_order_delivered_button">Delivered</string>
     <string name="my_order_return_success_button">Success</string>
     <string name="my_order_return_failed_button">Rejected</string>
-    <string name="my_order_detail_item_return_success">Return successfully</string>
-    <string name="my_order_detail_item_return_failed">Return failed</string>
+    <string name="my_order_detail_item_return_success">Return request accepted</string>
+    <string name="my_order_detail_item_return_failed">Return request rejected</string>
     <string name="my_order_detail_item_return_in_process">Return request in process</string>
     <string name="my_shop_order_label">My Sales</string>
     <string name="my_shop_order_to_ship_button">To ship</string>
@@ -336,8 +336,12 @@
     <string name="orderDetailStatus">Status:</string>
     <string name="orderDetailProcessingCancelLabel">Are you sure you want to cancel this order?</string>
     <string name="orderDetailToShipAcceptLabel">Are you sure you want to accept this order?</string>
+    <string name="orderDetailReturnRejectLabel">Are you sure you want to reject this request?</string>
+    <string name="orderDetailReturnAcceptLabel">Are you sure you want to accept this request?</string>
     <string name="orderDetailReturnConfirmLabel">Are you sure you want to return these product?</string>
     <string name="orderDetailReturnConfirmYes">Return request created successfully.</string>
+    <string name="orderShopDetailReturnAccept">The request has been accepted.</string>
+    <string name="orderShopDetailReturnReject">The request has been rejected.</string>
     <string name="documentUploading">Uploading</string>
     <string name="pleaseWait">Please wait...</string>
     <string name="yes">Yes</string>
@@ -358,11 +362,12 @@
     <string name="reasonLabel">Reason</string>
     <string name="yourReasonLabel">Your reason</string>
     <string name="shopReasonLabel">Seller reason</string>
+    <string name="buyerReasonLabel">Buyer reason</string>
     <string name="reasonInstruction">Please upload clear image of product and/or chat to illustrate the product condition.</string>
     <string name="reviewInstruction">Please upload clear image of product and/or write review to illustrate the product.</string>
     <string name="reasonProvided">Images and/or messages provided.</string>
     <string name="returnReasonLabel">Return reason</string>
-    <string name="descriptionHint">Description</string>
+    <string name="descriptionHint">Enter your reason here...</string>
     <string name="filter_title_dialog_product_list">Filter</string>
     <string name="chatActivityConversation">Conversations</string>
     <string name="e_invoice">E-Invoice</string>

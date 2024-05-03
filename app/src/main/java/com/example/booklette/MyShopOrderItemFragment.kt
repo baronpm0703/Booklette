@@ -181,7 +181,7 @@ class MyShopOrderItemFragment : Fragment() {
 
 
                 // thành công => chat buyer, e invoice
-                else if (orderItem.status.contains("Thành công")){
+                else if (orderItem.status.contains("Thành công") && !orderItem.status.contains("trả thành công", true)){
                     val detailFragment = OrderDetailCaseShopCompletedFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
                 }
@@ -194,18 +194,15 @@ class MyShopOrderItemFragment : Fragment() {
                         (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
                     )
                 }
-                // trả đơn => xác nhận có hoặc không
-                else if (orderItem.status.contains("yêu cầu trả đang duyệt",ignoreCase = true)){
+
+                // đơn đã trả (có hoặc không hoặc đang duyệt)
+                else {
                     val detailFragment =
                         OrderDetailCaseShopReturnFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(
                         detailFragment,
                         (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
                     )
-                }
-                // đơn đã trả (có hoặc không
-                else {
-
                 }
             }
         }

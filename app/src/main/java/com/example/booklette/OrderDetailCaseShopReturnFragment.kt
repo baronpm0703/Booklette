@@ -1,30 +1,20 @@
 package com.example.booklette
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import com.example.booklette.databinding.FragmentOrderDetailReturnBinding
-import com.example.booklette.databinding.FragmentShopOrderDetailCanceledBinding
 import com.example.booklette.databinding.FragmentShopOrderDetailReturnBinding
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
@@ -53,6 +43,7 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private lateinit var cloudStorage: FirebaseStorage
+    private lateinit var documentID: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -73,20 +64,35 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
         cloudStorage = Firebase.storage
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
         val reasonField = binding.returnReasonField
-
+        val shopReasonField = binding.shopReasonField
         val returnRef = db.collection("returnNExchange").whereEqualTo("orderID", orderID)
-        returnRef
 
         imagePicker = binding.imagePicker
         imagePicker2 = binding.imagePicker2
         val returnReasonLabel = binding.returnReasonLabel
+        val statusField = binding.statusField
+        val shopReasonFrameLayout = binding.orderDetailOrderShopReasonFrameLayout
+        val cancelRequestButton = binding.orderDetailRejectRequestButton
+        val contactBuyerButton = binding.orderDetailContactBuyerButton
+        val acceptRequestButton = binding.orderDetailAcceptRequestButton
         returnRef.get()
             .addOnSuccessListener { QuerySnapshot ->
                 for (document in QuerySnapshot) {
+                    documentID = document.id
                     val returnData = document.data
                     val imageList = returnData["image"] as? List<String>
                     val itemList = returnData["itemID"] as? List<String>
-
+                    val shopReason = returnData["shopReason"] as? String
+                    val status = returnData["status"] as String
+                    if (!status.contains("trả đang duyệt", true)) {
+                        shopReasonField.setText(
+                            shopReason ?: getString(R.string.no_reason_provided)
+                        )
+                        shopReasonField.isEnabled = false
+                        cancelRequestButton.visibility = View.GONE
+                        acceptRequestButton.visibility = View.GONE
+                    }
+                    statusField.text = changeStatusText(status)
                     val reason = returnData["reason"] as? String
                     reasonField.setText(reason ?: getString(R.string.no_reason_provided))
                     if (imageList != null) {
@@ -165,6 +171,126 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
         val backButton = binding.backButton
         backButton.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        cancelRequestButton.setOnClickListener {
+            val dialogClickListener =
+                DialogInterface.OnClickListener { dialog, which ->
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            val returnDocumentRef =
+                                db.collection("returnNExchange").document(documentID)
+                            val updates = hashMapOf<String, Any>(
+                                "shopReason" to shopReasonField.text.toString(),
+                                "status" to "Yêu cầu hoàn trả bị từ chối",
+                            )
+                            returnDocumentRef
+                                .update(updates)
+                                .addOnSuccessListener {
+                                    Log.d(
+                                        "returnDocument",
+                                        "DocumentSnapshot successfully updated!"
+                                    )
+                                    val orderDocumentRef = orderID?.let { it1 ->
+                                        db.collection("orders").document(it1)
+                                    }
+                                    orderDocumentRef?.update(
+                                        "status",
+                                        "Yêu cầu hoàn trả bị từ chối"
+                                    )
+                                        ?.addOnSuccessListener {
+                                            Log.d(
+                                                "orderDocument",
+                                                "DocumentSnapshot successfully updated!"
+                                            )
+                                            Toast.makeText(
+                                                context,
+                                                R.string.orderShopDetailReturnReject,
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            requireActivity().onBackPressedDispatcher.onBackPressed()
+                                        }
+                                        ?.addOnFailureListener { e ->
+                                            Log.e("orderDocument", "Error updating document", e)
+                                        }
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w("returnDocument", "Error updating document", e)
+                                }
+                        }
+
+                        DialogInterface.BUTTON_NEGATIVE -> {}
+                    }
+                }
+
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+
+            builder.setMessage(R.string.orderDetailReturnRejectLabel)
+                .setPositiveButton(R.string.yes, dialogClickListener)
+                .setNegativeButton(R.string.no, dialogClickListener).show()
+
+        }
+
+        contactBuyerButton.setOnClickListener {
+
+        }
+
+        acceptRequestButton.setOnClickListener {
+            val dialogClickListener =
+                DialogInterface.OnClickListener { dialog, which ->
+                    when (which) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            val returnDocumentRef =
+                                db.collection("returnNExchange").document(documentID)
+                            val updates = hashMapOf<String, Any>(
+                                "shopReason" to shopReasonField.text.toString(),
+                                "status" to "Yêu cầu hoàn trả thành công",
+                            )
+                            returnDocumentRef
+                                .update(updates)
+                                .addOnSuccessListener {
+                                    Log.d(
+                                        "returnDocument",
+                                        "DocumentSnapshot successfully updated!"
+                                    )
+                                    val orderDocumentRef = orderID?.let { it1 ->
+                                        db.collection("orders").document(it1)
+                                    }
+                                    orderDocumentRef?.update(
+                                        "status",
+                                        "Yêu cầu hoàn trả thành công"
+                                    )
+                                        ?.addOnSuccessListener {
+                                            Log.d(
+                                                "orderDocument",
+                                                "DocumentSnapshot successfully updated!"
+                                            )
+                                            Toast.makeText(
+                                                context,
+                                                R.string.orderDetailReturnAcceptLabel,
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            requireActivity().onBackPressedDispatcher.onBackPressed()
+                                        }
+                                        ?.addOnFailureListener { e ->
+                                            Log.e("orderDocument", "Error updating document", e)
+                                        }
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w("returnDocument", "Error updating document", e)
+                                }
+                        }
+
+                        DialogInterface.BUTTON_NEGATIVE -> {
+                        }
+                    }
+                }
+
+            val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+
+            builder.setMessage(R.string.orderDetailReturnAcceptLabel)
+                .setPositiveButton(R.string.yes, dialogClickListener)
+                .setNegativeButton(R.string.no, dialogClickListener).show()
         }
 
         return view

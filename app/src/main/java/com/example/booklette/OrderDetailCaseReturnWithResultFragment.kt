@@ -208,7 +208,7 @@ class OrderDetailCaseReturnWithResultFragment : Fragment() {
             ) -> getString(R.string.my_order_detail_item_return_success)
 
             status.contains(
-                "trả thất bại",
+                "trả bị từ chối",
                 true
             ) -> getString(R.string.my_order_detail_item_return_failed)
 

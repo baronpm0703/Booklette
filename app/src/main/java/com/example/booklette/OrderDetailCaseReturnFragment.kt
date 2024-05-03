@@ -193,18 +193,19 @@ class OrderDetailCaseReturnFragment : Fragment() {
                                 fun uploadImagesAndAddDocument() {
                                     // Your code for uploading images and adding the document
                                     if (orderRef != null) {
-                                        orderRef.update("status","Yêu cầu trả đang duyệt")
+                                        orderRef.update("status","Yêu cầu hoàn trả đang duyệt")
                                     }
                                     var imageList = arrayListOf(URI1Ref,URI2Ref)
                                     val returnDoc = hashMapOf(
                                         "customerID" to auth.uid.toString(),
                                         "image" to imageList.toList(),
                                         "orderID" to orderID,
+                                        "shopReason" to "",
                                         "itemID" to itemsFragment.getListClickedBookID(),
                                         "reason" to reasonField.text.toString(),
                                         "requestID" to "RNE$count",
                                         "returnDate" to timestamp,
-                                        "status" to "Yêu cầu trả đang duyệt",
+                                        "status" to "Yêu cầu hoàn trả đang duyệt",
                                     )
                                     returnRef.add(returnDoc)
                                         .addOnSuccessListener {
@@ -215,14 +216,14 @@ class OrderDetailCaseReturnFragment : Fragment() {
                                             Log.e("error", it.toString())
                                         }
                                 }
-                                // Initialize a progress dialog
-                                val progressDialog = ProgressDialog(requireContext())
-                                progressDialog.setTitle(getString(R.string.documentUploading))
-                                progressDialog.setMessage(getString(R.string.pleaseWait))
-                                progressDialog.setCancelable(false) // Disable canceling the dialog by clicking outside of it
-
-                                // Show the progress dialog
-                                progressDialog.show()
+//                                // Initialize a progress dialog
+//                                val progressDialog = ProgressDialog(requireContext())
+//                                progressDialog.setTitle(getString(R.string.documentUploading))
+//                                progressDialog.setMessage(getString(R.string.pleaseWait))
+//                                progressDialog.setCancelable(false) // Disable canceling the dialog by clicking outside of it
+//
+//                                // Show the progress dialog
+//                                progressDialog.show()
                                 if (uploadTasks.isNotEmpty()) {
                                     // Wait for all upload tasks to complete
                                     Tasks.whenAllSuccess<Uri>(uploadTasks)
@@ -232,17 +233,17 @@ class OrderDetailCaseReturnFragment : Fragment() {
                                             URI2Ref = if (URI2.isNullOrEmpty()) "" else downloadUrls.getOrElse(1) { "" }.toString()
 
                                             uploadImagesAndAddDocument()
-                                            progressDialog.dismiss()
+                                            //progressDialog.dismiss()
 
                                         }
                                         .addOnFailureListener { exception ->
                                             Log.e("Upload", "Error uploading images", exception)
-                                            progressDialog.dismiss()
+                                            //progressDialog.dismiss()
 
                                         }
                                 } else {
                                     uploadImagesAndAddDocument()
-                                    progressDialog.dismiss()
+                                    //progressDialog.dismiss()
 
                                 }
                             }
@@ -265,7 +266,7 @@ class OrderDetailCaseReturnFragment : Fragment() {
             status.contains("huỷ", true) -> getString(R.string.my_order_cancelled_button)
             status.contains("trả đang duyệt", true) -> getString(R.string.my_order_detail_item_return_in_process)
             status.contains("trả thành công", true) -> getString(R.string.my_order_detail_item_return_success)
-            status.contains("trả thất bại", true) -> getString(R.string.my_order_detail_item_return_failed)
+            status.contains("trả bị từ chối", true) -> getString(R.string.my_order_detail_item_return_failed)
             status.contains("thành công", true) -> getString(R.string.my_order_completed_button)
             status.contains("đã giao", true) -> getString(R.string.my_order_delivered_button)
             else -> ""

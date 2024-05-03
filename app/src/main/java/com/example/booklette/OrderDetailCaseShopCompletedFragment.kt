@@ -169,11 +169,11 @@ class OrderDetailCaseShopCompletedFragment : Fragment() {
     }
     fun changeStatusText(status: String): String {
         return when {
-            status.contains("xử lý", true) -> getString(R.string.my_shop_order_to_ship_button)
+            status.contains("xử lý", true) -> getString(R.string.my_order_processing_button)
             status.contains("huỷ", true) -> getString(R.string.my_order_cancelled_button)
             status.contains("trả đang duyệt", true) -> getString(R.string.my_order_detail_item_return_in_process)
             status.contains("trả thành công", true) -> getString(R.string.my_order_detail_item_return_success)
-            status.contains("trả thất bại", true) -> getString(R.string.my_order_detail_item_return_failed)
+            status.contains("trả bị từ chối", true) -> getString(R.string.my_order_detail_item_return_failed)
             status.contains("thành công", true) -> getString(R.string.my_order_completed_button)
             status.contains("đã giao", true) -> getString(R.string.my_order_delivered_button)
             else -> ""

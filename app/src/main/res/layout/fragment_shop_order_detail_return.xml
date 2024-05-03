@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp">
+
         <TextView
             android:id="@+id/textView42"
             android:layout_width="wrap_content"
@@ -47,16 +48,38 @@
 
         </androidx.fragment.app.FragmentContainerView>
 
+        <TextView
+            android:id="@+id/returnStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/orderDetailStatus"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/returnLabel"
+            app:layout_constraintTop_toBottomOf="@+id/orderDetailProductsFragmentFrameLayout" />
+
+        <TextView
+            android:id="@+id/statusField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            tools:text="sdadfasdf"
+            app:layout_constraintStart_toEndOf="@+id/returnStatus"
+            app:layout_constraintTop_toTopOf="@+id/returnStatus" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/orderDetailOrderInformationFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:elevation="2dp"
             android:background="@drawable/round_corner_order_item_white_with_shadow"
+            android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderDetailProductsFragmentFrameLayout">
+            app:layout_constraintTop_toBottomOf="@+id/returnStatus">
 
 
             <TextView
@@ -65,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/reasonLabel"
+                android:text="@string/buyerReasonLabel"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -158,13 +181,58 @@
                 android:ems="10"
                 android:enabled="false"
                 android:gravity="start|top"
-                android:textColor="@color/design_default_color_primary_dark"
                 android:hint="@string/descriptionHint"
                 android:inputType="textMultiLine"
+                android:textColor="@color/design_default_color_primary_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView44"
                 app:layout_constraintTop_toBottomOf="@+id/textView44" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/orderDetailOrderShopReasonFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+
+            android:background="@drawable/round_corner_order_item_white_with_shadow"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/orderDetailOrderInformationFrameLayout"
+            app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderInformationFrameLayout">
+
+            <TextView
+                android:id="@+id/shopReasonLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/shopReasonLabel"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!--            -->
+            <EditText
+                android:id="@+id/shopReasonField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/descriptionHint"
+                android:inputType="textMultiLine"
+                android:textColor="@color/design_default_color_primary_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/shopReasonLabel"
+                app:layout_constraintTop_toBottomOf="@+id/shopReasonLabel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -174,8 +242,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:textColor="@color/black"
             android:text="@string/returned_products"
+            android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/backButton"
             app:layout_constraintTop_toBottomOf="@+id/backButton" />
@@ -185,8 +253,8 @@
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:background="@drawable/round_corner_button_solid_color"
-            android:text="@string/accept_order"
             android:backgroundTint="@color/add_card_blue"
+            android:text="@string/acceptRequest"
             app:layout_constraintBottom_toBottomOf="@+id/orderDetailContactBuyerButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/orderDetailContactBuyerButton" />
@@ -213,10 +281,10 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
             android:background="@drawable/round_corner_button_solid_color"
-            android:text="@string/cancel_order"
+            android:text="@string/rejectRequest"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderInformationFrameLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderShopReasonFrameLayout" />
 
 
         <!-- Your existing layout content here -->
