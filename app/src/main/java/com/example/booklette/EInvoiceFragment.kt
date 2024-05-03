@@ -52,7 +52,6 @@ class EInvoiceFragment : Fragment() {
 
     // Trong phương thức companion object newInstance, nhận thêm một tham số để truyền dữ liệu
     @SuppressLint("NotifyDataSetChanged")
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -152,6 +151,6 @@ class EInvoiceFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 }

@@ -368,5 +368,6 @@
     <string name="delete_cart_sucessfuly">Delete sucessfully</string>
     <string name="delete_notification">This Book has been deleted</string>
     <string name="view_e_invoice">View E-Invoice</string>
+    <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget mauris lectus. Vestibulum vehicula tellus ut tortor fringilla ultricies. I</string>
 
 </resources>
