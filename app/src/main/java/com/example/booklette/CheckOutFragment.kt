@@ -142,7 +142,8 @@ class CheckOutFragment : Fragment() {
             binding.recieverPhone.text = selectedAddress.receiverPhone
             binding.addressNumber.text = selectedAddress.addressNumber
             binding.addressZone.text = selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
-        }else{
+        }
+        else{
             db.collection("accounts").whereEqualTo("UID", auth.uid).get()
                 .addOnSuccessListener { documents ->
                     if (documents.size() != 1) return@addOnSuccessListener
