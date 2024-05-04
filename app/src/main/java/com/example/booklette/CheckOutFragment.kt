@@ -272,7 +272,7 @@ class CheckOutFragment : Fragment() {
                         ),
                         "status" to "Đang xử lý",
                         "beforeDiscount" to totalAmount,
-                        "totalSum" to (totalPayment * 1000.0F),
+                        "totalSum" to (totalPayment),
                         "shippingAddress" to "${binding.recieverName.text} - ${binding.recieverPhone.text} - ${binding.addressNumber.text} ${binding.addressZone.text}"
                     )
 
