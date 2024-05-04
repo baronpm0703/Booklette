@@ -318,6 +318,13 @@ class BookDetailFragment : Fragment() {
                                         )
                                     )
 
+                                    salePercent = salePercent * 100 + result.documents[0].data?.get("percent").toString().toFloat()
+
+                                    binding.txtBookRealPrice.text =
+                                        (price - price * (salePercent / 100F)).toString() + " VND" // MUST DO LATER: need to get the price when passing data from another fragment to this one
+                                    binding.txtSalePercent.text =
+                                        (salePercent).toString() + "% OFF "
+
                                     shopVoucherAdapter.notifyDataSetChanged()
                                 }
 
