@@ -38,7 +38,12 @@ class MyProfileFragment : Fragment() {
 			requireActivity().finish()
 		}
 
+		binding.helpCenterOption.setOnClickListener {
+			val helpCenterFragment = HelpCenterFragment()
 
+			val homeAct = (activity as homeActivity)
+			homeAct.changeFragmentContainer(helpCenterFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+		}
 
 		binding.languageBtn.setOnClickListener {
 			val homeAct = (activity as homeActivity)
