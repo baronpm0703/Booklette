@@ -4,6 +4,7 @@ import android.app.ActionBar.LayoutParams
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Layout
@@ -33,6 +34,7 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
 
     // TODO: Rename and change types of parameters
     private var orderID: String? = null
+    private var storeUID: String = ""
     private var _binding: FragmentShopOrderDetailReturnBinding? = null
     private lateinit var imagePicker: ImageView
     private lateinit var imagePicker2: ImageView
@@ -123,6 +125,7 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
                             .get()
                             .addOnSuccessListener { document ->
                                 val orderData = document.data
+                                storeUID = orderData?.get("customerID").toString()
                                 val itemsMap =
                                     orderData?.get("items") as? Map<String, Map<String, Any>>
 
@@ -237,7 +240,12 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
         }
 
         contactBuyerButton.setOnClickListener {
-            //later
+
+            val intent = Intent(context, ChannelChatActivity::class.java)
+            intent.putExtra("storeUID", storeUID)
+
+            startActivity(intent)
+
         }
 
         acceptRequestButton.setOnClickListener {

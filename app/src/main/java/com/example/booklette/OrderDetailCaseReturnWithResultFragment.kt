@@ -49,6 +49,7 @@ class OrderDetailCaseReturnWithResultFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
     private lateinit var cloudStorage: FirebaseStorage
+    private lateinit var storeUID: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -121,6 +122,7 @@ class OrderDetailCaseReturnWithResultFragment : Fragment() {
                                 var itemsToDisplay = mutableMapOf<String, Map<String, Any>>()
 
                                 itemsMap?.flatMap { (shopID, itemMap) ->
+                                    storeUID = shopID
                                     itemMap.map { (itemId, itemData) ->
                                         if (itemList != null) {
                                             if (itemList.contains(itemId)) {
@@ -189,6 +191,13 @@ class OrderDetailCaseReturnWithResultFragment : Fragment() {
                 homeAct.changeFragmentContainer(bdFragment, (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
             }
 
+        }
+        val contactButton = binding.contactButton
+        contactButton.setOnClickListener {
+            val intent = Intent(context, ChannelChatActivity::class.java)
+            intent.putExtra("storeUID", storeUID)
+
+            startActivity(intent)
         }
         return view
     }

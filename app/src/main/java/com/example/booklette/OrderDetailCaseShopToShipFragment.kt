@@ -2,6 +2,7 @@ package com.example.booklette
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ import java.util.Date
 private const val ORDERID_PARAM = "param1"
 class OrderDetailCaseShopToShipFragment : Fragment() {
     // TODO: Rename and change types of parameters
+    private var storeUID: String = ""
     private var orderID: String? = null
     private var _binding: FragmentShopOrderDetailToShipBinding? = null
     private var itemsMap: Map<String, Map<String, Any>>? = null
@@ -78,6 +80,7 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                     val orderData = document.data
                     val timeStamp = orderData?.get("creationDate") as Timestamp
                     val customerID = orderData?.get("customerID")
+                    storeUID = customerID.toString()
                     val customerRef = db.collection("accounts").whereEqualTo("UID",customerID)
                     var customerName = "Minh Bảo"
                     customerRef.get()
@@ -242,6 +245,15 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
             builder.setMessage(R.string.orderDetailToShipAcceptLabel)
                 .setPositiveButton(R.string.yes, dialogClickListener)
                 .setNegativeButton(R.string.no, dialogClickListener).show()
+        }
+
+        val contactButton = binding.orderDetailContactBuyerButton
+        contactButton.setOnClickListener {
+            val intent = Intent(context, ChannelChatActivity::class.java)
+            intent.putExtra("storeUID", storeUID)
+
+            startActivity(intent)
+
         }
         return view
     }

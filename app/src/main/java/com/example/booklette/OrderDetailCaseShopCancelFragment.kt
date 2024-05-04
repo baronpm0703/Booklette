@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,7 +23,7 @@ class OrderDetailCaseShopCancelFragment : Fragment() {
     private var orderID: String? = null
     private var _binding: FragmentShopOrderDetailCanceledBinding? = null
 
-
+    private lateinit var storeUID: String
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
@@ -74,6 +75,7 @@ class OrderDetailCaseShopCancelFragment : Fragment() {
                     val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
                     val paymentMethodType = paymentMethod?.get("Type")
                     val customerID = orderData?.get("customerID")
+                    storeUID = customerID.toString()
                     val customerRef = db.collection("accounts").whereEqualTo("UID",customerID)
                     var customerName = "Minh Bảo"
                     customerRef.get()
@@ -154,16 +156,10 @@ class OrderDetailCaseShopCancelFragment : Fragment() {
         // return order
         val contactButton = binding.orderDetailContactBuyerButton
         contactButton.setOnClickListener {
-            val returnFragment =
-                orderID?.let { it1 -> OrderDetailCaseReturnFragment.newInstance(it1) }
-            if (context is homeActivity) {
-                if (returnFragment != null) {
-                    (context as homeActivity).changeFragmentContainer(
-                        returnFragment,
-                        (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
-                    )
-                }
-            }
+            val intent = Intent(context, ChannelChatActivity::class.java)
+            intent.putExtra("storeUID", storeUID)
+
+            startActivity(intent)
         }
         return view
     }

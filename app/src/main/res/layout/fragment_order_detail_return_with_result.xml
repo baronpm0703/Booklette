@@ -237,7 +237,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
-            android:id="@+id/returnButton"
+            android:id="@+id/contactButton"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
