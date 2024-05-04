@@ -52,7 +52,7 @@
         android:id="@+id/layoutQuestion1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/test"
         android:orientation="vertical">
 
@@ -76,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="Shop safely with booklette"
+                    android:text="@string/question1HC"
                     android:textAlignment="center"
                     android:textColor="#D45555"
                     android:textSize="9pt"
@@ -130,7 +130,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1. Only make transactions on the booklette application"
+                        android:text="@string/dk1"
                         android:layout_marginRight="30dp"
                         android:textColor="#D45555"
                         android:textSize="6pt"
@@ -140,17 +140,9 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
                         android:layout_marginRight="10dp"
-                        android:text="Only transact within the Booklette app. Transactions outside the app aren't monitored or protected. Stick to the app for secure buying and selling."
+                        android:text="@string/nddk1"
                         android:textColor="@color/black"
                         android:textSize="4pt"></TextView>
-
-
-
-
-
-
-
-
 
                 </LinearLayout>
 
@@ -204,10 +196,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2. Never share your authentication code with anyone."
+                        android:text="@string/dk2"
                         android:textColor="#D45555"
                         android:layout_marginRight="30dp"
-
                         android:textSize="6pt"
                         android:textStyle="bold"></TextView>
                     <TextView
@@ -215,16 +206,9 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
                         android:layout_marginRight="10dp"
-                        android:text="Never share your authentication code. Sharing it risks unauthorized access to your account and personal information. It's unique to you. Keep it private for your account's safety on Booklette."
+                        android:text="@string/nddk2"
                         android:textColor="@color/black"
                         android:textSize="4pt"></TextView>
-
-
-
-
-
-
-
 
 
                 </LinearLayout>
@@ -279,7 +263,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="3. Check the order details carefully before accepting it"
+                        android:text="@string/dk3"
                         android:textColor="#D45555"
                         android:layout_marginRight="10dp"
 
@@ -291,7 +275,7 @@
                         android:paddingTop="10dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Double-check your order details before accepting it. Ensure everything is correct to avoid problems later on. Your attention to detail ensures a smooth transaction."
+                        android:text="@string/nddk3"
                         android:textColor="@color/black"
                         android:textSize="4pt"></TextView>
 
@@ -346,7 +330,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="4. Never share your password."
+                        android:text="@string/dk4"
                         android:textColor="#D45555"
                         android:layout_marginRight="10dp"
 
@@ -357,8 +341,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
                         android:layout_marginRight="10dp"
-
-                        android:text="Never share your password. It's your key to keeping your account secure. Protect it and avoid sharing with anyone."
+                        android:text="@string/nddk4"
                         android:textColor="@color/black"
                         android:textSize="4pt"></TextView>
                 </LinearLayout>
@@ -398,7 +381,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="10dp"
-                    android:text="Booklette Terms"
+                    android:text="@string/question2HC"
                     android:textAlignment="center"
                     android:textColor="#D45555"
                     android:textSize="9pt"
@@ -438,7 +421,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="A. SCOPE AND APPLICABILITY"
+                        android:text="@string/q2scope"
                         android:textColor="#D45555"
                         android:layout_marginRight="10dp"
 
@@ -447,7 +430,25 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1.Applicable Parties"
+                        android:text="@string/A1"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/A11"
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/A2"
                         android:textColor="@color/black"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
@@ -459,32 +460,13 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="This regulation applies to all Sellers on the Booklette Platform"
-                        android:textColor="@color/black"
-                        android:textSize="5pt"></TextView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="2.Scope of Application"
-                        android:textColor="@color/black"
-                        android:paddingTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:textSize="5pt"
-                        android:textStyle="bold"></TextView>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dp"
-                        android:layout_marginRight="10dp"
-
-                        android:text="This regulation governs the posting of products on the Booklette Platform."
+                        android:text="@string/A21"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="B.GENERAL PROVISIONS"
+                        android:text="@string/q2general"
                         android:textColor="#D45555"
                         android:layout_marginRight="10dp"
                         android:paddingTop="5dp"
@@ -493,7 +475,24 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1. Acceptance of Terms"
+                        android:text="@string/B1"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/ndB1"
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/B2"
                         android:textColor="@color/black"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
@@ -505,13 +504,13 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="By using the Booklette app, you agree to abide by our terms and conditions. If you do not agree with any of the terms, please stop using the app immediately."
+                        android:text="@string/ndB2"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="2. Buying and Selling Books"
+                        android:text="@string/B3"
                         android:textColor="@color/black"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
@@ -523,13 +522,13 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Booklette is a platform connecting sellers and buyers of used books. We are not a third party in the book buying and selling transactions. The process of buying and selling books will be conducted directly between the seller and the buyer."
+                        android:text="@string/ndB3"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="3. Seller's Responsibilities"
+                        android:text="@string/B4"
                         android:textColor="@color/black"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
@@ -541,13 +540,13 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Sellers are responsible for providing accurate and transparent information about their products, including condition, price, and description. They must also ensure that the books being sold do not violate any copyright or relevant laws."
+                        android:text="@string/ndB4"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="4. Buyer's Responsibilities"
+                        android:text="@string/B5"
                         android:textColor="@color/black"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
@@ -559,13 +558,13 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Buyers need to carefully read product information before making a purchase and ask questions if needed. They also need to ensure they understand and accept the terms of the transaction before buying books."
+                        android:text="@string/ndB5"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="5. Payment and Delivery"
+                        android:text="@string/B6"
                         android:textColor="@color/black"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
@@ -577,13 +576,30 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Payment and delivery are handled directly between the buyer and the seller. We are not responsible for any issues arising during the payment or delivery process."
+                        android:text="@string/ndB6"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="6. Privacy and Security"
+                        android:text="@string/B7"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/ndB7"
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/B8"
                         android:textColor="@color/black"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
@@ -595,30 +611,13 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="We are committed to protecting your personal information and maintaining a secure environment for all users. Your personal information will be secured according to our Privacy Policy."
+                        android:text="@string/ndB8"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="7. Return Policy"
-                        android:textColor="@color/black"
-                        android:paddingTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:textSize="5pt"
-                        android:textStyle="bold"></TextView>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:text="Each seller may apply their own return policy. Buyers should carefully read and understand the seller's return policy before purchasing a product."
-                        android:textColor="@color/black"
-                        android:textSize="5pt"></TextView>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="8. Changes to Terms"
+                        android:text="@string/B9"
                         android:textColor="@color/black"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
@@ -630,25 +629,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="We reserve the right to change these terms and conditions without prior notice. Your continued use of the app after such changes means you accept the new terms and conditions."
-                        android:textColor="@color/black"
-                        android:textSize="5pt"></TextView>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="9. ByContact"
-                        android:textColor="@color/black"
-                        android:paddingTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:textSize="5pt"
-                        android:textStyle="bold"></TextView>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dp"
-                        android:layout_marginRight="10dp"
-
-                        android:text="If you have any questions or feedback regarding these terms and conditions, please contact us via email: support@booklette.com."
+                        android:text="@string/ndB9"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                 </LinearLayout>
@@ -689,7 +670,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="10dp"
-                    android:text="How to contact customer service?"
+                    android:text="@string/question3HC"
                     android:textAlignment="center"
                     android:textColor="#D45555"
                     android:textSize="9pt"
@@ -732,13 +713,13 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="You can contact Booklette's Customer Service Department through one of the following ways"
+                        android:text="@string/ndhcq3"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1. Call Booklette hotline through the Help Center"
+                        android:text="@string/way1"
                         android:textColor="#D45555"
                         android:layout_marginRight="10dp"
                         android:paddingTop="5dp"
@@ -751,7 +732,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Step 1: On the Booklette app's homepage, select Profile > Help Center."
+                        android:text="@string/way1step1"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -760,7 +741,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Step 2: In the Help Center, the hotline number for Booklette is at the top of the page."
+                        android:text="@string/way1step2"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -769,13 +750,13 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Step 3: Connect with a support representative."
+                        android:text="@string/way1step3"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="2. Email Booklette's Customer Service:"
+                        android:text="@string/way2"
                         android:textColor="#D45555"
                         android:layout_marginRight="10dp"
                         android:paddingTop="5dp"
@@ -788,7 +769,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Step 1: On the Booklette app's homepage, select Profile > Help Center."
+                        android:text="@string/way2step1"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -797,7 +778,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Step 2: In the Help Center, the email address for Booklette's Customer Service is at the top of the page."
+                        android:text="@string/way2step2"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -806,7 +787,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Step 3: Send an email and expect a response within 24 hours."
+                        android:text="@string/way2step3"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                 </LinearLayout>
@@ -821,7 +802,7 @@
         android:id="@+id/layoutQuestion4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@+id/test"
         android:orientation="vertical">
 
@@ -846,7 +827,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="10dp"
-                    android:text="How can I return the book?"
+                    android:text="@string/question4HC"
                     android:textAlignment="center"
                     android:textColor="#D45555"
                     android:textSize="9pt"
@@ -889,13 +870,13 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="[Return/Refund] Instructions for returning items after your Return/Refund request has been approved:"
+                        android:text="@string/ndhcq4"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1. Do I need to return items to the Seller or Shopee Warehouse?"
+                        android:text="@string/q4way1"
                         android:textColor="#D45555"
                         android:layout_marginRight="10dp"
                         android:paddingTop="5dp"
@@ -908,7 +889,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Orders from Shopee Mall and International Products: You need to return items to the Shopee Warehouse."
+                        android:text="@string/q4ndway1"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -917,14 +898,14 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Orders not from Shopee Mall and International Products: You need to return items to the Seller's return address."
+                        android:text="@string/q4ndway11"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="2. Steps for returning items:"
+                        android:text="@string/q4way2"
                         android:textColor="#D45555"
                         android:layout_marginRight="10dp"
                         android:paddingTop="5dp"
@@ -937,7 +918,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Step 1: Pack the items to be returned according to the regulations (including gifts and accessories)."
+                        android:text="@string/q4way2step1"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -946,7 +927,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Step 2: Print out or write down the return information as instructed."
+                        android:text="@string/q4way2step2"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -955,7 +936,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
 
-                        android:text="Step 3: Choose one of the following return methods:"
+                        android:text="@string/q4way2step3"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -965,7 +946,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
                         android:textStyle="bold"
-                        android:text="Method 1: Pickup return at the requested address."
+                        android:text="@string/step3method1"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -974,7 +955,7 @@
                         android:paddingStart="20dp"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:text="With this method, you will:"
+                        android:text="@string/step3methodnd"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -983,7 +964,7 @@
                         android:paddingStart="30dp"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:text="- Enjoy free return shipping."
+                        android:text="@string/method1nd1"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -992,7 +973,7 @@
                         android:paddingStart="30dp"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:text="- Choose a courier service to come pick up the items at your home: Ninja Van/SPX/Quick Delivery."
+                        android:text="@string/method1nd2"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -1001,7 +982,7 @@
                         android:paddingStart="30dp"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:text="- The courier will pick up the items at the address and time you have chosen."
+                        android:text="@string/method1nd3"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -1011,7 +992,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
                         android:textStyle="bold"
-                        android:text="Method 2: Return items at a post office."
+                        android:text="@string/step3method2"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -1020,7 +1001,7 @@
                         android:paddingStart="20dp"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:text="With this method, you will:"
+                        android:text="@string/step3methodnd"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -1029,7 +1010,7 @@
                         android:paddingStart="30dp"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:text="- Enjoy free return shipping."
+                        android:text="@string/method1nd1"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -1038,7 +1019,7 @@
                         android:paddingStart="30dp"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:text="- Choose a courier service to return the items: Ninja Van/SPX/Quick Delivery."
+                        android:text="@string/method2nd2"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -1047,7 +1028,7 @@
                         android:paddingStart="30dp"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:text="- Actively bring the items to a Ninja Van/SPX/Quick Delivery post office near you for return."
+                        android:text="@string/method2nd3"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -1057,7 +1038,7 @@
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
                         android:textStyle="bold"
-                        android:text="Method 3: Automatically contact the buyer and arrange exchange outside of Booklette's service."
+                        android:text="@string/step3method3"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                     <TextView
@@ -1066,7 +1047,7 @@
                         android:paddingStart="20dp"
                         android:paddingTop="5dp"
                         android:layout_marginRight="10dp"
-                        android:text="Actively contact the seller and arrange item exchange outside of Booklette's service."
+                        android:text="@string/method3nd"
                         android:textColor="@color/black"
                         android:textSize="5pt"></TextView>
                 </LinearLayout>
