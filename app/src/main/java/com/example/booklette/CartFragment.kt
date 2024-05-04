@@ -59,10 +59,11 @@ class CartFragment : Fragment() {
     private lateinit var adapter: CartFragmentRecyclerViewAdapter
 
     private var isFailedQuery: Boolean = false
+
+    private var cartEmpty: Boolean = false
+
     private var cartList: ArrayList<CartObject> = ArrayList()
     private var shopVoucherList: ArrayList<VoucherObject> = ArrayList()
-
-//    private lateinit var shopVoucherAdapter: bookDetailShopVoucherRVAdapter
 
 
 
@@ -101,7 +102,7 @@ class CartFragment : Fragment() {
             }
         }
 
-        binding.rvCart.visibility = View.GONE
+//        binding.rvCart.visibility = View.GONE
         binding.rvCart.layoutManager = LinearLayoutManager(requireContext())
 
 
@@ -112,12 +113,6 @@ class CartFragment : Fragment() {
         auth = Firebase.auth
         db = Firebase.firestore
 
-//        Handler().postDelayed({
-//            if (binding.loadingAnim.visibility == View.VISIBLE) {
-//                binding.loadingAnim.visibility = View.GONE
-//                binding.noCartItemFound.visibility = View.VISIBLE
-//            }
-//        }, 10000)
 
         if(cartList.size == 0){
             loadCartData()
@@ -125,7 +120,7 @@ class CartFragment : Fragment() {
         else {
             binding.loadingAnim.visibility = View.GONE
             binding.rvCart.visibility = View.VISIBLE
-//            binding.noCartItemFound.visibility = View.GONE
+            binding.noCartItemFound.visibility = View.GONE
         }
 
         binding.totalAmount.text = "0 VND"
@@ -151,10 +146,12 @@ class CartFragment : Fragment() {
 
     fun loadCartData() {
         cartList.clear()
-
+//
+        // Code to be executed after the delay
+        // For example, you can start a new activity or update UI elements
         binding.loadingAnim.visibility = View.VISIBLE
         binding.rvCart.visibility = View.GONE
-//        binding.noCartItemFound.visibility = View.GONE
+        binding.noCartItemFound.visibility = View.GONE
 
         db.collection("accounts").whereEqualTo("UID", auth.uid).get()
             .addOnSuccessListener { documents ->
@@ -163,6 +160,11 @@ class CartFragment : Fragment() {
                     // Get avatar and seller's name
                     if (document.data.get("cart") != null) {
                         val cartArray = document.data.get("cart") as? Map<String, Any>
+                        if (cartArray.isNullOrEmpty()) {
+                            // Giỏ hàng không có dữ liệu
+                            cartEmpty = true
+                            break
+                        }
                         cartArray?.let { cartListData ->
                             for (item in cartListData) {
                                 val itemId = item.key
@@ -188,6 +190,9 @@ class CartFragment : Fragment() {
                                                                 .get()
                                                                 .addOnSuccessListener { bookDocument ->
                                                                     for (eachBook in bookDocument) {
+                                                                        val storePrice = (eachItem?.get("price") as Number).toDouble()
+                                                                        val bookDiscount = (eachBook.data["best-deal-sale"] as Number).toDouble()
+                                                                        val priceAfterDiscount = storePrice - storePrice * bookDiscount
                                                                         cartList.add(
                                                                             CartObject(
                                                                                 eachBook.data["bookID"].toString(),
@@ -196,28 +201,27 @@ class CartFragment : Fragment() {
                                                                                 eachBook.data["image"].toString(),
                                                                                 eachBook.data["name"].toString(),
                                                                                 eachBook.data["author"].toString(),
-                                                                                eachItem?.get("price")
-                                                                                    .toString()
-                                                                                    .toFloat(),
+                                                                                priceAfterDiscount.toFloat(),
                                                                                 quantity?.toInt()
                                                                                     ?: 1,
                                                                                 0f,
                                                                                 shopVoucherList
                                                                             )
                                                                         )
-                                                                        adapter.notifyDataSetChanged()
 
-                                                                        Handler().postDelayed({
-                                                                            // Code to be executed after the delay
-                                                                            // For example, you can start a new activity or update UI elements
-                                                                            binding.rvCart.visibility =
-                                                                                View.VISIBLE
-                                                                            binding.loadingAnim.visibility =
-                                                                                View.GONE
-//                                                                            binding.noCartItemFound.visibility =
-//                                                                                View.GONE
-                                                                        }, 2000)
                                                                     }
+                                                                    adapter.notifyDataSetChanged()
+
+                                                                    Handler().postDelayed({
+                                                                        // Code to be executed after the delay
+                                                                        // For example, you can start a new activity or update UI elements
+                                                                        binding.rvCart.visibility =
+                                                                            View.VISIBLE
+                                                                        binding.loadingAnim.visibility =
+                                                                            View.GONE
+                                                                        binding.noCartItemFound.visibility =
+                                                                                View.GONE
+                                                                    }, 2000)
 
                                                                 }
                                                         }
@@ -229,13 +233,26 @@ class CartFragment : Fragment() {
                                         }
 
                                 }
+
                             }
                         }
 
                     }
                 }
+                if (cartEmpty) {
+                    Handler().postDelayed({
+                        // Code to be executed after the delay
+                        // For example, you can start a new activity or update UI elements
+                        binding.rvCart.visibility =
+                            View.VISIBLE
+                        binding.loadingAnim.visibility =
+                            View.GONE
+                        binding.noCartItemFound.visibility = View.VISIBLE
+                    }, 2000)
+                }
             }
     }
+
 
 
     override fun onDestroyView() {

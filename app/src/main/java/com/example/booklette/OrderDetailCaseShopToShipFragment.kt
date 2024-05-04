@@ -2,6 +2,7 @@ package com.example.booklette
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ import java.util.Date
 private const val ORDERID_PARAM = "param1"
 class OrderDetailCaseShopToShipFragment : Fragment() {
     // TODO: Rename and change types of parameters
+    private var storeUID: String = ""
     private var orderID: String? = null
     private var _binding: FragmentShopOrderDetailToShipBinding? = null
     private var itemsMap: Map<String, Map<String, Any>>? = null
@@ -78,6 +80,7 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                     val orderData = document.data
                     val timeStamp = orderData?.get("creationDate") as Timestamp
                     val customerID = orderData?.get("customerID")
+                    storeUID = customerID.toString()
                     val customerRef = db.collection("accounts").whereEqualTo("UID",customerID)
                     var customerName = "Minh Bảo"
                     customerRef.get()
@@ -243,16 +246,25 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                 .setPositiveButton(R.string.yes, dialogClickListener)
                 .setNegativeButton(R.string.no, dialogClickListener).show()
         }
+
+        val contactButton = binding.orderDetailContactBuyerButton
+        contactButton.setOnClickListener {
+            val intent = Intent(context, ChannelChatActivity::class.java)
+            intent.putExtra("storeUID", storeUID)
+
+            startActivity(intent)
+
+        }
         return view
     }
 
     fun changeStatusText(status: String): String {
         return when {
-            status.contains("xử lý", true) -> getString(R.string.my_shop_order_to_ship_button)
+            status.contains("xử lý", true) -> getString(R.string.my_order_processing_button)
             status.contains("huỷ", true) -> getString(R.string.my_order_cancelled_button)
             status.contains("trả đang duyệt", true) -> getString(R.string.my_order_detail_item_return_in_process)
             status.contains("trả thành công", true) -> getString(R.string.my_order_detail_item_return_success)
-            status.contains("trả thất bại", true) -> getString(R.string.my_order_detail_item_return_failed)
+            status.contains("trả bị từ chối", true) -> getString(R.string.my_order_detail_item_return_failed)
             status.contains("thành công", true) -> getString(R.string.my_order_completed_button)
             status.contains("đã giao", true) -> getString(R.string.my_order_delivered_button)
             else -> ""

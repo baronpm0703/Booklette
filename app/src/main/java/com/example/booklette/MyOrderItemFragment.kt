@@ -178,14 +178,14 @@ class MyOrderItemFragment : Fragment() {
 
 
                 // thành công => viết review
-//                else if (orderItem.status.contains("Thành công")){
-//                    val detailFragment = OrderDetailCaseDeliveredFragment.newInstance(orderItem.trackingNumber)
-//                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
-//                }
+                else if (orderItem.status.contains("Thành công") && !orderItem.status.contains("trả thành công", true)){
+                    val detailFragment = OrderDetailCaseCompletedFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+                }
                 // đơn bị huỷ thành công (ko thành công) => viết review
                 else {
                     val detailFragment =
-                        OrderDetailCaseReviewFragment.newInstance(orderItem.trackingNumber)
+                        OrderDetailCaseReturnWithResultFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(
                         detailFragment,
                         (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
@@ -253,7 +253,15 @@ class MyOrderItemFragment : Fragment() {
     fun returnedButton() {
         filterStatus("trả")
     }
-
+    fun returnProcessingButton(){
+        filterStatus("trả đang duyệt")
+    }
+    fun returnSuccessButton(){
+        filterStatus("trả thành công")
+    }
+    fun returnFailedButton(){
+        filterStatus("bị từ chối")
+    }
     fun deliveredButton() {
         filterStatus("đã giao")
     }

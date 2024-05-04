@@ -35,7 +35,6 @@ class ReviewDialogBookDetail(
     private var client_review: String = ""
     private var client_rating: Float = 0.0F
     private lateinit var dataPhoto : ArrayList<Photo>
-    private lateinit var photoGalleryDialogBookDetail: PhotoGalleryDialogBookDetail
     private lateinit var chosenPhotoAdapter: ChosenReviewPhotoBookDetailRVAdapter
 
 

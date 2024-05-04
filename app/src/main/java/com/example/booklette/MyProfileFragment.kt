@@ -38,10 +38,19 @@ class MyProfileFragment : Fragment() {
 			requireActivity().finish()
 		}
 
+
+
 		binding.languageBtn.setOnClickListener {
 			val homeAct = (activity as homeActivity)
 			homeAct.changeFragmentContainer(Language_Fragment(), homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
 		}
+
+		binding.myReviewBtn.setOnClickListener {
+			val homeAct = (activity as homeActivity)
+			homeAct.changeFragmentContainer(MyReviewList(), homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+
+		}
+
 		// Toggle navigation to My Shop
 		view.findViewById<Button>(R.id.myShopBtn).setOnClickListener {
 			if (context is homeActivity) {
@@ -53,6 +62,8 @@ class MyProfileFragment : Fragment() {
 				)
 			}
 		}
+
+
 		// Hải: t add shop order vào
 		val myShopOrderButton = view.findViewById<CardView>(R.id.myOrdersOption)
 		myShopOrderButton.setOnClickListener{

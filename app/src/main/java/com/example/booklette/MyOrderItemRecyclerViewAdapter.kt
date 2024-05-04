@@ -57,7 +57,7 @@ class MyOrderItemRecyclerViewAdapter(
         else if (item.status.contains("trả thành công", true)){
             holder.statusField.text = context.getString(R.string.my_order_detail_item_return_success)
         }
-        else if (item.status.contains("trả thất bại", true)){
+        else if (item.status.contains("trả bị từ chối", true)){
             holder.statusField.text = context.getString(R.string.my_order_detail_item_return_failed)
         }
         else if (item.status.contains("thành công", true)){

@@ -63,12 +63,12 @@ class AddShipAddressDialog: Sheet() {
     }
 
     private fun saveAddressToFirebase() {
-        val shipAddressFragment = ShipAddressFragment()
-        val args = Bundle()
-        shipAddressFragment.arguments = args
-        val homeAct = (activity as? homeActivity)
-        homeAct?.supportFragmentManager?.popBackStack()
-        homeAct?.changeFragmentContainer(shipAddressFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+//        val shipAddressFragment = ShipAddressFragment()
+//        val args = Bundle()
+//        shipAddressFragment.arguments = args
+//        val homeAct = (activity as? homeActivity)
+//        homeAct?.supportFragmentManager?.popBackStack()
+//        homeAct?.changeFragmentContainer(shipAddressFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
 
         val receiverName = binding.addRecieverName.text.toString()
         val receiverPhone = binding.addRecieverPhone.text.toString()
@@ -83,6 +83,12 @@ class AddShipAddressDialog: Sheet() {
         if (receiverName.isEmpty() || receiverPhone.isEmpty() || province.isEmpty() ||
             city.isEmpty() || ward.isEmpty() || addressNumber.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val phonePattern = Regex("^0[0-9]{9}\$")
+        if (!phonePattern.matches(receiverPhone)) {
+            Toast.makeText(requireContext(), "Invalid phone number", Toast.LENGTH_SHORT).show()
             return
         }
 

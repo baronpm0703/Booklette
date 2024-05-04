@@ -243,11 +243,14 @@
     <string name="profilesetting_notif_delivery">Khi có thay đổi trạng thái vận chuyển</string>
     <string name="my_order_label">Đơn hàng của tôi</string>
     <string name="my_order_processing_button">Đang xử lý</string>
+    <string name="my_order_return_in_processing_button">Trong quá trình xử lý</string>
     <string name="my_order_completed_button">Đã hoàn thành</string>
+    <string name="my_order_return_success_button">Trả thành công</string>
+    <string name="my_order_return_failed_button">Bị từ chối</string>
     <string name="my_order_cancelled_button">Đã huỷ</string>
     <string name="my_order_returned_button">Trả lại</string>
     <string name="my_order_detail_item_return_success">Hoàn trả thành công</string>
-    <string name="my_order_detail_item_return_failed">Hoàn trả thất bại</string>
+    <string name="my_order_detail_item_return_failed">Hoàn trả bị từ chối</string>
     <string name="order_item_order">Đơn hàng </string>
     <string name="review_instruction">Hãy chọn 1 quyển sách để nhận xét!</string>
     <string name="order_item_tracking_number">Mã đơn:</string>
@@ -316,7 +319,7 @@
     <string name="reasonInstruction">Vui lòng tải lên hình ảnh rõ ràng của sản phẩm và/hoặc trò chuyện để minh họa điều kiện của sản phẩm.</string>
     <string name="reviewInstruction">Vui lòng tải lên hình ảnh rõ ràng của sản phẩm và/hoặc viết nhận xét để minh họa sản phẩm.</string>
     <string name="returnReasonLabel">Lí do đổi</string>
-    <string name="descriptionHint">Mô tả</string>
+    <string name="descriptionHint">Điền lí do của bạn vào đây...</string>
     <string name="chatActivityConversation">Cuộc trò chuyện</string>
     <string name="my_order_delivered_button">Đã giao hàng</string>
     <string name="e_invoice">Hóa đơn điện tử</string>
@@ -333,7 +336,7 @@
     <string name="documentUploading">Đang gửi</string>
     <string name="pleaseWait">Vui lòng đợi...</string>
     <string name="return_instruction">Hãy chọn một hay nhiều quyển sách để trả!</string>
-    <string name="my_order_detail_item_return_in_process">Yêu cầu trả đang phê duyệt</string>
+    <string name="my_order_detail_item_return_in_process">Yêu cầu trả đang duyệt</string>
     <string name="view_e_invoice">Xem hoá đơn điện tử</string>
     <string name="my_shop_order_label">Cửa hàng của tôi</string>
     <string name="my_shop_order_to_ship_button">Chờ giao hàng</string>
@@ -346,9 +349,19 @@
     <string name="orderDetailToShipAcceptLabel">Bạn có chắc rằng chấp nhận đơn hàng này?</string>
     <string name="orderDetailAcceptSuccessfulArgument">Đơn hàng chấp nhận thành công.</string>
     <string name="orderDetailAcceptFailedArgument">Đơn hàng chấp nhận không thành công.</string>
-    <string name="contactBuyer">Liên hệ người mua</string>
+    <string name="contactBuyer">Liên lạc người mua</string>
     <string name="returned_products">Sách được yêu cầu trả</string>
+    <string name="returned_products_with_review">Sách được yêu cầu trả \nBạn có thể chọn 1 quyển sách để viết nhận xét</string>
     <string name="reasonProvided">Hình ảnh và/hoặc lời nhắn được cung cấp</string>
     <string name="acceptRequest">Chấp nhận yêu cầu</string>
     <string name="rejectRequest">Từ chối yêu cầu</string>
+    <string name="no_reason_provided">Không có lí do nào được cung cấp.</string>
+    <string name="contactShop">Liên lạc cửa hàng</string>
+    <string name="yourReasonLabel">Lí do của bạn</string>
+    <string name="shopReasonLabel">Lí do của cửa hàng</string>
+    <string name="buyerReasonLabel">Lí do của người mua</string>
+    <string name="orderDetailReturnRejectLabel">Bạn có chắc rằng từ chối yêu cầu này?</string>
+    <string name="orderDetailReturnAcceptLabel">Bạn có chắc rằng chấp nhận yêu cầu này?</string>
+    <string name="orderShopDetailReturnAccept">Yêu cầu đã được chấp thuận.</string>
+    <string name="orderShopDetailReturnReject">Yêu cầu đã bị từ chối.</string>
 </resources>

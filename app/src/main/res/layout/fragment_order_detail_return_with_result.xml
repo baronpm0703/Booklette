@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@string/my_shop_order_label"
+            android:text="@string/order_detail"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,18 +58,6 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/returnLabel"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailProductsFragmentFrameLayout" />
-
-        <TextView
-            android:id="@+id/statusField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textStyle="bold"
-            android:textColor="@color/blue"
-            tools:text="sdadfasdf"
-            app:layout_constraintStart_toEndOf="@+id/returnStatus"
-            app:layout_constraintTop_toTopOf="@+id/returnStatus" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/orderDetailOrderInformationFrameLayout"
             android:layout_width="match_parent"
@@ -129,13 +117,12 @@
 
                     <ImageView
                         android:id="@+id/imagePicker"
-                        android:layout_width="120dp"
-                        android:layout_height="160dp"
+                        android:layout_width="80dp"
+                        android:layout_height="100dp"
                         android:src="@drawable/baseline_add_circle_outline_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -150,8 +137,8 @@
 
                     <ImageView
                         android:id="@+id/imagePicker2"
-                        android:layout_width="120dp"
-                        android:layout_height="160dp"
+                        android:layout_width="80dp"
+                        android:layout_height="100dp"
                         android:src="@drawable/baseline_add_circle_outline_24"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -191,12 +178,24 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/returnLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/returned_products_with_review"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/backButton"
+            app:layout_constraintTop_toBottomOf="@+id/backButton" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/orderDetailOrderShopReasonFrameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-
+            android:visibility="gone"
             android:background="@drawable/round_corner_order_item_white_with_shadow"
             android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -227,6 +226,7 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="@string/descriptionHint"
+                android:enabled="false"
                 android:inputType="textMultiLine"
                 android:textColor="@color/design_default_color_primary_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -236,56 +236,42 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/returnLabel"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/contactButton"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/returned_products"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/backButton"
-            app:layout_constraintTop_toBottomOf="@+id/backButton" />
-
-        <Button
-            android:id="@+id/orderDetailAcceptRequestButton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:background="@drawable/round_corner_button_solid_color"
-            android:backgroundTint="@color/add_card_blue"
-            android:text="@string/acceptRequest"
-            app:layout_constraintBottom_toBottomOf="@+id/orderDetailContactBuyerButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/orderDetailContactBuyerButton" />
-
-        <Button
-            android:id="@+id/orderDetailContactBuyerButton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:background="@drawable/round_corner_button_solid_color"
-            android:backgroundTint="@color/white"
-            android:text="@string/contactBuyer"
-            app:layout_constraintBottom_toBottomOf="@+id/orderDetailRejectRequestButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/orderDetailAcceptRequestButton"
-            app:layout_constraintStart_toEndOf="@+id/orderDetailRejectRequestButton"
-            app:layout_constraintTop_toTopOf="@+id/orderDetailRejectRequestButton"
-            app:layout_constraintVertical_bias="0.0"
-            tools:text="Liên lạc người mua" />
-
-        <Button
-            android:id="@+id/orderDetailRejectRequestButton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/round_corner_button_solid_color"
-            android:text="@string/rejectRequest"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/round_corner_order_item_white_with_shadow"
+            android:elevation="2dp"
+            android:text="@string/contactShop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderShopReasonFrameLayout" />
 
+        <Button
+            android:id="@+id/reviewButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/round_corner_order_item_white_with_shadow"
+            android:backgroundTint="@color/button_blue"
+            android:elevation="2dp"
+            android:text="@string/write_review"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderDetailOrderShopReasonFrameLayout" />
+        <TextView
+            android:id="@+id/statusField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            tools:text="sdadfasdf"
+            app:layout_constraintStart_toEndOf="@+id/returnStatus"
+            app:layout_constraintTop_toTopOf="@+id/returnStatus" />
 
         <!-- Your existing layout content here -->
 

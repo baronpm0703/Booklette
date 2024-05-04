@@ -52,9 +52,8 @@
             android:id="@+id/buttonScrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:padding="15dp"
+            android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchBar">
@@ -128,13 +127,59 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </HorizontalScrollView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/returnButtonCaseLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonScrollView">
 
+            <Button
+                android:id="@+id/returnProcessingButton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/button_my_order"
+                android:backgroundTint="@color/white"
+                android:text="@string/my_order_processing_button"
+                tools:text="Trong quá trình xử lý"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/returnSuccessButton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+
+                android:background="@drawable/button_my_order"
+                android:backgroundTint="@color/white"
+                android:text="@string/my_order_return_success_button"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/returnFailedButton"
+                app:layout_constraintStart_toEndOf="@+id/returnProcessingButton"
+                app:layout_constraintTop_toTopOf="@+id/returnProcessingButton" />
+
+            <Button
+                android:id="@+id/returnFailedButton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/button_my_order"
+                android:backgroundTint="@color/white"
+                android:text="@string/my_order_return_failed_button"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/returnSuccessButton" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/itemsRecyclerView"
-
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
@@ -142,7 +187,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonScrollView" />
+            app:layout_constraintTop_toBottomOf="@+id/returnButtonCaseLayout" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"

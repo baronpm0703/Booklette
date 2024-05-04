@@ -35,6 +35,7 @@ class MyOrderFragment : Fragment() {
     }
 
     private var lastPressedButton : Button? = null
+    private var lastReturnPressedButton : Button? = null
     private var firstRender: Boolean = true
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,6 +62,7 @@ class MyOrderFragment : Fragment() {
         val completedButton : Button = binding.completedButton
         val cancelledButton: Button = binding.cancelledButton
         val returnedButton: Button = binding.returnedButton
+        val returnButtonCaseLayout = binding.returnButtonCaseLayout
 
         val itemListContainer = binding.itemsRecyclerView // fragmentContainerView
         myOrderItemFragment = MyOrderItemFragment.newInstance(1)
@@ -96,7 +98,7 @@ class MyOrderFragment : Fragment() {
                 myOrderItemFragment.processingButton()
                 Log.d("testButton","else")
             }
-
+            returnButtonCaseLayout.visibility = View.GONE
             processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
@@ -116,7 +118,7 @@ class MyOrderFragment : Fragment() {
                 deliveredButton.backgroundTintList = null
                 myOrderItemFragment.deliveredButton()
             }
-
+            returnButtonCaseLayout.visibility = View.GONE
             processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
@@ -136,7 +138,7 @@ class MyOrderFragment : Fragment() {
                 completedButton.backgroundTintList = null
                 myOrderItemFragment.completedButton()
             }
-
+            returnButtonCaseLayout.visibility = View.GONE
             processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
@@ -155,13 +157,17 @@ class MyOrderFragment : Fragment() {
                 cancelledButton.backgroundTintList = null
                 myOrderItemFragment.cancelledButton()
             }
-
+            returnButtonCaseLayout.visibility = View.GONE
             processingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             deliveredButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         }
+
+        val returnProcessingButton = binding.returnProcessingButton
+        val returnSuccessButton = binding.returnSuccessButton
+        val returnFailedButton = binding.returnFailedButton
         returnedButton.setOnClickListener {
 
             if (lastPressedButton == returnedButton){
@@ -180,8 +186,48 @@ class MyOrderFragment : Fragment() {
             completedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             cancelledButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             returnedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+
+            returnButtonCaseLayout.visibility = View.VISIBLE
+            returnProcessingButton.performClick()
         }
 
+        returnProcessingButton.setOnClickListener {
+            if (lastReturnPressedButton != returnProcessingButton){
+                resetColorReturnButton()
+                lastReturnPressedButton = returnProcessingButton
+                returnProcessingButton.backgroundTintList = null
+                myOrderItemFragment.returnProcessingButton()
+
+                returnProcessingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                returnSuccessButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                returnFailedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            }
+
+        }
+        returnSuccessButton.setOnClickListener {
+            if (lastReturnPressedButton != returnSuccessButton){
+                resetColorReturnButton()
+                lastReturnPressedButton = returnSuccessButton
+                returnSuccessButton.backgroundTintList = null
+                myOrderItemFragment.returnSuccessButton()
+
+                returnProcessingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                returnSuccessButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                returnFailedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            }
+        }
+        returnFailedButton.setOnClickListener {
+            if (lastReturnPressedButton != returnFailedButton){
+                resetColorReturnButton()
+                lastReturnPressedButton = returnFailedButton
+                returnFailedButton.backgroundTintList = null
+                myOrderItemFragment.returnFailedButton()
+
+                returnProcessingButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                returnSuccessButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                returnFailedButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
+        }
 //        val backButton = binding.backButton
 //        backButton.setOnClickListener{
 //            requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -226,6 +272,13 @@ class MyOrderFragment : Fragment() {
     private fun resetColorButton(){
         if (lastPressedButton != null){
             lastPressedButton!!.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
+
+        }
+
+    }
+    private fun resetColorReturnButton(){
+        if (lastReturnPressedButton != null){
+            lastReturnPressedButton!!.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
         }
     }
     companion object {
