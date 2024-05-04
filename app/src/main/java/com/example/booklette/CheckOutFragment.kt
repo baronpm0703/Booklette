@@ -142,36 +142,20 @@ class CheckOutFragment : Fragment() {
             binding.recieverPhone.text = selectedAddress.receiverPhone
             binding.addressNumber.text = selectedAddress.addressNumber
             binding.addressZone.text = selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
+            binding.placeOrderBtn.isEnabled = true
+            binding.placeOrderBtn.setBackgroundResource(R.drawable.button_go_to_check_out)
+
         }
         else{
-            db.collection("accounts").whereEqualTo("UID", auth.uid).get()
-                .addOnSuccessListener { documents ->
-                    if (documents.size() != 1) return@addOnSuccessListener
-                    for (document in documents) {
-                        // Get avatar and seller's name
-                        if (document.data.get("shippingAddress") != null) {
-                            val shippingAddressArray = document.data.get("shippingAddress") as? ArrayList<Map<String, Any>>
-                            shippingAddressArray?.let { shippingAddressArrayData ->
-                                val receiverName = shippingAddressArrayData[0]["receiverName"] as? String ?: ""
-                                val receiverPhone = shippingAddressArrayData[0]["receiverPhone"] as? String ?: ""
-                                val province = shippingAddressArrayData[0]["province"] as? String ?: ""
-                                val city = shippingAddressArrayData[0]["city"] as? String ?: ""
-                                val ward = shippingAddressArrayData[0]["ward"] as? String ?: ""
-                                val addressNumber = shippingAddressArrayData[0]["addressNumber"] as? String ?: ""
-                                val shipLabel = shippingAddressArrayData[0]["shipLabel"] as? String ?: ""
-                                binding.recieverName.text = receiverName
-                                binding.recieverPhone.text = receiverPhone
-                                binding.addressNumber.text = addressNumber
-                                binding.addressZone.text = province + ", " + city + ", " + ward
-                                adapter.notifyDataSetChanged()
-                            }
-                        }
-                        else{
-                            binding.addressEmpty.visibility = View.VISIBLE
+            binding.addressEmpty.visibility = View.VISIBLE
+            binding.placeOrderBtn.isEnabled = false
+            binding.placeOrderBtn.setBackgroundResource(R.drawable.button_go_to_check_out_disabled)
+            binding.shiplb.visibility= View.GONE
+            binding.recieverName.visibility= View.GONE
+            binding.recieverPhone.visibility= View.GONE
+            binding.addressNumber.visibility= View.GONE
+            binding.addressZone.visibility= View.GONE
 
-                        }
-                    }
-                }
         }
 
 
