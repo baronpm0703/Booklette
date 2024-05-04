@@ -1,6 +1,10 @@
 package com.example.booklette
 
 import android.annotation.SuppressLint
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,7 +12,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.databinding.FragmentUserFavoritesBookBinding
 import com.example.booklette.model.BookObject
 import com.example.booklette.model.UserReviewObject
@@ -65,6 +71,7 @@ class UserFavoritesBookFragment : Fragment() {
         auth = Firebase.auth
         lifecycleScope.launch {
             userInfo = auth.uid?.let { getInfoCurrentUser(it) }
+            wishList = ArrayList(userInfo!!.wishList)
             rvUserFavoritesBookAdapter.updateWishList(userInfo!!.wishList)
             rvUserFavoritesBookAdapter.notifyDataSetChanged()
         }
@@ -77,11 +84,24 @@ class UserFavoritesBookFragment : Fragment() {
         binding.rvWishList.adapter = rvUserFavoritesBookAdapter
         binding.rvWishList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(v: RecyclerView, h: RecyclerView.ViewHolder, t: RecyclerView.ViewHolder) = false
+            override fun onSwiped(h: RecyclerView.ViewHolder, dir: Int)  {
+                val position = h.adapterPosition
+                rvUserFavoritesBookAdapter.removeAt(position)
+                wishList.removeAt(position)
+                empTyWishList(wishList)
+            }
+        }).attachToRecyclerView(binding.rvWishList)
+
+//        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+//        itemTouchHelper.attachToRecyclerView(binding.rvWishList)
+
         binding.deleteAllBtn.setOnClickListener {
             wishList.clear()
             rvUserFavoritesBookAdapter.updateWishList(wishList)
             rvUserFavoritesBookAdapter.notifyDataSetChanged()
-            empTyWishList() // Update database
+            empTyWishList(wishList) // Update database
         }
 
 
@@ -89,12 +109,14 @@ class UserFavoritesBookFragment : Fragment() {
         return view
     }
 
-    fun empTyWishList(){
+    fun empTyWishList(wishList: ArrayList<BookObject>){
+        var item = ArrayList<String>()
+        for (book in wishList) item.add(book.bookID)
+
         val docAccountRef = db.collection("accounts").whereEqualTo("UID", userInfo?.userID)
 
         docAccountRef.get().addOnSuccessListener {
             for (document in it) {
-                val item = ArrayList<String>()
                 document.reference.update("wishlist", item)
                     .addOnSuccessListener {
                         Log.i("update Wish List", "Success")
