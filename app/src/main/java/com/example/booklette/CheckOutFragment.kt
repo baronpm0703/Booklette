@@ -475,6 +475,9 @@ class CheckOutFragment : Fragment() {
                             }
                         }
 
+                        val totalPaymentText = binding.totalPaymentInPaymentDetail.text.toString().replace(",", "").split(" ")[0]
+                        val totalPayment = if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() else 0.0F
+
                         val data: HashMap<Any, Any> = hashMapOf(
                             "creationDate" to Timestamp(Date()),
                             "customerID" to auth.currentUser!!.uid.toString(),
@@ -486,7 +489,8 @@ class CheckOutFragment : Fragment() {
                                 "expiryDate" to ""
                             ),
                             "status" to "Thành công",
-                            "totalSum" to totalAmount,
+                            "beforeDiscount" to totalAmount,
+                            "totalSum" to (totalPayment),
                             "shippingAddress" to (binding.recieverName.text.toString() + " - " +
                                                     binding.recieverPhone.text.toString() + " - " +
                                                     binding.addressNumber.text.toString() + " " +

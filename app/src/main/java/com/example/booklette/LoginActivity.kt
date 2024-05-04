@@ -140,32 +140,37 @@ open class LoginActivity : AppCompatActivity() {
         })
 
         // Normal Login
-        binding.btnLogIn.setOnClickListener({
+        binding.btnLogIn.setOnClickListener {
             if (binding.edtEmailSignIn.text.isEmpty()) {
-                MotionToast.createColorToast(this@LoginActivity,
+                MotionToast.createColorToast(
+                    this@LoginActivity,
                     getString(R.string.failed),
                     getString(R.string.emptyEmailSignUp),
                     MotionToastStyle.ERROR,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.SHORT_DURATION,
-                    ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
-            }
-            else if (binding.edtPasswordSignIn.text.isEmpty()) {
-                MotionToast.createColorToast(this@LoginActivity,
+                    ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular)
+                )
+            } else if (binding.edtPasswordSignIn.text.isEmpty()) {
+                MotionToast.createColorToast(
+                    this@LoginActivity,
                     getString(R.string.failed),
                     getString(R.string.emptyPasswordSignIn),
                     MotionToastStyle.ERROR,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.SHORT_DURATION,
-                    ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
-            }
-            else {
+                    ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular)
+                )
+            } else {
                 binding.btnLogIn.showProgress {
                     buttonTextRes = R.string.signingInText
                     progressColor = Color.WHITE
                 }
 
-                auth.signInWithEmailAndPassword(binding.edtEmailSignIn.text.toString(), binding.edtPasswordSignIn.text.toString())
+                auth.signInWithEmailAndPassword(
+                    binding.edtEmailSignIn.text.toString(),
+                    binding.edtPasswordSignIn.text.toString()
+                )
                     .addOnCompleteListener(this) { task ->
                         binding.btnLogIn.hideProgress(R.string.loginText)
 
@@ -173,13 +178,18 @@ open class LoginActivity : AppCompatActivity() {
                             // Sign in success, update UI with the signed-in user's information
                             val user = auth.currentUser
 
-                            MotionToast.createColorToast(this@LoginActivity,
+                            MotionToast.createColorToast(
+                                this@LoginActivity,
                                 getString(R.string.successfully),
                                 getString(R.string.signInSuccessDescription),
                                 MotionToastStyle.SUCCESS,
                                 MotionToast.GRAVITY_BOTTOM,
                                 MotionToast.SHORT_DURATION,
-                                ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
+                                ResourcesCompat.getFont(
+                                    this,
+                                    www.sanju.motiontoast.R.font.helvetica_regular
+                                )
+                            )
 
 //                            GlobalScope.launch { remember_me_manager.storeUser(binding.cbRememberMe.isChecked, binding.edtEmailSignIn.text.toString()) }
 
@@ -192,7 +202,10 @@ open class LoginActivity : AppCompatActivity() {
                                 .build()
 
                             lifecycleScope.launch {
-                                client.connectUser(user = StreamUser, token = client.devToken(StreamUser.id)).enqueue()
+                                client.connectUser(
+                                    user = StreamUser,
+                                    token = client.devToken(StreamUser.id)
+                                ).enqueue()
 
                                 finish()
                                 startActivity(Intent(this@LoginActivity, homeActivity::class.java))
@@ -201,17 +214,22 @@ open class LoginActivity : AppCompatActivity() {
                             // If sign in fails, display a message to the user.
                             Log.d("firebase", task.exception.toString())
 
-                            MotionToast.createColorToast(this@LoginActivity,
+                            MotionToast.createColorToast(
+                                this@LoginActivity,
                                 getString(R.string.failed),
                                 getString(R.string.signUpFailedDescription),
                                 MotionToastStyle.ERROR,
                                 MotionToast.GRAVITY_BOTTOM,
                                 MotionToast.SHORT_DURATION,
-                                ResourcesCompat.getFont(this, www.sanju.motiontoast.R.font.helvetica_regular))
+                                ResourcesCompat.getFont(
+                                    this,
+                                    www.sanju.motiontoast.R.font.helvetica_regular
+                                )
+                            )
                         }
                     }
             }
-        })
+        }
 
         // Back to SignUp
         binding.txtBackToSignUpLI.setOnClickListener({
