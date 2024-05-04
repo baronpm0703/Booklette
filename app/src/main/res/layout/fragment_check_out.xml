@@ -303,12 +303,12 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
                             android:layout_marginBottom="10dp"
-                            android:drawableStart="@drawable/epay_radio_button_image"
+                            android:drawableStart="@drawable/momo_radio_button_image"
                             android:drawablePadding="30dp"
 
                             android:textSize="15dp"
                             android:textStyle="bold"
-                            android:text="@string/epayMethod" />
+                            android:text="@string/momo_wallet" />
 
                         <RadioButton
                             android:background="@drawable/custom_radio_selector_payment_method"

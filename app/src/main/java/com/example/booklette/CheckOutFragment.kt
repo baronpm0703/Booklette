@@ -1,27 +1,26 @@
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.booklette.BankCardFragment
-import com.example.booklette.CartFragment
+import com.example.booklette.MainActivity
+import com.example.booklette.MoMoConstants
+import com.example.booklette.MomoPaymentActivity
 import com.example.booklette.R
 import com.example.booklette.ShipAddressFragment
-import com.example.booklette.bookDetailShopVoucherRVAdapter
 import com.example.booklette.databinding.FragmentCheckOutBinding
 import com.example.booklette.homeActivity
 import com.example.booklette.model.CartObject
@@ -32,7 +31,6 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import com.google.rpc.context.AttributeContext.Resource
 import com.paypal.android.corepayments.CoreConfig
 import com.paypal.android.corepayments.Environment
 import com.paypal.android.corepayments.PayPalSDKError
@@ -55,11 +53,13 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class CheckOutFragment : Fragment() {
 
+class CheckOutFragment : Fragment() {
+    private val momoEnviroment = 0
     interface VoucherSumListener {
         fun onVoucherSumCalculated(sum: Float)
     }
+
     private var _binding: FragmentCheckOutBinding? = null
     private val binding get() = _binding!!
 
@@ -76,10 +76,13 @@ class CheckOutFragment : Fragment() {
     val url = "https://api-m.sandbox.paypal.com/v2/checkout/orders/"
     val urlToken = "https://api-m.sandbox.paypal.com/v1/oauth2/token"
     var token = "Bearer "
-    val clientId = "AZY4SgNyOhRXLoVpTswQxyd_cku-w428NGNf_OFr2Tor4t1bCeN4ngxQQIpT6bBAo5_8FPOcXXyKSXDm"
-    val clientSecret = "EGNxh5iA4Hzk7G3eSbbTBg4QNmFHp2_SMHla2vxjfM6-B4S7bPPxToYtiFohePAOTfU5VlJVu7uceY_v"
+    val clientId =
+        "AZY4SgNyOhRXLoVpTswQxyd_cku-w428NGNf_OFr2Tor4t1bCeN4ngxQQIpT6bBAo5_8FPOcXXyKSXDm"
+    val clientSecret =
+        "EGNxh5iA4Hzk7G3eSbbTBg4QNmFHp2_SMHla2vxjfM6-B4S7bPPxToYtiFohePAOTfU5VlJVu7uceY_v"
 
-
+    // momo test
+    // end of momo test
     companion object {
 
         private const val ARG_SELECTED_ADDRESS = "selected_address"
@@ -91,6 +94,7 @@ class CheckOutFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+
         fun passSelectedItemToCheckOut(selectedItems: ArrayList<CartObject>): CheckOutFragment {
             val fragment = CheckOutFragment()
             val args = Bundle()
@@ -127,11 +131,11 @@ class CheckOutFragment : Fragment() {
 
 
 
-        selectedItems = arguments?.getParcelableArrayList<CartObject>("SELECTED_ITEMS") ?: ArrayList()
+        selectedItems =
+            arguments?.getParcelableArrayList<CartObject>("SELECTED_ITEMS") ?: ArrayList()
         val adapter = CheckOutRecyclerViewAdapter(requireContext(), selectedItems)
         binding.rvCheckout.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCheckout.adapter = adapter
-
 
 
         val selectedAddress = arguments?.getParcelable<ShipAddressObject>(ARG_SELECTED_ADDRESS)
@@ -141,32 +145,37 @@ class CheckOutFragment : Fragment() {
             binding.recieverName.text = selectedAddress.receiverName
             binding.recieverPhone.text = selectedAddress.receiverPhone
             binding.addressNumber.text = selectedAddress.addressNumber
-            binding.addressZone.text = selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
-        }
-        else{
+            binding.addressZone.text =
+                selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
+        } else {
             db.collection("accounts").whereEqualTo("UID", auth.uid).get()
                 .addOnSuccessListener { documents ->
                     if (documents.size() != 1) return@addOnSuccessListener
                     for (document in documents) {
                         // Get avatar and seller's name
                         if (document.data.get("shippingAddress") != null) {
-                            val shippingAddressArray = document.data.get("shippingAddress") as? ArrayList<Map<String, Any>>
+                            val shippingAddressArray =
+                                document.data.get("shippingAddress") as? ArrayList<Map<String, Any>>
                             shippingAddressArray?.let { shippingAddressArrayData ->
-                                val receiverName = shippingAddressArrayData[0]["receiverName"] as? String ?: ""
-                                val receiverPhone = shippingAddressArrayData[0]["receiverPhone"] as? String ?: ""
-                                val province = shippingAddressArrayData[0]["province"] as? String ?: ""
+                                val receiverName =
+                                    shippingAddressArrayData[0]["receiverName"] as? String ?: ""
+                                val receiverPhone =
+                                    shippingAddressArrayData[0]["receiverPhone"] as? String ?: ""
+                                val province =
+                                    shippingAddressArrayData[0]["province"] as? String ?: ""
                                 val city = shippingAddressArrayData[0]["city"] as? String ?: ""
                                 val ward = shippingAddressArrayData[0]["ward"] as? String ?: ""
-                                val addressNumber = shippingAddressArrayData[0]["addressNumber"] as? String ?: ""
-                                val shipLabel = shippingAddressArrayData[0]["shipLabel"] as? String ?: ""
+                                val addressNumber =
+                                    shippingAddressArrayData[0]["addressNumber"] as? String ?: ""
+                                val shipLabel =
+                                    shippingAddressArrayData[0]["shipLabel"] as? String ?: ""
                                 binding.recieverName.text = receiverName
                                 binding.recieverPhone.text = receiverPhone
                                 binding.addressNumber.text = addressNumber
                                 binding.addressZone.text = province + ", " + city + ", " + ward
                                 adapter.notifyDataSetChanged()
                             }
-                        }
-                        else{
+                        } else {
                             binding.addressEmpty.visibility = View.VISIBLE
 
                         }
@@ -182,13 +191,19 @@ class CheckOutFragment : Fragment() {
             shipAddressFragment.arguments = args
             val homeAct = (activity as homeActivity)
             homeAct.supportFragmentManager.popBackStack()
-            homeAct.changeFragmentContainer(shipAddressFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+            homeAct.changeFragmentContainer(
+                shipAddressFragment,
+                homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]
+            )
         }
 
         binding.changeCardBtn.setOnClickListener {
             val bankCardFragment = BankCardFragment()
             val homeAct = (activity as homeActivity)
-            homeAct.changeFragmentContainer(bankCardFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+            homeAct.changeFragmentContainer(
+                bankCardFragment,
+                homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]
+            )
         }
 
 
@@ -212,8 +227,9 @@ class CheckOutFragment : Fragment() {
             override fun onVoucherSumCalculated(sum: Float) {
                 val afterFomartedTotalDiscountAmount = String.format("%,.0f", sum)
                 binding.totalDiscount.text = "$afterFomartedTotalDiscountAmount VND"
-                val afterCalculateWithVoucher = totalAmount-sum
-                val formattedAfterCalculateWithVoucher = String.format("%,.0f", afterCalculateWithVoucher)
+                val afterCalculateWithVoucher = totalAmount - sum
+                val formattedAfterCalculateWithVoucher =
+                    String.format("%,.0f", afterCalculateWithVoucher)
                 binding.totalPaymentInPaymentDetail.text = "$formattedAfterCalculateWithVoucher VND"
                 binding.totalPayment.text = "$formattedAfterCalculateWithVoucher VND"
             }
@@ -273,8 +289,11 @@ class CheckOutFragment : Fragment() {
                     }
 
                     val x = 1
-                    val totalPaymentText = binding.totalPaymentInPaymentDetail.text.toString().replace(",", "").split(" ")[0]
-                    val totalPayment = if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() else 0.0F
+                    val totalPaymentText =
+                        binding.totalPaymentInPaymentDetail.text.toString().replace(",", "")
+                            .split(" ")[0]
+                    val totalPayment =
+                        if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() else 0.0F
 
                     val data: HashMap<String, Any> = hashMapOf(
                         "creationDate" to Timestamp(Date()),
@@ -332,6 +351,12 @@ class CheckOutFragment : Fragment() {
                                 requireActivity().onBackPressedDispatcher.onBackPressed()
                             }
                     }
+                } else if (radioButtonClicked.text == getString(R.string.momo_wallet)){
+                    val intent = Intent(requireContext(), MomoPaymentActivity::class.java)
+                    val data = Bundle()
+                    data.putInt(MoMoConstants.KEY_ENVIRONMENT,momoEnviroment)
+                    intent.putExtras(data)
+                    startActivity(intent)
                 }
             } else {
                 MotionToast.createColorToast(
@@ -376,7 +401,10 @@ class CheckOutFragment : Fragment() {
                     val headers = HashMap<String, String>()
                     headers["Accept"] = "application/json"
                     headers["Accept-Language"] = "en_US"
-                    headers["Authorization"] = "Basic " + Base64.encodeToString("$clientId:$clientSecret".toByteArray(), Base64.NO_WRAP)
+                    headers["Authorization"] = "Basic " + Base64.encodeToString(
+                        "$clientId:$clientSecret".toByteArray(),
+                        Base64.NO_WRAP
+                    )
                     return headers
                 }
 
@@ -430,7 +458,10 @@ class CheckOutFragment : Fragment() {
     }
 
     private fun launchPayPalCheckout(orderId: String) {
-        val coreConfig = CoreConfig("AZY4SgNyOhRXLoVpTswQxyd_cku-w428NGNf_OFr2Tor4t1bCeN4ngxQQIpT6bBAo5_8FPOcXXyKSXDm", environment = Environment.SANDBOX)
+        val coreConfig = CoreConfig(
+            "AZY4SgNyOhRXLoVpTswQxyd_cku-w428NGNf_OFr2Tor4t1bCeN4ngxQQIpT6bBAo5_8FPOcXXyKSXDm",
+            environment = Environment.SANDBOX
+        )
 
         val payPalNativeClient = PayPalNativeCheckoutClient(
             application = requireActivity().application,
@@ -484,45 +515,54 @@ class CheckOutFragment : Fragment() {
                             "status" to "Thành công",
                             "totalSum" to totalAmount,
                             "shippingAddress" to (binding.recieverName.text.toString() + " - " +
-                                                    binding.recieverPhone.text.toString() + " - " +
-                                                    binding.addressNumber.text.toString() + " " +
-                                                binding.addressZone.text.toString())
-                            )
+                                    binding.recieverPhone.text.toString() + " - " +
+                                    binding.addressNumber.text.toString() + " " +
+                                    binding.addressZone.text.toString())
+                        )
 
-                        db.collection("orders").add(data).addOnCompleteListener{documentReference ->
+                        db.collection("orders").add(data)
+                            .addOnCompleteListener { documentReference ->
 //                            for (cartObject in selectedItems) {
 //                                val fieldMap = hashMapOf<Any, Any>(
 //                                    cartObject.bookID.toString() to FieldValue.delete()
 //                                )
 //                            }
-                            db.collection("accounts")
-                                .whereEqualTo("UID", auth.currentUser!!.uid.toString())
-                                .get().addOnSuccessListener { documents ->
-                                    for (document in documents) {
+                                db.collection("accounts")
+                                    .whereEqualTo("UID", auth.currentUser!!.uid.toString())
+                                    .get().addOnSuccessListener { documents ->
+                                        for (document in documents) {
 
 
-                                        for (cartObject in selectedItems) {
+                                            for (cartObject in selectedItems) {
 //                                            val fieldMap = hashMapOf<Any, Any>(
 //                                                cartObject.bookID.toString() to FieldValue.delete()
 //                                            )
-                                            db.collection("accounts").document(document.id).update("cart.${cartObject.bookID}", FieldValue.delete()).addOnSuccessListener { result ->
+                                                db.collection("accounts").document(document.id)
+                                                    .update(
+                                                        "cart.${cartObject.bookID}",
+                                                        FieldValue.delete()
+                                                    ).addOnSuccessListener { result ->
 
+                                                }
                                             }
                                         }
+
+                                        MotionToast.createColorToast(
+                                            context as Activity,
+                                            getString(R.string.successfully),
+                                            getString(R.string.paymentSuccessfully),
+                                            MotionToastStyle.SUCCESS,
+                                            MotionToast.GRAVITY_BOTTOM,
+                                            MotionToast.SHORT_DURATION,
+                                            ResourcesCompat.getFont(
+                                                context as Activity,
+                                                www.sanju.motiontoast.R.font.helvetica_regular
+                                            )
+                                        )
+
+                                        requireActivity().onBackPressedDispatcher.onBackPressed()
                                     }
-
-                                    MotionToast.createColorToast(
-                                        context as Activity,
-                                        getString(R.string.successfully),
-                                        getString(R.string.paymentSuccessfully),
-                                        MotionToastStyle.SUCCESS,
-                                        MotionToast.GRAVITY_BOTTOM,
-                                        MotionToast.SHORT_DURATION,
-                                        ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
-
-                                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                                }
-                        }
+                            }
 
 
                     } catch (e: Exception) {
@@ -542,7 +582,11 @@ class CheckOutFragment : Fragment() {
                     MotionToastStyle.ERROR,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.SHORT_DURATION,
-                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+                    ResourcesCompat.getFont(
+                        context as Activity,
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
+                )
             }
 
             override fun onPayPalCheckoutCanceled() {
@@ -554,7 +598,11 @@ class CheckOutFragment : Fragment() {
                     MotionToastStyle.ERROR,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.SHORT_DURATION,
-                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+                    ResourcesCompat.getFont(
+                        context as Activity,
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
+                )
             }
         }
 
@@ -612,7 +660,10 @@ class CheckOutFragment : Fragment() {
 
 
     // Space for momo
-    
+    private fun launchMomoCheckout(orderId: String) {
+
+    }
+
     private fun calculateTotalAmount(): Float {
         var total = 0f
         for (item in selectedItems) {
