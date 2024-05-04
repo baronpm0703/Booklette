@@ -205,6 +205,8 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/question3"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -217,13 +219,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Why is my account limited?"
+                        android:text="How to contact customer service"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="7pt"></TextView>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/question4"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -237,42 +241,6 @@
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:text="How can I return the book?"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="7pt"></TextView>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    app:cardCornerRadius="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                    <TextView
-                        android:id="@+id/q5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="How can I report a counterfeit product?"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="7pt"></TextView>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    app:cardCornerRadius="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-                    <TextView
-                        android:id="@+id/q6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="How to contact customer service"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="7pt"></TextView>

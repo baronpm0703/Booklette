@@ -52,12 +52,30 @@ class QuestionHelpCenterFragment : Fragment(){
         if(question == "question1"){
             binding.layoutQuestion1.visibility = View.VISIBLE
             binding.layoutQuestion2.visibility = View.GONE
+            binding.layoutQuestion3.visibility = View.GONE
+            binding.layoutQuestion4.visibility = View.GONE
+
 
         }
         if(question == "question2"){
             binding.layoutQuestion2.visibility = View.VISIBLE
             binding.layoutQuestion1.visibility = View.GONE
+            binding.layoutQuestion3.visibility = View.GONE
+            binding.layoutQuestion4.visibility = View.GONE
+        }
 
+        if(question == "question3"){
+            binding.layoutQuestion3.visibility = View.VISIBLE
+            binding.layoutQuestion1.visibility = View.GONE
+            binding.layoutQuestion2.visibility = View.GONE
+            binding.layoutQuestion4.visibility = View.GONE
+        }
+
+        if(question == "question4"){
+            binding.layoutQuestion4.visibility = View.VISIBLE
+            binding.layoutQuestion1.visibility = View.GONE
+            binding.layoutQuestion2.visibility = View.GONE
+            binding.layoutQuestion3.visibility = View.GONE
         }
         binding.ivBackToPrev.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()

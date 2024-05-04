@@ -69,6 +69,26 @@ class HelpCenterFragment : Fragment(){
             homeAct.changeFragmentContainer(questionHelpCenterFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
         }
 
+        binding.question3.setOnClickListener {
+            val questionHelpCenterFragment = QuestionHelpCenterFragment()
+            val bundle = Bundle()
+            bundle.putString("question", "question3")
+            questionHelpCenterFragment.arguments = bundle
+
+            val homeAct = (activity as homeActivity)
+            homeAct.changeFragmentContainer(questionHelpCenterFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+        }
+
+        binding.question4.setOnClickListener {
+            val questionHelpCenterFragment = QuestionHelpCenterFragment()
+            val bundle = Bundle()
+            bundle.putString("question", "question4")
+            questionHelpCenterFragment.arguments = bundle
+
+            val homeAct = (activity as homeActivity)
+            homeAct.changeFragmentContainer(questionHelpCenterFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+        }
+
         binding.ivBackToPrev.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
