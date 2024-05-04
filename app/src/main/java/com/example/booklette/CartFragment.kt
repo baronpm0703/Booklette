@@ -184,6 +184,17 @@ class CartFragment : Fragment() {
                                                                 itemList?.get(itemId) as? Map<String, Any>
 
                                                             val storeName = personalStoreDocument["storeName"]
+                                                            val bookDiscount = (eachItem?.get("discount") as String)
+                                                            var discountNumber = 0
+                                                            if(bookDiscount!=null){
+                                                                db.collection("discounts").whereEqualTo("discountID", bookDiscount).get()
+                                                                    .addOnSuccessListener { bookDiscountDocument ->
+                                                                        for(eachDiscount in bookDiscountDocument){
+                                                                            discountNumber = (eachDiscount.data["percent"] as Number).toInt()
+                                                                        }
+                                                                        Log.d("discountNumber", discountNumber.toString())
+                                                                    }
+                                                            }
 
                                                             db.collection("books")
                                                                 .whereEqualTo("bookID", itemId)
@@ -191,8 +202,10 @@ class CartFragment : Fragment() {
                                                                 .addOnSuccessListener { bookDocument ->
                                                                     for (eachBook in bookDocument) {
                                                                         val storePrice = (eachItem?.get("price") as Number).toDouble()
-                                                                        val bookDiscount = (eachBook.data["best-deal-sale"] as Number).toDouble()
-                                                                        val priceAfterDiscount = storePrice - storePrice * bookDiscount
+//                                                                        val bookDiscount = (eachBook.data["best-deal-sale"] as Number).toDouble()
+//                                                                        val bookDiscount = 0f
+
+                                                                        val priceAfterDiscount = storePrice - storePrice * discountNumber/100.0
                                                                         cartList.add(
                                                                             CartObject(
                                                                                 eachBook.data["bookID"].toString(),
