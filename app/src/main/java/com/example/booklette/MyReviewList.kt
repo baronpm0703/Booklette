@@ -1,28 +1,43 @@
 package com.example.booklette
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
 import com.example.booklette.databinding.FragmentMyReviewListBinding
+import com.example.booklette.model.CartObject
 import com.example.booklette.model.Photo
 import com.example.booklette.model.UserReviewObject
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,6 +71,7 @@ class MyReviewList : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,10 +91,22 @@ class MyReviewList : Fragment() {
             }
         }
 
+        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(binding.rvReviewList)
+
+
         myBookReviewListRVAdapter = activity?.let{ MyBookReviewListRVAdapter(it, null)}!!
         binding.rvReviewList.adapter = myBookReviewListRVAdapter
 
         binding.rvReviewList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+
+        binding.cartSwipeRefresh.setOnRefreshListener {
+            myBookReviewListRVAdapter.notifyDataSetChanged()
+            Handler().postDelayed({
+                binding.cartSwipeRefresh.isRefreshing = false;
+            }, 500)
+
+        }
         return view
     }
 
@@ -173,6 +201,144 @@ class MyReviewList : Fragment() {
             }
 
         return dataPhoto
+    }
+
+    private val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            return false
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            // Handle swiping action here
+            val position = viewHolder.adapterPosition
+            val adapter = binding.rvReviewList.adapter as? MyBookReviewListRVAdapter
+            adapter?.let {
+                // Retrieve item information before swiping
+                val deletedItemInfo = it.getItemInfo(position)
+                // Show delete confirmation dialog
+                if (deletedItemInfo != null)
+                    showDeleteConfirmationDialog(deletedItemInfo.toString(), position)
+            }
+        }
+
+        override fun onChildDraw(
+            c: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
+        ) {
+            val clampedDX = if (Math.abs(dX) > 200) {
+                if (dX > 0) 200.toFloat() else -200.toFloat()
+            } else {
+                dX
+            }
+
+            // Vẽ background và icon cho Swipe-To-Remove
+            val itemView = viewHolder.itemView
+            val itemHeight = itemView.bottom.toFloat() - itemView.top.toFloat()
+            val itemWidth = itemHeight
+
+            val p = Paint()
+            if (clampedDX  < 0) {
+                p.color = Color.rgb(200, 0, 0) // Màu đỏ
+                val background = RectF(itemView.right.toFloat() + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
+                val newHeight = itemHeight*0.85f
+                val bottomMargin = (itemHeight - newHeight)
+                val adjustedBackground = RectF(background.left, background.top + bottomMargin +2.5f, background.right, background.bottom-18)
+                c.drawRoundRect(adjustedBackground, 50f, 50f, p)
+                val iconSize = 70 // Kích thước của biểu tượng xóa
+                val iconMargin = 70// Chuyển đổi itemHeight sang kiểu Int
+                val iconLeft = (itemView.right - iconMargin - iconSize ).toInt()
+                val iconTop = (itemView.top + (itemHeight - iconSize) / 2 + 26f).toInt()
+                val iconRight = (itemView.right - iconMargin).toInt()
+                val iconBottom = (iconTop + iconSize).toInt()
+                val deleteIcon = resources.getDrawable(R.drawable.ic_delete) // Thay R.drawable.ic_delete bằng ID của biểu tượng xóa thực tế
+                deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                deleteIcon.draw(c)
+                super.onChildDraw(c, recyclerView, viewHolder, clampedDX, dY, actionState, isCurrentlyActive)
+            }
+        }
+    }
+
+    private fun showDeleteConfirmationDialog(deletedItemInfo: String, position: Int) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("Are you sure you want to delete this item?")
+
+        builder.setPositiveButton("Delete") { dialog, which ->
+            val adapter = binding.rvReviewList.adapter as? MyBookReviewListRVAdapter
+            val reviewObject = adapter?.getItemInfo(position)
+            reviewObject?.let { reviewItem ->
+                deleteReviewItem(reviewItem, position)
+            }
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        val alertDialog = builder.create()
+
+        val currentPosition = (binding.rvReviewList.adapter as? MyBookReviewListRVAdapter)?.getItemInfo(position)
+
+        alertDialog.setOnCancelListener {
+            currentPosition?.let { restoredItem ->
+                val adapter = binding.rvReviewList.adapter as? MyBookReviewListRVAdapter
+                adapter?.notifyItemChanged(position)
+            }
+        }
+
+        alertDialog.show()
+    }
+    private fun deleteReviewItem(item: Pair<String, UserReviewObject>, position: Int) {
+        db.collection("books")
+            .whereEqualTo("bookID", item.first)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val updateTask = FirebaseFirestore.getInstance().runTransaction { transaction ->
+                        val documentSnapshot = transaction.get(document.reference)
+                        val reviewList = documentSnapshot.data?.get("review") as? MutableList<MutableMap<String, Any?>> ?: mutableListOf()
+
+                        // Find the index of the element to delete
+                        val indexToDelete = reviewList.indexOfFirst { it["UID"] as? String == item.second.userID }
+
+                        if (indexToDelete != -1) {
+                            reviewList.removeAt(indexToDelete)
+                            transaction.update(document.reference, "review", reviewList)  // Update the document with the modified list
+                        } else {
+                            // Handle case where element not found (optional)
+                            Log.d("Firebase delete book", "Element with UID not found")
+                        }
+
+                        // Complete the transaction (empty block)
+                    }
+
+                    updateTask.addOnSuccessListener {
+                            Log.d("Firebase delete book", "Element deleted successfully")
+                            myBookReviewListRVAdapter.removeItem(position)
+//                            myBookReviewListRVAdapter.notifyItemRemoved(position)
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.w("Firebase delete book", "Error deleting element: ", exception)
+                        }
+                }
+                MotionToast.createColorToast(
+                    context as Activity,
+                    getString(R.string.delete_cart_sucessfuly),
+                    getString(R.string.delete_notification),
+                    MotionToastStyle.SUCCESS,
+                    MotionToast.GRAVITY_BOTTOM,
+                    MotionToast.SHORT_DURATION,
+                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Firestore", "Error getting documents: ", exception)
+            }
     }
     companion object {
         /**

@@ -22,6 +22,7 @@ import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 import android.os.Handler
+import com.example.booklette.model.CartObject
 
 class MyBookReviewListRVAdapter(
     private val context: Context,
@@ -40,7 +41,10 @@ class MyBookReviewListRVAdapter(
         val moreDetail = listItemView.findViewById<CardView>(R.id.moreDetailBtn)
 
     }
-
+    fun removeItem(position: Int) {
+        reviewList?.removeAt(position)
+        notifyItemRemoved(position)
+    }
 
     fun updateReviewList(reviewList: ArrayList<Pair<String, UserReviewObject>>){
         this.reviewList = reviewList
@@ -59,6 +63,10 @@ class MyBookReviewListRVAdapter(
 
     override fun getItemCount(): Int {
         return reviewList?.size ?: 0
+    }
+
+    fun getItemInfo(position: Int): Pair<String, UserReviewObject>?{
+        return reviewList?.get(position)
     }
 
     @SuppressLint("NotifyDataSetChanged")
