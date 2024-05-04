@@ -78,7 +78,7 @@ class MyOrderItemFragment : Fragment() {
                             Log.d("itemId", itemId)
                             Log.d("itemData", itemData.toString())
 
-                            totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
+                            totalQuantity += (((itemData as Map<*, *>)["quantity"] as? Long)?.toLong()) ?: 0
 
                             db.collection("books")
                                 .whereEqualTo("bookID", itemId)
