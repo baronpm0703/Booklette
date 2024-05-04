@@ -69,17 +69,22 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp">
+
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/bookCover"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/booklette_logo">
+                        android:src="@drawable/booklette_logo"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                     </de.hdodenhof.circleimageview.CircleImageView>
 
@@ -117,6 +122,7 @@
                             android:textSize="5pt">
 
                         </TextView>
+
                         <TextView
                             android:id="@+id/phone"
                             android:layout_width="wrap_content"
@@ -126,14 +132,14 @@
                             android:textSize="5pt">
 
                         </TextView>
+
                         <TextView
                             android:id="@+id/addr"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="227 Nguyen Van Cu Street, Ward 4, District 5, Ho Chi Minh City"
+                            android:text="@string/bookLetteAddresss"
                             android:textColor="@color/black"
-                            android:textSize="5pt">
-                        </TextView>
+                            android:textSize="5pt"></TextView>
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -176,7 +182,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Shop safely with booklette"
+                        android:text="@string/question1HC"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="7pt"></TextView>
@@ -198,7 +204,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Booklette Terms"
+                        android:text="@string/question2HC"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="7pt"></TextView>
@@ -219,7 +225,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="How to contact customer service"
+                        android:text="@string/question3HC"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="7pt"></TextView>
@@ -240,7 +246,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="How can I return the book?"
+                        android:text="@string/question4HC"
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textSize="7pt"></TextView>

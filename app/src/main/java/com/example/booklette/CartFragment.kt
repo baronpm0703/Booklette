@@ -202,10 +202,12 @@ class CartFragment : Fragment() {
                                                                 .addOnSuccessListener { bookDocument ->
                                                                     for (eachBook in bookDocument) {
                                                                         val storePrice = (eachItem?.get("price") as Number).toDouble()
-//                                                                        val bookDiscount = (eachBook.data["best-deal-sale"] as Number).toDouble()
-//                                                                        val bookDiscount = 0f
+                                                                        var bookDiscount = 0.0
+                                                                        if(eachBook.data["best-deal-sale"]!=null){
+                                                                            bookDiscount = (eachBook.data["best-deal-sale"] as Number).toDouble()
+                                                                        }
+                                                                        val priceAfterDiscount = storePrice - (storePrice * discountNumber/100.0) - storePrice*bookDiscount
 
-                                                                        val priceAfterDiscount = storePrice - storePrice * discountNumber/100.0
                                                                         cartList.add(
                                                                             CartObject(
                                                                                 eachBook.data["bookID"].toString(),
