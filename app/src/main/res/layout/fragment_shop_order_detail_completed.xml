@@ -276,8 +276,8 @@
             android:layout_height="50dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
-            android:background="@drawable/round_corner_button_solid_color"
-
+            android:background="@drawable/round_corner_order_item_white_with_shadow"
+            android:backgroundTint="#D45555"
             android:elevation="2dp"
             android:text="@string/contactBuyer"
 
@@ -291,7 +291,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
-            android:background="@drawable/round_corner_button_solid_color"
+            android:background="@drawable/round_corner_order_item_white_with_shadow"
 
             android:elevation="2dp"
             android:text="@string/view_e_invoice"

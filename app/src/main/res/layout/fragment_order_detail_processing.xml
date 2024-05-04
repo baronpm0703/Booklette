@@ -197,13 +197,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView55"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
+            <Button
                 android:id="@+id/viewInvoice"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginTop="16dp"
+                android:textColor="@color/white"
                 android:layout_marginBottom="16dp"
                 android:text="@string/view_e_invoice"
+                android:background="@drawable/bank_card_gradient_visa_card"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView56"
                 app:layout_constraintTop_toBottomOf="@+id/textView56" />

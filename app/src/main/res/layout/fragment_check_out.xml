@@ -90,9 +90,10 @@
                     >
                     <ImageView
                         android:id="@+id/addressEmpty"
-                        android:layout_width="250dp"
+                        android:layout_width="170dp"
+                        android:scaleType="center"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/cart_empty"
+                        android:background="@drawable/noshipaddress"
                         android:visibility="gone">
                     </ImageView>
 
@@ -116,7 +117,7 @@
                             android:layout_height="wrap_content">
 
                             <TextView
-                                android:id="@+id/bookTitle"
+                                android:id="@+id/shiplb"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="5dp"

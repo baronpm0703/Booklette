@@ -30,8 +30,12 @@ class EInvoiceAdapter(
         val item = itemList[position]
         holder.itemName.text = item.name
         holder.itemQuantity.text = item.quantity.toString()
-        holder.itemPrice.text = item.price.toString()
-        holder.totalAmount.text = item.totalSum.toString()
+        
+        val priceFomart = String.format("%,.0f", item.price)
+        holder.itemPrice.text = "$priceFomart VND"
+
+        val totalAmountFormat = String.format("%,.0f", item.totalSum)
+        holder.totalAmount.text = "$totalAmountFormat VND"
     }
     override fun getItemCount(): Int = itemList.size
     fun getItemInfo(position: Int): DetailInvoiceItem {

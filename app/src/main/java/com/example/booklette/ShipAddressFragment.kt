@@ -58,9 +58,16 @@ class ShipAddressFragment : Fragment(){
         val view = binding.root
 
         adapter = ShipAddressFragmentRecycleViewAdapter(requireContext(), shipAddressList)
+        val listenFromProfile = arguments?.getString("shippingAddressListenFromMyProfile")
 
+        if(listenFromProfile == "shippingAddressFromProfile"){
+            binding.saveAddressToCheckOut.isEnabled = false
+            binding.saveAddressToCheckOut.setBackgroundResource(R.drawable.button_go_to_check_out_disabled)
+        }else{
+            binding.saveAddressToCheckOut.isEnabled = true
+            binding.saveAddressToCheckOut.setBackgroundResource(R.drawable.button_go_to_check_out)
+        }
         selectedItems = arguments?.getParcelableArrayList<CartObject>("SELECTED_ITEMS") ?: ArrayList()
-
         binding.rvShipAddress.adapter = adapter
         binding.rvShipAddress.layoutManager = LinearLayoutManager(requireContext())
 

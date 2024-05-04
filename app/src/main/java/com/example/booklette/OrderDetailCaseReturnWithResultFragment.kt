@@ -88,11 +88,21 @@ class OrderDetailCaseReturnWithResultFragment : Fragment() {
                     }
                     statusField.text = changeStatusText(status)
                     val reason = returnData["reason"] as? String
-                    reasonField.setText(reason ?: getString(R.string.no_reason_provided))
-
+                    if (!reason.isNullOrEmpty()){
+                        reasonField.setText(reason)
+                    }
+                    else{
+                        reasonField.setText(getString(R.string.no_reason_provided))
+                    }
                     val shopReason = returnData["shopReason"] as? String
-                    shopReasonField.setText(shopReason ?: getString(R.string.no_reason_provided))
-
+                    if (!shopReason.isNullOrEmpty()) {
+                        Log.d("shopreason",shopReason)
+                        shopReasonField.setText(shopReason)
+                    }
+                    else{
+                        shopReasonField.setText(getString(R.string.no_reason_provided))
+                    }
+                    Log.d("shopreason", shopReasonField.text.toString())
                     if (imageList != null) {
                         if (imageList[0].isNotEmpty() && imageList[1].isNotEmpty()) {
                             Picasso.get().load(imageList[0]).into(imagePicker)

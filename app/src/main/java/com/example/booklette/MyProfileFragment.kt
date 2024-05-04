@@ -38,7 +38,21 @@ class MyProfileFragment : Fragment() {
 			requireActivity().finish()
 		}
 
+		binding.helpCenterOption.setOnClickListener {
+			val helpCenterFragment = HelpCenterFragment()
 
+			val homeAct = (activity as homeActivity)
+			homeAct.changeFragmentContainer(helpCenterFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+		}
+
+		binding.shippingAddressOption.setOnClickListener {
+			val shipAddressFragment = ShipAddressFragment()
+			val bundle = Bundle()
+			bundle.putString("shippingAddressListenFromMyProfile", "shippingAddressFromProfile")
+			shipAddressFragment.arguments = bundle
+			val homeAct = (activity as homeActivity)
+			homeAct.changeFragmentContainer(shipAddressFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+		}
 
 		binding.languageBtn.setOnClickListener {
 			val homeAct = (activity as homeActivity)

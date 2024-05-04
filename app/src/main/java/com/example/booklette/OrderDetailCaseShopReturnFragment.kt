@@ -91,17 +91,28 @@ class OrderDetailCaseShopReturnFragment : Fragment() {
                     val shopReason = returnData["shopReason"] as? String
                     val status = returnData["status"] as String
                     if (!status.contains("trả đang duyệt", true)) {
-                        shopReasonField.setText(
-                            shopReason ?: getString(R.string.no_reason_provided)
-                        )
+                        if (!shopReason.isNullOrEmpty()) {
+                            Log.d("shopreason",shopReason)
+                            shopReasonField.setText(shopReason)
+                        }
+                        else{
+                            shopReasonField.setText(getString(R.string.no_reason_provided))
+                        }
                         shopReasonField.isEnabled = false
                         contactBuyerButton.layoutParams.width = LayoutParams.MATCH_PARENT
                         cancelRequestButton.visibility = View.GONE
                         acceptRequestButton.visibility = View.GONE
                     }
                     statusField.text = changeStatusText(status)
+
                     val reason = returnData["reason"] as? String
-                    reasonField.setText(reason ?: getString(R.string.no_reason_provided))
+                    if (!reason.isNullOrEmpty()){
+                        reasonField.setText(reason)
+                    }
+                    else{
+                        reasonField.setText(getString(R.string.no_reason_provided))
+                    }
+
                     if (imageList != null) {
                         if (imageList[0].isNotEmpty() && imageList[1].isNotEmpty()) {
                             Picasso.get().load(imageList[0]).into(imagePicker)

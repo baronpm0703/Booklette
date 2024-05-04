@@ -257,11 +257,8 @@ class ProductList : Fragment() {
                                 gvProductListAdapter.notifyDataSetChanged()
 
                                 Handler().postDelayed({
-                                    // Code to be executed after the delay
-                                    // For example, you can start a new activity or update UI elements
-                                    //                        binding.smHomeFragmentBestDeal.visibility = View.GONE
                                     binding.gvProductList.visibility = View.VISIBLE
-                                    //                        binding.smHomeFragmentBestDeal.stopShimmer()
+                                    binding.loadingAnimProductList.visibility = View.GONE
                                 }, 2000)
                             }
                         }

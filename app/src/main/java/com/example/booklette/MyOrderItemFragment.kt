@@ -78,7 +78,8 @@ class MyOrderItemFragment : Fragment() {
                             Log.d("itemId", itemId)
                             Log.d("itemData", itemData.toString())
 
-                            totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
+                            totalQuantity += ((((itemData as Map<*, *>)["quantity"]) as? Number)?.toLong())
+                                ?: 0
 
                             db.collection("books")
                                 .whereEqualTo("bookID", itemId)
@@ -144,7 +145,7 @@ class MyOrderItemFragment : Fragment() {
     }
 
     private var orderItemClickListener: ((OrderDataClass) -> Unit)? = null
-    private fun afterQuery(){
+    private fun afterQuery() {
         Log.d("dataSetUserOrder", userOrders.toString())
         Log.d("dataSetOG", originalValues.toString())
         adapter.notifyDataSetChanged()
@@ -153,6 +154,7 @@ class MyOrderItemFragment : Fragment() {
         }
         processingButton()
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is homeActivity) {
@@ -176,14 +178,28 @@ class MyOrderItemFragment : Fragment() {
                     )
                 }
 
-
                 // thành công => viết review
-                else if (orderItem.status.contains("Thành công") && !orderItem.status.contains("trả thành công", true)){
-                    val detailFragment = OrderDetailCaseCompletedFragment.newInstance(orderItem.trackingNumber)
-                    (context).changeFragmentContainer(detailFragment, (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1])
+                else if (orderItem.status.contains("Thành công") && !orderItem.status.contains(
+                        "trả thành công",
+                        true
+                    )
+                ) {
+                    val detailFragment =
+                        OrderDetailCaseCompletedFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(
+                        detailFragment,
+                        (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
+                    )
                 }
                 // đơn bị huỷ thành công (ko thành công) => viết review
-                else {
+                else if (orderItem.status.contains("huỷ", true)) {
+                    val detailFragment =
+                        OrderDetailCaseCompletedFragment.newInstance(orderItem.trackingNumber)
+                    (context).changeFragmentContainer(
+                        detailFragment,
+                        (context).smoothBottomBarStack[(context).smoothBottomBarStack.size - 1]
+                    )
+                } else {
                     val detailFragment =
                         OrderDetailCaseReturnWithResultFragment.newInstance(orderItem.trackingNumber)
                     (context).changeFragmentContainer(
@@ -253,15 +269,19 @@ class MyOrderItemFragment : Fragment() {
     fun returnedButton() {
         filterStatus("trả")
     }
-    fun returnProcessingButton(){
+
+    fun returnProcessingButton() {
         filterStatus("trả đang duyệt")
     }
-    fun returnSuccessButton(){
+
+    fun returnSuccessButton() {
         filterStatus("trả thành công")
     }
-    fun returnFailedButton(){
+
+    fun returnFailedButton() {
         filterStatus("bị từ chối")
     }
+
     fun deliveredButton() {
         filterStatus("đã giao")
     }

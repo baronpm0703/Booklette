@@ -64,4 +64,9 @@ class UserFavoritesBookRVAdapter(
         }
 
     }
+
+    fun removeAt(index: Int) {
+        wishList?.removeAt(index)   // items is a MutableList
+        notifyItemRemoved(index)
+    }
 }

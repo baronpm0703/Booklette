@@ -142,36 +142,20 @@ class CheckOutFragment : Fragment() {
             binding.recieverPhone.text = selectedAddress.receiverPhone
             binding.addressNumber.text = selectedAddress.addressNumber
             binding.addressZone.text = selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
+            binding.placeOrderBtn.isEnabled = true
+            binding.placeOrderBtn.setBackgroundResource(R.drawable.button_go_to_check_out)
+
         }
         else{
-            db.collection("accounts").whereEqualTo("UID", auth.uid).get()
-                .addOnSuccessListener { documents ->
-                    if (documents.size() != 1) return@addOnSuccessListener
-                    for (document in documents) {
-                        // Get avatar and seller's name
-                        if (document.data.get("shippingAddress") != null) {
-                            val shippingAddressArray = document.data.get("shippingAddress") as? ArrayList<Map<String, Any>>
-                            shippingAddressArray?.let { shippingAddressArrayData ->
-                                val receiverName = shippingAddressArrayData[0]["receiverName"] as? String ?: ""
-                                val receiverPhone = shippingAddressArrayData[0]["receiverPhone"] as? String ?: ""
-                                val province = shippingAddressArrayData[0]["province"] as? String ?: ""
-                                val city = shippingAddressArrayData[0]["city"] as? String ?: ""
-                                val ward = shippingAddressArrayData[0]["ward"] as? String ?: ""
-                                val addressNumber = shippingAddressArrayData[0]["addressNumber"] as? String ?: ""
-                                val shipLabel = shippingAddressArrayData[0]["shipLabel"] as? String ?: ""
-                                binding.recieverName.text = receiverName
-                                binding.recieverPhone.text = receiverPhone
-                                binding.addressNumber.text = addressNumber
-                                binding.addressZone.text = province + ", " + city + ", " + ward
-                                adapter.notifyDataSetChanged()
-                            }
-                        }
-                        else{
-                            binding.addressEmpty.visibility = View.VISIBLE
+            binding.addressEmpty.visibility = View.VISIBLE
+            binding.placeOrderBtn.isEnabled = false
+            binding.placeOrderBtn.setBackgroundResource(R.drawable.button_go_to_check_out_disabled)
+            binding.shiplb.visibility= View.GONE
+            binding.recieverName.visibility= View.GONE
+            binding.recieverPhone.visibility= View.GONE
+            binding.addressNumber.visibility= View.GONE
+            binding.addressZone.visibility= View.GONE
 
-                        }
-                    }
-                }
         }
 
 
@@ -288,7 +272,7 @@ class CheckOutFragment : Fragment() {
                         ),
                         "status" to "Đang xử lý",
                         "beforeDiscount" to totalAmount,
-                        "totalSum" to (totalPayment * 1000.0F),
+                        "totalSum" to (totalPayment),
                         "shippingAddress" to "${binding.recieverName.text} - ${binding.recieverPhone.text} - ${binding.addressNumber.text} ${binding.addressZone.text}"
                     )
 
@@ -453,7 +437,9 @@ class CheckOutFragment : Fragment() {
                         val tmp = capturePayPalOrder(token, orderId)
 //                        Toast.makeText(activity, tmp.toString(), Toast.LENGTH_SHORT).show()
 
-                        val selectedItemsMap: MutableMap<Any, HashMap<Any, Any>> = mutableMapOf()
+                        val storeItemMap: MutableMap<Any, MutableMap<Any, HashMap<Any, Any>>> =
+                            mutableMapOf()
+
                         var totalAmount = 0.0F
 
                         for (cartObject in selectedItems) {
@@ -464,17 +450,38 @@ class CheckOutFragment : Fragment() {
                             // Create HashMap with quantity and totalSum
                             val itemData = hashMapOf<Any, Any>(
                                 "quantity" to cartObject.bookQuantity,
-                                "totalSum" to totalSum
+                                "totalSum" to totalSum,
                             )
 
-                            // Add to selectedItemsMap with bookID as key
+                            val selectedItemsMap: MutableMap<Any, HashMap<Any, Any>> = mutableMapOf()
                             selectedItemsMap[cartObject.bookID.toString()] = itemData
+                            // Add to selectedItemsMap with bookID as key
+
+                            // Add to the map with same storeID
+                            val storeID = cartObject.storeID.toString()
+                            if (storeItemMap.containsKey(storeID)) {
+                                // If storeID already exists, retrieve its corresponding map
+                                val existingMap =
+                                    storeItemMap[storeID] as MutableMap<Any, HashMap<Any, Any>>
+
+                                // Update the existing map with new data
+                                existingMap.putAll(selectedItemsMap)
+
+                                // Update storeItemMap with the modified map
+                                storeItemMap[storeID] = existingMap
+                            } else {
+                                // If storeID doesn't exist, simply add the selectedItemsMap
+                                storeItemMap[storeID] = selectedItemsMap
+                            }
                         }
+
+                        val totalPaymentText = binding.totalPaymentInPaymentDetail.text.toString().replace(",", "").split(" ")[0]
+                        val totalPayment = if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() else 0.0F
 
                         val data: HashMap<Any, Any> = hashMapOf(
                             "creationDate" to Timestamp(Date()),
                             "customerID" to auth.currentUser!!.uid.toString(),
-                            "items" to selectedItemsMap,
+                            "items" to storeItemMap,
                             "paymentMethod" to hashMapOf<Any, Any>(
                                 "Type" to "Paypal",
                                 "cardHolder" to "",
@@ -482,7 +489,8 @@ class CheckOutFragment : Fragment() {
                                 "expiryDate" to ""
                             ),
                             "status" to "Thành công",
-                            "totalSum" to totalAmount,
+                            "beforeDiscount" to totalAmount,
+                            "totalSum" to (totalPayment),
                             "shippingAddress" to (binding.recieverName.text.toString() + " - " +
                                                     binding.recieverPhone.text.toString() + " - " +
                                                     binding.addressNumber.text.toString() + " " +
