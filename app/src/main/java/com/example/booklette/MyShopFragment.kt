@@ -66,20 +66,27 @@ class MyShopFragment : Fragment() {
 				if (documents.size() != 1) return@addOnSuccessListener	// Failsafe
 
 				for (document in documents) {
-					// Get avatar and seller's name
+					// Get avatar
 					val usrAvtIV = view.findViewById<ImageView>(R.id.usrAvt)
-					Picasso.get()
-						.load(document.getString("avt"))
-						.into(usrAvtIV)
-					val sellerNameTV = view.findViewById<TextView>(R.id.sellerName)
-					sellerNameTV.text = document.getString("fullname")
+					val avt = document.getString("avt")
+					val defaultAvt = "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Accounts%2Fdefault.png?alt=media&token=fd80f83e-7717-4279-a090-4dc97fa435b9"
+					if (!avt.isNullOrEmpty())
+						Picasso.get()
+							.load(avt)
+							.into(usrAvtIV)
+					else
+						Picasso.get()
+							.load(defaultAvt)
+							.into(usrAvtIV)
 
 					Handler().postDelayed({
 						usrAvtIV.visibility = View.VISIBLE
-						sellerNameTV.visibility = View.VISIBLE
 					}, 2000)
 
 					document.getDocumentReference("store")!!.get().addOnSuccessListener { storeSnapshot ->
+						// Get seller's name
+						val sellerNameTV = view.findViewById<TextView>(R.id.sellerName)
+						sellerNameTV.text = storeSnapshot.get("storeName").toString()
 						// Get shop's follow counts and average rating score
 						val followerTV = view.findViewById<TextView>(R.id.followerCnt)
 						followerTV.text = storeSnapshot.get("followers").toString()
@@ -89,6 +96,7 @@ class MyShopFragment : Fragment() {
 						shopRatingTV.text = String.format("%.1f", (storeSnapshot.get("rating") as ArrayList<Float>).toFloatArray().average())
 
 						Handler().postDelayed({
+							sellerNameTV.visibility = View.VISIBLE
 							followerTV.visibility = View.VISIBLE
 							followingTV.visibility = View.VISIBLE
 							followingTV.visibility = View.VISIBLE
@@ -100,6 +108,10 @@ class MyShopFragment : Fragment() {
 		requireActivity().supportFragmentManager.beginTransaction()
 			.replace(R.id.tabDisplayFCV, shopTab)
 			.commit()
+
+		view.findViewById<ImageView>(R.id.backBtn).setOnClickListener {
+			requireActivity().onBackPressedDispatcher.onBackPressed()
+		}
 
 		return view
 	}

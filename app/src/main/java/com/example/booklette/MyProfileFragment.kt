@@ -76,6 +76,13 @@ class MyProfileFragment : Fragment() {
 				)
 			}
 		}
+		// Profile setting
+		binding.settingsOption.setOnClickListener {
+			val profileSettingFragment = ProfileSettingFragment()
+
+			val homeAct = (activity as homeActivity)
+			homeAct.changeFragmentContainer(profileSettingFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+		}
 		//
 		binding.favorites.setOnClickListener {
 			val userFavoritesBookFragment = UserFavoritesBookFragment()

@@ -52,6 +52,10 @@ class ManageShopShopVouchersFragment : Fragment() {
 			)
 		}
 
+		view.findViewById<ImageView>(R.id.backBtn).setOnClickListener {
+			requireActivity().onBackPressedDispatcher.onBackPressed()
+		}
+
 		return view
 	}
 
