@@ -9,7 +9,7 @@
     android:layout_marginRight="20dp"
     android:layout_marginBottom="0dp"
     android:background="@drawable/round_corner_order_item_white_with_shadow"
-    android:backgroundTint="#FF474C"
+    android:backgroundTint="#D45555"
     android:elevation="5dp"
     android:orientation="horizontal">
 
