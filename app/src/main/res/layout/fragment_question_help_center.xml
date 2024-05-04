@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CartFragment">
+
+    <LinearLayout
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:background="#D45555"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivBackToPrev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/back_help_center"></ImageView>
+
+            <TextView
+                android:id="@+id/wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/helpCenter"
+                android:textColor="@color/white"
+                android:textSize="21dp"
+                android:textStyle="bold"></TextView>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/layoutQuestion1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/test"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="#F6E4E4"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Shop safely with booklette"
+                    android:textAlignment="center"
+                    android:textColor="#D45555"
+                    android:textSize="9pt"
+                    android:textStyle="bold"></TextView>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+                <ImageView
+                    android:id="@+id/tv1"
+                    android:layout_width="75dp"
+                    android:layout_height="102dp"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/q1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                </ImageView>
+
+                <LinearLayout
+                    android:id="@+id/ln5"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:paddingEnd="10dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.013"
+                    app:layout_constraintStart_toEndOf="@+id/tv1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.68">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1. Only make transactions on the booklette application"
+                        android:layout_marginRight="10dp"
+                        android:textColor="#D45555"
+                        android:textSize="6pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th centur"
+                        android:textColor="@color/black"
+                        android:textSize="4pt"
+                        android:textStyle="bold"></TextView>
+
+
+
+
+
+
+
+
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+                <ImageView
+                    android:id="@+id/tv2"
+                    android:layout_width="72dp"
+                    android:layout_height="102dp"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/q1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                </ImageView>
+
+                <LinearLayout
+                    android:id="@+id/ln6"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:paddingEnd="10dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.013"
+                    app:layout_constraintStart_toEndOf="@+id/tv2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.68">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1. Only make transactions on the booklette application"
+                        android:textColor="#D45555"
+                        android:layout_marginRight="10dp"
+
+                        android:textSize="6pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th centur"
+                        android:textColor="@color/black"
+                        android:textSize="4pt"
+                        android:textStyle="bold"></TextView>
+
+
+
+
+
+
+
+
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+                <ImageView
+                    android:id="@+id/tv3"
+                    android:layout_width="72dp"
+                    android:layout_height="102dp"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/q1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                </ImageView>
+
+                <LinearLayout
+                    android:id="@+id/ln7"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:paddingEnd="10dp"
+                    android:layout_marginRight="15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.013"
+                    app:layout_constraintStart_toEndOf="@+id/tv3"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.68">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1. Only make transactions on the booklette application"
+                        android:textColor="#D45555"
+                        android:layout_marginRight="10dp"
+
+                        android:textSize="6pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th centur"
+                        android:textColor="@color/black"
+                        android:textSize="4pt"
+                        android:textStyle="bold"></TextView>
+
+
+
+
+
+
+
+
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutQuestion2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/test"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="#F6E4E4"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:text="Booklette Terms"
+                    android:textAlignment="center"
+                    android:textColor="#D45555"
+                    android:textSize="9pt"
+                    android:textStyle="bold"></TextView>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:maxHeight="300dp"> <!-- Set a maximum height here -->
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Set height of the LinearLayout to wrap_content -->
+                <LinearLayout
+                    android:id="@+id/ln11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.013"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.68">
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="A. SCOPE AND APPLICABILITY"
+                        android:textColor="#D45555"
+                        android:layout_marginRight="10dp"
+
+                        android:textSize="6pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1.Applicable Parties"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="This regulation applies to all Sellers on the Booklette Platform"
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2.Scope of Application"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="This regulation governs the posting of products on the Booklette Platform."
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="B.GENERAL PROVISIONS"
+                        android:textColor="#D45555"
+                        android:layout_marginRight="10dp"
+                        android:paddingTop="5dp"
+                        android:textSize="6pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1.Acceptance of Terms"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="By using the Booklette app, you agree to abide by our terms and conditions. If you do not agree with any of the terms, please stop using the app immediately."
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1.Acceptance of Terms"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="By using the Booklette app, you agree to abide by our terms and conditions. If you do not agree with any of the terms, please stop using the app immediately."
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1.Acceptance of Terms"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="By using the Booklette app, you agree to abide by our terms and conditions. If you do not agree with any of the terms, please stop using the app immediately."
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1.Acceptance of Terms"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="By using the Booklette app, you agree to abide by our terms and conditions. If you do not agree with any of the terms, please stop using the app immediately."
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1.Acceptance of Terms"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="By using the Booklette app, you agree to abide by our terms and conditions. If you do not agree with any of the terms, please stop using the app immediately."
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1.Acceptance of Terms"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="By using the Booklette app, you agree to abide by our terms and conditions. If you do not agree with any of the terms, please stop using the app immediately."
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1.Acceptance of Terms"
+                        android:textColor="@color/black"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:textSize="5pt"
+                        android:textStyle="bold"></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="By using the Booklette app, you agree to abide by our terms and conditions. If you do not agree with any of the terms, please stop using the app immediately."
+                        android:textColor="@color/black"
+                        android:textSize="5pt"></TextView>
+
+                </LinearLayout>
+                </ScrollView>
+
+
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

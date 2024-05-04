@@ -364,4 +364,6 @@
     <string name="orderDetailReturnAcceptLabel">Bạn có chắc rằng chấp nhận yêu cầu này?</string>
     <string name="orderShopDetailReturnAccept">Yêu cầu đã được chấp thuận.</string>
     <string name="orderShopDetailReturnReject">Yêu cầu đã bị từ chối.</string>
+    <string name="helpCenter">Trung tâm hỗ trợ</string>
+    <string name="topQuestion">Câu hỏi phổ biến</string>
 </resources>
