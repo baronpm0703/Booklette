@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.app.ActionBar.LayoutParams
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -81,7 +82,10 @@ class OrderDetailCaseCompletedFragment : Fragment() {
 //                        }
                     val totalMoney = (orderData?.get("totalSum") as Number).toLong()
                     val status = orderData?.get("status") as String
-
+                    if (!status.contains("thành công", true)){
+                        binding.orderDetailViewEInvoiceButton.visibility = View.GONE
+                        binding.orderDetailReviewButton.layoutParams.width = LayoutParams.MATCH_PARENT
+                    }
                     val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
                     val paymentMethodType = paymentMethod?.get("Type")
                     val shippingAddress = orderData?.get("shippingAddress") as String
