@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
@@ -58,6 +59,8 @@ class CategoryFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
+    private var wasSearchOpened: Boolean = false
+    private var speechResult: String = ""
     private val REQ_CODE_SPEECH_INPUT = 100
 
     private var fuzzySearchArraySample = ArrayList<Map<String, String>>()
@@ -151,12 +154,23 @@ class CategoryFragment : Fragment() {
                 Log.i("State", enabled.toString())
 
                 if (enabled) {
+                    if (speechResult.isNotEmpty()) {
+                        binding.searchBar.text = speechResult
+                        wasSearchOpened = true
+                    }
+//                        Handler().postDelayed({
+//                            binding.searchBar.text = speechResult
+//                        }, 1000)
                     binding.relativeLayout.visibility = View.GONE
 //                    binding.filterCategorySearchPage.visibility = View.GONE
                     binding.TopSearchLayout.visibility = View.VISIBLE
                     binding.searchBar.setPadding(0, binding.relativeLayout.height / 2, 0,  0)
 
                 } else {
+                    if (speechResult.isNotEmpty() && wasSearchOpened) {
+                        speechResult = ""
+                        wasSearchOpened = false
+                    }
                     binding.searchBar.setPadding(0)
                     binding.relativeLayout.visibility = View.VISIBLE
 //                    binding.filterCategorySearchPage.visibility = View.VISIBLE
@@ -170,36 +184,40 @@ class CategoryFragment : Fragment() {
 
                 // Define the available sample to search, and attribute to which we want our client input compare
                 val sfs = SimpleFuzzySearch(fuzzySearchArraySample, arrayListOf("bookName", "genre", "author"))
-                // Line break and debug for more result
-                val resultFromFuzzySearch = sfs.search(wordToSearch) as ArrayList // Implement my smart search algorithms
-                // Define prospect fragment
-                val productList = ProductList()
-                val args = Bundle()
+                val tempRes = sfs.search(wordToSearch)
+                if (tempRes.isNotEmpty()) {
+                    // Line break and debug for more result
+                    val resultFromFuzzySearch = tempRes as ArrayList // Implement my smart search algorithms
+                    // Define prospect fragment
+                    val productList = ProductList()
+                    val args = Bundle()
 
-                // Conditions to define attribute to which client input belong
-                // Usually, if the user enter genre keyword, the first array's item have the "genre" attribute type
-                if (resultFromFuzzySearch.isNotEmpty() && resultFromFuzzySearch[0][1] == "genre") {
-                    // The "resultFromFuzzySearch" return an Array contain possible/available result relate to client input
-                    val obj = resultFromFuzzySearch[0][0] as Map<String, String>
-                    args.putString("Genre", obj["genre"])
-                } else { // Other case, which have bookName or author of book relate to input
-                    val listOfBookName = ArrayList<String>() // Just focus on the BookName cause productList about books..
-                    resultFromFuzzySearch.forEach { item ->
-                        // Place a line break here to watch the structure of the item
-                        val obj = item[0] as Map<String, String>
-                        val bookName = obj["bookName"].toString()
+                    // Conditions to define attribute to which client input belong
+                    // Usually, if the user enter genre keyword, the first array's item have the "genre" attribute type
+                    if (resultFromFuzzySearch.isNotEmpty() && resultFromFuzzySearch[0][1] == "genre") {
+                        // The "resultFromFuzzySearch" return an Array contain possible/available result relate to client input
+                        val obj = resultFromFuzzySearch[0][0] as Map<String, String>
+                        args.putString("Genre", obj["genre"])
+                    } else { // Other case, which have bookName or author of book relate to input
+                        val listOfBookName = ArrayList<String>() // Just focus on the BookName cause productList about books..
+                        resultFromFuzzySearch.forEach { item ->
+                            // Place a line break here to watch the structure of the item
+                            val obj = item[0] as Map<String, String>
+                            val bookName = obj["bookName"].toString()
 
-                        listOfBookName.add(bookName)
+                            listOfBookName.add(bookName)
+                        }
+                        args.putString("WordToSearch", wordToSearch)
+                        args.putStringArrayList("SearchResult", listOfBookName)
                     }
-                    args.putString("WordToSearch", wordToSearch)
-                    args.putStringArrayList("SearchResult", listOfBookName)
-                }
 
-                // Add args to fragment we 'bout change to
-                productList.arguments = args
-                // Have to cast homePage to "activity as HomePage", otherwise the supportFragment can recognize the host
-                val homeAct = (activity as homeActivity)
-                homeAct.changeFragmentContainer(productList, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
+                    // Add args to fragment we 'bout change to
+                    productList.arguments = args
+                    // Have to cast homePage to "activity as HomePage", otherwise the supportFragment can recognize the host
+                    val homeAct = (activity as homeActivity)
+                    homeAct.changeFragmentContainer(productList, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]) //Let the homePage handle changing fragment
+                }
+                else binding.searchBar.closeSearch()
             }
 
             override fun onButtonClicked(buttonCode: Int) {
@@ -220,13 +238,12 @@ class CategoryFragment : Fragment() {
         // Handle behavior of the search bar, may fit with adding effect
         binding.searchBar.addTextChangeListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
             }
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                Log.d("LOG_TAG", javaClass.simpleName + " text changed " + binding.searchBar.getText())
+                Log.d("LOG_TAG", javaClass.simpleName + " text changed " + binding.searchBar.text)
                 // send the entered text to our filter and let it manage everything
-                if (customSuggestionAdapter != null) {
-                    customSuggestionAdapter.getFilter().filter(binding.searchBar.getText())
-                }
+                customSuggestionAdapter?.filter?.filter(binding.searchBar.text)
             }
             override fun afterTextChanged(editable: Editable) {}
         })
@@ -282,8 +299,8 @@ class CategoryFragment : Fragment() {
                     val result = data
                         .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
                     Toast.makeText(requireActivity(), result!![0], Toast.LENGTH_SHORT).show()
-                    binding.searchBar.setPlaceHolder(result[0])
-                    binding.searchBar.text = result[0]
+//                    binding.searchBar.text = result[0]
+                    speechResult = result.reduce { accumulator, element -> "$accumulator, $element" }
                 }
             }
         }

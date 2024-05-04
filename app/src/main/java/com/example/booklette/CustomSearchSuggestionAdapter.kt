@@ -96,7 +96,7 @@ class CustomSuggestionAdapter(
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 filteredSuggestions.clear()
-                val resultsList = results?.values as List<String>
+                val resultsList = results?.values as List<String> ?: emptyList()
                 filteredSuggestions.addAll(resultsList.take(resultsList.size))
                 notifyDataSetChanged()
             }
