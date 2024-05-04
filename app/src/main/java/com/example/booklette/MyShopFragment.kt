@@ -109,6 +109,10 @@ class MyShopFragment : Fragment() {
 			.replace(R.id.tabDisplayFCV, shopTab)
 			.commit()
 
+		view.findViewById<ImageView>(R.id.backBtn).setOnClickListener {
+			requireActivity().onBackPressedDispatcher.onBackPressed()
+		}
+
 		return view
 	}
 

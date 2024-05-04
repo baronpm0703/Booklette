@@ -9,7 +9,7 @@
         app:layout_constraintBottom_toBottomOf="parent" android:background="#FFFFFF"
 >
     <ImageView
-            android:src="@drawable/back"
+            android:src="@drawable/back_black"
             android:layout_width="31dp"
             android:layout_height="29dp" android:id="@+id/backBtn"
             app:layout_constraintTop_toTopOf="parent"

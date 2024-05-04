@@ -124,6 +124,10 @@ class ManageShopBooksFragment : Fragment() {
 
 		addBookDialog(view)
 
+		view.findViewById<ImageView>(R.id.backBtn).setOnClickListener {
+			requireActivity().onBackPressedDispatcher.onBackPressed()
+		}
+
 		return view
 	}
 
@@ -447,6 +451,9 @@ class ManageShopBooksFragment : Fragment() {
 	}
 
 	private fun setBookListViews(view: View, bookList: ArrayList<MyShopBookObject>) {
+		// Stop this function if fragment is already destroyed
+		if (!isAdded || activity == null) return
+
 		val content = view.findViewById<LinearLayout>(R.id.bookListScrollViewContent)
 
 		for (book in bookList) {

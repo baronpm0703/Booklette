@@ -23,12 +23,14 @@ import com.example.booklette.databinding.EditBookInShopDialogBinding
 import com.example.booklette.databinding.FragmentManageshopBooksBinding
 import com.example.booklette.databinding.FragmentManageshopDiscountprogramsBinding
 import com.example.booklette.databinding.FragmentMyshopBinding
+import com.example.booklette.databinding.FragmentProfilesettingBinding
 import com.example.booklette.model.DiscountProgramObject
 import com.example.booklette.model.HRecommendedBookObject
 import com.example.booklette.model.ManageShopNewBookObject
 import com.example.booklette.model.MyShopBookObject
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
@@ -36,29 +38,30 @@ import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
+import io.getstream.chat.android.ui.common.state.messages.Edit
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
 import kotlin.math.abs
 import kotlin.math.round
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ManageShopDiscountProgramsFragment.newInstance] factory method to
+ * Use the [ProfileSettingFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ManageShopDiscountProgramsFragment : Fragment() {
+class ProfileSettingFragment : Fragment() {
 	private lateinit var storeRef: DocumentReference
 
-	private var _binding: FragmentManageshopDiscountprogramsBinding? = null
+	private var _binding: FragmentProfilesettingBinding? = null
 
 	private val binding get() = _binding!!
-	private val bookViews = arrayListOf<View>()
 
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View? {
 		// Inflate the layout for this fragment
-		_binding = FragmentManageshopDiscountprogramsBinding.inflate(inflater, container, false)
+		_binding = FragmentProfilesettingBinding.inflate(inflater, container, false)
 		val view = binding.root
 
 		val auth = Firebase.auth
@@ -69,21 +72,24 @@ class ManageShopDiscountProgramsFragment : Fragment() {
 
 				for (document in documents) {
 					storeRef = document.getDocumentReference("store")!!
+
+					val fullNameET = view.findViewById<EditText>(R.id.nameET)
+					val dobET = view.findViewById<EditText>(R.id.dobET)
+					val phoneET = view.findViewById<EditText>(R.id.phoneET)
+					val emailET = view.findViewById<EditText>(R.id.emailET)
+					val addressET = view.findViewById<EditText>(R.id.addressET)
+
+					fullNameET.setText(document.getString("fullname").toString())
+					val format = SimpleDateFormat("yyyy-MM-dd")
+					dobET.setText(format.format((document.get("dob") as Timestamp).toDate()))
+					phoneET.setText(document.getString("phone").toString())
+					emailET.setText(auth.currentUser?.email)
+					addressET.setText(document.getString("address").toString())
+
+					editProfileDialog(view)
+					changePasswordDialog(view)
 				}
 			}
-
-		val comingSoonTabBtn = view.findViewById<Button>(R.id.comingSoonTabBtn)
-		comingSoonTabBtn.setBackground(context?.let { ContextCompat.getDrawable(it, R.drawable.manageshop_discount_tab_chosen) })
-		comingSoonTabBtn.setTextColor(Color.WHITE)
-
-		val addDiscountProgramsFragment = ManageShopDiscountProgramsAddFragment()
-		val addProgramBtn = view.findViewById<Button>(R.id.addProgramBtn)
-		addProgramBtn.setOnClickListener {
-			(context as homeActivity).changeFragmentContainer(
-				addDiscountProgramsFragment,
-				(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
-			)
-		}
 
 		view.findViewById<ImageView>(R.id.backBtn).setOnClickListener {
 			requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -92,37 +98,45 @@ class ManageShopDiscountProgramsFragment : Fragment() {
 		return view
 	}
 
-	private fun addNewProgram(programObject: DiscountProgramObject) {
-		val db = Firebase.firestore
+	private fun editProfileDialog(view: View) {
+		val editProfileBtn = view.findViewById<TextView>(R.id.editProfileBtn)
+		val editProfileDialog = ProfileSettingEditProfileDialog()
+		editProfileBtn.setOnClickListener {
+			activity?.let {
+				editProfileDialog.show(it) {
+					style(SheetStyle.BOTTOM_SHEET)
+					onPositive {
 
-		val discColl = db.collection("discounts")
-		discColl.get().addOnSuccessListener {
-			val documents = it.documents
-			var max: Long = 0
-			for (document in documents) {
-				val id = document.get("discountID").toString().filter { it.isDigit() }.toLong()
-
-				if (id > max) max = id
+					}
+				}
 			}
-			val newDiscountID = "DSC" + (max + 1)
+		}
+	}
 
-			val newDiscMap = hashMapOf(
-				"discountID" to newDiscountID,
-				"discountIntroduction" to programObject.discountIntroduction,
-				"discountName" to programObject.discountName,
-				"discountType" to "product",
-				"endDate" to programObject.endDate,
-				"orderLimit" to programObject.orderLimit,
-				"percent" to programObject.percent,
-				"startDate" to programObject.startDate
-			)
+	private fun changePasswordDialog(view: View) {
+		val changePasswordBtn = view.findViewById<TextView>(R.id.changePasswordBtn)
+		val changePasswordDialog = ProfileSettingChangePasswordDialog()
+		changePasswordBtn.setOnClickListener {
+			activity?.let {
+				changePasswordDialog.show(it) {
+					style(SheetStyle.BOTTOM_SHEET)
+					onPositive {
+						val auth = Firebase.auth
+						val user = auth.currentUser
 
-			discColl.add(newDiscMap).addOnSuccessListener {
-				storeRef.get().addOnSuccessListener {
-					val updateDiscMap = hashMapOf(
-						"items/${programObject.productID}/discount" to newDiscountID
-					)
-					storeRef.update(updateDiscMap as Map<String, Any>)
+						val credential =
+							user?.email?.let { it1 -> EmailAuthProvider.getCredential(it1, changePasswordDialog.oldPassword) }
+						if (credential != null) {
+							user.reauthenticate(credential).addOnSuccessListener {
+								user.updatePassword(changePasswordDialog.newPassword).addOnSuccessListener {
+									dismiss()
+									Toast.makeText(context, resources.getString(R.string.profilesetting_password_change_success), Toast.LENGTH_SHORT).show()
+								}
+							}.addOnFailureListener {
+								Toast.makeText(context, resources.getString(R.string.profilesetting_password_change_wrong), Toast.LENGTH_SHORT).show()
+							}
+						}
+					}
 				}
 			}
 		}

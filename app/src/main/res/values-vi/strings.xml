@@ -228,6 +228,10 @@
     <string name="profilesetting_address">Địa chỉ</string>
     <string name="profilesetting_password">Mật khẩu</string>
     <string name="profilesetting_password_change">Đổi</string>
+    <string name="profilesetting_password_change_empty">Các trường không được bỏ trống</string>
+    <string name="profilesetting_password_change_nomatch">Mật khẩu mới và Nhập lại mật khẩu mới phải trùng nhau</string>
+    <string name="profilesetting_password_change_wrong">Mật khẩu cũ sai</string>
+    <string name="profilesetting_password_change_success">Đổi mật khẩu thành công!</string>
     <string name="profilesetting_password_change_flavor">Đổi mật khẩu</string>
     <string name="profilesetting_password_change_old">Mật khẩu cũ</string>
     <string name="profilesetting_password_change_new">Mật khẩu mới</string>

@@ -108,6 +108,10 @@ class ManageShopFragment : Fragment() {
 			programDialog.show()
 		}
 
+		view.findViewById<ImageView>(R.id.backBtn).setOnClickListener {
+			requireActivity().onBackPressedDispatcher.onBackPressed()
+		}
+
 		return view
 	}
 

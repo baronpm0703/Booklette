@@ -260,6 +260,10 @@
     <string name="profilesetting_address">Address</string>
     <string name="profilesetting_password">Password</string>
     <string name="profilesetting_password_change">Change</string>
+    <string name="profilesetting_password_change_empty">All fields must be filled</string>
+    <string name="profilesetting_password_change_nomatch">New password and Repeat new password must match</string>
+    <string name="profilesetting_password_change_wrong">Wrong old password</string>
+    <string name="profilesetting_password_change_success">Password changed successfully!</string>
     <string name="profilesetting_password_change_flavor">Change Password</string>
     <string name="profilesetting_password_change_old">Old password</string>
     <string name="profilesetting_password_change_new">New password</string>

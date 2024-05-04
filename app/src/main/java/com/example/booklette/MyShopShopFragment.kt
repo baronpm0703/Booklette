@@ -183,6 +183,9 @@ class MyShopShopFragment : Fragment() {
 	}
 
 	private fun setDiscountItemViews(view: View, discounts: ArrayList<Triple<Long, Long, Long>>) {
+		// Stop this function if fragment is already destroyed
+		if (!isAdded || activity == null) return
+
 		val content = view.findViewById<LinearLayout>(R.id.discountHScrollContent)
 
 		for (discount in discounts) {
@@ -204,6 +207,9 @@ class MyShopShopFragment : Fragment() {
 	}
 
 	private fun setNewArrivalsItemViews(view: View, newArrivals: ArrayList<MyShopBookObject>) {
+		// Stop this function if fragment is already destroyed
+		if (!isAdded || activity == null) return
+
 		val content = view.findViewById<LinearLayout>(R.id.newArrivalsScrollViewContent)
 
 		for (newArrival in newArrivals) {
@@ -252,6 +258,9 @@ class MyShopShopFragment : Fragment() {
 	}
 
 	private fun setBestSellersItemViews(view: View, bestSellers: ArrayList<MyShopBookObject>) {
+		// Stop this function if fragment is already destroyed
+		if (!isAdded || activity == null) return
+
 		val content = view.findViewById<LinearLayout>(R.id.bestSellersScrollViewContent)
 
 		for (bestSeller in bestSellers) {
