@@ -4,23 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="170dp"
-    android:orientation="horizontal"
-    android:background="@drawable/round_corner_order_item_white_with_shadow"
-    android:layout_marginTop="0dp"
     android:layout_marginLeft="20dp"
+    android:layout_marginTop="0dp"
     android:layout_marginRight="20dp"
     android:layout_marginBottom="0dp"
-    android:elevation="5dp">
+    android:background="@drawable/round_corner_order_item_white_with_shadow"
+    android:backgroundTint="#FF474C"
+    android:elevation="5dp"
+    android:orientation="horizontal">
 
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/borderForShopName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/round_corner_order_item_white_with_border"
+        android:background="@drawable/round_corner_order_item_white_with_shadow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -31,15 +32,18 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Vo Chanh Tin BookStore" />
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <CheckBox
         android:id="@+id/orderDetailItemCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:buttonTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/borderForShopName"
         app:layout_constraintTop_toBottomOf="@+id/borderForShopName" />
@@ -62,27 +66,30 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/orderDetailItemImage"
         app:layout_constraintTop_toTopOf="@+id/orderDetailItemImage"
-        app:layout_constrainedWidth="true"
         tools:text="The Silence of the lamb" />
 
     <TextView
         android:id="@+id/orderDetailItemAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/white"
         android:textStyle="italic"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@+id/textView46"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/orderDetailItemName"
+        app:layout_constraintStart_toEndOf="@+id/orderDetailItemImage"
         app:layout_constraintTop_toBottomOf="@+id/orderDetailItemName"
         tools:text="Trần Đan Thư, Nguyễn Thanh Phương, Đinh Bá Tiến, Trần Minh Triết" />
 
@@ -92,6 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/order_item_quantity"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/orderDetailItemAuthor" />
 
@@ -100,11 +108,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        tools:text="TextView"
         android:textStyle="bold"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/textView46"
         app:layout_constraintStart_toEndOf="@+id/textView46"
-        app:layout_constraintTop_toTopOf="@+id/textView46" />
+        app:layout_constraintTop_toTopOf="@+id/textView46"
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/orderDetailItemPrice"
@@ -112,12 +121,12 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/orderDetailItemAmount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/orderDetailItemAmount"
         app:layout_constraintTop_toTopOf="@+id/orderDetailItemAmount"
         tools:text="TextView" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
