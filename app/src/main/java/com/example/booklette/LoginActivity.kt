@@ -1,5 +1,6 @@
 package com.example.booklette
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -83,8 +84,18 @@ open class LoginActivity : AppCompatActivity() {
         auth = Firebase.auth
         db = Firebase.firestore
 
-//        remember_me_manager = rememberMeManager(this)
+        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val rememberMe = sharedPreferences.getBoolean("rememberMe", false)
 
+        if (rememberMe) {
+            val email = sharedPreferences.getString("email", "")
+            binding.edtEmailSignIn.setText(email)
+
+            binding.cbRememberMe.isChecked = rememberMe
+        }
+
+//        remember_me_manager = rememberMeManager(this)
+//
 //        this.remember_me_manager.rmFlow.asLiveData().observe(this) {
 //            binding.cbRememberMe.isChecked = it
 //            if (it) {
@@ -199,7 +210,12 @@ open class LoginActivity : AppCompatActivity() {
                             )
 
 //                            GlobalScope.launch { remember_me_manager.storeUser(binding.cbRememberMe.isChecked, binding.edtEmailSignIn.text.toString()) }
+                            val editor = sharedPreferences.edit()
 
+                            editor.putBoolean("rememberMe", binding.cbRememberMe.isChecked)
+                            editor.putString("email", binding.edtEmailSignIn.text.toString())
+
+                            editor.apply()
 
                             val StreamUser = User(
                                 id = user!!.uid
