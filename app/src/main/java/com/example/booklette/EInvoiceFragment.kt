@@ -167,11 +167,20 @@ class EInvoiceFragment : Fragment() {
                 .addOnSuccessListener { document ->
                     val orderData = document.data
                     binding.orderId.text = orderID.toString()
-                    binding.subtotal.text = orderData?.get("beforeDiscount").toString()
+
+                    val afterFomartedSubTotalMoney = String.format("%,.0f", orderData?.get("beforeDiscount"))
+                    binding.subtotal.text = "$afterFomartedSubTotalMoney VND"
+
                     val discountMoney = (orderData?.get("totalSum").toString().toFloat()) - (orderData?.get("beforeDiscount").toString().toFloat())
-                    binding.discount.text = discountMoney.toString()
-                    binding.totalAmount.text = orderData?.get("totalSum").toString()
-                    binding.moneyCollected.text = orderData?.get("totalSum").toString()
+                    val afterFomartedDiscountMoney = String.format("%,.0f", discountMoney)
+                    binding.discount.text = "$afterFomartedDiscountMoney VND"
+
+                    val afterFomartedTotalAmountMoney = String.format("%,.0f", orderData?.get("totalSum"))
+                    binding.totalAmount.text = "$afterFomartedTotalAmountMoney VND"
+
+                    val afterFomartedMoneyCollected = String.format("%,.0f", orderData?.get("totalSum"))
+                    binding.moneyCollected.text = "$afterFomartedMoneyCollected VND"
+
                     binding.customerAddress.text = orderData?.get("shippingAddress").toString()
 
                     val timeStamp = orderData?.get("creationDate") as? Timestamp

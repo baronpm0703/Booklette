@@ -106,7 +106,80 @@ class ProfileSettingFragment : Fragment() {
 				editProfileDialog.show(it) {
 					style(SheetStyle.BOTTOM_SHEET)
 					onPositive {
+						val db = Firebase.firestore
+						val auth = Firebase.auth
 
+						// Upload avt to storage
+						val storageRef = Firebase.storage.reference
+						val bitmap = editProfileDialog.avt
+						val imageRef = storageRef.child("Accounts/${auth.uid}")
+						val baos = ByteArrayOutputStream()
+						if (bitmap != null) {
+							bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+						}
+						val data = baos.toByteArray()
+
+						if (editProfileDialog.avt != null) {
+							imageRef.putBytes(data).addOnSuccessListener {
+								it.storage.downloadUrl.addOnSuccessListener { result ->
+									val date = SimpleDateFormat("yyyy-MM-dd").parse(editProfileDialog.dob)
+									val dob = date?.let { it1 -> Timestamp(it1) }
+									val updatedData = hashMapOf(
+										"fullname" to editProfileDialog.name,
+										"phone" to editProfileDialog.phone,
+										"address" to editProfileDialog.address,
+										"dob" to dob,
+										"avt" to result
+									)
+
+									db.collection("accounts").whereEqualTo("UID", auth.uid).get().addOnSuccessListener {
+										val docs = it.documents
+
+										for (doc in docs) {
+											db.collection("accounts").document(doc.id).update(updatedData as Map<String, Any>).addOnSuccessListener {
+												Handler().postDelayed({
+													binding.nameET.setText(editProfileDialog.name)
+													binding.dobET.setText(editProfileDialog.dob)
+													binding.phoneET.setText(editProfileDialog.phone)
+													binding.emailET.setText(editProfileDialog.email)
+													binding.addressET.setText(editProfileDialog.address)
+
+													editProfileDialog.dismiss()
+												}, 10)
+											}
+										}
+									}
+								}
+							}
+						}
+						else {
+							val date = SimpleDateFormat("yyyy-MM-dd").parse(editProfileDialog.dob)
+							val dob = date?.let { it1 -> Timestamp(it1) }
+							val updatedData = hashMapOf(
+								"fullname" to editProfileDialog.name,
+								"phone" to editProfileDialog.phone,
+								"address" to editProfileDialog.address,
+								"dob" to dob
+							)
+
+							db.collection("accounts").whereEqualTo("UID", auth.uid).get().addOnSuccessListener {
+								val docs = it.documents
+
+								for (doc in docs) {
+									db.collection("accounts").document(doc.id).update(updatedData as Map<String, Any>).addOnSuccessListener {
+										Handler().postDelayed({
+											binding.nameET.setText(editProfileDialog.name)
+											binding.dobET.setText(editProfileDialog.dob)
+											binding.phoneET.setText(editProfileDialog.phone)
+											binding.emailET.setText(editProfileDialog.email)
+											binding.addressET.setText(editProfileDialog.address)
+
+											editProfileDialog.dismiss()
+										}, 10)
+									}
+								}
+							}
+						}
 					}
 				}
 			}

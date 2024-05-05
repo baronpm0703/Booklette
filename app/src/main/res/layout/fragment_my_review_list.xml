@@ -38,7 +38,7 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/cartSwipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="580dp"
+        android:layout_height="790dp"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -62,6 +62,7 @@
 
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/deleteAllBtn"
 
         android:layout_width="370dp"

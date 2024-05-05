@@ -162,6 +162,11 @@
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout2"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/fragment_product_list_grid_item_for_hcmus" />
-
+    <com.example.loadinganimation.LoadingAnimation
+        android:id="@+id/loadingAnimProductList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:barType="@drawable/blue_dot_anim"
+        app:enlarge="3"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

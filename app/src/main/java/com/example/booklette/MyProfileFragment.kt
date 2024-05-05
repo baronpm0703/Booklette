@@ -112,9 +112,16 @@ class MyProfileFragment : Fragment() {
 				for (document in documents) {
 					// Get avatar and seller's name
 					val usrAvtIV = view.findViewById<ImageView>(R.id.usrAvt)
-					Picasso.get()
-						.load(document.getString("avt"))
-						.into(usrAvtIV)
+					val avt = document.getString("avt")
+					val defaultAvt = "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Accounts%2Fdefault.png?alt=media&token=fd80f83e-7717-4279-a090-4dc97fa435b9"
+					if (!avt.isNullOrEmpty())
+						Picasso.get()
+							.load(avt)
+							.into(usrAvtIV)
+					else
+						Picasso.get()
+							.load(defaultAvt)
+							.into(usrAvtIV)
 					val sellerNameTV = view.findViewById<TextView>(R.id.sellerName)
 					sellerNameTV.text = document.getString("fullname")
 

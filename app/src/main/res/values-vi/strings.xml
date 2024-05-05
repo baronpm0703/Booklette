@@ -337,7 +337,7 @@
     <string name="pleaseWait">Vui lòng đợi...</string>
     <string name="return_instruction">Hãy chọn một hay nhiều quyển sách để trả!</string>
     <string name="my_order_detail_item_return_in_process">Yêu cầu trả đang duyệt</string>
-    <string name="view_e_invoice">Xem hoá đơn điện tử</string>
+    <string name="view_e_invoice">Hóa đơn điện tử</string>
     <string name="my_shop_order_label">Cửa hàng của tôi</string>
     <string name="my_shop_order_to_ship_button">Chờ giao hàng</string>
     <string name="my_shop_order_shipping_button">Đang giao</string>
