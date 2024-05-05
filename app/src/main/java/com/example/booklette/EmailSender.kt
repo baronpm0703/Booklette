@@ -164,9 +164,9 @@ class EmailSender(private val context: Context) {
             append(context.getString(R.string.orderDetailStatus) + " $status\n")
             append(context.getString(R.string.orderDayCreated) + " $date\n")
             if (userReason.isNotEmpty()){
-                append(context.getString(R.string.buyerReasonLabel) +" $userReason\n")
+                append(context.getString(R.string.buyerReasonLabel)  + ": "+" $userReason\n")
             }
-            else append(context.getString(R.string.buyerReasonLabel) + context.getString(R.string.no_reason_provided) + "\n")
+            else append(context.getString(R.string.buyerReasonLabel) + ": " + context.getString(R.string.no_reason_provided) + "\n")
             append(context.getString(R.string.email_thank_you))
         }
 
