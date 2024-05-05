@@ -14,6 +14,7 @@ import com.example.booklette.databinding.FragmentOrderDetailDeliveredBinding
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
@@ -65,6 +66,9 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
 
         var tempTotalOrgMoney: Long = 0
+        var bookSoldQuantity = mutableMapOf<String,Int>()
+        var shopIDlist = arrayListOf<String>()
+        var itemsMap : Map<String, Map<String, Any>> = emptyMap()
         orderID?.let {
             db.collection("orders")
                 .document(it)
@@ -74,7 +78,7 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
                     val timeStamp = orderData?.get("creationDate") as Timestamp
 
                     val date: Date? = timeStamp?.toDate()
-                    val itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
+                    itemsMap = (orderData?.get("items") as? Map<String, Map<String, Any>>)!!
 
                     val totalMoney = (orderData?.get("totalSum") as Number).toLong()
                     val status = orderData?.get("status") as String
@@ -102,6 +106,9 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
                             Log.d("shopID", shopID)
                             Log.d("itemId", itemId)
                             Log.d("itemData", itemData.toString())
+                            shopIDlist.add(shopID)
+                            val bookQuantity = ((itemData as Map<*, *>)["quantity"] as? Int) ?: 0
+                            bookSoldQuantity[itemId] = bookQuantity
 
                             db.collection("books")
                                 .whereEqualTo("bookID", itemId)
@@ -115,6 +122,7 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
                                         }
                                     }
                                 }
+
                         }
                     }
                     Tasks.whenAllComplete(fetchBookNamesTasks!!)
@@ -163,7 +171,62 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
                                     R.string.orderDetailConfirmSuccessfulArgument,
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                requireActivity().onBackPressedDispatcher.onBackPressed()
+                                Log.d("itemsMap", itemsMap.toString())
+                                val updateBookRemain = itemsMap?.flatMap { (shopID, itemMap) ->
+                                    itemMap.map { (itemId, itemData) ->
+                                        Log.d("shopID", shopID)
+                                        Log.d("itemId", itemId)
+                                        Log.d("itemData", itemData.toString())
+
+                                        val bookQuantity =
+                                            (((itemData as Map<*, *>)["quantity"] as? Number)?.toInt()) ?: 0
+                                        val shopAccount = db.collection("accounts").whereEqualTo("UID", shopID).limit(1).get()
+                                        shopAccount.addOnSuccessListener { accountSnapshots ->
+                                            for ( accountSnapshot in accountSnapshots){
+                                                val shopPersonalStoreRef = accountSnapshot["store"] as DocumentReference
+                                                shopPersonalStoreRef.get()
+                                                    .addOnSuccessListener { storeSnapshot ->
+                                                        val shopItems =
+                                                            storeSnapshot["items"] as Map<String, Map<String, Any>>
+                                                        val soldBookID = shopItems[itemId]
+                                                        var bookRemain =
+                                                            (soldBookID?.get("remain") as Number).toInt()
+                                                        var bookSold =
+                                                            (soldBookID?.get("sold") as Number).toInt()
+                                                        // Update bookRemain and bookSold based on bookQuantity
+                                                        Log.d("BookRemainSold", bookRemain.toString() + " " + bookSold.toString())
+                                                        Log.d("BookRemainSoldQuantity",
+                                                            bookQuantity.toString()
+                                                        )
+                                                        bookRemain -= bookQuantity
+                                                        bookSold += bookQuantity
+                                                        Log.d("BookRemainSold", bookRemain.toString() + " " + bookSold.toString())
+                                                        // Construct the update data
+                                                        val updateData = hashMapOf<String, Any>(
+                                                            "items.$itemId.remain" to bookRemain,
+                                                            "items.$itemId.sold" to bookSold
+                                                        )
+                                                        // Update the document in Firestore
+                                                        shopPersonalStoreRef.update(updateData)
+                                                            .addOnSuccessListener {
+                                                                Log.d("success", "Update book thanh cong")
+                                                            }
+                                                            .addOnFailureListener { e ->
+                                                                Log.e("error", e.toString())
+                                                            }
+                                                    }
+                                                    .addOnFailureListener { e ->
+                                                        Log.e("error", e.toString())
+                                                    }
+                                            }
+                                        }
+
+                                    }
+                                }
+                                Tasks.whenAllComplete(updateBookRemain)
+                                    .addOnSuccessListener {
+                                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                                    }
                             }?.addOnFailureListener {
                                 Toast.makeText(
                                     context,
@@ -172,8 +235,8 @@ class OrderDetailCaseDeliveredFragment : Fragment() {
                                 ).show()
 
                             }
-                        }
 
+                        }
                         DialogInterface.BUTTON_NEGATIVE -> {
 
                         }

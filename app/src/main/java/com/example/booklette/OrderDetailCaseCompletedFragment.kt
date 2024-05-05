@@ -59,8 +59,7 @@ class OrderDetailCaseCompletedFragment : Fragment() {
         val totalField = binding.orderDetailTotalField
 
         val orderItemLayout = binding.orderDetailProductsFragmentFrameLayout
-
-        var tempTotalOrgMoney: Long = 0
+        
         orderID?.let {
             db.collection("orders")
                 .document(it)
@@ -108,8 +107,8 @@ class OrderDetailCaseCompletedFragment : Fragment() {
                             Log.d("itemId", itemId)
                             Log.d("itemData", itemData.toString())
 
-                            totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
-                            tempTotalOrgMoney += (itemData["totalSum"] as? Long ?: 0)
+//                            totalQuantity += ((itemData as Map<*, *>)["quantity"] as? Long) ?: 0
+//                            tempTotalOrgMoney += (itemData["totalSum"] as? Long ?: 0)
                             db.collection("books")
                                 .whereEqualTo("bookID", itemId)
                                 .get()

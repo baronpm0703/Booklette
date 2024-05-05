@@ -132,20 +132,27 @@ class ProfileSettingFragment : Fragment() {
 										"avt" to result
 									)
 
+									val updatedStoreData = hashMapOf(
+										"storeAvatar" to result
+									)
+
 									db.collection("accounts").whereEqualTo("UID", auth.uid).get().addOnSuccessListener {
 										val docs = it.documents
 
 										for (doc in docs) {
 											db.collection("accounts").document(doc.id).update(updatedData as Map<String, Any>).addOnSuccessListener {
-												Handler().postDelayed({
-													binding.nameET.setText(editProfileDialog.name)
-													binding.dobET.setText(editProfileDialog.dob)
-													binding.phoneET.setText(editProfileDialog.phone)
-													binding.emailET.setText(editProfileDialog.email)
-													binding.addressET.setText(editProfileDialog.address)
 
-													editProfileDialog.dismiss()
-												}, 10)
+												doc.getDocumentReference("store")!!.update(updatedStoreData as Map<String, Any>).addOnSuccessListener {
+													Handler().postDelayed({
+														binding.nameET.setText(editProfileDialog.name)
+														binding.dobET.setText(editProfileDialog.dob)
+														binding.phoneET.setText(editProfileDialog.phone)
+														binding.emailET.setText(editProfileDialog.email)
+														binding.addressET.setText(editProfileDialog.address)
+
+														editProfileDialog.dismiss()
+													}, 10)
+												}
 											}
 										}
 									}
