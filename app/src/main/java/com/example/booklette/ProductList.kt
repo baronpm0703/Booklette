@@ -275,6 +275,7 @@ class ProductList : Fragment() {
                 requireActivity().theme.applyStyle(newTheme, true)
                 OptionSheet().show(it) {
                     title("Sort")
+                    titleColor(Color.parseColor("#000000"))
                     style(SheetStyle.BOTTOM_SHEET)
                     displayMode(DisplayMode.LIST)
                     with(

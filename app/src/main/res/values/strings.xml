@@ -249,7 +249,8 @@
     <string name="myprofile_my_wallets_epay_flavor">Top up your E-pay wallet to receive a voucher when paying</string>
     <string name="myprofile_my_wallets_voucher">My voucher</string>
     <string name="myprofile_my_wallets_voucher_flavor">Using vouchers at checkout helps you save more</string>
-    <string name="myprofile_my_orders">My Orders</string>
+    <string name="myprofile_my_shop_orders" >My Shop Orders</string>
+    <string name="myprofile_my_shop_orders_detail" >Orders Sent To Shop</string>
     <string name="myprofile_shipping_address">Shipping Address</string>
     <string name="myprofile_shipping_address_flavor">addresses</string>
     <string name="myprofile_payment_method">Payment Method</string>
