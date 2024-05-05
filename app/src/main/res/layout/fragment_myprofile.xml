@@ -142,7 +142,7 @@
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/myprofile_gear"
-                    android:id="@+id/imageView8"
+                    android:id="@+id/settingBtn"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginTop="57dp" app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="102dp" app:layout_constraintEnd_toStartOf="@+id/imageView6"

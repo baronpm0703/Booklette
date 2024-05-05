@@ -23,6 +23,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import com.google.rpc.Help
 import com.squareup.picasso.Picasso
 import kotlin.math.round
 
@@ -106,6 +107,14 @@ class ManageShopFragment : Fragment() {
 		}
 		view.findViewById<Button>(R.id.programBtn).setOnClickListener {
 			programDialog.show()
+		}
+
+		val helpCenterFragment = HelpCenterFragment()
+		view.findViewById<Button>(R.id.helpCenterBtn).setOnClickListener {
+			(context as homeActivity).changeFragmentContainer(
+				helpCenterFragment,
+				(context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+			)
 		}
 
 		view.findViewById<ImageView>(R.id.backBtn).setOnClickListener {

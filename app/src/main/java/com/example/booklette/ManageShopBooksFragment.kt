@@ -2,26 +2,16 @@ package com.example.booklette
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.os.Handler
-import android.provider.ContactsContract.CommonDataKinds.Im
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.compose.ui.text.intl.Locale
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.booklette.databinding.EditBookInShopDialogBinding
 import com.example.booklette.databinding.FragmentManageshopBooksBinding
-import com.example.booklette.databinding.FragmentMyshopBinding
-import com.example.booklette.model.HRecommendedBookObject
 import com.example.booklette.model.ManageShopNewBookObject
 import com.example.booklette.model.MyShopBookObject
 import com.google.firebase.Firebase
@@ -35,7 +25,6 @@ import com.maxkeppeler.sheets.core.SheetStyle
 import com.squareup.picasso.Picasso
 import java.io.ByteArrayOutputStream
 import kotlin.math.abs
-import kotlin.math.round
 
 /**
  * A simple [Fragment] subclass.
@@ -215,7 +204,7 @@ class ManageShopBooksFragment : Fragment() {
 						}
 
 					Handler().postDelayed({
-						val content = view?.findViewById<LinearLayout>(R.id.bookListScrollViewContent)
+						val content = view?.findViewById<LinearLayout>(R.id.discountListScrollViewContent)
 
 						var singleFrame: View = layoutInflater.inflate(R.layout.manageshop_book_item, null)
 						singleFrame.id = bookViews.size
@@ -482,7 +471,7 @@ class ManageShopBooksFragment : Fragment() {
 		// Stop this function if fragment is already destroyed
 		if (!isAdded || activity == null) return
 
-		val content = view.findViewById<LinearLayout>(R.id.bookListScrollViewContent)
+		val content = view.findViewById<LinearLayout>(R.id.discountListScrollViewContent)
 
 		for (book in bookList) {
 			var singleFrame: View = layoutInflater.inflate(R.layout.manageshop_book_item, null)
