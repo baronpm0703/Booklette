@@ -52,7 +52,7 @@ class ManageShopDiscountProgramsFragment : Fragment() {
 						val books = docSnapshot.get("items") as Map<String, Map<String, Any>>
 						for (book in books) {
 							val bookValue = book.value
-							
+
 							if (bookValue["discount"] != "") {
 								db.collection("discounts").whereEqualTo("discountID", bookValue["discount"]).get().addOnSuccessListener {
 									val discountDocs = it.documents
