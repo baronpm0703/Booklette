@@ -21,6 +21,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
     }
 
     buildTypes {
@@ -189,5 +190,7 @@ dependencies {
     implementation("com.github.varunest:sparkbutton:1.0.6")
 
     // JavaMail API
-    implementation("com.sun.mail:javax.mail:1.6.2")
+    implementation ("com.sun.mail:android-mail:1.6.2")
+    implementation ("com.sun.mail:android-activation:1.6.2")
+
 }

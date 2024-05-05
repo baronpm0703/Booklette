@@ -39,6 +39,7 @@ class OrderDetailItemListFragment : Fragment() {
 
     private var allowSelection by Delegates.notNull<Boolean>()
     private var allowMultipleSelection by Delegates.notNull<Boolean>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,6 +54,11 @@ class OrderDetailItemListFragment : Fragment() {
             allowMultipleSelection = it.getBoolean(ARG_MULTIPLE_CHECK)
 
         }
+    }
+    // Custom property to store the context
+    private lateinit var fragmentContext: Context
+    fun setContext(context: Context) {
+        fragmentContext = context
     }
     private lateinit var bookIDs: ArrayList<String>
     private lateinit var adapter: OrderDetailItemListRecyclerViewAdapter
@@ -165,6 +171,7 @@ class OrderDetailItemListFragment : Fragment() {
     fun getListClickedBookID(): List<String>{
         return adapter.getCheckedItems()
     }
+
     companion object {
 
         // TODO: Customize parameter argument names
@@ -195,17 +202,22 @@ class OrderDetailItemListFragment : Fragment() {
 
 
     // Function to capture the fragment's content as an image
-    fun captureFragmentContentAsImage(): Bitmap? {
-        if (_binding == null) {
-            return null
-        }
+    fun captureFragmentContentAsImage(context: Context): Bitmap? {
+        // Inflate the layout to create the view
+        val inflater = LayoutInflater.from(context)
+        val rootView = inflater.inflate(R.layout.fragment_order_detail_item_list, null)
 
-        val rootView = binding.root
+        // Measure and layout the view
+        rootView.measure(
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
+        rootView.layout(0, 0, rootView.measuredWidth, rootView.measuredHeight)
 
         // Create a bitmap with the same dimensions as the view
         val bitmap = Bitmap.createBitmap(
-            rootView.width,
-            rootView.height,
+            500,
+            500,
             Bitmap.Config.ARGB_8888
         )
 
@@ -216,4 +228,5 @@ class OrderDetailItemListFragment : Fragment() {
 
         return bitmap
     }
+
 }

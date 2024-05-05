@@ -1,27 +1,24 @@
 import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.booklette.BankCardFragment
-import com.example.booklette.CartFragment
+import com.example.booklette.EmailSender
+import com.example.booklette.OrderDetailItemListFragment
 import com.example.booklette.R
 import com.example.booklette.ShipAddressFragment
-import com.example.booklette.bookDetailShopVoucherRVAdapter
 import com.example.booklette.databinding.FragmentCheckOutBinding
 import com.example.booklette.homeActivity
 import com.example.booklette.model.CartObject
@@ -32,7 +29,6 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import com.google.rpc.context.AttributeContext.Resource
 import com.paypal.android.corepayments.CoreConfig
 import com.paypal.android.corepayments.Environment
 import com.paypal.android.corepayments.PayPalSDKError
@@ -50,6 +46,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
+import java.text.SimpleDateFormat
 import java.util.Date
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -203,8 +200,11 @@ class CheckOutFragment : Fragment() {
             }
         })
 
+
         binding.placeOrderBtn.setOnClickListener {
             if (::radioButtonClicked.isInitialized) {
+                var orderID = ""
+
                 if (radioButtonClicked.text == getString(R.string.paypalMethod)) {
 //                    Toast.makeText(context, totalAmount.toString(), Toast.LENGTH_SHORT).show()
                     GlobalScope.launch {
@@ -277,12 +277,66 @@ class CheckOutFragment : Fragment() {
                     )
 
 
-                    db.collection("orders").add(data).addOnCompleteListener {
+                    db.collection("orders").add(data).addOnCompleteListener { task ->
 //                            for (cartObject in selectedItems) {
 //                                val fieldMap = hashMapOf<Any, Any>(
 //                                    cartObject.bookID.toString() to FieldValue.delete()
-//                                )
+//
 //                            }
+                        orderID = task.result.id
+                        Log.d("orderID",orderID)
+                        db.collection("orders").document(orderID)
+                            .get()
+                            .addOnSuccessListener{ documentSnapshot ->
+                                val orderData = documentSnapshot.data
+                                val itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
+                                val emailSender = EmailSender(requireContext())
+                                val emailSubject = getString(R.string.orderCreatedSubject)
+                                val orderDetailItemListFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!,allowSelection = false,allowMultipleSelection = false)
+                                val totalMoney = (orderData?.get("totalSum") as Number).toLong()
+                                val status = orderData?.get("status") as String
+                                val timeStamp = orderData?.get("creationDate") as Timestamp
+
+                                val date: Date? = timeStamp?.toDate()
+                                val sdf = SimpleDateFormat("dd-MM-yyyy")
+                                val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
+                                val paymentMethodType = paymentMethod?.get("Type").toString()
+                                val shippingAddress = orderData?.get("shippingAddress") as String
+                                val beforeDiscount = (orderData?.get("beforeDiscount") as Number).toLong()
+                                var emailBody = ""
+                                var userFullName = ""
+                                var userEmail = ""
+                                val statusEmail = getString(R.string.my_order_processing_button)
+                                val discount = "-" + formatMoney(beforeDiscount - totalMoney)
+                                val bitMapImage = orderDetailItemListFragment.captureFragmentContentAsImage(requireContext())!!
+                                val orderMessage = getString(R.string.email_created)
+                                db.collection("accounts")
+                                    .whereEqualTo("UID",auth.uid)
+                                    .get()
+                                    .addOnSuccessListener { querySnapshot ->
+                                        for (snapshot in querySnapshot){
+                                            val userData = snapshot.data
+                                            userFullName = userData["fullname"].toString()
+                                            userEmail = auth.currentUser?.email.toString()
+                                        }
+                                        if (orderDetailItemListFragment != null) {
+                                            emailBody = emailSender.setBody(
+                                                userFullName,
+                                                orderMessage,
+                                                documentSnapshot.id,
+                                                statusEmail,
+                                                sdf.format(date),
+                                                bitMapImage,
+                                                shippingAddress,
+                                                paymentMethodType,
+                                                formatMoney(beforeDiscount),
+                                                discount,
+                                                formatMoney(totalMoney),
+                                            )
+                                        }
+                                        emailSender.sendEmail(userEmail,emailSubject,emailBody)
+                                    }
+                            }
                         db.collection("accounts")
                             .whereEqualTo("UID", auth.currentUser!!.uid.toString())
                             .get().addOnSuccessListener { documents ->
@@ -315,8 +369,11 @@ class CheckOutFragment : Fragment() {
 
                                 requireActivity().onBackPressedDispatcher.onBackPressed()
                             }
+
                     }
                 }
+
+
             } else {
                 MotionToast.createColorToast(
                     context as Activity,
@@ -339,7 +396,23 @@ class CheckOutFragment : Fragment() {
 
         return view
     }
-
+    fun formatMoney(number: Long): String {
+        val numberString = number.toString()
+        val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
+        return numberString.replace(regex, "$1.") + " VND"
+    }
+    fun changeStatusText(status: String): String {
+        return when {
+            status.contains("xử lý", true) -> getString(R.string.my_order_processing_button)
+            status.contains("huỷ", true) -> getString(R.string.my_order_cancelled_button)
+            status.contains("trả đang duyệt", true) -> getString(R.string.my_order_detail_item_return_in_process)
+            status.contains("trả thành công", true) -> getString(R.string.my_order_detail_item_return_success)
+            status.contains("trả bị từ chối", true) -> getString(R.string.my_order_detail_item_return_failed)
+            status.contains("thành công", true) -> getString(R.string.my_order_completed_button)
+            status.contains("đã giao", true) -> getString(R.string.my_order_delivered_button)
+            else -> ""
+        }
+    }
     private suspend fun getPayPalToken(url: String): String {
         return suspendCoroutine { continuation ->
             val jsonObjectRequest = object : JsonObjectRequest(

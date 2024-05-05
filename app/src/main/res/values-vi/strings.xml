@@ -268,8 +268,21 @@
     <string name="my_order_detail_item_return_success">Hoàn trả thành công</string>
     <string name="my_order_detail_item_return_failed">Hoàn trả bị từ chối</string>
     <string name="order_item_order">Đơn hàng </string>
-    <string name="order_welcome">Xin chào </string>
+    <string name="email_welcome">Xin chào </string>
+    <string name="email_created">Bạn đã tạo 1 đơn hàng.</string>
+    <string name="email_created_hcmus">Bạn đã tạo 1 đơn hàng cho sách của HCMUS.</string>
+    <string name="email_delivered">Đơn hàng của bạn đã được giao, hãy kiểm tra nó!</string>
+    <string name="email_completed">Đơn hàng của bạn đã được hoàn thành!</string>
+    <string name="email_return_created">Bạn đã tạo 1 yêu cầu trả sách.</string>
+    <string name="email_delivered_hcmus">Đơn hàng của bạn đã tới trường, hãy tới trường để nhận nó!</string>
+    <string name="email_return_successfully">Yêu cầu trả sách của bạn đã được chấp thuận.</string>
+    <string name="email_return_failed">Yêu cầu trả sách của bạn đã bị từ chối.</string>
 
+    <string name="email_order_completed">Sách của bạn đã được bán!</string>
+    <string name="email_order_return">Bạn đã nhận được yêu cầu trả sách.</string>
+
+    <string name="email_has_order">Bạn đã nhận được 1 đơn hàng!</string>
+    <string name="email_thank_you">Cảm ơn bạn đã sử dụng ứng dụng của chúng tôi.\n\nBooklette</string>
     <string name="review_instruction">Hãy chọn 1 quyển sách để nhận xét!</string>
     <string name="order_item_tracking_number">Mã đơn:</string>
     <string name="order_item_quantity">Số lượng:</string>
@@ -449,4 +462,12 @@
     <string name="step3method3">Phương thức 3: Tự động liên hệ với người mua và sắp xếp việc trao đổi ngoài dịch vụ của Booklette.</string>
     <string name="method3nd">Tự chủ liên hệ với người bán và sắp xếp việc trao đổi hàng ngoài dịch vụ của Booklette.</string>
     <string name="orderDayCreated">Ngày tạo:</string>
+
+    <string name="orderCreatedSubject">[Booklette] Đơn hàng được tạo</string>
+    <string name="orderDeliveredSubject">[Booklette] Đơn hàng đã được giao</string>
+    <string name="orderCompletedSubject">[Booklette] Đơn hàng hoàn thành</string>
+    <string name="orderReturnSubject">[Booklette] Yêu cầu trả hàng</string>
+    <string name="orderReturnSuccessSubject">[Booklette] Yêu cầu trả hàng được chấp thuận</string>
+    <string name="orderReturnFailedSubject">[Booklette] Yêu cầu trả hàng bị từ chối</string>
+    <string name="orderReiceivedSubject">[Booklette] Đơn hàng mới được nhận</string>
 </resources>

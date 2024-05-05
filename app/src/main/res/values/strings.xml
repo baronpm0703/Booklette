@@ -310,8 +310,24 @@
     <string name="my_shop_order_return_button">Return</string>
 
     <string name="order_item_order">Order </string>
-    <string name="order_welcome">Hello </string>
-    <string name="order_created">You have created an order </string>
+    <string name="email_welcome">Hello </string>
+    <string name="email_created">You have created an order.</string>
+    <string name="email_created_hcmus">You have created an order for HCMUS books.</string>
+    <string name="email_delivered">Your order has been delivered, please check it!</string>
+    <string name="email_delivered_hcmus">Your order has been delivered, please come to HCMUS to receive it!</string>
+    <string name="email_completed">Your order has been completed!</string>
+
+    <string name="email_return_created">You have created a request to return books.</string>
+    <string name="email_return_successfully">Your request to return books has been accepted.</string>
+    <string name="email_return_failed">Your request to return books has been rejected.</string>
+
+    <string name="email_has_order">You have received an order for!</string>
+
+    <string name="email_order_completed">Your books have been sold!</string>
+
+    <string name="email_order_return">You have received a request to accept returned products.</string>
+
+    <string name="email_thank_you">Thank you for using our app.\n\nBooklette</string>
     <string name="review_instruction">Please choose a book to review!</string>
     <string name="return_instruction">Please choose one or more book to return!</string>
     <string name="order_item_tracking_number">Tracking number:</string>
@@ -494,4 +510,11 @@
     <string name="step3method3">Method 3: Automatically contact the buyer and arrange exchange outside of Booklette\'s service.</string>
     <string name="method3nd">Actively contact the seller and arrange item exchange outside of Booklette\'s service.</string>
     <string name="orderDayCreated">Day created:</string>
+    <string name="orderCreatedSubject">[Booklette] Order created</string>
+    <string name="orderDeliveredSubject">[Booklette] Order delivered</string>
+    <string name="orderCompletedSubject">[Booklette] Order completed</string>
+    <string name="orderReturnSubject">[Booklette] Request return</string>
+    <string name="orderReturnSuccessSubject">[Booklette] Request accepted</string>
+    <string name="orderReturnFailedSubject">[Booklette] Request rejected</string>
+    <string name="orderReiceivedSubject">[Booklette] New order received</string>
 </resources>
