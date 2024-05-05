@@ -535,6 +535,20 @@ class BookDetailFragment : Fragment() {
             }
         }
 
+        binding.viewShopBtn.setOnClickListener {
+            lifecycleScope.launch {
+                val viewShopFragment = ViewShopFragment()
+                val args = Bundle()
+                args.putString("shopID", getBookStoreID(bookID))
+                viewShopFragment.arguments = args
+
+                (context as homeActivity).changeFragmentContainer(
+                    viewShopFragment,
+                    (context as homeActivity).smoothBottomBarStack[(context as homeActivity).smoothBottomBarStack.size - 1]
+                )
+            }
+        }
+
         // Add to wishlist
         isFollowed.observe(viewLifecycleOwner) {
             binding.addToWishList.isChecked = it
