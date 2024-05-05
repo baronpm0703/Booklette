@@ -187,4 +187,7 @@ dependencies {
 
     // Like button animation
     implementation("com.github.varunest:sparkbutton:1.0.6")
+
+    // JavaMail API
+    implementation("com.sun.mail:javax.mail:1.6.2")
 }

@@ -128,11 +128,12 @@
             <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/myprofile_cart"
-                    android:id="@+id/imageView6"
+                    android:id="@+id/ivCart"
                     app:layout_constraintEnd_toStartOf="@+id/imageView7" android:layout_marginEnd="16dp"
                     app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="57dp"
                     app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="102dp"/>
             <ImageView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" app:srcCompat="@drawable/myprofile_mail"
                     android:id="@+id/imageView7"
@@ -145,7 +146,7 @@
                     android:id="@+id/settingBtn"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginTop="57dp" app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="102dp" app:layout_constraintEnd_toStartOf="@+id/imageView6"
+                    android:layout_marginBottom="102dp" app:layout_constraintEnd_toStartOf="@+id/ivCart"
                     android:layout_marginEnd="16dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.cardview.widget.CardView
@@ -240,7 +241,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 <TextView
-                        android:text="@string/myprofile_my_orders"
+                        android:text="@string/myprofile_my_shop_orders"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/textView26"
                         android:textStyle="bold"
@@ -248,7 +249,7 @@
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="29dp"
                         app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"/>
                 <TextView
-                        android:text="@string/myprofile_my_orders"
+                        android:text="@string/myprofile_my_shop_orders_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" android:id="@+id/textViewMP27"
                         android:textStyle="bold"

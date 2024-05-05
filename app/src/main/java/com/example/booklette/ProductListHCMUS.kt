@@ -279,14 +279,15 @@ class ProductListHCMUS : Fragment() {
                 requireActivity().theme.applyStyle(newTheme, true)
                 OptionSheet().show(it) {
                     title("Sort")
+                    titleColor(Color.parseColor("#000000"))
                     style(SheetStyle.BOTTOM_SHEET)
                     displayMode(DisplayMode.LIST)
                     with(
-                        Option(R.drawable.star, "Popular"),
-                        Option(R.drawable.resource_new, "Newest"),
-                        Option(R.drawable.favourite, "Customer Review"),
-                        Option(R.drawable.lowtohigh, "Price: Lowest to high"),
-                        Option(R.drawable.hightolow, "Price: Highest to low")
+                        Option(R.drawable.star_hcmus, "Popular"),
+                        Option(R.drawable.resource_new_hcmus, "Newest"),
+                        Option(R.drawable.customer_review_hcmus, "Customer Review"),
+                        Option(R.drawable.lowtohigh_hcmus, "Price: Lowest to high"),
+                        Option(R.drawable.hightolow_hcmus, "Price: Highest to low")
 
                     )
                     onPositive { index: Int, option: Option ->
@@ -298,7 +299,7 @@ class ProductListHCMUS : Fragment() {
                                 }
                                 bookList.reverse()
                                 gvProductListAdapter?.notifyDataSetChanged()
-                                binding.ivSort.setImageResource(R.drawable.star)
+                                binding.ivSort.setImageResource(R.drawable.star_hcmus)
                                 binding.tvSort.text = "Popular"
                             }
                             1 -> {
@@ -306,7 +307,7 @@ class ProductListHCMUS : Fragment() {
                                         book -> book.releaseDate
                                 }
                                 gvProductListAdapter?.notifyDataSetChanged()
-                                binding.ivSort.setImageResource(R.drawable.resource_new)
+                                binding.ivSort.setImageResource(R.drawable.resource_new_hcmus)
                                 binding.tvSort.text = "Newest"
                             }
                             2 -> {
@@ -315,7 +316,7 @@ class ProductListHCMUS : Fragment() {
                                 }
                                 bookList.reverse()
                                 gvProductListAdapter?.notifyDataSetChanged()
-                                binding.ivSort.setImageResource(R.drawable.favourite)
+                                binding.ivSort.setImageResource(R.drawable.customer_review_hcmus)
                                 binding.tvSort.text = "Customer Review"
                             }
                             3 -> {
@@ -323,7 +324,7 @@ class ProductListHCMUS : Fragment() {
                                         book -> book.price
                                 }
                                 gvProductListAdapter?.notifyDataSetChanged()
-                                binding.ivSort.setImageResource(R.drawable.lowtohigh)
+                                binding.ivSort.setImageResource(R.drawable.lowtohigh_hcmus)
                                 binding.tvSort.text = "Price: Lowest to high"
                             }
                             4 -> {
@@ -336,7 +337,7 @@ class ProductListHCMUS : Fragment() {
                                 bookList.reverse()
                                 gvProductListAdapter?.notifyDataSetChanged()
 
-                                binding.ivSort.setImageResource(R.drawable.hightolow)
+                                binding.ivSort.setImageResource(R.drawable.hightolow_hcmus)
                                 binding.tvSort.text = "Price: Highest to low"
                             }
                         }

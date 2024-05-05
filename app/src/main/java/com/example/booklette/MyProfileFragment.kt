@@ -9,13 +9,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.booklette.databinding.FragmentMyprofileBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 
 class MyProfileFragment : Fragment() {
 	private var _binding: FragmentMyprofileBinding? = null
@@ -61,16 +64,35 @@ class MyProfileFragment : Fragment() {
 			homeAct.changeFragmentContainer(shipAddressFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
 		}
 
-		binding.languageBtn.setOnClickListener {
+		binding.languageOption.setOnClickListener {
 			val homeAct = (activity as homeActivity)
 			homeAct.changeFragmentContainer(Language_Fragment(), homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
 		}
 
-		binding.myReviewBtn.setOnClickListener {
+		binding.myReviewsOption.setOnClickListener {
 			val homeAct = (activity as homeActivity)
 			homeAct.changeFragmentContainer(MyReviewList(), homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
 
 		}
+		binding.ivCart.setOnClickListener{
+			val homeAct = (activity as homeActivity)
+			homeAct.changeFragmentContainer(CartFragment(), 2)
+
+		}
+
+//		binding.imgOpenChatBookDetail.setOnClickListener {
+//			lifecycleScope.launch {
+//				val storeID = getBookStoreID(bookID)
+//				val storeUID = getUIDFromBookStoreID(storeID)
+//
+//				val intent = Intent(context, ChannelChatActivity::class.java)
+//				intent.putExtra("storeUID", storeUID)
+//
+//				Toast.makeText(activity, storeUID, Toast.LENGTH_SHORT).show()
+//
+//				startActivity(intent)
+//			}
+//		}
 
 		// Toggle navigation to My Shop
 		view.findViewById<Button>(R.id.myShopBtn).setOnClickListener {
@@ -105,7 +127,7 @@ class MyProfileFragment : Fragment() {
 			homeAct.changeFragmentContainer(profileSettingFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
 		}
 		//
-		binding.favorites.setOnClickListener {
+		binding.favoritesOption.setOnClickListener {
 			val userFavoritesBookFragment = UserFavoritesBookFragment()
 			val homeAct = (activity as homeActivity)
 			homeAct.changeFragmentContainer(userFavoritesBookFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
