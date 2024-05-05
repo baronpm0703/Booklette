@@ -310,7 +310,13 @@ class CheckOutFragment : Fragment() {
                             .get().addOnSuccessListener { documents ->
                                 for (document in documents) {
                                     val userData = document.data
-                                    userSetting = userData?.get("deliveryNotif") as Boolean
+                                    val deliveryNotif = userData?.get("deliveryNotif")
+                                    userSetting = if (deliveryNotif is Boolean) {
+                                        deliveryNotif
+                                    } else {
+                                        false // Default value if deliveryNotif is null or not a Boolean
+                                    }
+
                                     for (cartObject in selectedItems) {
 //                                            val fieldMap = hashMapOf<Any, Any>(
 //                                                cartObject.bookID.toString() to FieldValue.delete()
@@ -370,7 +376,12 @@ class CheckOutFragment : Fragment() {
                                                         storeData["store"] as DocumentReference
                                                     var bookStoreName =
                                                         storeData["fullname"].toString()
-                                                    shopSetting = storeData["salesNotif"] as Boolean
+                                                    val salesNotif = storeData["salesNotif"]
+                                                     shopSetting = if (salesNotif is Boolean) {
+                                                         salesNotif
+                                                    } else {
+                                                        false // Default value if deliveryNotif is null or not a Boolean
+                                                    }
                                                     shopFullName = bookStoreName
                                                     bookStoreRef.get()
                                                         .addOnSuccessListener {
