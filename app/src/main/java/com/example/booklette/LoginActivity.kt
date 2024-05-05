@@ -28,6 +28,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -337,6 +338,7 @@ open class LoginActivity : AppCompatActivity() {
                                                         "UID" to user!!.uid,
                                                         "address" to "",
                                                         "avt" to defaultAvt,
+                                                        "dob" to Timestamp.now(),
                                                         "blacklist" to emptyArray,
                                                         "fullname" to user.email.toString(),
                                                         "phone" to "",
