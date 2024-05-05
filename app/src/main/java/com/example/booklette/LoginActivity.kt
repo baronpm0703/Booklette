@@ -28,6 +28,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -52,6 +53,8 @@ open class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+    val defaultAvt = "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Accounts%2Fdefault.png?alt=media&token=fd80f83e-7717-4279-a090-4dc97fa435b9"
+    val defaultStoreAvt = "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/personalStoresAvatar%2Fbook_shop_avatar.png?alt=media&token=5a3e58cc-56ae-4b8f-9b90-a9ee825ec9ee"
 
     var callbackManager = CallbackManager.Factory.create()
 //    lateinit var remember_me_manager: rememberMeManager
@@ -320,7 +323,7 @@ open class LoginActivity : AppCompatActivity() {
                                                 "items" to emptyMap,
                                                 "rating" to emptyArray,
                                                 "shopVouchers" to emptyArray,
-                                                "storeAvatar" to "",
+                                                "storeAvatar" to defaultStoreAvt,
                                                 "storeLocation" to "",
                                                 "storeName" to "Seller ${user?.email.toString()}",
                                             )
@@ -334,7 +337,8 @@ open class LoginActivity : AppCompatActivity() {
                                                     val dataAccount: HashMap<String, Any> = hashMapOf(
                                                         "UID" to user!!.uid,
                                                         "address" to "",
-                                                        "avt" to "",
+                                                        "avt" to defaultAvt,
+                                                        "dob" to Timestamp.now(),
                                                         "blacklist" to emptyArray,
                                                         "fullname" to user.email.toString(),
                                                         "phone" to "",

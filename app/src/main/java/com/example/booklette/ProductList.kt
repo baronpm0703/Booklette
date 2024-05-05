@@ -277,7 +277,6 @@ class ProductList : Fragment() {
                     title("Sort")
                     style(SheetStyle.BOTTOM_SHEET)
                     displayMode(DisplayMode.LIST)
-                    titleColor(Color.parseColor("#FF0000"))
                     with(
                         Option(R.drawable.star,"Popular"),
                         Option(R.drawable.resource_new, "Newest"),
@@ -295,6 +294,7 @@ class ProductList : Fragment() {
                                 }
                                 bookList.reverse()
                                 gvProductListAdapter?.notifyDataSetChanged()
+                                binding.ivSort.setImageResource(R.drawable.star)
                                 binding.tvSort.text = "Popular"
                             }
                             1 -> {
@@ -302,6 +302,7 @@ class ProductList : Fragment() {
                                         book -> book.releaseDate
                                 }
                                 gvProductListAdapter?.notifyDataSetChanged()
+                                binding.ivSort.setImageResource(R.drawable.resource_new)
                                 binding.tvSort.text = "Newest"
                             }
                             2 -> {
@@ -310,6 +311,7 @@ class ProductList : Fragment() {
                                 }
                                 bookList.reverse()
                                 gvProductListAdapter?.notifyDataSetChanged()
+                                binding.ivSort.setImageResource(R.drawable.favourite)
                                 binding.tvSort.text = "Customer Review"
                             }
                             3 -> {
@@ -317,6 +319,7 @@ class ProductList : Fragment() {
                                         book -> book.price
                                 }
                                 gvProductListAdapter?.notifyDataSetChanged()
+                                binding.ivSort.setImageResource(R.drawable.lowtohigh)
                                 binding.tvSort.text = "Price: Lowest to high"
                             }
                             4 -> {
@@ -328,6 +331,8 @@ class ProductList : Fragment() {
                                 }
                                 bookList.reverse()
                                 gvProductListAdapter?.notifyDataSetChanged()
+
+                                binding.ivSort.setImageResource(R.drawable.hightolow)
                                 binding.tvSort.text = "Price: Highest to low"
                             }
                         }

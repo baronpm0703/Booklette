@@ -183,11 +183,8 @@ class ProductListHCMUS : Fragment() {
 
 
                     Handler().postDelayed({
-                        // Code to be executed after the delay
-                        // For example, you can start a new activity or update UI elements
-                        //                        binding.smHomeFragmentBestDeal.visibility = View.GONE
                         binding.gvProductList.visibility = View.VISIBLE
-                        //                        binding.smHomeFragmentBestDeal.stopShimmer()
+                        binding.loadingAnimProductList.visibility = View.GONE
                     }, 2000)
                 }
             }
@@ -284,7 +281,6 @@ class ProductListHCMUS : Fragment() {
                     title("Sort")
                     style(SheetStyle.BOTTOM_SHEET)
                     displayMode(DisplayMode.LIST)
-                    titleColor(Color.parseColor("#FF0000"))
                     with(
                         Option(R.drawable.star, "Popular"),
                         Option(R.drawable.resource_new, "Newest"),
@@ -298,10 +294,11 @@ class ProductListHCMUS : Fragment() {
                         when (index){
                             0 -> {
                                 bookList.sortBy {
-                                    book -> book.quantitySale
+                                        book -> book.quantitySale
                                 }
                                 bookList.reverse()
                                 gvProductListAdapter?.notifyDataSetChanged()
+                                binding.ivSort.setImageResource(R.drawable.star)
                                 binding.tvSort.text = "Popular"
                             }
                             1 -> {
@@ -309,6 +306,7 @@ class ProductListHCMUS : Fragment() {
                                         book -> book.releaseDate
                                 }
                                 gvProductListAdapter?.notifyDataSetChanged()
+                                binding.ivSort.setImageResource(R.drawable.resource_new)
                                 binding.tvSort.text = "Newest"
                             }
                             2 -> {
@@ -317,6 +315,7 @@ class ProductListHCMUS : Fragment() {
                                 }
                                 bookList.reverse()
                                 gvProductListAdapter?.notifyDataSetChanged()
+                                binding.ivSort.setImageResource(R.drawable.favourite)
                                 binding.tvSort.text = "Customer Review"
                             }
                             3 -> {
@@ -324,6 +323,7 @@ class ProductListHCMUS : Fragment() {
                                         book -> book.price
                                 }
                                 gvProductListAdapter?.notifyDataSetChanged()
+                                binding.ivSort.setImageResource(R.drawable.lowtohigh)
                                 binding.tvSort.text = "Price: Lowest to high"
                             }
                             4 -> {
@@ -335,6 +335,8 @@ class ProductListHCMUS : Fragment() {
                                 }
                                 bookList.reverse()
                                 gvProductListAdapter?.notifyDataSetChanged()
+
+                                binding.ivSort.setImageResource(R.drawable.hightolow)
                                 binding.tvSort.text = "Price: Highest to low"
                             }
                         }
