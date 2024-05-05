@@ -27,18 +27,8 @@ class ShipAddressFragmentRecycleViewAdapter(
     private var selectedAddressPosition = -1 // Initially no address selected
     private val addressSelections = HashMap<Int, Boolean>()
 
-    interface OnEditAddressClickListener {
-        fun onEditAddressClicked(address: ShipAddressObject)
-    }
-
-    private var editAddressClickListener: OnEditAddressClickListener? = null
-    fun setOnEditAddressClickListener(listener: OnEditAddressClickListener) {
-        editAddressClickListener = listener
-    }
-
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val buyerName: TextView = itemView.findViewById(R.id.buyerName)
-        val editAddress: Button = itemView.findViewById(R.id.editAddress)
         val phoneNum: TextView = itemView.findViewById(R.id.phoneNum)
         val addressDetail: TextView = itemView.findViewById(R.id.addressDetail)
         val chooseAddressButton: RadioButton = itemView.findViewById(R.id.chooseAddressButton)
@@ -92,11 +82,6 @@ class ShipAddressFragmentRecycleViewAdapter(
 
             }
         }
-        holder.editAddress.setOnClickListener {
-            editAddressClickListener?.onEditAddressClicked(addressInfo)
-        }
-
-
 
     }
 
