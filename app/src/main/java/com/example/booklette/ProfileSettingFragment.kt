@@ -69,7 +69,6 @@ class ProfileSettingFragment : Fragment() {
 		val auth = Firebase.auth
 		val db = Firebase.firestore
 		val salesNotif = view.findViewById<SwitchCompat>(R.id.profilesetting_notif_sales_switch)
-		val newArrivalsNotif = view.findViewById<SwitchCompat>(R.id.profilesetting_notif_newarrivals_switch)
 		val deliveryNotif = view.findViewById<SwitchCompat>(R.id.profilesetting_notif_delivery_switch)
 		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
 			.addOnSuccessListener { documents ->
@@ -91,7 +90,6 @@ class ProfileSettingFragment : Fragment() {
 					emailET.setText(auth.currentUser?.email)
 					addressET.setText(document.getString("address").toString())
 					salesNotif.isChecked = document.getBoolean("salesNotif") == true
-					newArrivalsNotif.isChecked = document.getBoolean("newArrivalsNotif") == true
 					deliveryNotif.isChecked = document.getBoolean("deliveryNotif") == true
 
 					editProfileDialog(view)
@@ -113,25 +111,6 @@ class ProfileSettingFragment : Fragment() {
 					}.addOnFailureListener {
 						salesNotif.isChecked = !isChecked
 						salesNotif.isClickable = true
-					}
-				}
-			}
-		}
-
-		newArrivalsNotif.setOnCheckedChangeListener { buttonView, isChecked ->
-			val newArrivalsNotifData = hashMapOf(
-				"newArrivalsNotif" to isChecked
-			)
-			newArrivalsNotif.isClickable = false
-			db.collection("accounts").whereEqualTo("UID", auth.uid).get().addOnSuccessListener {
-				for (document in it.documents) {
-					db.collection("accounts").document(document.id).update(newArrivalsNotifData as Map<String, Any>).addOnSuccessListener {
-						Handler().postDelayed({
-							newArrivalsNotif.isClickable = true
-						}, 10)
-					}.addOnFailureListener {
-						newArrivalsNotif.isChecked = !isChecked
-						newArrivalsNotif.isClickable = true
 					}
 				}
 			}
