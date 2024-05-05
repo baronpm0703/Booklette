@@ -40,7 +40,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/backBtn" android:layout_marginTop="8dp">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                      android:orientation="vertical" android:id="@+id/bookListScrollViewContent"/>
+                      android:orientation="vertical" android:id="@+id/discountListScrollViewContent"/>
     </ScrollView>
     <Button
             android:text="@string/manageshop_mybooks_add"

@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.widget.SwitchCompat
+import androidx.compose.material3.SwitchColors
 import androidx.compose.ui.text.intl.Locale
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -66,6 +68,9 @@ class ProfileSettingFragment : Fragment() {
 
 		val auth = Firebase.auth
 		val db = Firebase.firestore
+		val salesNotif = view.findViewById<SwitchCompat>(R.id.profilesetting_notif_sales_switch)
+		val newArrivalsNotif = view.findViewById<SwitchCompat>(R.id.profilesetting_notif_newarrivals_switch)
+		val deliveryNotif = view.findViewById<SwitchCompat>(R.id.profilesetting_notif_delivery_switch)
 		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
 			.addOnSuccessListener { documents ->
 				if (documents.size() != 1) return@addOnSuccessListener    // Failsafe
@@ -85,11 +90,71 @@ class ProfileSettingFragment : Fragment() {
 					phoneET.setText(document.getString("phone").toString())
 					emailET.setText(auth.currentUser?.email)
 					addressET.setText(document.getString("address").toString())
+					salesNotif.isChecked = document.getBoolean("salesNotif") == true
+					newArrivalsNotif.isChecked = document.getBoolean("newArrivalsNotif") == true
+					deliveryNotif.isChecked = document.getBoolean("deliveryNotif") == true
 
 					editProfileDialog(view)
 					changePasswordDialog(view)
 				}
 			}
+
+		salesNotif.setOnCheckedChangeListener { buttonView, isChecked ->
+			val salesNotifData = hashMapOf(
+				"salesNotif" to isChecked
+			)
+			salesNotif.isClickable = false
+			db.collection("accounts").whereEqualTo("UID", auth.uid).get().addOnSuccessListener {
+				for (document in it.documents) {
+					db.collection("accounts").document(document.id).update(salesNotifData as Map<String, Any>).addOnSuccessListener {
+						Handler().postDelayed({
+							salesNotif.isClickable = true
+						}, 10)
+					}.addOnFailureListener {
+						salesNotif.isChecked = !isChecked
+						salesNotif.isClickable = true
+					}
+				}
+			}
+		}
+
+		newArrivalsNotif.setOnCheckedChangeListener { buttonView, isChecked ->
+			val newArrivalsNotifData = hashMapOf(
+				"newArrivalsNotif" to isChecked
+			)
+			newArrivalsNotif.isClickable = false
+			db.collection("accounts").whereEqualTo("UID", auth.uid).get().addOnSuccessListener {
+				for (document in it.documents) {
+					db.collection("accounts").document(document.id).update(newArrivalsNotifData as Map<String, Any>).addOnSuccessListener {
+						Handler().postDelayed({
+							newArrivalsNotif.isClickable = true
+						}, 10)
+					}.addOnFailureListener {
+						newArrivalsNotif.isChecked = !isChecked
+						newArrivalsNotif.isClickable = true
+					}
+				}
+			}
+		}
+
+		deliveryNotif.setOnCheckedChangeListener { buttonView, isChecked ->
+			val deliveryNotifData = hashMapOf(
+				"deliveryNotif" to isChecked
+			)
+			deliveryNotif.isClickable = false
+			db.collection("accounts").whereEqualTo("UID", auth.uid).get().addOnSuccessListener {
+				for (document in it.documents) {
+					db.collection("accounts").document(document.id).update(deliveryNotifData as Map<String, Any>).addOnSuccessListener {
+						Handler().postDelayed({
+							deliveryNotif.isClickable = true
+						}, 10)
+					}.addOnFailureListener {
+						deliveryNotif.isChecked = !isChecked
+						deliveryNotif.isClickable = true
+					}
+				}
+			}
+		}
 
 		view.findViewById<ImageView>(R.id.backBtn).setOnClickListener {
 			requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -132,20 +197,27 @@ class ProfileSettingFragment : Fragment() {
 										"avt" to result
 									)
 
+									val updatedStoreData = hashMapOf(
+										"storeAvatar" to result
+									)
+
 									db.collection("accounts").whereEqualTo("UID", auth.uid).get().addOnSuccessListener {
 										val docs = it.documents
 
 										for (doc in docs) {
 											db.collection("accounts").document(doc.id).update(updatedData as Map<String, Any>).addOnSuccessListener {
-												Handler().postDelayed({
-													binding.nameET.setText(editProfileDialog.name)
-													binding.dobET.setText(editProfileDialog.dob)
-													binding.phoneET.setText(editProfileDialog.phone)
-													binding.emailET.setText(editProfileDialog.email)
-													binding.addressET.setText(editProfileDialog.address)
 
-													editProfileDialog.dismiss()
-												}, 10)
+												doc.getDocumentReference("store")!!.update(updatedStoreData as Map<String, Any>).addOnSuccessListener {
+													Handler().postDelayed({
+														binding.nameET.setText(editProfileDialog.name)
+														binding.dobET.setText(editProfileDialog.dob)
+														binding.phoneET.setText(editProfileDialog.phone)
+														binding.emailET.setText(editProfileDialog.email)
+														binding.addressET.setText(editProfileDialog.address)
+
+														editProfileDialog.dismiss()
+													}, 10)
+												}
 											}
 										}
 									}

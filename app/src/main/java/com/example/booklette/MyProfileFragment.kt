@@ -32,6 +32,13 @@ class MyProfileFragment : Fragment() {
 		val auth = Firebase.auth
 		val db = Firebase.firestore
 
+		binding.settingBtn.setOnClickListener {
+			val profileSettingFragment = ProfileSettingFragment()
+
+			val homeAct = (activity as homeActivity)
+			homeAct.changeFragmentContainer(profileSettingFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+		}
+
 		binding.btnSignOut.setOnClickListener {
 			auth.signOut()
 			startActivity(Intent(activity, LoginActivity::class.java))

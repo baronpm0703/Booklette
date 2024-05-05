@@ -2,13 +2,16 @@ package com.example.booklette
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,9 +51,7 @@ class ManageShopEditBookInShopDialog(
     private var bookDesc: String = ""
     private var bookPrice: String = ""
     private var bookQuantity: String = ""
-    private lateinit var dataPhoto : ArrayList<Photo>
-    private lateinit var photoGalleryDialogBookDetail: PhotoGalleryDialogBookDetail
-    private lateinit var chosenPhotoAdapter: ChosenReviewPhotoBookDetailRVAdapter
+    private var dataPhoto : ArrayList<Photo> = arrayListOf()
 
     fun getBookName(): String {
         return bookName
@@ -120,11 +121,6 @@ class ManageShopEditBookInShopDialog(
 
         val db = Firebase.firestore
 
-        // Init data Photo
-        dataPhoto = ArrayList()
-        chosenPhotoAdapter = activity?.let { ChosenReviewPhotoBookDetailRVAdapter(it, dataPhoto) }!!
-//        binding.chosenPhoto.adapter = chosenPhotoAdapter
-
         bookName = initValue.name
         binding.bookNameET.setText(bookName)
         bookAuthor = initValue.author
@@ -138,12 +134,18 @@ class ManageShopEditBookInShopDialog(
         // Read image
         val thread = Thread {
             run {
-                val conn = URL(initValue.image).openConnection()
-                conn.doInput = true
-                conn.connect()
-                val input = conn.getInputStream()
+                val bitmap = Picasso.get().load(initValue.image).get()
                 val img = Photo()
-                img.image = BitmapFactory.decodeStream(input)
+                img.image = bitmap
+
+                val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+
+                val addPhotoBtn = binding.addPhotoLn
+                val notFoundImg = binding.notFoundBooks
+                val drawable = BitmapDrawable(resources, scaledBitmap)
+                addPhotoBtn.background = drawable
+                notFoundImg.visibility = View.GONE
+
                 dataPhoto.add(img)
             }
         }
@@ -310,31 +312,12 @@ class ManageShopEditBookInShopDialog(
             positiveListener?.invoke()
         }
 
-        //Set Up horizontal layout
-        val h_linerLayout = activity?.let {LinearLayoutManager(it)}
-        if (h_linerLayout != null) {
-            h_linerLayout.orientation = LinearLayoutManager.HORIZONTAL
-        }
-        binding.chosenPhoto.layoutManager = h_linerLayout
-
-        val itemDecoration: RecyclerView.ItemDecoration = DividerItemDecoration(
-            activity,
-            DividerItemDecoration.HORIZONTAL)
-        binding.chosenPhoto.addItemDecoration(itemDecoration)
-
-        val initValues = InitFilterValuesReviewBookDetail()
-        photoGalleryDialogBookDetail = PhotoGalleryDialogBookDetail(initValues)
-        binding.notFoundBooks.setOnClickListener {
-            activity?.let {
-                photoGalleryDialogBookDetail.show(it){
-                    style(SheetStyle.DIALOG)
-                    onPositive {
-                        this.dismiss()
-                        updateChosenPhoto(getChosenPhoto())
-                    }
-                }
-            }
-
+        binding.addPhotoLn.setOnClickListener {
+            val galleryIntent = Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            )
+            startActivityForResult(galleryIntent, 2222)
         }
 
         this.displayButtonsView(false)
@@ -343,14 +326,29 @@ class ManageShopEditBookInShopDialog(
 //        displayButtonPositive() Hiding the positive button will prevent clicks
 //        Hide the toolbar of the sheet, the title and the icon
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        when (requestCode) {
+            2222 -> if (null != data) {
+                val imageUri = data.data!!
+                val imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
+                val scaledBitmap = Bitmap.createScaledBitmap(imageBitmap, 100, 100, false)
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateChosenPhoto(dataPhoto: ArrayList<Photo>){
-        this.dataPhoto = dataPhoto
-        chosenPhotoAdapter.updateDataPhoto(this.dataPhoto)
-        chosenPhotoAdapter.notifyDataSetChanged()
-        binding.chosenPhoto.visibility = View.VISIBLE
+                val addPhotoBtn = binding.addPhotoLn
+                val notFoundImg = binding.notFoundBooks
+                val drawable = BitmapDrawable(resources, scaledBitmap)
+                addPhotoBtn.background = drawable
+                notFoundImg.visibility = View.GONE
+
+                val photo = Photo()
+                photo.image = imageBitmap
+                if (dataPhoto.size == 1) dataPhoto[0] = photo
+                else dataPhoto.add(photo)
+            }
+
+            else -> {}
+        }
     }
 
     fun build(ctx: Context, width: Int? = null, func: ManageShopEditBookInShopDialog.() -> Unit): ManageShopEditBookInShopDialog {

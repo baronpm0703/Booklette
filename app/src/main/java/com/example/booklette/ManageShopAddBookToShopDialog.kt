@@ -2,15 +2,20 @@ package com.example.booklette
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,6 +29,7 @@ import com.google.firebase.firestore.firestore
 import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
 import com.maxkeppeler.sheets.core.SheetStyle
+import java.sql.Date
 
 
 class ManageShopAddBookToShopDialog(
@@ -39,9 +45,7 @@ class ManageShopAddBookToShopDialog(
     private var bookDesc: String = ""
     private var bookPrice: String = ""
     private var bookQuantity: String = ""
-    private lateinit var dataPhoto : ArrayList<Photo>
-    private lateinit var addbookPhotoGalleryDialog: PhotoGalleryDialogBookDetail
-    private lateinit var chosenPhotoAdapter: ChosenReviewPhotoBookDetailRVAdapter
+    private var dataPhoto : ArrayList<Photo> = arrayListOf()
 
     fun getBookName(): String {
         return bookName
@@ -74,7 +78,7 @@ class ManageShopAddBookToShopDialog(
             "name" to bookName,
             "author" to bookAuthor,
             "genre" to bookCategory,
-            "releaseDate" to Timestamp.now(),
+            "releaseDate" to Timestamp(Date.valueOf("2000-01-01")),
             "type" to bookType,
             "desc" to bookDesc,
             "price" to bookPrice,
@@ -281,37 +285,12 @@ class ManageShopAddBookToShopDialog(
             positiveListener?.invoke()
         }
 
-
-        // Init data Photo
-        dataPhoto = ArrayList()
-        chosenPhotoAdapter = activity?.let { ChosenReviewPhotoBookDetailRVAdapter(it, dataPhoto) }!!
-//        binding.chosenPhoto.adapter = chosenPhotoAdapter
-
-        //Set Up horizontal layout
-        val h_linerLayout = activity?.let {LinearLayoutManager(it)}
-        if (h_linerLayout != null) {
-            h_linerLayout.orientation = LinearLayoutManager.HORIZONTAL
-        }
-        binding.chosenPhoto.layoutManager = h_linerLayout
-
-        val itemDecoration: RecyclerView.ItemDecoration = DividerItemDecoration(
-            activity,
-            DividerItemDecoration.HORIZONTAL)
-        binding.chosenPhoto.addItemDecoration(itemDecoration)
-
-        val initValues = InitFilterValuesReviewBookDetail()
-        addbookPhotoGalleryDialog = PhotoGalleryDialogBookDetail(initValues)
-        binding.notFoundBooks.setOnClickListener {
-            activity?.let {
-                addbookPhotoGalleryDialog.show(it){
-                    style(SheetStyle.DIALOG)
-                    onPositive {
-                        this.dismiss()
-                        updateChosenPhoto(getChosenPhoto())
-                    }
-                }
-            }
-
+        binding.addPhotoLn.setOnClickListener {
+            val galleryIntent = Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            )
+            startActivityForResult(galleryIntent, 2222)
         }
 
         this.displayButtonsView(false)
@@ -321,13 +300,29 @@ class ManageShopAddBookToShopDialog(
 //        Hide the toolbar of the sheet, the title and the icon
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateChosenPhoto(dataPhoto: ArrayList<Photo>){
-        this.dataPhoto = dataPhoto
-        chosenPhotoAdapter.updateDataPhoto(this.dataPhoto)
-        chosenPhotoAdapter.notifyDataSetChanged()
-        binding.chosenPhoto.visibility = View.VISIBLE
+        when (requestCode) {
+            2222 -> if (null != data) {
+                val imageUri = data.data!!
+                val imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
+                val scaledBitmap = Bitmap.createScaledBitmap(imageBitmap, 100, 100, false)
+
+                val addPhotoBtn = binding.addPhotoLn
+                val notFoundImg = binding.notFoundBooks
+                val drawable = BitmapDrawable(resources, scaledBitmap)
+                addPhotoBtn.background = drawable
+                notFoundImg.visibility = View.GONE
+
+                val photo = Photo()
+                photo.image = imageBitmap
+                if (dataPhoto.size == 1) dataPhoto[0] = photo
+                else dataPhoto.add(photo)
+            }
+
+            else -> {}
+        }
     }
 
     fun build(ctx: Context, width: Int? = null, func: ManageShopAddBookToShopDialog.() -> Unit): ManageShopAddBookToShopDialog {

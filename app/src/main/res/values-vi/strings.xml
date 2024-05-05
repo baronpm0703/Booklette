@@ -91,9 +91,11 @@
     <string name="manageshop_mybooks_pending">Đang chờ</string>
     <string name="manageshop_mybooks_violation">Vi phạm</string>
     <string name="manageshop_mybooks_boost">Đẩy sách</string>
+    <string name="manageshop_mybooks_boosted">Đã đẩy</string>
     <string name="manageshop_mybooks_boost_error">Lỗi!</string>
     <string name="manageshop_mybooks_boost_error2">Bạn đã đẩy sản phẩm này rồi, vui lòng quay lại sau</string>
-    <string name="manageshop_mybooks_boost_error3">Quay lại cửa hàng</string>
+    <string name="manageshop_mybooks_boost_error3"> tiếng nữa</string>
+    <string name="manageshop_mybooks_boost_error4">Quay lại cửa hàng</string>
     <string name="manageshop_mybooks_edit">Sửa</string>
     <string name="manageshop_mybooks_edit_flavor_text">Chỉnh sửa thông tin sách</string>
     <string name="manageshop_mybooks_edit_confirm">Lưu thay đổi</string>
@@ -119,6 +121,10 @@
     <string name="manageshop_program_finished">Đã hết hạn</string>
     <string name="manageshop_program_discountprogram_btn">Chương trình giảm giá của tôi</string>
     <string name="manageshop_program_discountprogram_none">Không có chương trình giảm giá nào</string>
+    <string name="manageshop_program_discountprogram_item1">Giảm giá đến </string>
+    <string name="manageshop_program_discountprogram_item2"> cho sách</string>
+    <string name="manageshop_program_discountprogram_item3">Xem chương trình</string>
+    <string name="manageshop_program_discountprogram_item4">Xem sách</string>
     <string name="manageshop_program_discountprogram_add">Thêm 1 chương trình giảm giá</string>
     <string name="manageshop_program_discountprogram_add_flavor">Thêm Chương Trình Mới</string>
     <string name="manageshop_program_discountprogram_add_chooseproduct">Chọn sản phẩm</string>
@@ -136,6 +142,9 @@
     <string name="manageshop_program_discountprogram_add_success3">Xem</string>
     <string name="manageshop_program_shopvoucher_btn">Voucher cho cửa hàng của tôi</string>
     <string name="manageshop_program_shopvoucher_none">Không có voucher nào</string>
+    <string name="manageshop_program_shopvoucher_item1">Sale off up to </string>
+    <string name="manageshop_program_shopvoucher_item2"> for mọi sách</string>
+    <string name="manageshop_program_shopvoucher_item3">Xem voucher</string>
     <string name="manageshop_program_shopvoucher_add">Thêm 1 voucher mới</string>
     <string name="manageshop_program_shopvoucher_add_flavor">Thêm Giảm Giá Mới</string>
     <string name="manageshop_program_shopvoucher_add_chooseproduct">Chọn sản phẩm</string>
@@ -152,6 +161,13 @@
     <string name="manageshop_program_shopvoucher_add_success">Thành công!</string>
     <string name="manageshop_program_shopvoucher_add_success2">Bạn đã thêm 1 voucher mới!</string>
     <string name="manageshop_program_shopvoucher_add_success3">Xem</string>
+    <string name="manageshop_program_detail_name">Tên giảm giá</string>
+    <string name="manageshop_program_detail_startDate">Ngày bắt đầu</string>
+    <string name="manageshop_program_detail_endDate">Ngày kết thúc</string>
+    <string name="manageshop_program_detail_percent">Phần trăm</string>
+    <string name="manageshop_program_detail_orderLimit">Đơn hàng tối đa</string>
+    <string name="manageshop_program_detail_minimumOrder">Tối thiểu đơn hàng</string>
+    <string name="manageshop_program_detail_intro">Giới thiệu</string>
     <string name="manageshop_finance">Quản lý tài chính</string>
     <string name="manageshop_helpcenter">Trung tâm hỗ trợ</string>
     <string name="book_detail_add_to_cart">Thêm vào giỏ hàng</string>

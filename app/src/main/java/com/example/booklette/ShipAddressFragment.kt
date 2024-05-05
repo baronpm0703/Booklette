@@ -71,28 +71,6 @@ class ShipAddressFragment : Fragment(){
         binding.rvShipAddress.adapter = adapter
         binding.rvShipAddress.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter.setOnEditAddressClickListener(object : ShipAddressFragmentRecycleViewAdapter.OnEditAddressClickListener {
-            override fun onEditAddressClicked(address: ShipAddressObject) {
-                // Create a bundle to pass ShipAddressObject data
-                val bundle = Bundle().apply {
-                    putParcelable("shipAddressObject", address)
-                }
-
-                // Initialize EditShipAddressDialog and pass data through bundle
-                val editDialog = EditShipAddressDialog().apply {
-                    arguments = bundle
-                }
-
-                // Check if the context of the adapter is an Activity
-                if (context is Activity) {
-                    // Use parentFragmentManager to get the FragmentManager of the parent Fragment
-                    editDialog.show(requireActivity().supportFragmentManager, "edit_dialog_tag")
-                } else {
-                    // Handle this case according to your app's structure if the context is not an Activity
-                }
-            }
-        })
-
 
 
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)

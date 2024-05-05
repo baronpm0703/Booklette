@@ -115,9 +115,11 @@
     <string name="manageshop_mybooks_pending">Pending</string>
     <string name="manageshop_mybooks_violation">Violation</string>
     <string name="manageshop_mybooks_boost">Boost</string>
+    <string name="manageshop_mybooks_boosted">Boosted</string>
     <string name="manageshop_mybooks_boost_error">Error!</string>
     <string name="manageshop_mybooks_boost_error2">You pushed this product, come back after</string>
-    <string name="manageshop_mybooks_boost_error3">Back to shop</string>
+    <string name="manageshop_mybooks_boost_error3">hours</string>
+    <string name="manageshop_mybooks_boost_error4">Back to shop</string>
     <string name="manageshop_mybooks_edit">Edit</string>
     <string name="manageshop_mybooks_edit_flavor_text">Edit book</string>
     <string name="manageshop_mybooks_edit_confirm">Save change</string>
@@ -142,6 +144,10 @@
     <string name="manageshop_program_finished">Finished</string>
     <string name="manageshop_program_discountprogram_btn">My discount program</string>
     <string name="manageshop_program_discountprogram_none">There are no discount programs</string>
+    <string name="manageshop_program_discountprogram_item1">Sale off up to </string>
+    <string name="manageshop_program_discountprogram_item2"> for item</string>
+    <string name="manageshop_program_discountprogram_item3">View program</string>
+    <string name="manageshop_program_discountprogram_item4">View book</string>
     <string name="manageshop_program_discountprogram_add">Add 1 new discount program</string>
     <string name="manageshop_program_discountprogram_add_flavor">Add New Program</string>
     <string name="manageshop_program_discountprogram_add_chooseproduct">Choose Product</string>
@@ -159,6 +165,9 @@
     <string name="manageshop_program_discountprogram_add_success3">View</string>
     <string name="manageshop_program_shopvoucher_btn">My shop voucher</string>
     <string name="manageshop_program_shopvoucher_none">There are no shop vouchers</string>
+    <string name="manageshop_program_shopvoucher_item1">Sale off up to </string>
+    <string name="manageshop_program_shopvoucher_item2"> for all items</string>
+    <string name="manageshop_program_shopvoucher_item3">View voucher</string>
     <string name="manageshop_program_shopvoucher_add">Add 1 new voucher</string>
     <string name="manageshop_program_shopvoucher_add_flavor">Add New Program</string>
     <string name="manageshop_program_shopvoucher_add_chooseproduct">Choose Product</string>
@@ -175,6 +184,13 @@
     <string name="manageshop_program_shopvoucher_add_success">Successful!</string>
     <string name="manageshop_program_shopvoucher_add_success2">You\'ve added a new voucher!</string>
     <string name="manageshop_program_shopvoucher_add_success3">View</string>
+    <string name="manageshop_program_detail_name">Discount name</string>
+    <string name="manageshop_program_detail_startDate">Start date</string>
+    <string name="manageshop_program_detail_endDate">End date</string>
+    <string name="manageshop_program_detail_percent">Percent</string>
+    <string name="manageshop_program_detail_orderLimit">Order limit</string>
+    <string name="manageshop_program_detail_minimumOrder">Minimum order</string>
+    <string name="manageshop_program_detail_intro">Introduction</string>
     <string name="manageshop_finance">Finance</string>
     <string name="manageshop_helpcenter">Help Center</string>
     <string name="book_detail_add_to_cart">Add to cart</string>

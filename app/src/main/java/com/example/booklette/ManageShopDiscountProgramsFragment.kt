@@ -1,44 +1,21 @@
 package com.example.booklette
 
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.os.Handler
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.view.ContextThemeWrapper
-import androidx.compose.ui.text.intl.Locale
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.booklette.databinding.EditBookInShopDialogBinding
-import com.example.booklette.databinding.FragmentManageshopBooksBinding
 import com.example.booklette.databinding.FragmentManageshopDiscountprogramsBinding
-import com.example.booklette.databinding.FragmentMyshopBinding
-import com.example.booklette.model.DiscountProgramObject
-import com.example.booklette.model.HRecommendedBookObject
-import com.example.booklette.model.ManageShopNewBookObject
-import com.example.booklette.model.MyShopBookObject
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
-import com.google.firebase.storage.storage
 import com.maxkeppeler.sheets.core.SheetStyle
-import com.squareup.picasso.Picasso
-import java.io.ByteArrayOutputStream
-import kotlin.math.abs
-import kotlin.math.round
+import java.text.SimpleDateFormat
 
 /**
  * A simple [Fragment] subclass.
@@ -63,18 +40,52 @@ class ManageShopDiscountProgramsFragment : Fragment() {
 
 		val auth = Firebase.auth
 		val db = Firebase.firestore
+		val discountList = arrayListOf<HashMap<String, Comparable<*>?>>()
 		db.collection("accounts").whereEqualTo("UID", auth.uid).get()
 			.addOnSuccessListener { documents ->
 				if (documents.size() != 1) return@addOnSuccessListener    // Failsafe
 
 				for (document in documents) {
 					storeRef = document.getDocumentReference("store")!!
+
+					storeRef.get().addOnSuccessListener {docSnapshot ->
+						val books = docSnapshot.get("items") as Map<String, Map<String, Any>>
+						for (book in books) {
+							val bookValue = book.value
+
+							if (bookValue["discount"] != "") {
+								db.collection("discounts").whereEqualTo("discountID", bookValue["discount"]).get().addOnSuccessListener {
+									val discountDocs = it.documents
+
+									for (doc in discountDocs) {
+										if (doc.get("discountType") == "product") {
+											val discountMap = hashMapOf(
+												"id" to doc.getString("discountID"),
+												"name" to doc.getString("discountName"),
+												"introduction" to doc.getString("discountIntroduction"),
+												"orderLimit" to (doc.get("orderLimit") as Number).toLong(),
+												"percent" to (doc.get("percent") as Number).toLong(),
+												"startDate" to doc.get("startDate") as Timestamp,
+												"endDate" to doc.get("endDate") as Timestamp,
+												"bookID" to book.key
+											)
+
+											discountList.add(discountMap)
+										}
+									}
+
+									if (books.entries.indexOf(book) == books.size - 1) {
+										Handler().postDelayed({
+											setDiscountListView(view, discountList)
+											view.findViewById<TextView>(R.id.noProgramsTV).visibility = View.GONE
+										}, 100)
+									}
+								}
+							}
+						}
+					}
 				}
 			}
-
-		val comingSoonTabBtn = view.findViewById<Button>(R.id.comingSoonTabBtn)
-		comingSoonTabBtn.setBackground(context?.let { ContextCompat.getDrawable(it, R.drawable.manageshop_discount_tab_chosen) })
-		comingSoonTabBtn.setTextColor(Color.WHITE)
 
 		val addDiscountProgramsFragment = ManageShopDiscountProgramsAddFragment()
 		val addProgramBtn = view.findViewById<Button>(R.id.addProgramBtn)
@@ -92,40 +103,43 @@ class ManageShopDiscountProgramsFragment : Fragment() {
 		return view
 	}
 
-	private fun addNewProgram(programObject: DiscountProgramObject) {
-		val db = Firebase.firestore
+	private fun setDiscountListView(view: View, discountList: ArrayList<HashMap<String, Comparable<*>?>>) {
+		// Stop this function if fragment is already destroyed
+		if (!isAdded || activity == null) return
 
-		val discColl = db.collection("discounts")
-		discColl.get().addOnSuccessListener {
-			val documents = it.documents
-			var max: Long = 0
-			for (document in documents) {
-				val id = document.get("discountID").toString().filter { it.isDigit() }.toLong()
+		val content = view.findViewById<LinearLayout>(R.id.discountListScrollViewContent)
 
-				if (id > max) max = id
-			}
-			val newDiscountID = "DSC" + (max + 1)
+		for (discount in discountList) {
+			var singleFrame: View = layoutInflater.inflate(R.layout.manageshop_discount_item, null)
+			singleFrame.id = discountList.indexOf(discount)
 
-			val newDiscMap = hashMapOf(
-				"discountID" to newDiscountID,
-				"discountIntroduction" to programObject.discountIntroduction,
-				"discountName" to programObject.discountName,
-				"discountType" to "product",
-				"endDate" to programObject.endDate,
-				"orderLimit" to programObject.orderLimit,
-				"percent" to programObject.percent,
-				"startDate" to programObject.startDate
-			)
+			val discountNameText = singleFrame.findViewById<TextView>(R.id.discountNameText)
+			val discountDateText = singleFrame.findViewById<TextView>(R.id.discountDateText)
+			val viewDiscountBtn = singleFrame.findViewById<Button>(R.id.viewDiscountBtn)
 
-			discColl.add(newDiscMap).addOnSuccessListener {
-				storeRef.get().addOnSuccessListener {
-					val updateDiscMap = hashMapOf(
-						"items/${programObject.productID}/discount" to newDiscountID
-					)
-					storeRef.update(updateDiscMap as Map<String, Any>)
+			val format = SimpleDateFormat("yyyy-MM-dd")
+			val startDate = format.format((discount["startDate"] as Timestamp).toDate())
+			val endDate = format.format((discount["endDate"] as Timestamp).toDate())
+			discountNameText.text = discount["name"].toString()
+			discountDateText.text = startDate + " - " + endDate
+
+			val viewDiscountDialog = ManageShopDiscountViewDialog(discount)
+			viewDiscountBtn.setOnClickListener {
+				activity?.let {
+					viewDiscountDialog.show(it) {
+						style(SheetStyle.BOTTOM_SHEET)
+						onPositive {
+							viewDiscountDialog.dismiss()
+						}
+					}
 				}
 			}
+
+			bookViews.add(singleFrame)
+			content.addView(singleFrame)
 		}
+
+		content.visibility = View.VISIBLE
 	}
 
 	override fun onDestroyView() {
