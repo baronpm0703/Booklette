@@ -1,4 +1,5 @@
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -15,6 +16,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.booklette.BankCardFragment
+import com.example.booklette.DetailBookItem
 import com.example.booklette.EmailSender
 import com.example.booklette.OrderDetailItemListFragment
 import com.example.booklette.R
@@ -22,10 +24,12 @@ import com.example.booklette.ShipAddressFragment
 import com.example.booklette.databinding.FragmentCheckOutBinding
 import com.example.booklette.homeActivity
 import com.example.booklette.model.CartObject
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
@@ -57,6 +61,7 @@ class CheckOutFragment : Fragment() {
     interface VoucherSumListener {
         fun onVoucherSumCalculated(sum: Float)
     }
+
     private var _binding: FragmentCheckOutBinding? = null
     private val binding get() = _binding!!
 
@@ -73,9 +78,12 @@ class CheckOutFragment : Fragment() {
     val url = "https://api-m.sandbox.paypal.com/v2/checkout/orders/"
     val urlToken = "https://api-m.sandbox.paypal.com/v1/oauth2/token"
     var token = "Bearer "
-    val clientId = "AZY4SgNyOhRXLoVpTswQxyd_cku-w428NGNf_OFr2Tor4t1bCeN4ngxQQIpT6bBAo5_8FPOcXXyKSXDm"
-    val clientSecret = "EGNxh5iA4Hzk7G3eSbbTBg4QNmFHp2_SMHla2vxjfM6-B4S7bPPxToYtiFohePAOTfU5VlJVu7uceY_v"
+    val clientId =
+        "AZY4SgNyOhRXLoVpTswQxyd_cku-w428NGNf_OFr2Tor4t1bCeN4ngxQQIpT6bBAo5_8FPOcXXyKSXDm"
+    val clientSecret =
+        "EGNxh5iA4Hzk7G3eSbbTBg4QNmFHp2_SMHla2vxjfM6-B4S7bPPxToYtiFohePAOTfU5VlJVu7uceY_v"
 
+    private lateinit var exContext: Context
 
     companion object {
 
@@ -88,6 +96,7 @@ class CheckOutFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+
         fun passSelectedItemToCheckOut(selectedItems: ArrayList<CartObject>): CheckOutFragment {
             val fragment = CheckOutFragment()
             val args = Bundle()
@@ -122,13 +131,13 @@ class CheckOutFragment : Fragment() {
         db = Firebase.firestore
         queue = Volley.newRequestQueue(context)
 
+        exContext = requireContext()
 
-
-        selectedItems = arguments?.getParcelableArrayList<CartObject>("SELECTED_ITEMS") ?: ArrayList()
+        selectedItems =
+            arguments?.getParcelableArrayList<CartObject>("SELECTED_ITEMS") ?: ArrayList()
         val adapter = CheckOutRecyclerViewAdapter(requireContext(), selectedItems)
         binding.rvCheckout.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCheckout.adapter = adapter
-
 
 
         val selectedAddress = arguments?.getParcelable<ShipAddressObject>(ARG_SELECTED_ADDRESS)
@@ -138,20 +147,20 @@ class CheckOutFragment : Fragment() {
             binding.recieverName.text = selectedAddress.receiverName
             binding.recieverPhone.text = selectedAddress.receiverPhone
             binding.addressNumber.text = selectedAddress.addressNumber
-            binding.addressZone.text = selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
+            binding.addressZone.text =
+                selectedAddress.province + ", " + selectedAddress.city + ", " + selectedAddress.ward
             binding.placeOrderBtn.isEnabled = true
             binding.placeOrderBtn.setBackgroundResource(R.drawable.button_go_to_check_out)
 
-        }
-        else{
+        } else {
             binding.addressEmpty.visibility = View.VISIBLE
             binding.placeOrderBtn.isEnabled = false
             binding.placeOrderBtn.setBackgroundResource(R.drawable.button_go_to_check_out_disabled)
-            binding.shiplb.visibility= View.GONE
-            binding.recieverName.visibility= View.GONE
-            binding.recieverPhone.visibility= View.GONE
-            binding.addressNumber.visibility= View.GONE
-            binding.addressZone.visibility= View.GONE
+            binding.shiplb.visibility = View.GONE
+            binding.recieverName.visibility = View.GONE
+            binding.recieverPhone.visibility = View.GONE
+            binding.addressNumber.visibility = View.GONE
+            binding.addressZone.visibility = View.GONE
 
         }
 
@@ -163,13 +172,19 @@ class CheckOutFragment : Fragment() {
             shipAddressFragment.arguments = args
             val homeAct = (activity as homeActivity)
             homeAct.supportFragmentManager.popBackStack()
-            homeAct.changeFragmentContainer(shipAddressFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+            homeAct.changeFragmentContainer(
+                shipAddressFragment,
+                homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]
+            )
         }
 
         binding.changeCardBtn.setOnClickListener {
             val bankCardFragment = BankCardFragment()
             val homeAct = (activity as homeActivity)
-            homeAct.changeFragmentContainer(bankCardFragment, homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1])
+            homeAct.changeFragmentContainer(
+                bankCardFragment,
+                homeAct.smoothBottomBarStack[homeAct.smoothBottomBarStack.size - 1]
+            )
         }
 
 
@@ -193,8 +208,9 @@ class CheckOutFragment : Fragment() {
             override fun onVoucherSumCalculated(sum: Float) {
                 val afterFomartedTotalDiscountAmount = String.format("%,.0f", sum)
                 binding.totalDiscount.text = "$afterFomartedTotalDiscountAmount VND"
-                val afterCalculateWithVoucher = totalAmount-sum
-                val formattedAfterCalculateWithVoucher = String.format("%,.0f", afterCalculateWithVoucher)
+                val afterCalculateWithVoucher = totalAmount - sum
+                val formattedAfterCalculateWithVoucher =
+                    String.format("%,.0f", afterCalculateWithVoucher)
                 binding.totalPaymentInPaymentDetail.text = "$formattedAfterCalculateWithVoucher VND"
                 binding.totalPayment.text = "$formattedAfterCalculateWithVoucher VND"
             }
@@ -257,8 +273,11 @@ class CheckOutFragment : Fragment() {
                     }
 
                     val x = 1
-                    val totalPaymentText = binding.totalPaymentInPaymentDetail.text.toString().replace(",", "").split(" ")[0]
-                    val totalPayment = if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() else 0.0F
+                    val totalPaymentText =
+                        binding.totalPaymentInPaymentDetail.text.toString().replace(",", "")
+                            .split(" ")[0]
+                    val totalPayment =
+                        if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() else 0.0F
 
                     val data: HashMap<String, Any> = hashMapOf(
                         "creationDate" to Timestamp(Date()),
@@ -283,60 +302,182 @@ class CheckOutFragment : Fragment() {
 //                                    cartObject.bookID.toString() to FieldValue.delete()
 //
 //                            }
+                        //send email
                         orderID = task.result.id
-                        Log.d("orderID",orderID)
+                        Log.d("orderID", orderID)
+
                         db.collection("orders").document(orderID)
                             .get()
-                            .addOnSuccessListener{ documentSnapshot ->
+                            .addOnSuccessListener { documentSnapshot ->
+                                var orderDetail = ""
                                 val orderData = documentSnapshot.data
-                                val itemsMap = orderData?.get("items") as? Map<String, Map<String, Any>>
-                                val emailSender = EmailSender(requireContext())
-                                val emailSubject = getString(R.string.orderCreatedSubject)
-                                val orderDetailItemListFragment = OrderDetailItemListFragment.newInstance(1, itemsMap!!,allowSelection = false,allowMultipleSelection = false)
-                                val totalMoney = (orderData?.get("totalSum") as Number).toLong()
-                                val status = orderData?.get("status") as String
-                                val timeStamp = orderData?.get("creationDate") as Timestamp
+                                var shopEmail = ""
+                                var shopFullName = ""
+                                val itemsMap =
+                                    orderData?.get("items") as? Map<String, Map<String, Any>>
+                                val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
+                                    itemMap.map { (itemId, itemData) ->
+                                        Log.d("shopID", shopID)
+                                        Log.d("itemId", itemId)
+                                        Log.d("itemData", itemData.toString())
 
-                                val date: Date? = timeStamp?.toDate()
-                                val sdf = SimpleDateFormat("dd-MM-yyyy")
-                                val paymentMethod = orderData?.get("paymentMethod") as? Map<String, Any>
-                                val paymentMethodType = paymentMethod?.get("Type").toString()
-                                val shippingAddress = orderData?.get("shippingAddress") as String
-                                val beforeDiscount = (orderData?.get("beforeDiscount") as Number).toLong()
-                                var emailBody = ""
-                                var userFullName = ""
-                                var userEmail = ""
-                                val statusEmail = getString(R.string.my_order_processing_button)
-                                val discount = "-" + formatMoney(beforeDiscount - totalMoney)
-                                val bitMapImage = orderDetailItemListFragment.captureFragmentContentAsImage(requireContext())!!
-                                val orderMessage = getString(R.string.email_created)
-                                db.collection("accounts")
-                                    .whereEqualTo("UID",auth.uid)
-                                    .get()
-                                    .addOnSuccessListener { querySnapshot ->
-                                        for (snapshot in querySnapshot){
-                                            val userData = snapshot.data
-                                            userFullName = userData["fullname"].toString()
-                                            userEmail = auth.currentUser?.email.toString()
-                                        }
-                                        if (orderDetailItemListFragment != null) {
-                                            emailBody = emailSender.setBody(
-                                                userFullName,
-                                                orderMessage,
-                                                documentSnapshot.id,
-                                                statusEmail,
-                                                sdf.format(date),
-                                                bitMapImage,
-                                                shippingAddress,
-                                                paymentMethodType,
-                                                formatMoney(beforeDiscount),
-                                                discount,
-                                                formatMoney(totalMoney),
-                                            )
-                                        }
-                                        emailSender.sendEmail(userEmail,emailSubject,emailBody)
+                                        // Get shop name
+                                        db.collection("accounts")
+                                            .whereEqualTo("UID", shopID)
+                                            .get()
+                                            .addOnSuccessListener { querySnapshot ->
+                                                for (document in querySnapshot) {
+                                                    val storeData = document.data
+                                                    val bookStoreRef =
+                                                        storeData["store"] as DocumentReference
+                                                    var bookStoreName =
+                                                        storeData["fullname"].toString()
+
+                                                    shopFullName = bookStoreName
+                                                    bookStoreRef.get()
+                                                        .addOnSuccessListener {
+                                                            if (it.exists()) {
+                                                                val bookStoreData = it.data
+                                                                bookStoreName =
+                                                                    bookStoreData?.get("storeName")
+                                                                        .toString()
+                                                                shopEmail = bookStoreData?.get("email").toString()
+                                                                shopFullName = bookStoreName
+                                                            }
+                                                        }
+                                                        .addOnFailureListener { exception ->
+                                                            // Handle any errors
+                                                            Log.e(
+                                                                "getStoreNameError",
+                                                                "Error getting document: $exception"
+                                                            )
+                                                        }
+
+
+                                                    // Fetch books after getting store name
+                                                    db.collection("books")
+                                                        .whereEqualTo("bookID", itemId)
+                                                        .get()
+                                                        .addOnSuccessListener { bookQuerySnapshot ->
+                                                            for (bookDocument in bookQuerySnapshot) {
+                                                                val bookData = bookDocument.data
+                                                                val id = itemId
+                                                                val name =
+                                                                    bookData["name"].toString()
+                                                                val author =
+                                                                    bookData["author"].toString()
+                                                                val imageUrl =
+                                                                    bookData["image"].toString()
+
+                                                                val itemMap = itemData as? Map<*, *>
+                                                                val price =
+                                                                    (itemMap?.get("totalSum") as Number).toLong()
+                                                                val quantity =
+                                                                    itemMap?.get("quantity") as Long
+                                                                orderDetail += exContext.getString(R.string.store) + ": " + bookStoreName + "\n"
+                                                                orderDetail += exContext.getString(R.string.manageshop_mybooks_add_name) + ": " + name + "\n"
+                                                                orderDetail += exContext.getString(R.string.manageshop_mybooks_add_author) + ": " + author + "\n"
+                                                                orderDetail += exContext.getString(R.string.quantity) + " " + quantity.toString() + "\n\n"
+                                                            }
+
+                                                        }
+                                                        .addOnFailureListener { exception ->
+                                                            Log.e("Loi", exception.toString())
+                                                        }
+                                                }
+                                            }
+                                            .addOnFailureListener { exception ->
+                                                Log.e("Loi", exception.toString())
+                                            }
+                                    }
+                                }
+                                Tasks.whenAllComplete(fetchBookNamesTasks!!)
+                                    .addOnSuccessListener {
+                                        val emailSender = EmailSender(exContext)
+                                        val emailSubject =
+                                            exContext.getString(R.string.orderCreatedSubject)
+                                        val shopEmailSubject = exContext.getString(R.string.orderReiceivedSubject)
+                                        val totalMoney =
+                                            (orderData?.get("totalSum") as Number).toLong()
+                                        val status = orderData?.get("status") as String
+                                        val timeStamp = orderData?.get("creationDate") as Timestamp
+
+                                        val date: Date? = timeStamp?.toDate()
+                                        val sdf = SimpleDateFormat("dd-MM-yyyy")
+                                        val paymentMethod =
+                                            orderData?.get("paymentMethod") as? Map<String, Any>
+                                        val paymentMethodType =
+                                            paymentMethod?.get("Type").toString()
+                                        val shippingAddress =
+                                            orderData?.get("shippingAddress") as String
+                                        val beforeDiscount =
+                                            (orderData?.get("beforeDiscount") as Number).toLong()
+                                        var emailBody = ""
+                                        var shopEmailBody = ""
+                                        var userFullName = ""
+                                        var userEmail = ""
+
+                                        val statusEmail =
+                                            exContext.getString(R.string.my_order_processing_button)
+                                        val discount =
+                                            "-" + formatMoney(beforeDiscount - totalMoney)
+
+
+                                        val orderMessage =
+                                            exContext.getString(R.string.email_created)
+
+                                        val shopOrderMessage = exContext.getString(R.string.email_has_order)
+                                        db.collection("accounts")
+                                            .whereEqualTo("UID", auth.uid)
+                                            .get()
+                                            .addOnSuccessListener { querySnapshot ->
+                                                for (snapshot in querySnapshot) {
+                                                    val userData = snapshot.data
+                                                    userFullName = userData["fullname"].toString()
+                                                    userEmail = auth.currentUser?.email.toString()
+                                                }
+
+                                                emailBody = emailSender.setBody(
+                                                    userFullName,
+                                                    orderMessage,
+                                                    documentSnapshot.id,
+                                                    statusEmail,
+                                                    sdf.format(date),
+                                                    orderDetail,
+                                                    shippingAddress,
+                                                    paymentMethodType,
+                                                    formatMoney(beforeDiscount),
+                                                    discount,
+                                                    formatMoney(totalMoney),
+                                                )
+                                                shopEmailBody = emailSender.setBody(
+                                                    shopFullName,
+                                                    shopOrderMessage,
+                                                    documentSnapshot.id,
+                                                    statusEmail,
+                                                    sdf.format(date),
+                                                    orderDetail,
+                                                    shippingAddress,
+                                                    paymentMethodType,
+                                                    formatMoney(beforeDiscount),
+                                                    discount,
+                                                    formatMoney(totalMoney),
+                                                )
+                                                emailSender.sendEmail(
+                                                    userEmail,
+                                                    emailSubject,
+                                                    emailBody
+                                                )
+                                                Log.d("shopEmail","shop " + shopEmail)
+                                                emailSender.sendEmail(
+                                                    shopEmail,
+                                                    shopEmailSubject,
+                                                    shopEmailBody
+                                                )
+                                            }
                                     }
                             }
+
                         db.collection("accounts")
                             .whereEqualTo("UID", auth.currentUser!!.uid.toString())
                             .get().addOnSuccessListener { documents ->
@@ -396,23 +537,38 @@ class CheckOutFragment : Fragment() {
 
         return view
     }
+
     fun formatMoney(number: Long): String {
         val numberString = number.toString()
         val regex = "(\\d)(?=(\\d{3})+$)".toRegex()
         return numberString.replace(regex, "$1.") + " VND"
     }
+
     fun changeStatusText(status: String): String {
         return when {
             status.contains("xử lý", true) -> getString(R.string.my_order_processing_button)
             status.contains("huỷ", true) -> getString(R.string.my_order_cancelled_button)
-            status.contains("trả đang duyệt", true) -> getString(R.string.my_order_detail_item_return_in_process)
-            status.contains("trả thành công", true) -> getString(R.string.my_order_detail_item_return_success)
-            status.contains("trả bị từ chối", true) -> getString(R.string.my_order_detail_item_return_failed)
+            status.contains(
+                "trả đang duyệt",
+                true
+            ) -> getString(R.string.my_order_detail_item_return_in_process)
+
+            status.contains(
+                "trả thành công",
+                true
+            ) -> getString(R.string.my_order_detail_item_return_success)
+
+            status.contains(
+                "trả bị từ chối",
+                true
+            ) -> getString(R.string.my_order_detail_item_return_failed)
+
             status.contains("thành công", true) -> getString(R.string.my_order_completed_button)
             status.contains("đã giao", true) -> getString(R.string.my_order_delivered_button)
             else -> ""
         }
     }
+
     private suspend fun getPayPalToken(url: String): String {
         return suspendCoroutine { continuation ->
             val jsonObjectRequest = object : JsonObjectRequest(
@@ -433,7 +589,10 @@ class CheckOutFragment : Fragment() {
                     val headers = HashMap<String, String>()
                     headers["Accept"] = "application/json"
                     headers["Accept-Language"] = "en_US"
-                    headers["Authorization"] = "Basic " + Base64.encodeToString("$clientId:$clientSecret".toByteArray(), Base64.NO_WRAP)
+                    headers["Authorization"] = "Basic " + Base64.encodeToString(
+                        "$clientId:$clientSecret".toByteArray(),
+                        Base64.NO_WRAP
+                    )
                     return headers
                 }
 
@@ -487,7 +646,10 @@ class CheckOutFragment : Fragment() {
     }
 
     private fun launchPayPalCheckout(orderId: String) {
-        val coreConfig = CoreConfig("AZY4SgNyOhRXLoVpTswQxyd_cku-w428NGNf_OFr2Tor4t1bCeN4ngxQQIpT6bBAo5_8FPOcXXyKSXDm", environment = Environment.SANDBOX)
+        val coreConfig = CoreConfig(
+            "AZY4SgNyOhRXLoVpTswQxyd_cku-w428NGNf_OFr2Tor4t1bCeN4ngxQQIpT6bBAo5_8FPOcXXyKSXDm",
+            environment = Environment.SANDBOX
+        )
 
         val payPalNativeClient = PayPalNativeCheckoutClient(
             application = requireActivity().application,
@@ -526,7 +688,8 @@ class CheckOutFragment : Fragment() {
                                 "totalSum" to totalSum,
                             )
 
-                            val selectedItemsMap: MutableMap<Any, HashMap<Any, Any>> = mutableMapOf()
+                            val selectedItemsMap: MutableMap<Any, HashMap<Any, Any>> =
+                                mutableMapOf()
                             selectedItemsMap[cartObject.bookID.toString()] = itemData
                             // Add to selectedItemsMap with bookID as key
 
@@ -548,8 +711,11 @@ class CheckOutFragment : Fragment() {
                             }
                         }
 
-                        val totalPaymentText = binding.totalPaymentInPaymentDetail.text.toString().replace(",", "").split(" ")[0]
-                        val totalPayment = if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() else 0.0F
+                        val totalPaymentText =
+                            binding.totalPaymentInPaymentDetail.text.toString().replace(",", "")
+                                .split(" ")[0]
+                        val totalPayment =
+                            if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() else 0.0F
 
                         val data: HashMap<Any, Any> = hashMapOf(
                             "creationDate" to Timestamp(Date()),
@@ -565,45 +731,54 @@ class CheckOutFragment : Fragment() {
                             "beforeDiscount" to totalAmount,
                             "totalSum" to (totalPayment),
                             "shippingAddress" to (binding.recieverName.text.toString() + " - " +
-                                                    binding.recieverPhone.text.toString() + " - " +
-                                                    binding.addressNumber.text.toString() + " " +
-                                                binding.addressZone.text.toString())
-                            )
+                                    binding.recieverPhone.text.toString() + " - " +
+                                    binding.addressNumber.text.toString() + " " +
+                                    binding.addressZone.text.toString())
+                        )
 
-                        db.collection("orders").add(data).addOnCompleteListener{documentReference ->
+                        db.collection("orders").add(data)
+                            .addOnCompleteListener { documentReference ->
 //                            for (cartObject in selectedItems) {
 //                                val fieldMap = hashMapOf<Any, Any>(
 //                                    cartObject.bookID.toString() to FieldValue.delete()
 //                                )
 //                            }
-                            db.collection("accounts")
-                                .whereEqualTo("UID", auth.currentUser!!.uid.toString())
-                                .get().addOnSuccessListener { documents ->
-                                    for (document in documents) {
+                                db.collection("accounts")
+                                    .whereEqualTo("UID", auth.currentUser!!.uid.toString())
+                                    .get().addOnSuccessListener { documents ->
+                                        for (document in documents) {
 
 
-                                        for (cartObject in selectedItems) {
+                                            for (cartObject in selectedItems) {
 //                                            val fieldMap = hashMapOf<Any, Any>(
 //                                                cartObject.bookID.toString() to FieldValue.delete()
 //                                            )
-                                            db.collection("accounts").document(document.id).update("cart.${cartObject.bookID}", FieldValue.delete()).addOnSuccessListener { result ->
+                                                db.collection("accounts").document(document.id)
+                                                    .update(
+                                                        "cart.${cartObject.bookID}",
+                                                        FieldValue.delete()
+                                                    ).addOnSuccessListener { result ->
 
+                                                    }
                                             }
                                         }
+
+                                        MotionToast.createColorToast(
+                                            context as Activity,
+                                            getString(R.string.successfully),
+                                            getString(R.string.paymentSuccessfully),
+                                            MotionToastStyle.SUCCESS,
+                                            MotionToast.GRAVITY_BOTTOM,
+                                            MotionToast.SHORT_DURATION,
+                                            ResourcesCompat.getFont(
+                                                context as Activity,
+                                                www.sanju.motiontoast.R.font.helvetica_regular
+                                            )
+                                        )
+
+                                        requireActivity().onBackPressedDispatcher.onBackPressed()
                                     }
-
-                                    MotionToast.createColorToast(
-                                        context as Activity,
-                                        getString(R.string.successfully),
-                                        getString(R.string.paymentSuccessfully),
-                                        MotionToastStyle.SUCCESS,
-                                        MotionToast.GRAVITY_BOTTOM,
-                                        MotionToast.SHORT_DURATION,
-                                        ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
-
-                                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                                }
-                        }
+                            }
 
 
                     } catch (e: Exception) {
@@ -623,7 +798,11 @@ class CheckOutFragment : Fragment() {
                     MotionToastStyle.ERROR,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.SHORT_DURATION,
-                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+                    ResourcesCompat.getFont(
+                        context as Activity,
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
+                )
             }
 
             override fun onPayPalCheckoutCanceled() {
@@ -635,7 +814,11 @@ class CheckOutFragment : Fragment() {
                     MotionToastStyle.ERROR,
                     MotionToast.GRAVITY_BOTTOM,
                     MotionToast.SHORT_DURATION,
-                    ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular))
+                    ResourcesCompat.getFont(
+                        context as Activity,
+                        www.sanju.motiontoast.R.font.helvetica_regular
+                    )
+                )
             }
         }
 
@@ -693,7 +876,7 @@ class CheckOutFragment : Fragment() {
 
 
     // Space for momo
-    
+
     private fun calculateTotalAmount(): Float {
         var total = 0f
         for (item in selectedItems) {

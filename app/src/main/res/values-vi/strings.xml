@@ -295,7 +295,7 @@
     <string name="discount">Giảm giá:</string>
     <string name="total_amount">Thành tiền:</string>
     <string name="cancel_order">Huỷ Đơn Hàng</string>
-    <string name="order">Đơn hàng №</string>
+    <string name="order">Đơn hàng </string>
     <string name="tracking_number">Mã đơn:</string>
     <string name="quantity">Số lượng:</string>
     <string name="total">Tổng:</string>
@@ -473,5 +473,5 @@
     <string name="myprofile_my_shop_orders">Đơn hàng từ cửa hàng</string>
     <string name="order_created">Bạn đã tạo 1 đơn hàng</string>
     <string name="myprofile_my_shop_orders_detail">Đơn hàng gửi tới shop</string>
-
+    <string name="store">Cửa hàng</string>
 </resources>

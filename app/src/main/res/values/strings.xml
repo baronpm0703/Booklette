@@ -349,9 +349,9 @@
     <string name="payment_detail">Payment Details</string>
     <string name="book_detail_adding_to_cart">adding...</string>
     <string name="order">Order</string>
-    <string name="tracking_number">Tracking number</string>
-    <string name="quantity">Quantity</string>
-    <string name="total">Total</string>
+    <string name="tracking_number">Tracking number:</string>
+    <string name="quantity">Quantity:</string>
+    <string name="total">Total:</string>
     <string name="details">Detail</string>
     <string name="book_detail_update_quantity">Update</string>
     <string name="book_detail_update_quantity_denied">Denied</string>
@@ -519,4 +519,5 @@
     <string name="orderReturnFailedSubject">[Booklette] Request rejected</string>
     <string name="orderReiceivedSubject">[Booklette] New order received</string>
     <string name="order_created">You have created an order</string>
+    <string name="store">Store</string>
 </resources>

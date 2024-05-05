@@ -216,8 +216,8 @@ class OrderDetailItemListFragment : Fragment() {
 
         // Create a bitmap with the same dimensions as the view
         val bitmap = Bitmap.createBitmap(
-            500,
-            500,
+            rootView.measuredWidth,
+            rootView.measuredHeight,
             Bitmap.Config.ARGB_8888
         )
 
