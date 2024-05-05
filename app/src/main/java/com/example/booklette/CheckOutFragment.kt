@@ -16,9 +16,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.booklette.BankCardFragment
-import com.example.booklette.DetailBookItem
 import com.example.booklette.EmailSender
-import com.example.booklette.OrderDetailItemListFragment
 import com.example.booklette.R
 import com.example.booklette.ShipAddressFragment
 import com.example.booklette.databinding.FragmentCheckOutBinding
@@ -449,7 +447,7 @@ class CheckOutFragment : Fragment() {
                                         val emailSender = EmailSender(exContext)
                                         val emailSubject =
                                             exContext.getString(R.string.orderCreatedSubject)
-                                        val shopEmailSubject = exContext.getString(R.string.orderReiceivedSubject)
+                                        val shopEmailSubject = exContext.getString(R.string.orderReceivedSubject)
                                         val totalMoney =
                                             (orderData?.get("totalSum") as Number).toLong()
                                         val status = orderData?.get("status") as String

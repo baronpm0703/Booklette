@@ -19,7 +19,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -241,11 +240,12 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                                                             var bookStoreName =
                                                                 storeData["fullname"].toString()
                                                             val salesNotif = storeData["salesNotif"]
-                                                            shopSetting = if (salesNotif is Boolean) {
-                                                                salesNotif
-                                                            } else {
-                                                                false // Default value if deliveryNotif is null or not a Boolean
-                                                            }
+                                                            shopSetting =
+                                                                if (salesNotif is Boolean) {
+                                                                    salesNotif
+                                                                } else {
+                                                                    false // Default value if deliveryNotif is null or not a Boolean
+                                                                }
                                                             shopFullName = bookStoreName
                                                             bookStoreRef.get()
                                                                 .addOnSuccessListener {
@@ -356,13 +356,15 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                                             var orderMessage = ""
                                             Log.d("emailHcmus", hcmusBook.toString())
                                             if (!hcmusBook) {
-                                                orderMessage = exContext.getString(R.string.email_canceled)
+                                                orderMessage =
+                                                    exContext.getString(R.string.email_canceled)
                                             } else {
                                                 orderMessage =
                                                     exContext.getString(R.string.email_canceled)
                                             }
 
-                                            val shopOrderMessage = exContext.getString(R.string.email_canceled)
+                                            val shopOrderMessage =
+                                                exContext.getString(R.string.email_canceled)
                                             db.collection("accounts")
                                                 .whereEqualTo("UID", customerID)
                                                 .get()
@@ -608,9 +610,9 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                                         .addOnSuccessListener {
                                             val emailSender = EmailSender(requireContext())
                                             val emailSubject =
-                                                exContext.getString(R.string.orderReiceivedSubject)
+                                                exContext.getString(R.string.orderReceivedSubject)
                                             val shopEmailSubject =
-                                                exContext.getString(R.string.orderReiceivedSubject)
+                                                exContext.getString(R.string.orderDeliveredSubject)
                                             val totalMoney =
                                                 (orderData?.get("totalSum") as Number).toLong()
                                             val status = orderData?.get("status") as String
@@ -644,7 +646,8 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                                                     getString(R.string.email_delivered_hcmus)
                                             }
 
-//                                            val shopOrderMessage = getString(R.string.email_has_order)
+                                            val shopOrderMessage =
+                                                getString(R.string.email_delivered_by_shop)
                                             db.collection("accounts")
                                                 .whereEqualTo("UID", customerID)
                                                 .get()
@@ -675,19 +678,22 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                                                                         discount,
                                                                         formatMoney(totalMoney),
                                                                     )
-                                                                    //                                                    shopEmailBody = emailSender.setBody(
-                                                                    //                                                        shopFullName,
-                                                                    //                                                        shopOrderMessage,
-                                                                    //                                                        documentSnapshot.id,
-                                                                    //                                                        statusEmail,
-                                                                    //                                                        sdf.format(date),
-                                                                    //                                                        orderDetail,
-                                                                    //                                                        shippingAddress,
-                                                                    //                                                        paymentMethodType,
-                                                                    //                                                        formatMoney(beforeDiscount),
-                                                                    //                                                        discount,
-                                                                    //                                                        formatMoney(totalMoney),
-                                                                    //                                                    )
+                                                                    shopEmailBody =
+                                                                        emailSender.setBody(
+                                                                            shopFullName,
+                                                                            shopOrderMessage,
+                                                                            documentSnapshot.id,
+                                                                            statusEmail,
+                                                                            sdf.format(date),
+                                                                            orderDetail,
+                                                                            shippingAddress,
+                                                                            paymentMethodType,
+                                                                            formatMoney(
+                                                                                beforeDiscount
+                                                                            ),
+                                                                            discount,
+                                                                            formatMoney(totalMoney),
+                                                                        )
                                                                     Log.d(
                                                                         "userEmail",
                                                                         "user " + userEmail
@@ -700,14 +706,17 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                                                                         )
                                                                     }
 
-                                                                    //                                                    Log.d("shopEmail","shop " + shopEmail)
-                                                                    //                                                    if (shopSetting){
-                                                                    //                                                        emailSender.sendEmail(
-                                                                    //                                                            shopEmail,
-                                                                    //                                                            shopEmailSubject,
-                                                                    //                                                            shopEmailBody
-                                                                    //                                                        )
-                                                                    //                                                    }
+                                                                    Log.d(
+                                                                        "shopEmail",
+                                                                        "shop " + shopEmail
+                                                                    )
+                                                                    if (shopSetting) {
+                                                                        emailSender.sendEmail(
+                                                                            shopEmail,
+                                                                            shopEmailSubject,
+                                                                            shopEmailBody
+                                                                        )
+                                                                    }
                                                                 }
                                                             }
                                                             .addOnFailureListener { exception ->

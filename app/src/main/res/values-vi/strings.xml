@@ -394,6 +394,7 @@
     <string name="orderDetailReturnAcceptLabel">Bạn có chắc rằng chấp nhận yêu cầu này?</string>
     <string name="orderShopDetailReturnAccept">Yêu cầu đã được chấp thuận.</string>
     <string name="orderShopDetailReturnReject">Yêu cầu đã bị từ chối.</string>
+    <string name="email_delivered_by_shop">Đơn hàng đã được giao đến người mua!</string>
     <string name="helpCenter">Trung tâm hỗ trợ</string>
     <string name="topQuestion">Câu hỏi phổ biến</string>
     <string name="bookLetteAddresss">227 Nguyễn Văn Cừ, Phường 4, Quận 5, Thành phố Hồ Chí Minh</string>
@@ -469,7 +470,7 @@
     <string name="orderReturnSubject">[Booklette] Yêu cầu trả hàng</string>
     <string name="orderReturnSuccessSubject">[Booklette] Yêu cầu trả hàng được chấp thuận</string>
     <string name="orderReturnFailedSubject">[Booklette] Yêu cầu trả hàng bị từ chối</string>
-    <string name="orderReiceivedSubject">[Booklette] Đơn hàng mới được nhận</string>
+    <string name="orderReceivedSubject">[Booklette] Đơn hàng mới được nhận</string>
     <string name="orderCancelSubject">[Booklette] Đơn hàng bị huỷ</string>
     <string name="myprofile_my_shop_orders">Đơn hàng từ cửa hàng</string>
     <string name="order_created">Bạn đã tạo 1 đơn hàng</string>
