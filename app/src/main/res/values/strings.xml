@@ -322,7 +322,8 @@
     <string name="email_return_created">You have created a request to return books.</string>
     <string name="email_return_successfully">Your request to return books has been accepted.</string>
     <string name="email_return_failed">Your request to return books has been rejected.</string>
-
+    <string name="email_return_failed_by_shop">You have rejected a request to return books.</string>
+    <string name="email_return_aceppted_by_shop">You have accepted a request to return books.</string>
     <string name="email_has_order">You have received an order for!</string>
 
     <string name="email_order_completed">Your books have been sold!</string>

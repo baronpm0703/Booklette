@@ -475,4 +475,6 @@
     <string name="order_created">Bạn đã tạo 1 đơn hàng</string>
     <string name="myprofile_my_shop_orders_detail">Đơn hàng gửi tới shop</string>
     <string name="store">Cửa hàng</string>
+    <string name="email_return_failed_by_shop">Bạn đã từ chối yêu cầu trả hàng.</string>
+    <string name="email_return_aceppted_by_shop">Bạn đã chấp nhận yêu cầu trả hàng.</string>
 </resources>
