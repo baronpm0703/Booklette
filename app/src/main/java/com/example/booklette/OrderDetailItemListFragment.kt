@@ -95,38 +95,39 @@ class OrderDetailItemListFragment : Fragment() {
                                         val bookStoreData = it.data
                                         bookStoreName = bookStoreData?.get("storeName").toString()
                                     }
+                                    // Fetch books after getting store name
+                                    db.collection("books")
+                                        .whereEqualTo("bookID", itemId)
+                                        .get()
+                                        .addOnSuccessListener { bookQuerySnapshot ->
+                                            for (bookDocument in bookQuerySnapshot) {
+                                                val bookData = bookDocument.data
+                                                val id = itemId
+                                                val name = bookData["name"].toString()
+                                                val author = bookData["author"].toString()
+                                                val imageUrl = bookData["image"].toString()
+
+                                                val itemMap = itemData as? Map<*, *>
+                                                val price = (itemMap?.get("totalSum") as Number).toLong()
+                                                val quantity = itemMap?.get("quantity") as Long
+
+                                                val detailBookItem = DetailBookItem(id, name, author, quantity, price, imageUrl, bookStoreName)
+                                                listBooks.add(detailBookItem)
+                                            }
+
+                                            // Update the adapter after fetching all books
+                                            adapter.notifyDataSetChanged()
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            Log.e("Loi", exception.toString())
+                                        }
                                 }
                                 .addOnFailureListener { exception ->
                                     // Handle any errors
                                     Log.e("getStoreNameError", "Error getting document: $exception")
                                 }
 
-                            // Fetch books after getting store name
-                            db.collection("books")
-                                .whereEqualTo("bookID", itemId)
-                                .get()
-                                .addOnSuccessListener { bookQuerySnapshot ->
-                                    for (bookDocument in bookQuerySnapshot) {
-                                        val bookData = bookDocument.data
-                                        val id = itemId
-                                        val name = bookData["name"].toString()
-                                        val author = bookData["author"].toString()
-                                        val imageUrl = bookData["image"].toString()
 
-                                        val itemMap = itemData as? Map<*, *>
-                                        val price = (itemMap?.get("totalSum") as Number).toLong()
-                                        val quantity = itemMap?.get("quantity") as Long
-
-                                        val detailBookItem = DetailBookItem(id, name, author, quantity, price, imageUrl, bookStoreName)
-                                        listBooks.add(detailBookItem)
-                                    }
-
-                                    // Update the adapter after fetching all books
-                                    adapter.notifyDataSetChanged()
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.e("Loi", exception.toString())
-                                }
                         }
                     }
                     .addOnFailureListener { exception ->
