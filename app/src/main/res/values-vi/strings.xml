@@ -91,9 +91,11 @@
     <string name="manageshop_mybooks_pending">Đang chờ</string>
     <string name="manageshop_mybooks_violation">Vi phạm</string>
     <string name="manageshop_mybooks_boost">Đẩy sách</string>
+    <string name="manageshop_mybooks_boosted">Đã đẩy</string>
     <string name="manageshop_mybooks_boost_error">Lỗi!</string>
     <string name="manageshop_mybooks_boost_error2">Bạn đã đẩy sản phẩm này rồi, vui lòng quay lại sau</string>
-    <string name="manageshop_mybooks_boost_error3">Quay lại cửa hàng</string>
+    <string name="manageshop_mybooks_boost_error3"> tiếng nữa</string>
+    <string name="manageshop_mybooks_boost_error4">Quay lại cửa hàng</string>
     <string name="manageshop_mybooks_edit">Sửa</string>
     <string name="manageshop_mybooks_edit_flavor_text">Chỉnh sửa thông tin sách</string>
     <string name="manageshop_mybooks_edit_confirm">Lưu thay đổi</string>

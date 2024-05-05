@@ -131,6 +131,19 @@ class ManageShopBooksFragment : Fragment() {
 		return view
 	}
 
+	private fun boostBook(bookObject: MyShopBookObject) {
+		val db = Firebase.firestore
+		val bookColl = db.collection("books")
+		val updatedData = hashMapOf(
+			"releaseDate" to Timestamp.now()
+		)
+		bookColl.whereEqualTo("bookID", bookObject.id).get().addOnSuccessListener {
+			for (bookDoc in it.documents) {
+				bookColl.document(bookDoc.id).update(updatedData as Map<String, Any>)
+			}
+		}
+	}
+
 	private fun addNewBook(newBook: ManageShopNewBookObject) {
 		val auth = Firebase.auth
 		val db = Firebase.firestore
@@ -301,6 +314,21 @@ class ManageShopBooksFragment : Fragment() {
 		}
 	}
 
+	private fun boostErrorDialog(hoursLeft: Float) {
+		val layoutInflater = LayoutInflater.from(requireContext())
+		val view = layoutInflater.inflate(R.layout.manageshop_pushbook_error_dialog, null)
+		view.findViewById<TextView>(R.id.boostError3Tv).text = hoursLeft.toString()
+		val builder = AlertDialog.Builder(requireContext())
+		builder.setView(view)
+		val dialog = builder.create()
+
+		view.findViewById<Button>(R.id.dismissBtn).setOnClickListener {
+			dialog.dismiss()
+		}
+
+		dialog.show()
+	}
+
 	private fun addBookSuccessDialog() {
 		val layoutInflater = LayoutInflater.from(requireContext())
 		val view = layoutInflater.inflate(R.layout.manageshop_addbook_success_dialog, null)
@@ -465,6 +493,7 @@ class ManageShopBooksFragment : Fragment() {
 			val bookNameText = singleFrame.findViewById<TextView>(R.id.bookNameText)
 			val bookAuthorText = singleFrame.findViewById<TextView>(R.id.bookAuthorText)
 			val bookPriceText = singleFrame.findViewById<TextView>(R.id.bookPriceText)
+			val boostBtn = singleFrame.findViewById<Button>(R.id.boostBookBtn)
 			val editBtn = singleFrame.findViewById<Button>(R.id.editBookBtn)
 			val deleteBtn = singleFrame.findViewById<Button>(R.id.deleteBookBtn)
 
@@ -475,7 +504,23 @@ class ManageShopBooksFragment : Fragment() {
 			bookNameText.text = book.name
 			bookAuthorText.text = book.author
 			bookPriceText.text = book.shopPrice.toString()
+			var boostTime = abs(Timestamp.now().toDate().time - book.releaseDate.toDate().time) / 1000
+			if (boostTime < 14400) {
+				boostBtn.text = resources.getString(R.string.manageshop_mybooks_boosted)
+				boostBtn.setBackgroundColor(Color.parseColor("#B9B9B9"))
+			}
 
+			boostBtn.setOnClickListener {
+				if (boostTime < 14400)
+					boostErrorDialog(4 - (boostTime / 3600).toFloat())
+				else {
+					boostBook(book)
+					book.releaseDate = Timestamp.now()
+					boostTime = 0
+					boostBtn.text = resources.getString(R.string.manageshop_mybooks_boosted)
+					boostBtn.setBackgroundColor(Color.parseColor("#B9B9B9"))
+				}
+			}
 			editBtn.setOnClickListener {
 				editBookDialog(singleFrame.id, book)
 			}
