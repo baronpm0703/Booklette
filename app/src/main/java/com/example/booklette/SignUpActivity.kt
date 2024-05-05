@@ -40,6 +40,10 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var binding: ActivitySignUpBinding
+    private val defaultAvt = "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/Accounts%2Fdefault.png?alt=media&token=fd80f83e-7717-4279-a090-4dc97fa435b9"
+    val defaultStoreAvt = "https://firebasestorage.googleapis.com/v0/b/book-store-3ed32.appspot.com/o/personalStoresAvatar%2Fbook_shop_avatar.png?alt=media&token=5a3e58cc-56ae-4b8f-9b90-a9ee825ec9ee"
+
+
     var callbackManager = CallbackManager.Factory.create()
     companion object {
         private const val RC_SIGN_UP = 1009
@@ -134,7 +138,7 @@ class SignUpActivity : AppCompatActivity() {
                                 "items" to emptyMap,
                                 "rating" to emptyArray,
                                 "shopVouchers" to emptyArray,
-                                "storeAvatar" to "",
+                                "storeAvatar" to defaultStoreAvt,
                                 "storeLocation" to "",
                                 "storeName" to "Seller ${binding.edtUsernameSignUp.text}",
                             )
@@ -144,11 +148,10 @@ class SignUpActivity : AppCompatActivity() {
                                 .addOnSuccessListener { documentReference ->
                                     // Document added successfully, you can get its ID here
                                     val storeRef = db.collection("personalStores").document(documentReference.id)
-
                                     val dataAccount: HashMap<String, Any> = hashMapOf(
                                         "UID" to user!!.uid,
                                         "address" to "",
-                                        "avt" to "",
+                                        "avt" to defaultAvt,
                                         "blacklist" to emptyArray,
                                         "fullname" to "${binding.edtUsernameSignUp.text}",
                                         "phone" to "",
@@ -259,7 +262,7 @@ class SignUpActivity : AppCompatActivity() {
                                                 "items" to emptyMap,
                                                 "rating" to emptyArray,
                                                 "shopVouchers" to emptyArray,
-                                                "storeAvatar" to "",
+                                                "storeAvatar" to defaultStoreAvt,
                                                 "storeLocation" to "",
                                                 "storeName" to "Seller ${user?.email.toString()}",
                                             )
@@ -273,7 +276,7 @@ class SignUpActivity : AppCompatActivity() {
                                                     val dataAccount: HashMap<String, Any> = hashMapOf(
                                                         "UID" to user!!.uid,
                                                         "address" to "",
-                                                        "avt" to "",
+                                                        "avt" to defaultAvt,
                                                         "blacklist" to emptyArray,
                                                         "fullname" to user.email.toString(),
                                                         "phone" to "",
