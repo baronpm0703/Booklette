@@ -62,8 +62,8 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginLeft="10dp"
+                                android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="17dp"
-                                android:layout_toStartOf="@+id/editAddress"
                                 android:background="@drawable/bank_card_gradient"
                                 android:drawableLeft="@drawable/ship_address_home_label"
                                 android:paddingStart="10dp"
@@ -74,22 +74,6 @@
                                 android:textSize="8dp"
                                 android:textStyle="bold" />
 
-
-                            <Button
-                                android:id="@+id/editAddress"
-                                android:layout_width="34dp"
-                                android:textColor="#103667"
-                                android:textStyle="bold"
-                                android:layout_height="25dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginStart="-7dp"
-                                android:textSize="8dp"
-                                android:layout_marginEnd="16dp"
-                                android:paddingStart="10dp"
-                                android:paddingEnd="10dp"
-                                android:background="@drawable/button_edit_address"
-                                android:drawableLeft="@drawable/edit_address_icon"></Button>
                         </RelativeLayout>
                         <TextView
                             android:id="@+id/phoneNum"
