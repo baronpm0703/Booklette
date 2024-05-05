@@ -9,11 +9,13 @@ import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.booklette.model.BookObject
+import com.example.booklette.model.BookObjectWithDate
+import com.example.booklette.model.ProductsObject
 import com.squareup.picasso.Picasso
 import per.wsj.library.AndRatingBar
 
 class TopBookHomeFragmentAdapter(
-    val context: FragmentActivity?, private val dataList: ArrayList<BookObject>,
+    val context: FragmentActivity?, private val dataList: ArrayList<BookObjectWithDate>,
     private val ratings: ArrayList<Float>) :
     RecyclerView.Adapter<TopBookHomeFragmentAdapter.ViewHolder>() {
 

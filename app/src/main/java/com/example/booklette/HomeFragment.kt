@@ -21,9 +21,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentHomeBinding
 import com.example.booklette.model.BookObject
+import com.example.booklette.model.BookObjectWithDate
+import com.example.booklette.model.ProductsObject
 import com.example.booklette.model.SimpleFuzzySearch
 import com.google.android.material.chip.Chip
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,6 +35,8 @@ import com.mancj.materialsearchbar.MaterialSearchBar
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
@@ -53,11 +58,11 @@ class HomeFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private var topBookArrayList = ArrayList<BookObject>()
+    private var topBookArrayList = ArrayList<BookObjectWithDate>()
     private var hcmusBookArrayList = ArrayList<BookObject>()
     private var topBookRating = ArrayList<Float>()
     private var bookCategory = ArrayList<String>();
-    private var RCDBookList = ArrayList<BookObject>()
+    private var RCDBookList = ArrayList<BookObjectWithDate>()
     private var RCDBookRating = ArrayList<Float>()
     private var BookNewArrivalList = ArrayList<BookObject>()
     private var BookNewArrivalSaleList = ArrayList<Float>()
@@ -410,12 +415,12 @@ class HomeFragment : Fragment() {
                         tmp = getBookPrice1(tmp_id)
 
                         RCDBookList.add(
-                            BookObject(
+                            BookObjectWithDate(
                                 document.data.get("bookID").toString(),
                                 document.data.get("name").toString(),
                                 document.data.get("genre").toString(),
                                 document.data.get("author").toString(),
-                                document.data.get("releaseDate").toString(),
+                                (document.data.get("releaseDate") as Timestamp).toDate(),
                                 document.data.get("image").toString(),
 //                    document.data.get("price").toString().toFloat()
                                 tmp,
@@ -509,12 +514,12 @@ class HomeFragment : Fragment() {
                         tmp = getBookPrice1(tmp_id)
 
                         topBookArrayList.add(
-                            BookObject(
+                            BookObjectWithDate(
                                 document.data.get("bookID").toString(),
                                 document.data.get("name").toString(),
                                 document.data.get("genre").toString(),
                                 document.data.get("author").toString(),
-                                document.data.get("releaseDate").toString(),
+                                (document.data.get("releaseDate") as Timestamp).toDate(),
                                 document.data.get("image").toString(),
 //                    document.data.get("price").toString().toFloat()
                                 tmp,
@@ -538,11 +543,14 @@ class HomeFragment : Fragment() {
                                 avg_rating += score
                             }
                         }
-
+                        topBookArrayList.get(topBookArrayList.size - 1).index = topBookArrayList.size - 1
                         topBookRating.add(avg_rating / rating_num)
                     }
 
+                    sortByReleaseDate()
+
                     topBookAdapter.notifyDataSetChanged()
+//                    binding.rvTopBookHomeFragment
 
                     Handler().postDelayed({
                         binding.smHomeFragmentTopBookRV.visibility = View.GONE
@@ -554,6 +562,27 @@ class HomeFragment : Fragment() {
         }
     }
 
+    fun sortByReleaseDate() {
+        // Create a temporary list to store sorted data
+        val sortedList = ArrayList<Pair<BookObjectWithDate, Float>>()
+
+        // Combine topBookArrayList and topBookRating elements into pairs
+        for (i in topBookArrayList.indices) {
+            sortedList.add(Pair(topBookArrayList[i], topBookRating[i]))
+        }
+
+        // Sort the combined list by releaseDate using the with method for clarity
+        sortedList.sortWith(compareBy { it.first.releaseDate })
+        sortedList.reverse()
+
+        // Extract the sorted data back into separate lists
+        topBookArrayList.clear()
+        topBookRating.clear()
+        for (pair in sortedList) {
+            topBookArrayList.add(pair.first)
+            topBookRating.add(pair.second)
+        }
+    }
     private fun hcmusBookHomeRVInitialize() {
         binding.rvHcmusBook.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         hcmusBookHomeFragmentAdapter = HcmusBookHomeFragmentAdapter(activity, hcmusBookArrayList)
@@ -731,11 +760,11 @@ class HomeFragment : Fragment() {
                 }
 
                 RCDBookList.add(
-                    BookObject(document.data.get("id").toString(),
+                    BookObjectWithDate(document.data.get("id").toString(),
                     document.data.get("name").toString(),
                     document.data.get("genre").toString(),
                     document.data.get("author").toString(),
-                    document.data.get("releaseDate").toString(),
+                    (document.data.get("releaseDate") as Timestamp).toDate(),
                     document.data.get("image").toString(),
                     tmp,
                     document.data.get("description").toString()
@@ -793,11 +822,11 @@ class HomeFragment : Fragment() {
                     }
 
                     topBookArrayList.add(
-                        BookObject(document.data.get("id").toString(),
+                        BookObjectWithDate(document.data.get("id").toString(),
                         document.data.get("name").toString(),
                         document.data.get("genre").toString(),
                         document.data.get("author").toString(),
-                        document.data.get("releaseDate").toString(),
+                        (document.data.get("releaseDate") as Timestamp).toDate(),
                         document.data.get("image").toString(),
                         tmp,
                         document.data.get("description").toString()
@@ -846,11 +875,11 @@ class HomeFragment : Fragment() {
                     }
 
                     topBookArrayList.add(
-                        BookObject(document.data.get("id").toString(),
+                        BookObjectWithDate(document.data.get("id").toString(),
                         document.data.get("name").toString(),
                         document.data.get("genre").toString(),
                         document.data.get("author").toString(),
-                        document.data.get("releaseDate").toString(),
+                        (document.data.get("releaseDate") as Timestamp).toDate(),
                         document.data.get("image").toString(),
                         tmp,
                         document.data.get("description").toString()
