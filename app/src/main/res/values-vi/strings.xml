@@ -461,7 +461,7 @@
     <string name="step3method3">Phương thức 3: Tự động liên hệ với người mua và sắp xếp việc trao đổi ngoài dịch vụ của Booklette.</string>
     <string name="method3nd">Tự chủ liên hệ với người bán và sắp xếp việc trao đổi hàng ngoài dịch vụ của Booklette.</string>
     <string name="orderDayCreated">Ngày tạo:</string>
-
+    <string name="email_canceled">Đơn hàng của bạn đã bị huỷ.</string>
 
     <string name="orderCreatedSubject">[Booklette] Đơn hàng được tạo</string>
     <string name="orderDeliveredSubject">[Booklette] Đơn hàng đã được giao</string>
@@ -470,6 +470,7 @@
     <string name="orderReturnSuccessSubject">[Booklette] Yêu cầu trả hàng được chấp thuận</string>
     <string name="orderReturnFailedSubject">[Booklette] Yêu cầu trả hàng bị từ chối</string>
     <string name="orderReiceivedSubject">[Booklette] Đơn hàng mới được nhận</string>
+    <string name="orderCancelSubject">[Booklette] Đơn hàng bị huỷ</string>
     <string name="myprofile_my_shop_orders">Đơn hàng từ cửa hàng</string>
     <string name="order_created">Bạn đã tạo 1 đơn hàng</string>
     <string name="myprofile_my_shop_orders_detail">Đơn hàng gửi tới shop</string>

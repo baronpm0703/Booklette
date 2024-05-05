@@ -315,6 +315,7 @@
     <string name="email_created">You have created an order.</string>
     <string name="email_created_hcmus">You have created an order for HCMUS books.</string>
     <string name="email_delivered">Your order has been delivered, please check it!</string>
+    <string name="email_canceled">Your order has been canceled.</string>
     <string name="email_delivered_hcmus">Your order has been delivered, please come to HCMUS to receive it!</string>
     <string name="email_completed">Your order has been completed!</string>
 
@@ -518,6 +519,7 @@
     <string name="orderReturnSuccessSubject">[Booklette] Request accepted</string>
     <string name="orderReturnFailedSubject">[Booklette] Request rejected</string>
     <string name="orderReiceivedSubject">[Booklette] New order received</string>
+    <string name="orderCancelSubject">[Booklette] Order canceled</string>
     <string name="order_created">You have created an order</string>
     <string name="store">Store</string>
 </resources>
