@@ -1,18 +1,24 @@
 package com.example.booklette
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
 import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.os.Handler
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.StringRes
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +30,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
+import com.maxkeppeler.sheets.core.Image
 import com.maxkeppeler.sheets.core.PositiveListener
 import com.maxkeppeler.sheets.core.Sheet
 import com.maxkeppeler.sheets.core.SheetStyle
@@ -31,6 +38,7 @@ import com.squareup.picasso.Picasso
 
 
 class ProfileSettingEditProfileDialog: Sheet() {
+    var avt: Bitmap? = null
     var name = ""
     var dob = ""
     var phone = ""
@@ -90,6 +98,29 @@ class ProfileSettingEditProfileDialog: Sheet() {
                 }
             }
 
+
+        val dobCalendar = Calendar.getInstance()
+        val dobDate = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            dobCalendar.set(Calendar.YEAR, year)
+            dobCalendar.set(Calendar.MONTH, month)
+            dobCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            val format = "yyyy-MM-dd"
+            val dateFormat = SimpleDateFormat(format, java.util.Locale.US)
+            binding.dobET.setText(dateFormat.format(dobCalendar.time))
+        }
+        binding.dobET.setOnClickListener {
+            this.context?.let { it1 ->
+                DatePickerDialog(
+                    it1,
+                    dobDate,
+                    dobCalendar.get(Calendar.YEAR),
+                    dobCalendar.get(Calendar.MONTH),
+                    dobCalendar.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
+        }
+
         // Click out editext
         binding.changePasswordDialog.setOnClickListener {
             binding.nameET.clearFocus()
@@ -143,28 +174,43 @@ class ProfileSettingEditProfileDialog: Sheet() {
                 imm.hideSoftInputFromWindow(binding.addressET.windowToken, 0)
             }
         }
-//
-//        //Apply
-//        binding.savePwdBtn.setOnClickListener {
-//            oldPassword = binding.oldPwdET.text.toString()
-//            newPassword = binding.newPwdET.text.toString()
-//            confimPassword = binding.confirmPwdET.text.toString()
-//
-//            if (oldPassword.isEmpty() || newPassword.isEmpty() || confimPassword.isEmpty()) {
-//                Toast.makeText(context, resources.getString(R.string.profilesetting_password_change_empty), Toast.LENGTH_SHORT).show()
-//            }
-//            else if (newPassword != confimPassword) {
-//                Toast.makeText(context, resources.getString(R.string.profilesetting_password_change_nomatch), Toast.LENGTH_SHORT).show()
-//            }
-//            else
-//                positiveListener?.invoke()
-//        }
+
+        //Apply
+        binding.saveChangesBtn.setOnClickListener {
+            name = binding.nameET.text.toString()
+            dob = binding.dobET.text.toString()
+            phone = binding.phoneET.text.toString()
+            email = binding.emailET.text.toString()
+            address = binding.addressET.text.toString()
+
+            positiveListener?.invoke()
+        }
+
+        editAvtDialog(view)
 
         this.displayButtonsView(false)
 //        setButtonPositiveListener {  } If you want to override the default positive click listener
 //        displayButtonsView() If you want to change the visibility of the buttons view
 //        displayButtonPositive() Hiding the positive button will prevent clicks
 //        Hide the toolbar of the sheet, the title and the icon
+    }
+
+    private fun editAvtDialog(view: View) {
+        val editAvtBtn = view.findViewById<CardView>(R.id.avtCV)
+        val editAvtDialog = ProfileSettingAvtMethodDialog()
+        editAvtBtn.setOnClickListener {
+            activity?.let {
+                editAvtDialog.show(it) {
+                    style(SheetStyle.BOTTOM_SHEET)
+                    onPositive {
+                        val imageBitmap = editAvtDialog.getImage()
+                        avt = Bitmap.createScaledBitmap(imageBitmap, 100, 100, false)
+
+                        view.findViewById<ImageView>(R.id.avtIV).setImageBitmap(avt)
+                    }
+                }
+            }
+        }
     }
 
     fun build(ctx: Context, width: Int? = null, func: ProfileSettingEditProfileDialog.() -> Unit): ProfileSettingEditProfileDialog {
