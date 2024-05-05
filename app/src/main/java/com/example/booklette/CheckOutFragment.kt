@@ -216,7 +216,8 @@ class CheckOutFragment : Fragment() {
             }
         })
 
-
+        var userSetting = true
+        var shopSetting = true
         binding.placeOrderBtn.setOnClickListener {
             if (::radioButtonClicked.isInitialized) {
                 var orderID = ""
@@ -302,6 +303,42 @@ class CheckOutFragment : Fragment() {
 //                                    cartObject.bookID.toString() to FieldValue.delete()
 //
 //                            }
+
+                        db.collection("accounts")
+                            .whereEqualTo("UID", auth.currentUser!!.uid.toString())
+                            .get().addOnSuccessListener { documents ->
+                                for (document in documents) {
+                                    val userData = document.data
+                                    userSetting = userData?.get("deliveryNotif") as Boolean
+                                    for (cartObject in selectedItems) {
+//                                            val fieldMap = hashMapOf<Any, Any>(
+//                                                cartObject.bookID.toString() to FieldValue.delete()
+//                                            )
+                                        db.collection("accounts").document(document.id).update(
+                                            "cart.${cartObject.bookID}",
+                                            FieldValue.delete()
+                                        ).addOnSuccessListener { result ->
+
+                                        }
+                                    }
+                                }
+
+                                MotionToast.createColorToast(
+                                    context as Activity,
+                                    getString(R.string.successfully),
+                                    getString(R.string.paymentSuccessfully),
+                                    MotionToastStyle.SUCCESS,
+                                    MotionToast.GRAVITY_BOTTOM,
+                                    MotionToast.SHORT_DURATION,
+                                    ResourcesCompat.getFont(
+                                        context as Activity,
+                                        www.sanju.motiontoast.R.font.helvetica_regular
+                                    )
+                                )
+
+                                requireActivity().onBackPressedDispatcher.onBackPressed()
+                            }
+
                         //send email
                         orderID = task.result.id
                         Log.d("orderID", orderID)
@@ -332,7 +369,7 @@ class CheckOutFragment : Fragment() {
                                                         storeData["store"] as DocumentReference
                                                     var bookStoreName =
                                                         storeData["fullname"].toString()
-
+                                                    shopSetting = storeData["salesNotif"] as Boolean
                                                     shopFullName = bookStoreName
                                                     bookStoreRef.get()
                                                         .addOnSuccessListener {
@@ -463,53 +500,27 @@ class CheckOutFragment : Fragment() {
                                                     discount,
                                                     formatMoney(totalMoney),
                                                 )
-                                                emailSender.sendEmail(
-                                                    userEmail,
-                                                    emailSubject,
-                                                    emailBody
-                                                )
+                                                if (userSetting){
+                                                    emailSender.sendEmail(
+                                                        userEmail,
+                                                        emailSubject,
+                                                        emailBody
+                                                    )
+                                                }
+
                                                 Log.d("shopEmail","shop " + shopEmail)
-                                                emailSender.sendEmail(
-                                                    shopEmail,
-                                                    shopEmailSubject,
-                                                    shopEmailBody
-                                                )
+                                                if (shopSetting){
+                                                    emailSender.sendEmail(
+                                                        shopEmail,
+                                                        shopEmailSubject,
+                                                        shopEmailBody
+                                                    )
+                                                }
+
                                             }
                                     }
                             }
 
-                        db.collection("accounts")
-                            .whereEqualTo("UID", auth.currentUser!!.uid.toString())
-                            .get().addOnSuccessListener { documents ->
-                                for (document in documents) {
-                                    for (cartObject in selectedItems) {
-//                                            val fieldMap = hashMapOf<Any, Any>(
-//                                                cartObject.bookID.toString() to FieldValue.delete()
-//                                            )
-                                        db.collection("accounts").document(document.id).update(
-                                            "cart.${cartObject.bookID}",
-                                            FieldValue.delete()
-                                        ).addOnSuccessListener { result ->
-
-                                        }
-                                    }
-                                }
-
-                                MotionToast.createColorToast(
-                                    context as Activity,
-                                    getString(R.string.successfully),
-                                    getString(R.string.paymentSuccessfully),
-                                    MotionToastStyle.SUCCESS,
-                                    MotionToast.GRAVITY_BOTTOM,
-                                    MotionToast.SHORT_DURATION,
-                                    ResourcesCompat.getFont(
-                                        context as Activity,
-                                        www.sanju.motiontoast.R.font.helvetica_regular
-                                    )
-                                )
-
-                                requireActivity().onBackPressedDispatcher.onBackPressed()
-                            }
 
                     }
                 }
