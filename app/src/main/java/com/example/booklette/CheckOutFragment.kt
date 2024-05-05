@@ -218,6 +218,7 @@ class CheckOutFragment : Fragment() {
 
         var userSetting = true
         var shopSetting = true
+        var hcmusBook = false
         binding.placeOrderBtn.setOnClickListener {
             if (::radioButtonClicked.isInitialized) {
                 var orderID = ""
@@ -407,6 +408,10 @@ class CheckOutFragment : Fragment() {
                                                                     bookData["image"].toString()
 
                                                                 val itemMap = itemData as? Map<*, *>
+                                                                val genre = bookData["genre"]
+                                                                if (genre == "Hcmus-book"){
+                                                                    hcmusBook = true
+                                                                }
                                                                 val price =
                                                                     (itemMap?.get("totalSum") as Number).toLong()
                                                                 val quantity =

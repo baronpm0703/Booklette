@@ -273,7 +273,7 @@
     <string name="email_delivered">Đơn hàng của bạn đã được giao, hãy kiểm tra nó!</string>
     <string name="email_completed">Đơn hàng của bạn đã được hoàn thành!</string>
     <string name="email_return_created">Bạn đã tạo 1 yêu cầu trả sách.</string>
-    <string name="email_delivered_hcmus">Đơn hàng của bạn đã tới trường, hãy tới trường để nhận nó!</string>
+    <string name="email_delivered_hcmus">Đơn hàng của bạn đã tới HCMUS, hãy tới trường để nhận nó!</string>
     <string name="email_return_successfully">Yêu cầu trả sách của bạn đã được chấp thuận.</string>
     <string name="email_return_failed">Yêu cầu trả sách của bạn đã bị từ chối.</string>
 

@@ -1,6 +1,7 @@
 package com.example.booklette
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.example.booklette.databinding.FragmentShopOrderDetailToShipBinding
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.firestore
@@ -35,7 +37,7 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
     private var _binding: FragmentShopOrderDetailToShipBinding? = null
     private var itemsMap: Map<String, Map<String, Any>>? = null
 
-
+    private lateinit var exContext: Context
     // This property is only valid between onCreateView and
 // onDestroyView.
     private val binding get() = _binding!!
@@ -56,6 +58,7 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
         val view = binding.root
 
         db = Firebase.firestore
+        exContext = requireContext()
         val numberField: TextView = binding.orderDetailNumberField
         val dateField = binding.orderDetailDateField
         val trackingNumberField = binding.orderDetailTrackingNumberField
@@ -72,6 +75,10 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
 
 
         var tempTotalOrgMoney: Long = 0
+        var customerID = ""
+        var userSetting = true
+        var shopSetting = true
+        var hcmusBook = false
         orderID?.let {
             db.collection("orders")
                 .document(it)
@@ -79,7 +86,7 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                 .addOnSuccessListener { document ->
                     val orderData = document.data
                     val timeStamp = orderData?.get("creationDate") as Timestamp
-                    val customerID = orderData?.get("customerID")
+                    customerID = orderData?.get("customerID").toString()
                     storeUID = customerID.toString()
                     val customerRef = db.collection("accounts").whereEqualTo("UID",customerID)
                     var customerName = "Minh Bảo"
@@ -125,6 +132,10 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                                         val bookName = bookData?.get("name") as? String
                                         if (!bookName.isNullOrEmpty()) {
                                             orderName += "$bookName, "
+                                        }
+                                        val genre = bookData?.get("genre") as String
+                                        if (genre == "Hcmus-book"){
+                                            hcmusBook = true
                                         }
                                     }
                                 }
@@ -219,6 +230,219 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
                         DialogInterface.BUTTON_POSITIVE -> {
                             val docRef =
                                 orderID?.let { it1 -> db.collection("orders").document(it1) }
+
+
+
+                            db.collection("accounts")
+                                .whereEqualTo("UID", customerID)
+                                .get().addOnSuccessListener { documents ->
+                                    for (document in documents) {
+                                        val userData = document.data
+                                        userSetting = userData?.get("deliveryNotif") as Boolean
+
+                                    }
+                                }
+
+                            //send email
+
+                            db.collection("orders").document(orderID!!)
+                                .get()
+                                .addOnSuccessListener { documentSnapshot ->
+                                    var orderDetail = ""
+                                    val orderData = documentSnapshot.data
+                                    var shopEmail = ""
+                                    var shopFullName = ""
+                                    val itemsMap =
+                                        orderData?.get("items") as? Map<String, Map<String, Any>>
+                                    val fetchBookNamesTasks = itemsMap?.flatMap { (shopID, itemMap) ->
+                                        itemMap.map { (itemId, itemData) ->
+                                            Log.d("shopID", shopID)
+                                            Log.d("itemId", itemId)
+                                            Log.d("itemData", itemData.toString())
+
+                                            // Get shop name
+                                            db.collection("accounts")
+                                                .whereEqualTo("UID", shopID)
+                                                .get()
+                                                .addOnSuccessListener { querySnapshot ->
+                                                    for (document in querySnapshot) {
+                                                        val storeData = document.data
+                                                        val bookStoreRef =
+                                                            storeData["store"] as DocumentReference
+                                                        var bookStoreName =
+                                                            storeData["fullname"].toString()
+                                                        shopSetting = storeData["salesNotif"] as Boolean
+                                                        shopFullName = bookStoreName
+                                                        bookStoreRef.get()
+                                                            .addOnSuccessListener {
+                                                                if (it.exists()) {
+                                                                    val bookStoreData = it.data
+                                                                    bookStoreName =
+                                                                        bookStoreData?.get("storeName")
+                                                                            .toString()
+                                                                    shopEmail = bookStoreData?.get("email").toString()
+                                                                    shopFullName = bookStoreName
+                                                                }
+                                                            }
+                                                            .addOnFailureListener { exception ->
+                                                                // Handle any errors
+                                                                Log.e(
+                                                                    "getStoreNameError",
+                                                                    "Error getting document: $exception"
+                                                                )
+                                                            }
+
+
+                                                        // Fetch books after getting store name
+                                                        db.collection("books")
+                                                            .whereEqualTo("bookID", itemId)
+                                                            .get()
+                                                            .addOnSuccessListener { bookQuerySnapshot ->
+                                                                for (bookDocument in bookQuerySnapshot) {
+                                                                    val bookData = bookDocument.data
+                                                                    val id = itemId
+                                                                    val name =
+                                                                        bookData["name"].toString()
+                                                                    val author =
+                                                                        bookData["author"].toString()
+                                                                    val imageUrl =
+                                                                        bookData["image"].toString()
+
+                                                                    val itemMap2 = itemData as? Map<*, *>
+                                                                    val genre = bookData["genre"] as String
+
+                                                                    val price =
+                                                                        (itemMap2?.get("totalSum") as Number).toLong()
+                                                                    val quantity =
+                                                                        itemMap2.get("quantity") as Long
+                                                                    orderDetail += exContext.getString(R.string.store) + ": " + bookStoreName + "\n"
+                                                                    orderDetail += exContext.getString(R.string.manageshop_mybooks_add_name) + ": " + name + "\n"
+                                                                    orderDetail += exContext.getString(R.string.manageshop_mybooks_add_author) + ": " + author + "\n"
+                                                                    orderDetail += exContext.getString(R.string.quantity) + " " + quantity.toString() + "\n\n"
+                                                                }
+
+                                                            }
+                                                            .addOnFailureListener { exception ->
+                                                                Log.e("Loi", exception.toString())
+                                                            }
+                                                    }
+                                                }
+                                                .addOnFailureListener { exception ->
+                                                    Log.e("Loi", exception.toString())
+                                                }
+                                        }
+                                    }
+                                    Tasks.whenAllComplete(fetchBookNamesTasks!!)
+                                        .addOnSuccessListener {
+                                            val emailSender = EmailSender(requireContext())
+                                            val emailSubject = exContext.getString(R.string.orderReiceivedSubject)
+                                            val shopEmailSubject = exContext.getString(R.string.orderReiceivedSubject)
+                                            val totalMoney =
+                                                (orderData?.get("totalSum") as Number).toLong()
+                                            val status = orderData?.get("status") as String
+                                            val timeStamp = orderData?.get("creationDate") as Timestamp
+
+                                            val date: Date? = timeStamp?.toDate()
+                                            val sdf = SimpleDateFormat("dd-MM-yyyy")
+                                            val paymentMethod =
+                                                orderData?.get("paymentMethod") as? Map<String, Any>
+                                            val paymentMethodType =
+                                                paymentMethod?.get("Type").toString()
+                                            val shippingAddress =
+                                                orderData?.get("shippingAddress") as String
+                                            val beforeDiscount =
+                                                (orderData?.get("beforeDiscount") as Number).toLong()
+                                            var emailBody = ""
+                                            var shopEmailBody = ""
+                                            var userFullName = ""
+                                            var userEmail = ""
+
+                                            val statusEmail = changeStatusText(status)
+                                            val discount =
+                                                "-" + formatMoney(beforeDiscount - totalMoney)
+                                            var orderMessage = ""
+                                            Log.d("emailHcmus",hcmusBook.toString())
+                                            if (!hcmusBook){
+                                                orderMessage = getString(R.string.email_delivered)
+                                            }
+                                            else{
+                                                orderMessage = getString(R.string.email_delivered_hcmus)
+                                            }
+
+//                                            val shopOrderMessage = getString(R.string.email_has_order)
+                                            db.collection("accounts")
+                                                .whereEqualTo("UID", customerID)
+                                                .get()
+                                                .addOnSuccessListener { querySnapshot ->
+                                                    for (snapshot in querySnapshot) {
+                                                        val userData = snapshot.data
+                                                        userFullName = userData["fullname"].toString()
+                                                        val bookStoreRef = userData["store"] as DocumentReference
+                                                        bookStoreRef.get()
+                                                            .addOnSuccessListener {
+                                                                if (it.exists()) {
+                                                                    val bookStoreData = it.data
+                                                                    userEmail = bookStoreData?.get("email").toString()
+                                                                    emailBody = emailSender.setBody(
+                                                                        userFullName,
+                                                                        orderMessage,
+                                                                        documentSnapshot.id,
+                                                                        statusEmail,
+                                                                        sdf.format(date),
+                                                                        orderDetail,
+                                                                        shippingAddress,
+                                                                        paymentMethodType,
+                                                                        formatMoney(beforeDiscount),
+                                                                        discount,
+                                                                        formatMoney(totalMoney),
+                                                                    )
+                //                                                    shopEmailBody = emailSender.setBody(
+                //                                                        shopFullName,
+                //                                                        shopOrderMessage,
+                //                                                        documentSnapshot.id,
+                //                                                        statusEmail,
+                //                                                        sdf.format(date),
+                //                                                        orderDetail,
+                //                                                        shippingAddress,
+                //                                                        paymentMethodType,
+                //                                                        formatMoney(beforeDiscount),
+                //                                                        discount,
+                //                                                        formatMoney(totalMoney),
+                //                                                    )
+                                                                    Log.d("userEmail","user " + userEmail)
+                                                                    if (userSetting){
+                                                                        emailSender.sendEmail(
+                                                                            userEmail,
+                                                                            emailSubject,
+                                                                            emailBody
+                                                                        )
+                                                                    }
+
+                //                                                    Log.d("shopEmail","shop " + shopEmail)
+                //                                                    if (shopSetting){
+                //                                                        emailSender.sendEmail(
+                //                                                            shopEmail,
+                //                                                            shopEmailSubject,
+                //                                                            shopEmailBody
+                //                                                        )
+                //                                                    }
+                                                                                }
+                                                                            }
+                                                            .addOnFailureListener { exception ->
+                                                                // Handle any errors
+                                                                Log.e(
+                                                                    "bookStoreRef",
+                                                                    "Error getting document: $exception"
+                                                                )
+                                                            }
+
+                                                    }
+
+
+
+                                                }
+                                        }
+                                }
                             docRef?.update("status", "Đã giao")?.addOnSuccessListener {
                                 // will change to motion toast later
                                 Toast.makeText(
@@ -260,13 +484,13 @@ class OrderDetailCaseShopToShipFragment : Fragment() {
 
     fun changeStatusText(status: String): String {
         return when {
-            status.contains("xử lý", true) -> getString(R.string.my_order_processing_button)
-            status.contains("huỷ", true) -> getString(R.string.my_order_cancelled_button)
-            status.contains("trả đang duyệt", true) -> getString(R.string.my_order_detail_item_return_in_process)
-            status.contains("trả thành công", true) -> getString(R.string.my_order_detail_item_return_success)
-            status.contains("trả bị từ chối", true) -> getString(R.string.my_order_detail_item_return_failed)
-            status.contains("thành công", true) -> getString(R.string.my_order_completed_button)
-            status.contains("đã giao", true) -> getString(R.string.my_order_delivered_button)
+            status.contains("xử lý", true) -> exContext.getString(R.string.my_order_processing_button)
+            status.contains("huỷ", true) -> exContext.getString(R.string.my_order_cancelled_button)
+            status.contains("trả đang duyệt", true) -> exContext.getString(R.string.my_order_detail_item_return_in_process)
+            status.contains("trả thành công", true) -> exContext.getString(R.string.my_order_detail_item_return_success)
+            status.contains("trả bị từ chối", true) -> exContext.getString(R.string.my_order_detail_item_return_failed)
+            status.contains("thành công", true) -> exContext.getString(R.string.my_order_completed_button)
+            status.contains("đã giao", true) -> exContext.getString(R.string.my_order_delivered_button)
             else -> ""
         }
     }
