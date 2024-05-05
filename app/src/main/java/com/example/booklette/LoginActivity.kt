@@ -325,6 +325,7 @@ open class LoginActivity : AppCompatActivity() {
                                                 "shopVouchers" to emptyArray,
                                                 "storeAvatar" to defaultStoreAvt,
                                                 "storeLocation" to "",
+                                                "email" to user?.email.toString(),
                                                 "storeName" to "Seller ${user?.email.toString()}",
                                             )
 

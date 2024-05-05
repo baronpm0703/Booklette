@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.booklette.databinding.FragmentBookDetailBinding
 import com.example.booklette.model.BookObject
+import com.example.booklette.model.BookObjectWithDate
 import com.example.booklette.model.Photo
 import com.example.booklette.model.UserReviewObject
 import com.example.booklette.model.VoucherObject
@@ -83,7 +84,7 @@ class BookDetailFragment : Fragment() {
     private var openReview: Boolean = false
 
     private var voucherList = ArrayList<VoucherObject>()
-    private var otherBookFromStore = ArrayList<BookObject>()
+    private var otherBookFromStore = ArrayList<BookObjectWithDate>()
     private var otherBookFromStoreRating = ArrayList<Float>()
     private var otherBookFromOtherStore = ArrayList<BookObject>()
     private var otherBookFromOtherStoreRating = ArrayList<Float>()
@@ -1066,12 +1067,12 @@ class BookDetailFragment : Fragment() {
 
                                     tmp = getBookPrice1(tmp_id)
                                     otherBookFromStore.add(
-                                        BookObject(
+                                        BookObjectWithDate(
                                             document.data.get("bookID").toString(),
                                             document.data.get("name").toString(),
                                             document.data.get("genre").toString(),
                                             document.data.get("author").toString(),
-                                            document.data.get("releaseDate").toString(),
+                                            (document.data.get("releaseDate") as Timestamp).toDate(),
                                             document.data.get("image").toString(),
                                             tmp,
                                             document.data.get("description").toString()
