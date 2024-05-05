@@ -2,6 +2,8 @@ package com.example.booklette
 
 import VerticalSpaceItemDecoration
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -189,5 +191,29 @@ class OrderDetailItemListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+
+    // Function to capture the fragment's content as an image
+    fun captureFragmentContentAsImage(): Bitmap? {
+        if (_binding == null) {
+            return null
+        }
+
+        val rootView = binding.root
+
+        // Create a bitmap with the same dimensions as the view
+        val bitmap = Bitmap.createBitmap(
+            rootView.width,
+            rootView.height,
+            Bitmap.Config.ARGB_8888
+        )
+
+        val canvas = Canvas(bitmap)
+
+        // Draw the view onto the canvas
+        rootView.draw(canvas)
+
+        return bitmap
     }
 }

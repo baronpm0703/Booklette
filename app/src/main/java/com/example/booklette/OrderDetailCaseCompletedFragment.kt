@@ -13,6 +13,7 @@ import com.example.booklette.databinding.FragmentOrderDetailCompletedBinding
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import java.text.SimpleDateFormat
@@ -48,6 +49,8 @@ class OrderDetailCaseCompletedFragment : Fragment() {
         val view = binding.root
 
         db = Firebase.firestore
+        val auth = Firebase.auth
+        
         val numberField: TextView = binding.orderDetailNumberField
         val dateField = binding.orderDetailDateField
         val trackingNumberField = binding.orderDetailTrackingNumberField

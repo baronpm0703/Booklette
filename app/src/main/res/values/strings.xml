@@ -294,6 +294,8 @@
     <string name="my_shop_order_return_button">Return</string>
 
     <string name="order_item_order">Order </string>
+    <string name="order_welcome">Hello </string>
+    <string name="order_created">You have created an order </string>
     <string name="review_instruction">Please choose a book to review!</string>
     <string name="return_instruction">Please choose one or more book to return!</string>
     <string name="order_item_tracking_number">Tracking number:</string>
@@ -475,4 +477,5 @@
     <string name="method2nd2">- Choose a courier service to return the items: Ninja Van/SPX/Quick Delivery.</string>
     <string name="step3method3">Method 3: Automatically contact the buyer and arrange exchange outside of Booklette\'s service.</string>
     <string name="method3nd">Actively contact the seller and arrange item exchange outside of Booklette\'s service.</string>
+    <string name="orderDayCreated">Day created:</string>
 </resources>
