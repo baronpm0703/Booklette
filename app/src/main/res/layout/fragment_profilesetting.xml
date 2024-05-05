@@ -221,27 +221,11 @@
                     app:layout_constraintTop_toTopOf="@+id/textView50"
                     app:layout_constraintBottom_toBottomOf="@+id/textView50"/>
             <TextView
-                    android:text="@string/profilesetting_notif_newarrivals"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/textView51"
-                    android:textColor="#0B0B0B"
-                    app:layout_constraintTop_toBottomOf="@+id/textView50" android:layout_marginTop="16dp"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-            />
-            <androidx.appcompat.widget.SwitchCompat
-                    android:gravity="center"
-                    android:theme="@style/Theme.AppCompat.DayNight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:id="@+id/profilesetting_notif_newarrivals_switch"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"
-                    app:layout_constraintTop_toTopOf="@+id/textView51"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView51"/>
-            <TextView
                     android:text="@string/profilesetting_notif_delivery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView52"
                     android:textColor="#0B0B0B"
-                    app:layout_constraintTop_toBottomOf="@+id/textView51" android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView50" android:layout_marginTop="16dp"
                     app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
                     app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
             />

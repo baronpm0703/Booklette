@@ -218,7 +218,6 @@
     <string name="myprofile_my_wallets_epay_flavor">Nạp vào ví E-pay của bạn để nhận 1 voucher khi mua hàng</string>
     <string name="myprofile_my_wallets_voucher">Voucher của tôi</string>
     <string name="myprofile_my_wallets_voucher_flavor">Tiết kiệm khi thanh toán với voucher</string>
-    <string name="myprofile_my_orders">Đơn hàng của tôi</string>
     <string name="myprofile_shipping_address">Địa chỉ giao hàng</string>
     <string name="myprofile_shipping_address_flavor">địa chỉ</string>
     <string name="myprofile_payment_method">Phương thức thanh toán</string>
@@ -463,6 +462,7 @@
     <string name="method3nd">Tự chủ liên hệ với người bán và sắp xếp việc trao đổi hàng ngoài dịch vụ của Booklette.</string>
     <string name="orderDayCreated">Ngày tạo:</string>
 
+
     <string name="orderCreatedSubject">[Booklette] Đơn hàng được tạo</string>
     <string name="orderDeliveredSubject">[Booklette] Đơn hàng đã được giao</string>
     <string name="orderCompletedSubject">[Booklette] Đơn hàng hoàn thành</string>
@@ -470,4 +470,8 @@
     <string name="orderReturnSuccessSubject">[Booklette] Yêu cầu trả hàng được chấp thuận</string>
     <string name="orderReturnFailedSubject">[Booklette] Yêu cầu trả hàng bị từ chối</string>
     <string name="orderReiceivedSubject">[Booklette] Đơn hàng mới được nhận</string>
+    <string name="myprofile_my_shop_orders">Đơn hàng từ cửa hàng</string>
+    <string name="order_created">Bạn đã tạo 1 đơn hàng</string>
+    <string name="myprofile_my_shop_orders_detail">Đơn hàng gửi tới shop</string>
+
 </resources>
