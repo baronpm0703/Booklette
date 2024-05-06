@@ -273,11 +273,8 @@ class CheckOutFragment : Fragment() {
                     }
 
                     val x = 1
-                    val totalPaymentText =
-                        binding.totalPaymentInPaymentDetail.text.toString().replace(",", "")
-                            .split(" ")[0]
-                    val totalPayment =
-                        if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() else 0.0F
+                    val totalPaymentText = binding.totalPaymentInPaymentDetail.text.toString().replace(",", "").split(" ")[0]
+                    val totalPayment = if (totalPaymentText.isNotEmpty()) totalPaymentText.toFloat() * 1000 else 0.0F
 
                     val data: HashMap<String, Any> = hashMapOf(
                         "creationDate" to Timestamp(Date()),
