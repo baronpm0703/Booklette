@@ -99,7 +99,7 @@
                     android:background="@color/white"
                     android:textColorHint="#9B9B9B"
                     android:ems="10"
-                    android:id="@+id/nameET"/>
+                    android:id="@+id/nameETD"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -187,7 +187,7 @@
                     android:background="@color/white"
                     android:textColorHint="#9B9B9B"
                     android:ems="10"
-                    android:id="@+id/addressET"/>
+                    android:id="@+id/addressETD"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView

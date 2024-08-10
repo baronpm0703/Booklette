@@ -154,14 +154,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="28dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/round_corner_button_solid_color"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:layout_marginTop="30dp"
         android:text="@string/loginText"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 

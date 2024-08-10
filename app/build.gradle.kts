@@ -97,10 +97,10 @@ dependencies {
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-analytics:21.0.0")
+    implementation("com.google.firebase:firebase-auth:21.0.0")
+    implementation("com.google.firebase:firebase-firestore:24.0.0")
+    implementation("com.google.firebase:firebase-storage:20.0.0")
 
     // FaceBook
     implementation("com.facebook.android:facebook-android-sdk:[8,9)")
@@ -192,5 +192,11 @@ dependencies {
     // JavaMail API
     implementation ("com.sun.mail:android-mail:1.6.2")
     implementation ("com.sun.mail:android-activation:1.6.2")
+
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test:core:1.4.0")
+//    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
+    androidTestImplementation("com.jayway.android.robotium:robotium-solo:5.6.3")
 
 }

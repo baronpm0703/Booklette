@@ -90,11 +90,11 @@ class ProfileSettingEditProfileDialog: Sheet() {
                         Picasso.get().load(avt).into(binding.avtIV)
                     else
                         Picasso.get().load(defaultAvt).into(binding.avtIV)
-                    binding.nameET.setText(name)
+                    binding.nameETD.setText(name)
                     binding.dobET.setText(dob)
                     binding.phoneET.setText(phone)
                     binding.emailET.setText(email)
-                    binding.addressET.setText(address)
+                    binding.addressETD.setText(address)
                 }
             }
 
@@ -123,19 +123,19 @@ class ProfileSettingEditProfileDialog: Sheet() {
 
         // Click out editext
         binding.changePasswordDialog.setOnClickListener {
-            binding.nameET.clearFocus()
+            binding.nameETD.clearFocus()
             binding.dobET.clearFocus()
             binding.phoneET.clearFocus()
             binding.emailET.clearFocus()
-            binding.addressET.clearFocus()
+            binding.addressETD.clearFocus()
         }
-        binding.nameET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        binding.nameETD.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             // If EditText loses focus
             if (!hasFocus) {
-                name = binding.nameET.text.toString()
+                name = binding.nameETD.text.toString()
                 // Hide the keyboard if it's currently showing
                 val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(binding.nameET.windowToken, 0)
+                imm.hideSoftInputFromWindow(binding.nameETD.windowToken, 0)
             }
         }
         binding.dobET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
@@ -165,23 +165,23 @@ class ProfileSettingEditProfileDialog: Sheet() {
                 imm.hideSoftInputFromWindow(binding.emailET.windowToken, 0)
             }
         }
-        binding.addressET.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        binding.addressETD.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             // If EditText loses focus
             if (!hasFocus) {
-                address = binding.addressET.text.toString()
+                address = binding.addressETD.text.toString()
                 // Hide the keyboard if it's currently showing
                 val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(binding.addressET.windowToken, 0)
+                imm.hideSoftInputFromWindow(binding.addressETD.windowToken, 0)
             }
         }
 
         //Apply
         binding.saveChangesBtn.setOnClickListener {
-            name = binding.nameET.text.toString()
+            name = binding.nameETD.text.toString()
             dob = binding.dobET.text.toString()
             phone = binding.phoneET.text.toString()
             email = binding.emailET.text.toString()
-            address = binding.addressET.text.toString()
+            address = binding.addressETD.text.toString()
 
             positiveListener?.invoke()
         }

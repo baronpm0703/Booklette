@@ -269,6 +269,7 @@
                 app:cardPreventCornerOverlap="false"
                 android:id="@+id/shippingAddressOption">
             <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/settingShippingAddress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 <TextView
@@ -331,6 +332,7 @@
                 app:cardPreventCornerOverlap="false"
                 android:id="@+id/settingsOption">
             <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/settingEditProfile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                 <TextView

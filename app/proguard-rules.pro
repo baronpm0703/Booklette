@@ -19,3 +19,24 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepclassmembers class * extends com.google.protobuf.GeneratedMessageLite {
+    public static ** parseFrom(byte[]);
+    public static ** parseFrom(java.io.InputStream);
+    public static ** parseFrom(java.nio.ByteBuffer);
+    public static ** parseFrom(byte[], com.google.protobuf.ExtensionRegistryLite);
+    public static ** parseFrom(java.io.InputStream, com.google.protobuf.ExtensionRegistryLite);
+    public static ** parseFrom(java.nio.ByteBuffer, com.google.protobuf.ExtensionRegistryLite);
+    public static ** parseFrom(com.google.protobuf.ByteString);
+    public static ** parseFrom(com.google.protobuf.ByteString, com.google.protobuf.ExtensionRegistryLite);
+    public static ** parseFrom(com.google.protobuf.CodedInputStream);
+    public static ** parseFrom(com.google.protobuf.CodedInputStream, com.google.protobuf.ExtensionRegistryLite);
+}
+
+-keepclassmembers class * extends com.google.protobuf.GeneratedMessageLite {
+    public static ** newBuilder();
+    public static ** newBuilder(*);
+}
+
+-keep class com.google.protobuf.** { *; }
+-keep interface com.google.protobuf.** { *; }
